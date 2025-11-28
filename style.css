@@ -514,7 +514,7 @@ button, .tab, .mini-card, .add-btn, .remove-btn, .compendium-small-btn {
 
 /* КОМПАКТНЫЕ СТАТЫ — КАК В COMPENDIUM */
 .stats-compact {
-  padding: 16px;
+  padding: 20px;
   background: #0a0a0a;
   border-bottom: 3px solid #e8c63a;
 }
@@ -524,7 +524,7 @@ button, .tab, .mini-card, .add-btn, .remove-btn, .compendium-small-btn {
   margin: 10px 0;
 }
 .stat-big {
-  font-size: 22x;
+  font-size: 26x;
   font-weight: bold;
   color: #e8c63a;
   min-width: 90px;
@@ -633,7 +633,7 @@ button, .mini-card, .tab, .weapon-line, .trait-chip {
 }
 
 /* Статы — 100% влезают */
-.stats-compact { padding:16px 20px; background:#0a0a0a; font-size:15px; }
+.stats-compact { padding:16px 16px; background:#0a0a0a; font-size:15px; }
 .stat-row { 
   display:flex; justify-content:space-between; margin:10px 0; 
   flex-wrap:wrap; gap:10px;
