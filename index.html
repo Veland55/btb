@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BMG Crew Builder Mobile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ТОП-БАР -->
+<div class="top-bar">
+  <div class="top-bar-content">
+    <h1>BMG CREW BUILDER</h1>
+    <div class="compendium-small-btn" onclick="openCompendium()">
+      <img src="https://i.ibb.co/9hJ7bK8/bat-symbol-gold.png" alt="C">
+      <span>COMPENDIUM</span>
+    </div>
+  </div>
+  <div class="funds">
+    ОТРЯД: <span id="crewCount">0</span> | REP: <span id="totalRep">0</span> | $<span id="totalFunding">0</span>
+  </div>
+</div>
+
+<!-- ВКЛАДКИ ФРАКЦИЙ -->
+<div class="tabs-container">
+  <div class="tabs">
+    <button class="tab active" data-faction="Batman">BAT-FAMILY</button>
+    <button class="tab" data-faction="Joker">JOKER</button>
+    <button class="tab" data-faction="Penguin">PENGUIN</button>
+    <button class="tab" data-faction="Bane">BANE</button>
+    <button class="tab" data-faction="League">LEAGUE</button>
+    <button class="tab" data-faction="GCPD">GCPD</button>
+    <button class="tab" data-faction="Two-Face">TWO-FACE</button>
+    <button class="tab" data-faction="Court">COURT</button>
+  </div>
+</div>
+
+<!-- ПОИСК -->
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="Поиск модели...">
+</div>
+
+<!-- СЕТКА МОДЕЛЕЙ -->
+<div class="models-grid" id="modelsGrid"></div>
+
+<!-- НИЖНЯЯ ПАНЕЛЬ -->
+<div class="crew-bar">
+  <div class="crew-total">
+    ФРАКЦИЯ: <span id="currentFaction">BAT-FAMILY</span>
+  </div>
+  <button onclick="clearCrew()" class="clear-btn">ОЧИСТИТЬ</button>
+</div>
+
+<!-- COMPENDIUM МОДАЛЬНЫЙ -->
+<div id="compendiumModal" class="compendium-modal">
+  <div class="compendium-header">
+    <button onclick="closeCompendium()" class="back-btn">НАЗАД</button>
+    <h2>COMPENDIUM <span style="font-size:14px;color:#aaa;">v1.4</span></h2>
+  </div>
+<div class="search-container compendium-search-wrapper">
+  <div class="compendium-search">
+    <svg class="search-icon" viewBox="0 0 24 24">
+      <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+    </svg>
+    <input type="text" id="compendiumSearch" placeholder="Поиск по трейтам, оружию, правилам...">
+    <button class="clear-search" onclick="clearCompendiumSearch()" style="display:none;">×</button>
+  </div>
+</div>
+  <div id="compendiumList" class="compendium-content"></div>
+</div>
+
+<!-- ПОЛНАЯ КАРТОЧКА -->
+<div class="full-card" id="fullCard">
+  <div class="close-full" onclick="closeFullCard()">X</div>
+  <div class="full-inner" id="fullCardContent"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+let crew = [];
+let currentFaction = "Batman";
+let allCompendiumHTML = "";
+let compendiumKeys = [];
+
+// ИНИЦИАЛИЗАЦИЯ COMPENDIUM — С КРАСИВЫМ РАЗДЕЛЕНИЕМ
+window.addEventListener("load", function() {
+  if (window.compendium && typeof window.compendium === "object") {
+    compendiumKeys = Object.keys(window.compendium).sort();
+    let html = "";
+    compendiumKeys.forEach(key => {
+      html += `
+        <div class="comp-entry">
+          <div class="comp-title">${key}</div>
+          <div class="comp-text">
+            ${(window.compendium[key] || "").replace(/\n/g, "<br>")}
+          </div>
+        </div>`;
+    });
+    allCompendiumHTML = html;
+    document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
+  }
+
+  if (typeof models !== "undefined") {
+    models.forEach((m, i) => m._id = i);
+  }
+  renderMiniCards();
+  updateCrewBar();
+});
+
+// Остальные функции без изменений
+function isInCrew(model) { return crew.some(m => m._id === model._id); }
+function addToCrew(model) {
+  if (isInCrew(model)) crew = crew.filter(m => m._id !== model._id);
+  else crew.push(model);
+  updateCrewBar(); renderMiniCards();
+}
+function clearCrew() { if (confirm("Очистить отряд?")) { crew = []; updateCrewBar(); renderMiniCards(); } }
+function updateCrewBar() {
+  document.getElementById("currentFaction").textContent = document.querySelector(".tab.active")?.textContent || "—";
+  document.getElementById("crewCount").textContent = crew.length;
+  document.getElementById("totalRep").textContent = crew.reduce((a,m)=>a+(m.rep||0),0);
+  document.getElementById("totalFunding").textContent = crew.reduce((a,m)=>a+(m.funding||0),0);
+}
+function renderMiniCards() {
+  const grid = document.getElementById("modelsGrid");
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
+  grid.innerHTML = "";
+  models
+    .filter(m => m.faction === currentFaction && m.name.toLowerCase().includes(search))
+    .forEach(model => {
+      const inCrew = isInCrew(model);
+      const div = document.createElement("div");
+      div.className = `mini-card ${inCrew?"in-crew":""}`;
+      div.innerHTML = `
+        <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(models[${model._id}])">
+          ${inCrew?"−":"+"}
+        </button>
+        <img src="${model.img}" onerror="this.src='https://via.placeholder.com/145x115/222/e94560?text=NO+IMG'">
+        <div class="mini-info">
+          <div class="mini-name">${model.name}</div>
+          <div class="mini-rep">${model.rep} Rep • $${model.funding}</div>
+        </div>`;
+      div.onclick = () => showFullCard(model);
+      grid.appendChild(div);
+    });
+}
+function showFullCard(model) {
+  document.getElementById("fullCardContent").innerHTML = `
+    <div class="full-header">${model.name.toUpperCase()}<div class="full-rank">${model.role.toUpperCase()}</div></div>
+    <img src="${model.img}" class="full-img" onerror="this.src='https://via.placeholder.com/460x400/111/e94560?text=NO+IMAGE'">
+    <div class="full-stats">
+      <div><div class="stat-value">${model.stats.mv}</div><div class="stat-label">Mv</div></div>
+      <div><div class="stat-value">${model.stats.wp}</div><div class="stat-label">Wp</div></div>
+      <div><div class="stat-value">${model.stats.en}</div><div class="stat-label">En</div></div>
+      <div><div class="stat-value">${model.stats.st}+</div><div class="stat-label">St</div></div>
+    </div>
+    <div class="section-title">WEAPONS</div>
+    <div style="padding:0 15px;">
+      ${model.weapons.map(w=>`<div class="weapon-line"><div class="weapon-name">${w.split(" (")[0]}</div><div class="weapon-info" title="${getDesc?.(w)||"Нет описания"}">i</div></div>`).join("")}
+    </div>
+    <div class="section-title">TRAITS</div>
+    <div class="traits-grid">
+      ${model.traits.map(t=>`<div class="trait" title="${getDesc?.(t)||"Нет описания"}">${t.toUpperCase()}</div>`).join("")}
+    </div>`;
+  document.getElementById("fullCard").classList.add("active");
+}
+function closeFullCard() { document.getElementById("fullCard").classList.remove("active"); }
+
+// COMPENDIUM — ОТКРЫТИЕ И ПОИСК С КРАСИВЫМ РАЗДЕЛЕНИЕМ
+function openCompendium() {
+  document.getElementById("compendiumModal").classList.add("active");
+  document.getElementById("compendiumSearch").value = "";
+  document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
+}
+function closeCompendium() {
+  document.getElementById("compendiumModal").classList.remove("active");
+}
+
+document.getElementById("compendiumSearch").oninput = function() {
+  const q = this.value.toLowerCase();
+  if (!q) {
+    document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
+    return;
+  }
+  let html = "";
+  compendiumKeys.forEach(key => {
+    if (key.toLowerCase().includes(q)) {
+      html += `
+        <div class="comp-entry">
+          <div class="comp-title">${key}</div>
+          <div class="comp-text">
+            ${(window.compendium[key] || "").replace(/\n/g, "<br>")}
+          </div>
+        </div>`;
+    }
+  });
+  document.getElementById("compendiumList").innerHTML = html || "<div style='text-align:center;color:#777;padding:100px;font-size:18px;'>Ничего не найдено</div>";
+};
+
+// ВКЛАДКИ
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.onclick = () => {
+    closeCompendium();
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    if (crew.length > 0 && !confirm("Смена фракции очистит отряд. Продолжить?")) return;
+    crew = []; currentFaction = tab.dataset.faction;
+    renderMiniCards(); updateCrewBar();
+  };
+});
+
+document.getElementById("searchInput").oninput = renderMiniCards;
+</script>
+</body>
+</html>
