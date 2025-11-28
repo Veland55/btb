@@ -14,7 +14,7 @@ const models = [
       "Willpower": 8, 
       "Endurance": 8 
     },
-    "traits": ["Bat Cape", "Bat-Armor MKI", "Close Combat Master", "Martial Artist", "Sneak Attack", "Bat Family", "Batclaw", "Detective", "Reinforced Gloves"],
+    "traits": ["Bat Cape", "Bat-Armor Mk I", "Close Combat Master", "Martial Artist", "Sneak Attack", "Bat Family", "Batclaw", "Detective", "Reinforced Gloves"],
     "weapons": ["Batarang (Ranged, Ammo 3)", "Grapnel Gun", "Smoke Grenade", "Unarmed"]
   }
   // добавляй остальные модели сюда
