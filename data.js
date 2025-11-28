@@ -658,7 +658,7 @@ const descriptions = {
 };
 
 // Делаем всю базу доступной глобально для COMPENDIUM
-window.compendium = { ...traitDescriptions, ...weaponDescriptions };
+window.compendium = { ...traitDescriptions};
 
 // Универсальная функция для получения описания (трейт или оружие)
 function getDesc(key) {
