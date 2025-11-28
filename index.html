@@ -127,7 +127,7 @@ function renderMiniCards() {
       const div = document.createElement("div");
       div.className = `mini-card ${inCrew?"in-crew":""}`;
       div.innerHTML = `
-        <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(model)">
+        <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(models[${model._id}])">
           ${inCrew?"−":"+"}
         </button>
         <img src="${model.img}" onerror="this.src='https://via.placeholder.com/145x115/222/9c1825?text=NO+IMG'">
