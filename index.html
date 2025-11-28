@@ -189,6 +189,40 @@ function closeFullCard() {
   document.getElementById("fullCard").classList.remove("active");
 }
 
+// ОТКРЫТИЕ И ЗАКРЫТИЕ COMPENDIUM — ЭТО БЫЛО УДАЛЕНО!
+function openCompendium() {
+  document.getElementById("compendiumModal").classList.add("active");
+  // Сброс поиска при открытии
+  const searchInput = document.getElementById("compendiumSearch");
+  if (searchInput) searchInput.value = "";
+  document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
+}
+
+function closeCompendium() {
+  document.getElementById("compendiumModal").classList.remove("active");
+}
+
+// ПОИСК В COMPENDIUM — ТОЖЕ БЫЛ УДАЛЁН!
+document.getElementById("compendiumSearch").oninput = function() {
+  const query = this.value.toLowerCase().trim();
+  if (!query) {
+    document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
+    return;
+  }
+
+  const filtered = compendiumKeys
+    .filter(key => key.toLowerCase().includes(query))
+    .map(key => `
+      <div class="comp-entry">
+        <div class="comp-title">${key}</div>
+        <div class="comp-text">${(compendium[key]||"").replace(/\n/g,"<br>")}</div>
+      </div>
+    `).join("");
+
+  document.getElementById("compendiumList").innerHTML = filtered || 
+    "<div style='text-align:center;color:#888;padding:80px;font-size:18px;'>Ничего не найдено</div>";
+};
+
 // ВСПЛЫВАЮЩИЙ ПОПАП — КАК НА ТВОЁМ СКРИНШОТЕ COMPENDIUM
 function showTraitDesc(keyword) {
   if (!window.compendium || !compendium[keyword]) {
