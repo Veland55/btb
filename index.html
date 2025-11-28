@@ -140,48 +140,77 @@ function renderMiniCards() {
     });
 }
 
-// === ГЛАВНАЯ КАРТОЧКА — ИДЕАЛЬНО РАБОТАЕТ НА ТЕЛЕФОНЕ ===
 function showFullCard(model) {
   document.getElementById("fullCardContent").innerHTML = `
-    <div class="full-header">
-      ${model.name.toUpperCase()}
-      <div class="full-rank">${model.rank || "Free Agent"}</div>
-    </div>
-    <img src="${model.img}" class="full-img" onerror="this.src='https://via.placeholder.com/460x400/111/9c1825?text=NO+IMAGE'">
-
-<!-- КОМПАКТНЫЕ СТАТЫ — КАК В ОФИЦИАЛЬНОМ ПРИЛОЖЕНИИ -->
-    <div class="stats-compact">
-      <div class="stat-row">
-        <span class="stat-big">💥 ${model.stats.Attack || "-"}</span>
-        <span class="stat-big">🛡️ ${model.stats.Defense || "-"}</span>
-        <span class="stat-big">💪 ${model.stats.Strength || "-"}</span>
-        <span class="stat-big">👟 ${model.stats.Movement || "-"}</span>
+    <!-- ЖЁЛТАЯ КАРТОЧКА КАК В ОФИЦИАЛЬНОМ ПРИЛОЖЕНИИ -->
+    <div class="official-card">
+      <!-- Заголовок -->
+      <div class="official-header">
+        <div class="official-name">${model.name.toUpperCase()}</div>
+        <div class="official-subtitle">${model.rank || "Free Agent"} • ${model.rep} REP • $${model.funding || 0}</div>
       </div>
-      <div class="stat-row">
-        <span class="stat-small">Willpower ${model.stats.Willpower || "-"}</span>
-        <span class="stat-small">Endurance ${model.stats.Endurance || "-"}</span>
-      </div>
-    </div>
 
-    ${model.weapons?.length ? `
-      <div class="section-title">WEAPONS</div>
-      <div class="weapons-compact">
-        ${model.weapons.map(w => `
-          <div class="weapon-line" onclick="showTraitDesc('${w.trim().replace(/'/g, "\\'")}')">
-            <span class="weapon-name">${w.split(" (")[0]}</span>
-            <span class="weapon-props">${w.includes("(") ? "("+w.match(/\(([^)]+)\)/)[1]+")" : ""}</span>
+      <!-- Главный блок: фото + статы -->
+      <div class="official-main">
+        <!-- Фото модели (маленькое, слева) -->
+        <div class="official-img-wrapper">
+          <img src="${model.img}" class="official-img" onerror="this.src='https://via.placeholder.com/300x400/222/999?text=NO+IMG'">
+        </div>
+
+        <!-- Статы справа от фото -->
+        <div class="official-stats">
+          <div class="official-stat willpower">
+            <span class="official-value">${model.stats.Willpower || "-"}</span>
+            <span class="official-label">WILLPOWER</span>
           </div>
-        `).join("")}
-      </div>` : ""}
+          <div class="official-stat endurance">
+            <span class="official-value">${model.stats.Endurance || "-"}</span>
+            <span class="official-label">ENDURANCE</span>
+          </div>
+          <div class="official-stat attack">
+            <span class="official-value">${model.stats.Attack || "-"}</span>
+            <span class="official-label">💥</span>
+          </div>
+          <div class="official-stat defense">
+            <span class="official-value">${model.stats.Defense || "-"}</span>
+            <span class="official-label">🛡️</span>
+          </div>
+          <div class="official-stat strength">
+            <span class="official-value">${model.stats.Strength || "-"}</span>
+            <span class="official-label">💪</span>
+          </div>
+          <div class="official-stat movement">
+            <span class="official-value">${model.stats.Movement || "-"}</span>
+            <span class="official-label">👟</span>
+          </div>
+        </div>
+      </div>
 
-    ${model.traits?.length ? `
-      <div class="section-title">TRAITS</div>
-      <div class="traits-compact">
-        ${model.traits.map(t => `
-          <div class="trait-chip" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>
-        `).join("")}
-      </div>` : ""}
+      <!-- Оружие -->
+      ${model.weapons?.length ? `
+        <div class="official-section">
+          <div class="official-section-title">WEAPONS</div>
+          ${model.weapons.map(w => `
+            <div class="official-weapon" onclick="showTraitDesc('${w.trim().replace(/'/g, "\\'")}')">
+              <div class="official-weapon-name">${w.split(" (")[0]}</div>
+              ${w.includes("(") ? `<div class="official-weapon-props">${w.match(/\(([^)]+)\)/)[1]}</div>` : ""}
+            </div>
+          `).join("")}
+        </div>` : ""}
+
+      <!-- Трейты -->
+      ${model.traits?.length ? `
+        <div class="official-section yellow">
+          <div class="official-section-title">TRAITS</div>
+          <div class="official-traits-grid">
+            ${model.traits.map(t => `
+              <div class="official-trait" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>
+            `).join("")}
+          </div>
+        </div>` : ""}
+    </div>
   `;
+
   document.getElementById("fullCard").classList.add("active");
 }
 
