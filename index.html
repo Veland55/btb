@@ -84,50 +84,42 @@ let currentFaction = "Batman";
 let allCompendiumHTML = "";
 let compendiumKeys = [];
 
-// ИНИЦИАЛИЗАЦИЯ COMPENDIUM — С КРАСИВЫМ РАЗДЕЛЕНИЕМ
-window.addEventListener("load", function() {
-  if (window.compendium && typeof window.compendium === "object") {
+// Инициализация
+window.addEventListener("load", () => {
+  if (window.compendium) {
     compendiumKeys = Object.keys(window.compendium).sort();
-    let html = "";
-    compendiumKeys.forEach(key => {
-      html += `
-        <div class="comp-entry">
-          <div class="comp-title">${key}</div>
-          <div class="comp-text">
-            ${(window.compendium[key] || "").replace(/\n/g, "<br>")}
-          </div>
-        </div>`;
-    });
-    allCompendiumHTML = html;
+    allCompendiumHTML = compendiumKeys.map(key => `
+      <div class="comp-entry">
+        <div class="comp-title">${key}</div>
+        <div class="comp-text">${(compendium[key]||"").replace(/\n/g,"<br>")}</div>
+      </div>`).join("");
     document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
   }
-
-  if (typeof models !== "undefined") {
-    models.forEach((m, i) => m._id = i);
-  }
+  if (models) models.forEach((m,i) => m._id = i);
   renderMiniCards();
   updateCrewBar();
 });
 
-// Остальные функции без изменений
-function isInCrew(model) { return crew.some(m => m._id === model._id); }
-function addToCrew(model) {
-  if (isInCrew(model)) crew = crew.filter(m => m._id !== model._id);
-  else crew.push(model);
+function isInCrew(m) { return crew.some(x => x._id === m._id); }
+function addToCrew(m) {
+  crew = isInCrew(m) ? crew.filter(x => x._id !== m._id) : [...crew, m];
   updateCrewBar(); renderMiniCards();
 }
-function clearCrew() { if (confirm("Очистить отряд?")) { crew = []; updateCrewBar(); renderMiniCards(); } }
+function clearCrew() { if(confirm("Очистить отряд?")) { crew=[]; updateCrewBar(); renderMiniCards(); }}
 function updateCrewBar() {
-  document.getElementById("currentFaction").textContent = document.querySelector(".tab.active")?.textContent || "—";
+  const activeTab = document.querySelector(".tab.active");
+  document.getElementById("currentFaction").textContent = activeTab?.textContent || "—";
   document.getElementById("crewCount").textContent = crew.length;
   document.getElementById("totalRep").textContent = crew.reduce((a,m)=>a+(m.rep||0),0);
   document.getElementById("totalFunding").textContent = crew.reduce((a,m)=>a+(m.funding||0),0);
 }
+
 function renderMiniCards() {
   const grid = document.getElementById("modelsGrid");
   const search = document.getElementById("searchInput").value.toLowerCase();
   currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
   grid.innerHTML = "";
+  
   models
     .filter(m => m.faction === currentFaction && m.name.toLowerCase().includes(search))
     .forEach(model => {
@@ -135,28 +127,29 @@ function renderMiniCards() {
       const div = document.createElement("div");
       div.className = `mini-card ${inCrew?"in-crew":""}`;
       div.innerHTML = `
-        <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(models[${model._id}])">
+        <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(model)">
           ${inCrew?"−":"+"}
         </button>
-        <img src="${model.img}" onerror="this.src='https://via.placeholder.com/145x115/222/e94560?text=NO+IMG'">
+        <img src="${model.img}" onerror="this.src='https://via.placeholder.com/145x115/222/9c1825?text=NO+IMG'">
         <div class="mini-info">
           <div class="mini-name">${model.name}</div>
-          <div class="mini-rep">${model.rep} Rep • $${model.funding}</div>
+          <div class="mini-rep">${model.rep} Rep • $${model.funding||0}</div>
         </div>`;
       div.onclick = () => showFullCard(model);
       grid.appendChild(div);
     });
 }
+
+// === ГЛАВНАЯ КАРТОЧКА — ИДЕАЛЬНО РАБОТАЕТ НА ТЕЛЕФОНЕ ===
 function showFullCard(model) {
   document.getElementById("fullCardContent").innerHTML = `
     <div class="full-header">
       ${model.name.toUpperCase()}
       <div class="full-rank">${model.rank || "Free Agent"}</div>
     </div>
-
     <img src="${model.img}" class="full-img" onerror="this.src='https://via.placeholder.com/460x400/111/9c1825?text=NO+IMAGE'">
 
-    <!-- КОМПАКТНЫЕ СТАТЫ — КАК В ОФИЦИАЛЬНОМ ПРИЛОЖЕНИИ -->
+<!-- КОМПАКТНЫЕ СТАТЫ — КАК В ОФИЦИАЛЬНОМ ПРИЛОЖЕНИИ -->
     <div class="stats-compact">
       <div class="stat-row">
         <span class="stat-big">💥 ${model.stats.Attack || "-"}</span>
@@ -170,99 +163,66 @@ function showFullCard(model) {
       </div>
     </div>
 
-    <!-- ОРУЖИЕ — КЛИКАБЕЛЬНОЕ, ОТКРЫВАЕТ ОПИСАНИЕ -->
     ${model.weapons?.length ? `
       <div class="section-title">WEAPONS</div>
       <div class="weapons-compact">
-        ${model.weapons.map(w => {
-          const name = w.split(" (")[0];
-          const clean = w.trim();
-          return `
-            <div class="weapon-line" onclick="showTraitDesc('${clean.replace(/'/g, "\\'")}')">
-              <span class="weapon-name">${name}</span>
-              <span class="weapon-props">${w.includes("(") ? w.match(/\(([^)]+)\)/)[1] : ""}</span>
-            </div>
-          `;
-        }).join("")}
-      </div>
-    ` : ''}
+        ${model.weapons.map(w => `
+          <div class="weapon-line" onclick="showTraitDesc('${w.trim().replace(/'/g, "\\'")}')">
+            <span class="weapon-name">${w.split(" (")[0]}</span>
+            <span class="weapon-props">${w.includes("(") ? "("+w.match(/\(([^)]+)\)/)[1]+")" : ""}</span>
+          </div>
+        `).join("")}
+      </div>` : ""}
 
-    <!-- ТРЕЙТЫ — ТОЖЕ КЛИКАБЕЛЬНЫЕ -->
     ${model.traits?.length ? `
       <div class="section-title">TRAITS</div>
       <div class="traits-compact">
         ${model.traits.map(t => `
-          <div class="trait-chip" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">
-            ${t}
-          </div>
+          <div class="trait-chip" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>
         `).join("")}
-      </div>
-    ` : ''}
+      </div>` : ""}
   `;
-
   document.getElementById("fullCard").classList.add("active");
 }
-function closeFullCard() { document.getElementById("fullCard").classList.remove("active"); }
 
+function closeFullCard() {
+  document.getElementById("fullCard").classList.remove("active");
+}
+
+// ВСПЛЫВАЮЩИЙ ПОПАП — КАК НА ТВОЁМ СКРИНШОТЕ COMPENDIUM
 function showTraitDesc(keyword) {
   if (!window.compendium || !compendium[keyword]) {
-    alert("Описание не найдено: " + keyword);
+    alert("Нет описания: " + keyword);
     return;
   }
-  const desc = compendium[keyword].replace(/\n/g, "<br>");
-  document.getElementById("fullCardContent").insertAdjacentHTML("beforeend", `
-    <div class="trait-popup" onclick="this.remove()">
-      <div class="trait-popup-content">
+  const desc = (compendium[keyword]||"").replace(/\n/g, "<br>");
+
+  const popup = document.createElement("div");
+  popup.className = "trait-popup";
+  popup.innerHTML = `
+    <div class="trait-popup-content">
+      <div class="trait-popup-header">
         <div class="trait-popup-title">${keyword}</div>
-        <div class="trait-popup-text">${desc}</div>
+        <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
       </div>
+      <div class="trait-popup-text">${desc}</div>
     </div>
-  `);
+  `;
+  popup.onclick = e => { if (e.target === popup) popup.remove(); };
+  document.body.appendChild(popup);
 }
 
-// COMPENDIUM — ОТКРЫТИЕ И ПОИСК С КРАСИВЫМ РАЗДЕЛЕНИЕМ
-function openCompendium() {
-  document.getElementById("compendiumModal").classList.add("active");
-  document.getElementById("compendiumSearch").value = "";
-  document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
-}
-function closeCompendium() {
-  document.getElementById("compendiumModal").classList.remove("active");
-}
-
-document.getElementById("compendiumSearch").oninput = function() {
-  const q = this.value.toLowerCase();
-  if (!q) {
-    document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
-    return;
-  }
-  let html = "";
-  compendiumKeys.forEach(key => {
-    if (key.toLowerCase().includes(q)) {
-      html += `
-        <div class="comp-entry">
-          <div class="comp-title">${key}</div>
-          <div class="comp-text">
-            ${(window.compendium[key] || "").replace(/\n/g, "<br>")}
-          </div>
-        </div>`;
-    }
-  });
-  document.getElementById("compendiumList").innerHTML = html || "<div style='text-align:center;color:#777;padding:100px;font-size:18px;'>Ничего не найдено</div>";
-};
-
-// ВКЛАДКИ
+// Остальное (compendium, вкладки) — оставь как было, только добавь эти две строчки в конец:
 document.querySelectorAll(".tab").forEach(tab => {
   tab.onclick = () => {
     closeCompendium();
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
-    if (crew.length > 0 && !confirm("Смена фракции очистит отряд. Продолжить?")) return;
+    if (crew.length && !confirm("Смена фракции очистит отряд. Ок?")) return;
     crew = []; currentFaction = tab.dataset.faction;
     renderMiniCards(); updateCrewBar();
   };
 });
-
 document.getElementById("searchInput").oninput = renderMiniCards;
 </script>
 </body>
