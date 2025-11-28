@@ -527,13 +527,13 @@ button, .tab, .mini-card, .add-btn, .remove-btn, .compendium-small-btn {
   font-size: 26x;
   font-weight: bold;
   color: #e8c63a;
-  min-width: 90px;
+  min-width: 80px;
   text-align: center;
 }
 .stat-small {
-  font-size: 22px;
+  font-size: 18px;
   color: #ccc;
-  min-width: 90px;
+  min-width: 70px;
   text-align: center;
 }
 
