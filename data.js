@@ -5,7 +5,7 @@ const models = [
     "funding": 0,
     "rank": "Leader",
     "faction": "Batman",
-    "img": "https://i.ibb.co/6PBRBCH/batman-rebirth.png",  // ИСПРАВЛЕНО: была сломана ссылка!
+    "img": "https://veland55.github.io/btb/img/batman-rebirth.png",  // ИСПРАВЛЕНО: была сломана ссылка!
     "stats": { 
       "Attack": 5, 
       "Defense": 5, 
