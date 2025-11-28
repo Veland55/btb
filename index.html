@@ -149,25 +149,76 @@ function renderMiniCards() {
 }
 function showFullCard(model) {
   document.getElementById("fullCardContent").innerHTML = `
-    <div class="full-header">${model.name.toUpperCase()}<div class="full-rank">${model.role.toUpperCase()}</div></div>
-    <img src="${model.img}" class="full-img" onerror="this.src='https://via.placeholder.com/460x400/111/e94560?text=NO+IMAGE'">
-    <div class="full-stats">
-      <div><div class="stat-value">${model.stats.mv}</div><div class="stat-label">Mv</div></div>
-      <div><div class="stat-value">${model.stats.wp}</div><div class="stat-label">Wp</div></div>
-      <div><div class="stat-value">${model.stats.en}</div><div class="stat-label">En</div></div>
-      <div><div class="stat-value">${model.stats.st}+</div><div class="stat-label">St</div></div>
+    <div class="full-header">
+      ${model.name.toUpperCase()}
+      <div class="full-rank">${model.rank || "Free Agent"}</div>
     </div>
-    <div class="section-title">WEAPONS</div>
-    <div style="padding:0 15px;">
-      ${model.weapons.map(w=>`<div class="weapon-line"><div class="weapon-name">${w.split(" (")[0]}</div><div class="weapon-info" title="${getDesc?.(w)||"Нет описания"}">i</div></div>`).join("")}
+
+    <img src="${model.img}" class="full-img" onerror="this.src='https://via.placeholder.com/460x400/111/9c1825?text=NO+IMAGE'">
+
+    <!-- КОМПАКТНЫЕ СТАТЫ — КАК В ОФИЦИАЛЬНОМ ПРИЛОЖЕНИИ -->
+    <div class="stats-compact">
+      <div class="stat-row">
+        <span class="stat-big">💥 ${model.stats.Attack || "-"}</span>
+        <span class="stat-big">🛡️ ${model.stats.Defense || "-"}</span>
+        <span class="stat-big">💪 ${model.stats.Strength || "-"}</span>
+        <span class="stat-big">👟 ${model.stats.Movement || "-"}</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-small">Willpower ${model.stats.Willpower || "-"}</span>
+        <span class="stat-small">Endurance ${model.stats.Endurance || "-"}</span>
+      </div>
     </div>
-    <div class="section-title">TRAITS</div>
-    <div class="traits-grid">
-      ${model.traits.map(t=>`<div class="trait" title="${getDesc?.(t)||"Нет описания"}">${t.toUpperCase()}</div>`).join("")}
-    </div>`;
+
+    <!-- ОРУЖИЕ — КЛИКАБЕЛЬНОЕ, ОТКРЫВАЕТ ОПИСАНИЕ -->
+    ${model.weapons?.length ? `
+      <div class="section-title">WEAPONS</div>
+      <div class="weapons-compact">
+        ${model.weapons.map(w => {
+          const name = w.split(" (")[0];
+          const clean = w.trim();
+          return `
+            <div class="weapon-line" onclick="showTraitDesc('${clean.replace(/'/g, "\\'")}')">
+              <span class="weapon-name">${name}</span>
+              <span class="weapon-props">${w.includes("(") ? w.match(/\(([^)]+)\)/)[1] : ""}</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    ` : ''}
+
+    <!-- ТРЕЙТЫ — ТОЖЕ КЛИКАБЕЛЬНЫЕ -->
+    ${model.traits?.length ? `
+      <div class="section-title">TRAITS</div>
+      <div class="traits-compact">
+        ${model.traits.map(t => `
+          <div class="trait-chip" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">
+            ${t}
+          </div>
+        `).join("")}
+      </div>
+    ` : ''}
+  `;
+
   document.getElementById("fullCard").classList.add("active");
 }
 function closeFullCard() { document.getElementById("fullCard").classList.remove("active"); }
+
+function showTraitDesc(keyword) {
+  if (!window.compendium || !compendium[keyword]) {
+    alert("Описание не найдено: " + keyword);
+    return;
+  }
+  const desc = compendium[keyword].replace(/\n/g, "<br>");
+  document.getElementById("fullCardContent").insertAdjacentHTML("beforeend", `
+    <div class="trait-popup" onclick="this.remove()">
+      <div class="trait-popup-content">
+        <div class="trait-popup-title">${keyword}</div>
+        <div class="trait-popup-text">${desc}</div>
+      </div>
+    </div>
+  `);
+}
 
 // COMPENDIUM — ОТКРЫТИЕ И ПОИСК С КРАСИВЫМ РАЗДЕЛЕНИЕМ
 function openCompendium() {

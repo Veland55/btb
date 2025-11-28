@@ -1,16 +1,23 @@
 const models = [
-//BATMAN
-    {
-    "name": "Batman (Rebirth)",
-    "rep": 105,
-    "funding": 350,
-    "role": "Leader",
+  {
+    "name": "Batman (Multiverse)",
+    "rep": 150,
+    "funding": 0,
+    "rank": "Leader",
     "faction": "Batman",
-    "img": "https://i.ibb.co/6PBRBCH/batman-rebirth.png",
-    "stats": { "mv": 6, "cc": 6, "rs": 5, "st": 4, "wp": 5, "en": 14 },
-    "traits": ["Detective", "Martial Artist", "Gadgeteer", "Inspire", "Batcape"],
+    "img": "https://i.ibb.co/6PBRBCH/batman-rebirth.png",  // ИСПРАВЛЕНО: была сломана ссылка!
+    "stats": { 
+      "Attack": 5, 
+      "Defense": 5, 
+      "Strength": "3+", 
+      "Movement": 10, 
+      "Willpower": 8, 
+      "Endurance": 8 
+    },
+    "traits": ["Bat Cape", "Bat-Armor MKI", "Close Combat Master", "Martial Artist", "Sneak Attack", "Bat Family", "Batclaw", "Detective", "Reinforced Gloves"],
     "weapons": ["Batarang (Ranged, Ammo 3)", "Grapnel Gun", "Smoke Grenade", "Unarmed"]
   }
+  // добавляй остальные модели сюда
 ];
 
 const traitDescriptions = {
