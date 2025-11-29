@@ -57,7 +57,7 @@
 <div id="compendiumModal" class="compendium-modal">
   <div class="compendium-header">
     <button onclick="closeCompendium()" class="back-btn">НАЗАД</button>
-    <h2>COMPENDIUM</h2>
+    <h2>COMPENDIUM <span style="font-size:14px;color:#aaa;">v1.4</span></h2>
   </div>
 <div class="search-container compendium-search-wrapper">
   <div class="compendium-search">
@@ -161,11 +161,11 @@ function showFullCard(model) {
         <div class="official-stats">
           <div class="official-stat willpower">
             <span class="official-value">${model.stats.Willpower || "-"}</span>
-            <span class="official-label">WILLPOWER</span>
+            <span class="official-label">🧠</span>
           </div>
           <div class="official-stat endurance">
             <span class="official-value">${model.stats.Endurance || "-"}</span>
-            <span class="official-label">ENDURANCE</span>
+            <span class="official-label">❤️</span>
           </div>
           <div class="official-stat attack">
             <span class="official-value">${model.stats.Attack || "-"}</span>
