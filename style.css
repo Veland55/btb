@@ -256,3 +256,10 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   background: #fff;
   transform: scale(1.05);
 }
+
+.stat-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
