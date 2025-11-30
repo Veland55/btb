@@ -263,3 +263,110 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   vertical-align: middle;
   margin-left: 6px;
 }
+
+
+
+/* ============= НОВЫЙ КАНОНИЧНЫЙ СТИЛЬ СТАТОВ (BMG 3rd Ed + Compendium) ============= */
+
+/* Общая сетка статов: 2 колонки */
+.official-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 0 10px;
+  align-content: start;
+}
+
+/* === ВЕРТИКАЛЬНЫЕ: Willpower и Endurance (первые две) === */
+.official-stat.willpower,
+.official-stat.endurance {
+  grid-column: 1 / -1; /* растягиваем на всю ширину */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #000;
+  color: #ffd700;
+  padding: 24px 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  min-height: 100px;
+}
+
+/* Крупная цифра по центру */
+.official-stat.willpower .official-value,
+.official-stat.endurance .official-value {
+  font-size: 78px;
+  font-weight: bold;
+  line-height: 1;
+  z-index: 2;
+}
+
+/* Вертикальная надпись слева (как в Compendium) */
+.official-stat.willpower .official-label,
+.official-stat.endurance .official-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #ffd700;
+  text-transform: uppercase;
+  opacity: 0.95;
+  white-space: nowrap;
+}
+
+/* === ГОРИЗОНТАЛЬНЫЕ: Attack, Defense, Strength, Movement === */
+.official-stat.attack,
+.official-stat.defense,
+.official-stat.strength,
+.official-stat.movement {
+  background: #000;
+  color: #ffd700;
+  padding: 18px 14px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.official-stat.attack .official-value,
+.official-stat.defense .official-value,
+.official-stat.strength .official-value,
+.official-stat.movement .official-value {
+  font-size: 56px;
+  font-weight: bold;
+  display: block;
+  line-height: 1;
+}
+
+.official-stat.attack .official-label,
+.official-stat.defense .official-label,
+.official-stat.strength .official-label,
+.official-stat.movement .official-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  margin-top: 6px;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 380px) {
+  .official-stat.willpower .official-value,
+  .official-stat.endurance .official-value {
+    font-size: 68px;
+  }
+  .official-stat.attack .official-value,
+  .official-stat.defense .official-value,
+  .official-stat.strength .official-value,
+  .official-stat.movement .official-value {
+    font-size: 48px;
+  }
+  .official-stat.willpower .official-label,
+  .official-stat.endurance .official-label {
+    font-size: 13px;
+    left: 12px;
+  }
+}
