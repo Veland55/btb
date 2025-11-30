@@ -353,7 +353,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 }
 
 /* Адаптив для маленьких экранов */
-@media (max-width: 380px) {
+@media (max-width: 250px) {
   .official-stat.willpower .official-value,
   .official-stat.endurance .official-value {
     font-size: 68px;
