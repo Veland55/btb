@@ -335,7 +335,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-stat.defense .official-value,
 .official-stat.strength .official-value,
 .official-stat.movement .official-value {
-  font-size: 56px;
+  font-size: 32px;
   font-weight: bold;
   display: block;
   line-height: 1;
@@ -356,13 +356,13 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 @media (max-width: 250px) {
   .official-stat.willpower .official-value,
   .official-stat.endurance .official-value {
-    font-size: 68px;
+    font-size: 32px;
   }
   .official-stat.attack .official-value,
   .official-stat.defense .official-value,
   .official-stat.strength .official-value,
   .official-stat.movement .official-value {
-    font-size: 48px;
+    font-size: 26px;
   }
   .official-stat.willpower .official-label,
   .official-stat.endurance .official-label {
