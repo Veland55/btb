@@ -4,7 +4,7 @@ const models = [
     "rep": 150,
     "funding": 0,
     "rank": "Leader",
-    "faction": "Batman",
+    "faction": "Bat Family",
     "img": "https://veland55.github.io/btb/img/Batman_Multiverse.png",  // ИСПРАВЛЕНО: была сломана ссылка!
     "stats": { 
       "Attack": 5, 
@@ -23,7 +23,7 @@ const models = [
   "rep": 150,
   "funding": 0,
   "rank": "Leader",
-  "faction": "Batman",
+  "faction": "Bat Family",
   "img": "https://veland55.github.io/btb/img/Batman_DarkKnightRises.png",
   "stats": {
     "Attack": 4,
@@ -54,7 +54,7 @@ const models = [
   "rep": 45,
   "funding": 0,
   "rank": "Sidekick",
-  "faction": "Batman",
+  "faction": "Bat Family",
   "img": "https://veland55.github.io/btb/img/Harley_Quinn_ArkhamKnight.png",
   "stats": {
     "Attack": 4,
@@ -85,7 +85,7 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": "Sidekick",
-    "faction": "Batman",
+    "faction": "Bat Family",
     "img": "https://veland55.github.io/btb/img/BeastBoy_Human.png",
     "stats": {
       "Attack": 3,
@@ -327,9 +327,7 @@ const models = [
       "Arrogant",
       "Precise Blow"
     ],
-    "weapons": [
-      "Martial Artist"
-    ]
+    "weapons": []
   },
   {
     "name": "Spikes Plant",
@@ -605,6 +603,179 @@ const models = [
       "Bite"
     ]
   },
+  {
+    "name": "Dove (Dawn Granger)",
+    "rep": 30,
+    "funding": 200,
+    "rank": "Sidekick",
+    "faction": ["Birds of Prey", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Dove_DawnGranger.png",
+    "stats": {
+      "Attack": 6,
+      "Defense": 4,
+      "Strength": 3,
+      "Movement": 4,
+      "Willpower": 10,
+      "Endurance": 3
+    },
+    "traits": [
+      "Medic (2) (HAWK)",
+      "Teamwork (HAWK)",
+      "Light Radiance",
+      "Agent of Order"
+    ],
+    "weapons": [
+      "Light Projection (Beam / Range / Throwing / Healing)"
+    ]
+  },
+  {
+    "name": "Hawk",
+    "rep": 30,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": ["Birds of Prey", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Hawk.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 6,
+      "Strength": 3,
+      "Movement": 3,
+      "Willpower": 10,
+      "Endurance": 3
+    },
+    "traits": [
+      "Reinforced Gloves",
+      "Hardened Gloves",
+      "True Love (Dove)",
+      "Teamwork (Dove)",
+      "Sturdy",
+      "Agent of Chaos"
+    ],
+    "weapons": [
+      "Hawk Gloves"
+    ]
+  },
+  {
+    "name": "Tyrant",
+    "rep": 40,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": ["Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Tyrant.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 7,
+      "Strength": 4,
+      "Movement": 2,
+      "Willpower": 6,
+      "Endurance": 3
+    },
+    "traits": [
+      "Hardened",
+      "Obstinate",
+      "Large",
+      "Self-Discipline"
+    ],
+    "weapons": [
+      "Improved Weapon (Bleed / Handy)"
+    ]
+  },
+  {
+    "name": "Oracle (Barbara Gordon)",
+    "rep": 50,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": ["Bat Family", "Birds of Prey", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Oracle_BarbaraGordon.png",
+    "stats": {
+      "Attack": 7,
+      "Defense": 4,
+      "Strength": 3,
+      "Movement": 3,
+      "Willpower": 8,
+      "Endurance": 3
+    },
+    "traits": [
+      "Hacking",
+      "Intel Support (4)",
+      "Informer",
+      "Scheming (3)"
+    ],
+    "weapons": [
+      "Informatic Assault (Stealth / Limited Attack)"
+    ]
+  },
+  {
+    "name": "Katana (Rebirth)",
+    "rep": 75,
+    "funding": 100,
+    "rank": "Free Agent",
+    "faction": ["GCPD", "Suicide Squad", "Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Katana_Rebirth.png",
+    "stats": {
+      "Attack": 7,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 4,
+      "Willpower": 11,
+      "Endurance": 3
+    },
+    "traits": [
+      "Soultaker",
+      "Soul Voices",
+      "Stealth",
+      "Martial Artist",
+      "Fient",
+      "Precise Blow",
+      "Adaptable",
+      "Acrobat",
+      "Handy",
+      "Sharp",
+      "Light / Range / Throwing"
+    ],
+    "weapons": [
+      "Shurikens",
+      "Soultaker"
+    ]
+  },
+  {
+    "name": "Poison Ivy",
+    "rep": 93,
+    "funding": 0,
+    "rank": "Leader",
+    "faction": ["Birds of Prey", "Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/Poison_Ivy_Green.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Adaptable",
+      "Chlorokinesis",
+      "Control Pheromones",
+      "Elite Boss (Plants)",
+      "Green Web",
+      "Mortal Kiss",
+      "Poison Immunity",
+      "Pollution Hate",
+      "Protect Me!",
+      "Scientific",
+      "Mechanical",
+      "Protective",
+      "Reach (2)",
+      "Acid / Explosion / Mechanical / S",
+      "Range / Poison"
+    ],
+    "weapons": [
+      "Plants",
+      "Spores"
+    ]
+  },
+
 
 
 //CULTS
