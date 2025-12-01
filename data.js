@@ -144,8 +144,8 @@ const models = [
       "Vigilante's Work"
     ],
     "weapons": [
-      "Unarmed"
-    ]
+    {}
+  ]
   },
   {
     "name": "The Chief",
@@ -174,8 +174,14 @@ const models = [
       "Wheelchair"
     ],
     "weapons": [
-      "Hidden Gun (Firearm / Short Range)"
-    ]
+    {
+      "name": "Hidden Gun",
+      "damage": "•★", 
+      "rof": 2,
+      "ammo": 2,
+      "traits": "Firearm / S. Range"
+    }
+  ]
   },
   {
     "name": "Elasti-Girl",
@@ -202,7 +208,7 @@ const models = [
       "Undercover"
     ],
     "weapons": [
-      "Unarmed"
+    {}
     ]
   },
   {
@@ -227,9 +233,21 @@ const models = [
       "Sturdy"
     ],
     "weapons": [
-      "Lightning (Beam / Electric / M. Range)",
-      "Flamar Bots (Beam / S. Range / Throwing / Fire 1)"
-    ]
+    {
+      "name": "Lightning",
+      "damage": "•★", 
+      "rof": 3,
+      "ammo": "-",
+      "traits": "Beam / Electric / M. Range / Throwing"
+    },
+    {
+      "name": "Flame Bilts",
+      "damage": "•★", 
+      "rof": 2,
+      "ammo": "-",
+      "traits": "Beam / Fire (2) / S. Range / Throwing"
+    }
+  ]
   },
   {
     "name": "Negative Man",
@@ -2079,7 +2097,7 @@ const traitDescriptions = {
 	"360° Strike": "When this model performs a Melee Attack this round, it must be performed against all the models available to be a target (friendly and enemy). During this attack, no one model can make Efforts. Roll only once, and compare with all the targets results. Friendly models cannot make defense rolls against these attacks, but they cannot be the only models affected by it (there must be at least one enemy to target).",
 
    //WEAPON
-    "Accurate": "An attack made by this weapon gains +1 to its attack dice rolls.",
+  "Accurate": "An attack made by this weapon gains +1 to its attack dice rolls.",
 	"Acid": "When this weapon damages a target, that model reduces its Attacks and Defense skills by -1 until the end of the round (this effect does not stack if the weapon or another weapon with the same rule damages the target several times). In addition, these weapons ignore the Light Armor trait.",
 	"Aim": "A model cannot move in the same activation that it uses this weapon.",
 	"Anti-Tank": "This weapon ignores the penalty of Light, Medium and Heavy Armor traits, and may re-roll failed Strength die rolls against models with those traits. Furthermore, Anti-Tank weapons ignore the Bulletproof Vest, Hardened and Kevlar Vest traits.",
@@ -2106,7 +2124,7 @@ const traitDescriptions = {
 	"Magic": "If a weapon with this rule hits a model with the Invulnerability, Incorporeal and/or Tough Skin traits, that model loses those traits (if they possess them) until the end of the round.",
 	"Mechanical": "The Strength die when using this weapon always hits on a result of 3+. Ignore the wielder’s Strength for the Damage roll.",
 	"Medium Range": "The effective range of this weapon is 16”.",
-    "M. Range": "The effective range of this weapon is 16”.",
+  "M. Range": "The effective range of this weapon is 16”.",
 	"One Use": "This weapon can only be used once per game.",
 	"Overwhelming": "The target of an attack made by this weapon suffers -1 to its Defense rolls.",
 	"Protective": "These weapons award a +1 to the wielder’s defense dice rolls. Furthermore, the wielder benefits from the Cover rule at all times. This is a passive ability, and may be used even if the model used a different weapon during its activation. If the model also benefits from the Cover rule by other means, then the bonus is doubled. Once per round a friendly model in contact can benefit from this rule too.",
@@ -2117,7 +2135,7 @@ const traitDescriptions = {
 	"Scope": "While performing a Ranged Attack with this weapon, the firer can see at any distance, limited only by LoS. Targets cannot benefit from Cover against attacks with this weapon.",
 	"Sharp": "When using these weapons, the wielder may reroll failed Strength die rolls.",
 	"Short Range": "The effective range of this weapon is 8”.",
-    "S. Range": "The effective range of this weapon is 8”.",
+  "S. Range": "The effective range of this weapon is 8”.",
 	"Silencer": "The target of an attack made by this weapon cannot use the Dodging rule against it.",
 	"Sonic": "When this weapon hits, the target model suffers -1 to its Special skill until the end of the round.",
 	"Throwing": "This ranged weapon don’t lose dice for moving before attacking.",
