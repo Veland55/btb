@@ -1,7 +1,6 @@
 const models = [
   {
     "name": "Batman (Multiverse)",
-    "real-name": "Bruce Wayne",
     "rep": 150,
     "funding": 0,
     "rank": "Leader",
@@ -21,7 +20,6 @@ const models = [
 
   {
   "name": "Batman (Dark Knight Rises)",
-  "real-name": "Bruce Wayne",
   "rep": 150,
   "funding": 0,
   "rank": "Leader",
@@ -47,10 +45,902 @@ const models = [
     "Master of Stealth"
   ],
   "weapons": [
-    "Batarang (Light/S. Range/Throwing)",
-    "Unarmed"
+    "Batarang (Light/S. Range/Throwing)"
   ]
-}
+},
+
+{
+  "name": "Harley Quinn (Arkham Knight)",
+  "rep": 45,
+  "funding": 0,
+  "rank": "Sidekick",
+  "faction": "Batman",
+  "img": "https://veland55.github.io/btb/img/Harley_Quinn_ArkhamKnight.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": 5,
+    "Movement": 13,
+    "Willpower": 7,
+    "Endurance": 7
+  },
+  "traits": [
+    "Bluff",
+    "Discourage",
+    "Mobster",
+    "Unpredictable",
+    "Acrobat",
+    "Escape Artist",
+    "Play Nice!"
+  ],
+  "weapons": [
+    "Reinforced Bat (Handy/Heavy)",
+    "SMG (Firearm/S. Range)"
+  ]
+},
+
+//DOOM PATROL
+{
+    "name": "Beast Boy - Human (Teen Titans)",
+    "rep": 50,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": "Batman",
+    "img": "https://veland55.github.io/btb/img/BeastBoy_Human.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": 5,
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Shapeshifting",
+      "Shapeshifting Human Progress",
+      "Teen Titans",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+  {
+    "name": "The Chief",
+    "rep": 70,
+    "funding": 200,
+    "rank": "Leader",
+    "faction": ["Doom Patrol", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/The_Chief.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": 4,
+      "Movement": 6,
+      "Willpower": 8,
+      "Endurance": 6
+    },
+    "traits": [
+      "Genius",
+      "Leadership",
+      "Medic",
+      "Mastermind",
+      "Protect Me!",
+      "Psycho",
+      "Scientific",
+      "Strategist",
+      "Wheelchair"
+    ],
+    "weapons": [
+      "Hidden Gun (Firearm / Short Range)"
+    ]
+  },
+  {
+    "name": "Elasti-Girl",
+    "rep": 61,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": ["Doom Patrol", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/ElastiGirl.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Extended Limbs",
+      "Performance",
+      "Regeneration",
+      "Resident",
+      "Stretching",
+      "True Love (Beast Boy)",
+      "Undercover"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+  {
+    "name": "Crazy Jane",
+    "rep": 55,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": ["Doom Patrol", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Crazy_Jane.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": 5,
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bipolar (Mental Disorder)",
+      "Personality",
+      "Self-Discipline",
+      "Sturdy"
+    ],
+    "weapons": [
+      "Lightning (Beam / Electric / M. Range)",
+      "Flamar Bots (Beam / S. Range / Throwing / Fire 1)"
+    ]
+  },
+  {
+    "name": "Negative Man",
+    "rep": 79,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": ["Doom Patrol", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Negative_Man.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": 4,
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bluff",
+      "Disappearing",
+      "Fly",
+      "Obstinate",
+      "Radioactive Soul-Self"
+    ],
+    "weapons": [
+      "Minor Explosion (Beam / Explosive / S. Range)"
+    ]
+  },
+  {
+    "name": "Robotman",
+    "rep": 85,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": ["Doom Patrol", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Robotman.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": 8,
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Cybernetic",
+      "Desensitized",
+      "Medium Armor",
+      "Order",
+      "Steel Hands",
+      "True Love (Crazy Jane)",
+      "Unstoppable"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+
+//CULTS
+{
+    "name": "Kobra",
+    "rep": 122,
+    "funding": 0,
+    "rank": "Leader",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Kobra.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 8
+    },
+    "traits": [
+      "Grand Strategist",
+      "Immortal",
+      "Martial Artist",
+      "Master Fighter",
+      "Reinforced Gloves",
+      "Void Priest",
+      "Kobra Armor",
+      "Kobra Cultist",
+      "Order",
+      "Deadliest Man on Earth"
+    ],
+    "weapons": [
+      "Hidden Sword (Sharp)"
+    ]
+  },
+  {
+    "name": "Kobra Bestowed",
+    "rep": 35,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Kobra_Bestowed.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 2,
+      "Strength": 5,
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Cobras",
+      "Caustic Poison",
+      "Kobra Cultist",
+      "Void Priest",
+      "Poisoned Senses"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+
+  {
+    "name": "Lady Eve",
+    "rep": 66,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Lady_Eve.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": 4,
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Kobra Sword",
+      "Kobra Gas",
+      "Kobra Armor",
+      "Kobra Cultist",
+      "Void Priest",
+      "Serpent Follower"
+    ],
+    "weapons": [
+      "Kobra Sword (Sharp / Penetrating 1)",
+      "Expansive Gas (Slow 4)"
+    ]
+  },
+
+  {
+    "name": "The Nagas",
+    "rep": 38,
+    "funding": 300,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/The_Nagas.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Hidden",
+      "Kobra Cultist",
+      "Radio",
+      "Veteran"
+    ],
+    "weapons": [
+      "Automatic Gun (Range / Firearm / Light)",
+      "Poisoned Knife (Sharp / Crit Paralyze / Poison)"
+    ]
+  },
+  {
+    "name": "Kobra Hybrid",
+    "rep": 43,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Kobra_Hybrid.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": 5,
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Large",
+      "Kobra Cultist",
+      "Safe Hands",
+      "Sturdy"
+    ],
+    "weapons": [
+      "Hybrid Strike (Crit Paralyze / Poison)"
+    ]
+  },
+  {
+    "name": "Lancehead Captain",
+    "rep": 34,
+    "funding": 400,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Lancehead_Captain.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Kobra Cultist",
+      "Take Cover!"
+    ],
+    "weapons": [
+      "Custom SMG (Assault / Firearm / M. Range)"
+    ]
+  },
+  {
+    "name": "Lancehead Soldier",
+    "rep": 23,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Lancehead_Soldier.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": 5,
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Kobra Cultist",
+      "Minion (3)"
+    ],
+    "weapons": [
+      "Sword (Sharp)"
+    ]
+  },
+  {
+    "name": "Cobra Swarm",
+    "rep": 0,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Cobra_Swarm.png",
+    "stats": {
+      "Attack": 1,
+      "Defense": 6,
+      "Strength": 1,
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 1
+    },
+    "traits": [
+      "Animal",
+      "Poison Master",
+      "Swarm",
+      "Simple Mind"
+    ],
+    "weapons": [
+      "Poisoned Fangs (Caustic / Poison / Slow 1)"
+    ]
+  },
+  {
+    "name": "Lancehead 1",
+    "rep": 14,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Lancehead_1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 5,
+      "Strength": 5,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Kobra Cultist",
+      "Minion (3)"
+    ],
+    "weapons": [
+      "Knife (Sharp)"
+    ]
+  },
+  {
+    "name": "Lancehead 2",
+    "rep": 20,
+    "funding": 350,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Lancehead_2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": 5,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Kobra Cultist",
+      "Minion (3)"
+    ],
+    "weapons": [
+      "Carbine (Assault / Firearm / M. Range)"
+    ]
+  },
+  {
+    "name": "Naga Hazard Trooper 1",
+    "rep": 43,
+    "funding": 500,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Naga_Hazard_Trooper_1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 6,
+      "Strength": 6,
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Follow Me!",
+      "Kobra Cultist",
+      "Naga Hazard Armor"
+    ],
+    "weapons": [
+      "Custom SMG + Attached Grenade Launcher (Assault / Firearm / M. Range)",
+      "Grenade Launcher (Explosive / Firearm / Grenade / M. Range)"
+    ]
+  },
+  {
+    "name": "Naga Hazard Trooper 2",
+    "rep": 40,
+    "funding": 350,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Naga_Hazard_Trooper_2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 6,
+      "Strength": 6,
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Discharge",
+      "Hazard Armor",
+      "Kobra Cultist",
+      "Kobra Flamethrower"
+    ],
+    "weapons": [
+      "Flamethrower (Caustic / Expansive / Mechanical / Fire 21)"
+    ]
+  },
+  {
+    "name": "Raptor",
+    "rep": 60,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Raptor.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Batclaw",
+      "Desensitized",
+      "Street Fighter",
+      "Sturdy",
+      "Thief",
+      "Kobra Cultist"
+    ],
+    "weapons": [
+      "Raptor's Claw (Sharp / Penetrating 1)",
+      "Raptor's Gas (Beam / Expansive / Gas / Debilitate 2)"
+    ]
+  },
+  {
+    "name": "Deacon Blackfire",
+    "rep": 100,
+    "funding": 0,
+    "rank": "Leader",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Deacon_Blackfire.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 8
+    },
+    "traits": [
+      "Aggressive Preach",
+      "Blackfire Cultist",
+      "Blackfire Totem",
+      "Death Pack",
+      "Don't Mind Me",
+      "Exalt",
+      "Good",
+      "Immortal",
+      "Martyrdom",
+      "Reinforced Gloves",
+      "Steal / Energizing 2 / Hypnotize",
+      "The Good Command"
+    ],
+    "weapons": [
+      "Combat Machete (Sharp)",
+      "Drugs"
+    ]
+  },
+  {
+    "name": "Jake",
+    "rep": 50,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Jake.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": 5,
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Fervent Follower",
+      "Lieutenant (Deacon Blackfire)",
+      "Protect Me!",
+      "Serve Well",
+      "Undercity Command",
+      "Undercity Knowledge"
+    ],
+    "weapons": [
+      "SMG (Firearm / S. Range)",
+      "Drugs (Steal / Energizing 2 / Hypnotize)"
+    ]
+  },
+  {
+    "name": "Young Woman",
+    "rep": 45,
+    "funding": 0,
+    "rank": "Sidekick",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Young_Woman.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 6,
+      "Strength": 2,
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Protect Me!",
+      "Religious Vengeance",
+      "Terrible Revelation"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+  {
+    "name": "Ratface",
+    "rep": 35,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Ratface.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": 5,
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Fervent Follower",
+      "Lord of the Sewers",
+      "Punishment",
+      "Stealth",
+      "Served Well"
+    ],
+    "weapons": [
+      "Knife (Sharp)"
+    ]
+  },
+  {
+    "name": "Underworlder 1",
+    "rep": 14,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Go My Little Birds"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+  {
+    "name": "Underworlder 2",
+    "rep": 16,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Meow"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+  {
+    "name": "Underworlder 3",
+    "rep": 11,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Horde"
+    ],
+    "weapons": [
+      "Knife (Sharp)"
+    ]
+  },
+  {
+    "name": "Underworlder 4",
+    "rep": 10,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_4.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Horde"
+    ],
+    "weapons": [
+      "Broken Glass (One-Use / Sharp)"
+    ]
+  },
+  {
+    "name": "Underworlder 5",
+    "rep": 11,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_5.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Horde"
+    ],
+    "weapons": [
+      "Tube (Handy / Heavy)"
+    ]
+  },
+  {
+    "name": "Underworlder 6",
+    "rep": 10,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_6.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Don't Mind Me",
+      "Horde"
+    ],
+    "weapons": [
+      "Grab (Enervating 1)"
+    ]
+  },
+  {
+    "name": "Underworlder Vagon 1",
+    "rep": 22,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_Vagon_1.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 6,
+      "Strength": 6,
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Charge",
+      "Death Pack",
+      "Don't Mind Me",
+      "Inertia",
+      "Junk Hoarder"
+    ],
+    "weapons": [
+      "Unarmed"
+    ]
+  },
+  {
+    "name": "Underworlder Vagon 2",
+    "rep": 26,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Underworlder_Vagon_2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 6,
+      "Strength": 5,
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Charge",
+      "Death Pack",
+      "Don't Mind Me",
+      "Inertia",
+      "Light Armor"
+    ],
+    "weapons": [
+      "Slap and Slash (Handy / Heavy / Blunt 3 / Devastating)"
+    ]
+  },
+  {
+    "name": "Batman (The Cult)",
+    "rep": 70,
+    "funding": 0,
+    "rank": "Free Agent",
+    "faction": "Cults",
+    "img": "https://veland55.github.io/btb/img/Batman_TheCult.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bat Cape",
+      "Blackfire Cultist",
+      "Controlled by Drugs",
+      "Detective",
+      "Hidden",
+      "I See The Light",
+      "Master of Stealth",
+      "Reinforced Gloves",
+      "Sneak Attack",
+      "Sturdy",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      "Batarangs (Light / S. Range / Throwing)"
+    ]
+  }
+
   // добавляй остальные модели сюда
 ];
 

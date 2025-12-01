@@ -3,10 +3,20 @@ let currentFaction = 'all';
 
 function render() {
   const search = (document.getElementById('search')?.value || '').toLowerCase();
-  const filtered = models.filter(m =>
-    (currentFaction === 'all' || m.faction === currentFaction || (currentFaction === 'Free Agent' && m.role.includes('Free'))) &&
-    m.name.toLowerCase().includes(search)
-  );
+
+  const filtered = models.filter(m => {
+    // === ПОДДЕРЖКА МАССИВА factions ===
+    const modelFactions = Array.isArray(m.factions) ? m.factions : 
+                          (typeof m.faction === 'string' ? [m.faction] : []);
+
+    const matchesFaction = currentFaction === 'all' ||
+      modelFactions.includes(currentFaction) ||
+      (currentFaction === 'Free Agent' && m.role?.includes('Free'));
+
+    const matchesSearch = m.name.toLowerCase().includes(search);
+
+    return matchesFaction && matchesSearch;
+  });
 
   document.getElementById('models').innerHTML = filtered.map(m => `
     <div class="card ${crew.some(c => c.name === m.name) ? 'selected' : ''}" onclick="showDetails('${m.name}')">
@@ -26,16 +36,20 @@ function showDetails(name) {
   const m = models.find(x => x.name === name);
   if (!m) return;
 
+  // === Показываем ВСЕ фракции в деталях ===
+  const factionsArray = Array.isArray(m.factions) ? m.factions : 
+                        (typeof m.faction === 'string' ? [m.faction] : ['—']);
+  const factionsDisplay = factionsArray.join(' • ');
+
   document.getElementById('modal-body').innerHTML = `
     <div class="card-full">
       <img src="${m.img}" class="card-img" onerror="this.src='https://img.icons8.com/fluency/192/batman-new.png'">
       <h2>${m.name}</h2>
-      <div class="role">${m.role} • ${m.faction}</div>
+      <div class="role">${m.role} • ${factionsDisplay}</div>
       <div class="rep-fund">
         <span class="rep">Reputation: <strong>${m.rep}</strong></span>
         <span class="fund">$${m.funding}</span>
       </div>
-
       <div class="stats-grid">
         <div class="stat-icon clickable" onclick="showInfo('Movement','Количество дюймов движения')"><span>MV</span><strong>${m.stats.mv}</strong></div>
         <div class="stat-icon clickable" onclick="showInfo('Close Combat','Сила в ближнем бою')"><span>CC</span><strong>${m.stats.cc}</strong></div>
@@ -44,30 +58,27 @@ function showDetails(name) {
         <div class="stat-icon clickable" onclick="showInfo('Willpower','Сила воли')"><span>WP</span><strong>${m.stats.wp}</strong></div>
         <div class="stat-icon clickable" onclick="showInfo('Endurance','Количество урона, которое выдержит модель')"><span>EN</span><strong>${m.stats.en}</strong></div>
       </div>
-
       <div class="section">
         <h3>Traits</h3>
         <div class="traits-list">
           ${m.traits.map(t => `<div class="trait-chip clickable" onclick="showInfo('${t}', 'Описание скоро будет добавлено')">${t}</div>`).join('')}
         </div>
       </div>
-
       <div class="section">
         <h3>Weapons</h3>
         <div class="weapons-list">
           ${m.weapons.map(w => `<div class="weapon-chip">${w}</div>`).join('')}
         </div>
       </div>
-
       <button class="add-btn" onclick="toggle('${m.name}'); closeModal(); render();">
         ${crew.some(c => c.name === m.name) ? 'Убрать из отряда' : 'Добавить в отряд'}
       </button>
     </div>
   `;
-
   document.getElementById('modal').style.display = 'block';
 }
 
+// Остальные функции без изменений
 function closeModal() {
   document.getElementById('modal').style.display = 'none';
 }
@@ -117,14 +128,12 @@ function showInfo(title, text) {
   document.getElementById('info-overlay').style.display = 'flex';
 }
 
+// Остальные функции (compendium, вкладки и т.д.) — без изменений
 function openCompendium() {
   document.querySelector('.search').style.display = 'none';
   document.getElementById('modelsGrid').style.display = 'none';
   document.getElementById('compendiumScreen').style.display = 'block';
-
-  // Убираем активность с фракций
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-
   renderCompendium();
   document.getElementById('compendiumSearch').focus();
 }
@@ -135,11 +144,9 @@ function clearCompendiumSearch() {
   document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
 }
 
-// Показываем/скрываем крестик при вводе
 document.getElementById("compendiumSearch").oninput = function() {
   const hasText = this.value.length > 0;
   document.querySelector(".clear-search").style.display = hasText ? "flex" : "none";
-  
   const q = this.value.toLowerCase();
   if (!q) {
     document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
@@ -160,28 +167,21 @@ document.getElementById("compendiumSearch").oninput = function() {
   document.getElementById("compendiumList").innerHTML = html || "<div style='text-align:center;color:#777;padding:100px;font-size:18px;'>Ничего не найдено</div>";
 };
 
-// Модифицируем все вкладки фракций, чтобы они закрывали компендиум
 document.querySelectorAll('.tab').forEach(tab => {
   const oldOnclick = tab.onclick || (() => {});
   tab.onclick = function() {
-    // Закрываем компендиум
     document.getElementById('compendiumScreen').style.display = 'none';
     document.querySelector('.search').style.display = 'block';
     document.getElementById('modelsGrid').style.display = 'grid';
-    document.getElementById('modelsGrid').innerHTML = ''; // чистим от trait-card
-
-    // Возвращаем нормальную сетку
+    document.getElementById('modelsGrid').innerHTML = '';
     const grid = document.getElementById('modelsGrid');
     grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(160px,1fr))';
     grid.style.gap = '15px';
     grid.style.padding = '15px';
-
-    // Выполняем старое поведение вкладки
     oldOnclick.call(this);
   };
 });
 
-// Вкладки
 document.querySelectorAll('.tab').forEach(tab => {
   tab.onclick = () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -191,14 +191,11 @@ document.querySelectorAll('.tab').forEach(tab => {
   };
 });
 
-// Поиск
 document.getElementById('search').oninput = render;
 
-// Telegram
 if (window.Telegram?.WebApp) {
   Telegram.WebApp.ready();
   Telegram.WebApp.expand();
 }
 
-// Старт
 render();

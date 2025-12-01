@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <!-- ТОП-БАР -->
 <div class="top-bar">
   <div class="top-bar-content">
@@ -22,7 +21,6 @@
     ОТРЯД: <span id="crewCount">0</span> | REP: <span id="totalRep">0</span> | $<span id="totalFunding">0</span>
   </div>
 </div>
-
 <!-- ВКЛАДКИ ФРАКЦИЙ -->
 <div class="tabs-container">
   <div class="tabs">
@@ -34,17 +32,16 @@
     <button class="tab" data-faction="GCPD">GCPD</button>
     <button class="tab" data-faction="Two-Face">TWO-FACE</button>
     <button class="tab" data-faction="Court">COURT</button>
+    <button class="tab" data-faction="Cults">Cults</button>
+    <button class="tab" data-faction="Doom Patrol">Doom Patrol</button>
   </div>
 </div>
-
 <!-- ПОИСК -->
 <div class="search-container">
   <input type="text" id="searchInput" placeholder="Поиск модели...">
 </div>
-
 <!-- СЕТКА МОДЕЛЕЙ -->
 <div class="models-grid" id="modelsGrid"></div>
-
 <!-- НИЖНЯЯ ПАНЕЛЬ -->
 <div class="crew-bar">
   <div class="crew-total">
@@ -52,7 +49,6 @@
   </div>
   <button onclick="clearCrew()" class="clear-btn">ОЧИСТИТЬ</button>
 </div>
-
 <!-- COMPENDIUM МОДАЛЬНЫЙ -->
 <div id="compendiumModal" class="compendium-modal">
   <div class="compendium-header">
@@ -70,20 +66,17 @@
 </div>
   <div id="compendiumList" class="compendium-content"></div>
 </div>
-
 <!-- ПОЛНАЯ КАРТОЧКА -->
 <div class="full-card" id="fullCard">
   <div class="close-full" onclick="closeFullCard()">X</div>
   <div class="full-inner" id="fullCardContent"></div>
 </div>
-
 <script src="data.js"></script>
 <script>
 let crew = [];
 let currentFaction = "Batman";
 let allCompendiumHTML = "";
 let compendiumKeys = [];
-
 // Инициализация
 window.addEventListener("load", () => {
   if (window.compendium) {
@@ -99,7 +92,6 @@ window.addEventListener("load", () => {
   renderMiniCards();
   updateCrewBar();
 });
-
 function isInCrew(m) { return crew.some(x => x._id === m._id); }
 function addToCrew(m) {
   crew = isInCrew(m) ? crew.filter(x => x._id !== m._id) : [...crew, m];
@@ -113,19 +105,39 @@ function updateCrewBar() {
   document.getElementById("totalRep").textContent = crew.reduce((a,m)=>a+(m.rep||0),0);
   document.getElementById("totalFunding").textContent = crew.reduce((a,m)=>a+(m.funding||0),0);
 }
-
+// === ИСПРАВЛЕННАЯ ФУНКЦИЯ: ПОДДЕРЖКА МАССИВА factions ===
 function renderMiniCards() {
   const grid = document.getElementById("modelsGrid");
   const search = document.getElementById("searchInput").value.toLowerCase();
   currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
   grid.innerHTML = "";
-  
+
   models
-    .filter(m => m.faction === currentFaction && m.name.toLowerCase().includes(search))
+    .filter(m => {
+      // ─────── НОВАЯ ЛОГИКА (работает со всеми вариантами) ───────
+      let modelFactions = [];
+
+      if (Array.isArray(m.faction)) {
+        modelFactions = m.faction;                            // уже массив
+      } else if (typeof m.faction === "string") {
+        // Разбиваем строку по любым разделителям: запятая, слэш, &, пробел + &
+        modelFactions = m.faction
+          .replace(/ *& */gi, ",")   // "Batman & Robin" → "Batman,Robin"
+          .replace(/ *\/ */g, ",")   // "Doom Patrol / GCPD" → "Doom Patrol,GCPD"
+          .split(",")
+          .map(s => s.trim())
+          .filter(Boolean);
+      }
+
+      const belongsToCurrentFaction = modelFactions.includes(currentFaction);
+      const matchesSearch = m.name.toLowerCase().includes(search);
+
+      return belongsToCurrentFaction && matchesSearch;
+    })
     .forEach(model => {
       const inCrew = isInCrew(model);
       const div = document.createElement("div");
-      div.className = `mini-card ${inCrew?"in-crew":""}`;
+      div.className = `mini-card ${inCrew ? "in-crew" : ""}`;
       div.innerHTML = `
         <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(models[${model._id}])">
           ${inCrew?"−":"+"}
@@ -140,23 +152,27 @@ function renderMiniCards() {
     });
 }
 
+// === ИСПРАВЛЕННАЯ ФУНКЦИЯ: ПОКАЗ ВСЕХ ФРАКЦИЙ В КАРТОЧКЕ ===
 function showFullCard(model) {
+  // Получаем все фракции как массив
+  const factionsArray = Array.isArray(model.faction) ? model.faction : 
+                        (typeof model.faction === 'string' ? [model.faction] : ['—']);
+  const factionsDisplay = factionsArray.join(' • ');
+
   document.getElementById("fullCardContent").innerHTML = `
     <!-- ЖЁЛТАЯ КАРТОЧКА КАК В ОФИЦИАЛЬНОМ ПРИЛОЖЕНИИ -->
     <div class="official-card">
       <!-- Заголовок -->
       <div class="official-header">
         <div class="official-name">${model.name.toUpperCase()}</div>
-        <div class="official-subtitle">${model.real-name} • ${model.rank || "Free Agent"} • ${model.rep} REP • $${model.funding || 0}</div>
+        <div class="official-subtitle">${model.real-name} • ${model.rank || "Free Agent"} • ${factionsDisplay} • ${model.rep} REP • $${model.funding || 0}</div>
       </div>
-
       <!-- Главный блок: фото + статы -->
       <div class="official-main">
         <!-- Фото модели (маленькое, слева) -->
         <div class="official-img-wrapper">
           <img src="${model.img}" class="official-img" onerror="this.src='https://via.placeholder.com/300x400/222/999?text=NO+IMG'">
         </div>
-
         <!-- Статы справа от фото -->
         <div class="official-stats">
           <div class="official-stat willpower">
@@ -168,32 +184,31 @@ function showFullCard(model) {
             <span class="official-label">❤️</span>
           </div>
         <div class="official-stat attack">
-            <span class="official-value">${model.stats.Attack || "-"}</span>
-            <span class="official-label">
-            <img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon">
-            </span>
+          <span class="official-value">${model.stats.Attack || "-"}</span>
+          <span class="official-label">
+          <img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon">
+          </span>
         </div>
         <div class="official-stat defense">
-            <span class="official-value">${model.stats.Defense || "-"}</span>
-            <span class="official-label">
-            <img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon">
-            </span>
+          <span class="official-value">${model.stats.Defense || "-"}</span>
+          <span class="official-label">
+          <img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon">
+          </span>
         </div>
         <div class="official-stat strength">
-            <span class="official-value">${model.stats.Strength || "-"}</span>
-            <span class="official-label">
-            <img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon">
-            </span>
+          <span class="official-value">${model.stats.Strength || "-"}</span>
+          <span class="official-label">
+          <img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon">
+          </span>
         </div>
         <div class="official-stat movement">
-            <span class="official-value">${model.stats.Movement || "-"}</span>
-            <span class="official-label">
-            <img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon">
-            </span>
+          <span class="official-value">${model.stats.Movement || "-"}</span>
+          <span class="official-label">
+          <img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon">
+          </span>
         </div>    
         </div>
       </div>
-
       <!-- Оружие -->
       ${model.weapons?.length ? `
         <div class="official-section">
@@ -205,7 +220,6 @@ function showFullCard(model) {
             </div>
           `).join("")}
         </div>` : ""}
-
       <!-- Трейты -->
       ${model.traits?.length ? `
         <div class="official-section yellow">
@@ -218,14 +232,11 @@ function showFullCard(model) {
         </div>` : ""}
     </div>
   `;
-
   document.getElementById("fullCard").classList.add("active");
 }
-
 function closeFullCard() {
   document.getElementById("fullCard").classList.remove("active");
 }
-
 // ОТКРЫТИЕ И ЗАКРЫТИЕ COMPENDIUM — ЭТО БЫЛО УДАЛЕНО!
 function openCompendium() {
   document.getElementById("compendiumModal").classList.add("active");
@@ -234,11 +245,9 @@ function openCompendium() {
   if (searchInput) searchInput.value = "";
   document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
 }
-
 function closeCompendium() {
   document.getElementById("compendiumModal").classList.remove("active");
 }
-
 // ПОИСК В COMPENDIUM — ТОЖЕ БЫЛ УДАЛЁН!
 document.getElementById("compendiumSearch").oninput = function() {
   const query = this.value.toLowerCase().trim();
@@ -246,7 +255,6 @@ document.getElementById("compendiumSearch").oninput = function() {
     document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
     return;
   }
-
   const filtered = compendiumKeys
     .filter(key => key.toLowerCase().includes(query))
     .map(key => `
@@ -255,11 +263,9 @@ document.getElementById("compendiumSearch").oninput = function() {
         <div class="comp-text">${(compendium[key]||"").replace(/\n/g,"<br>")}</div>
       </div>
     `).join("");
-
-  document.getElementById("compendiumList").innerHTML = filtered || 
+  document.getElementById("compendiumList").innerHTML = filtered ||
     "<div style='text-align:center;color:#888;padding:80px;font-size:18px;'>Ничего не найдено</div>";
 };
-
 // ВСПЛЫВАЮЩИЙ ПОПАП — КАК НА ТВОЁМ СКРИНШОТЕ COMPENDIUM
 function showTraitDesc(keyword) {
   if (!window.compendium || !compendium[keyword]) {
@@ -267,7 +273,6 @@ function showTraitDesc(keyword) {
     return;
   }
   const desc = (compendium[keyword]||"").replace(/\n/g, "<br>");
-
   const popup = document.createElement("div");
   popup.className = "trait-popup";
   popup.innerHTML = `
@@ -282,7 +287,6 @@ function showTraitDesc(keyword) {
   popup.onclick = e => { if (e.target === popup) popup.remove(); };
   document.body.appendChild(popup);
 }
-
 // Остальное (compendium, вкладки) — оставь как было, только добавь эти две строчки в конец:
 document.querySelectorAll(".tab").forEach(tab => {
   tab.onclick = () => {
