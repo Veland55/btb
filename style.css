@@ -235,6 +235,54 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   margin-top: 4px;
 }
 
+.official-weapon-first-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;  /* Промежутки между элементами */
+  font-weight: bold;
+  font-size: 16px;
+}
+.official-weapon-damage {
+  color: yellow;  /* Звёздочки/капли жёлтые, как на скриншоте */
+}
+.official-weapon-rof {
+  color: white;  /* Прицел белый */
+}
+.official-weapon-ammo {
+  color: white;  /* Пуля белая */
+}
+.official-weapon-traits {
+  font-size: 13px;
+  color: #ffd700;  /* Жёлтый, как props на скриншоте */
+  margin-top: 4px;
+}
+
+.official-weapon-traits-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 0 4px;
+}
+
+.weapon-trait-chip {
+  background: #ffd700;
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.weapon-trait-chip:hover {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+/* Если хотите кастомные иконки вместо ○ и •, добавьте img и замените в HTML на <img src="target.png"> */
+
 .official-traits-grid {
   display: flex;
   flex-wrap: wrap;

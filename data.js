@@ -1,22 +1,63 @@
 const models = [
-  {
-    "name": "Batman (Multiverse)",
-    "rep": 150,
-    "funding": 0,
-    "rank": "Leader",
-    "faction": "Bat Family",
-    "img": "https://veland55.github.io/btb/img/Batman_Multiverse.png",  // ИСПРАВЛЕНО: была сломана ссылка!
-    "stats": { 
-      "Attack": 5, 
-      "Defense": 5, 
-      "Strength": "3+", 
-      "Movement": 10, 
-      "Willpower": 8, 
-      "Endurance": 8 
-    },
-    "traits": ["Bat Cape", "Bat-Armor Mk I", "Close Combat Master", "Martial Artist", "Sneak Attack", "Bat Family", "Batclaw", "Detective", "Reinforced Gloves"],
-    "weapons": ["Batarang (Ranged, Ammo 3)", "Grapnel Gun", "Smoke Grenade", "Unarmed"]
+    {
+  "name": "Batwoman",
+  "rep": 111,
+  "funding": 0,
+  "rank": "Leader",
+  "faction": "Bat Family",
+  "img": "https://veland55.github.io/btb/img/Batwoman.png",  // Подставьте реальную ссылку
+  "stats": { 
+    "Attack": 4, 
+    "Defense": 4, 
+    "Strength": "4+", 
+    "Movement": 10, 
+    "Willpower": 8, 
+    "Endurance": 7 
   },
+  "traits": ["Air Combat", "Arrest", "Bat Cape", "Bat Family", "Bat-Armor Mk I", "Batclaw/Grapple Gun", "Criminology", "Interrogation", "Military Teamwork", "Night Vision", "Searcher", "Stealth"],
+  "weapons": [ 
+    {
+      "name": "BATARANG",
+      "damage": "★★",  // Два stun (★=stun, •=blood)
+      "rof": 2,        // Rate of Fire (кубы атаки)
+      "ammo": 2,       // Патроны
+      "traits": "M. Range / Remote Controlled / Throwing"
+    },
+    {
+      "name": "SHOCK GLOVES",
+      "damage": "★★",
+      "rof": "-",      // Нет RoF для melee
+      "ammo": "-",     // Нет ammo
+      "traits": "CRT (Stunned)"
+    }
+  ]
+},
+{
+  "name": "Batman (Multiverse)",
+  "rep": 150,
+  "funding": 0,
+  "rank": "Leader",
+  "faction": "Bat Family",
+  "img": "https://veland55.github.io/btb/img/Batman_Multiverse.png",
+  "stats": { 
+    "Attack": 5, 
+    "Defense": 5, 
+    "Strength": "3+", 
+    "Movement": 10, 
+    "Willpower": 8, 
+    "Endurance": 8 
+  },
+  "traits": ["Bat Cape", "Bat-Armor Mk I", "Close Combat Master", "Martial Artist", "Sneak Attack", "Bat Family", "Batclaw", "Detective", "Reinforced Gloves"],
+  "weapons": [
+    {
+      "name": "Batlings",
+      "damage": "★★", 
+      "rof": 2,
+      "ammo": 2,
+      "traits": "Light / S. Range / Throwing"
+    }
+  ]
+},
 
   {
   "name": "Batman (Dark Knight Rises)",

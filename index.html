@@ -162,67 +162,78 @@ function showFullCard(model) {
   const factionsDisplay = factionsArray.join(' • ');
 
   document.getElementById("fullCardContent").innerHTML = `
-    <!-- ЖЁЛТАЯ КАРТОЧКА КАК В ОФИЦИАЛЬНОМ ПРИЛОЖЕНИИ -->
     <div class="official-card">
       <!-- Заголовок -->
       <div class="official-header">
         <div class="official-name">${model.name.toUpperCase()}</div>
         <div class="official-subtitle">${model.rank || "Free Agent"} • ${factionsDisplay} • ${model.rep} REP • $${model.funding || 0}</div>
       </div>
-      <!-- Главный блок: фото + статы -->
+
+      <!-- Фото + статы -->
       <div class="official-main">
-        <!-- Фото модели (маленькое, слева) -->
         <div class="official-img-wrapper">
           <img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
         </div>
-        <!-- Статы справа от фото -->
         <div class="official-stats">
           <div class="official-stat willpower">
             <span class="official-value">${model.stats.Willpower || "-"}</span>
-            <span class="official-label">🧠</span>
+            <span class="official-label">Willpower</span>
           </div>
           <div class="official-stat endurance">
             <span class="official-value">${model.stats.Endurance || "-"}</span>
-            <span class="official-label">❤️</span>
+            <span class="official-label">Endurance</span>
           </div>
-        <div class="official-stat attack">
-          <span class="official-value">${model.stats.Attack || "-"}</span>
-          <span class="official-label">
-          <img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon">
-          </span>
-        </div>
-        <div class="official-stat defense">
-          <span class="official-value">${model.stats.Defense || "-"}</span>
-          <span class="official-label">
-          <img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon">
-          </span>
-        </div>
-        <div class="official-stat strength">
-          <span class="official-value">${model.stats.Strength || "-"}</span>
-          <span class="official-label">
-          <img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon">
-          </span>
-        </div>
-        <div class="official-stat movement">
-          <span class="official-value">${model.stats.Movement || "-"}</span>
-          <span class="official-label">
-          <img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon">
-          </span>
-        </div>    
+          <div class="official-stat attack">
+            <span class="official-value">${model.stats.Attack || "-"}</span>
+            <span class="official-label"><img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon"></span>
+          </div>
+          <div class="official-stat defense">
+            <span class="official-value">${model.stats.Defense || "-"}</span>
+            <span class="official-label"><img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon"></span>
+          </div>
+          <div class="official-stat strength">
+            <span class="official-value">${model.stats.Strength || "-"}</span>
+            <span class="official-label"><img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon"></span>
+          </div>
+          <div class="official-stat movement">
+            <span class="official-value">${model.stats.Movement || "-"}</span>
+            <span class="official-label"><img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon"></span>
+          </div>    
         </div>
       </div>
-      <!-- Оружие -->
+
+      <!-- ОРУЖИЕ — теперь с кликабельными трейтами -->
       ${model.weapons?.length ? `
         <div class="official-section">
           <div class="official-section-title">WEAPONS</div>
-          ${model.weapons.map(w => `
-            <div class="official-weapon" onclick="showTraitDesc('${w.trim().replace(/'/g, "\\'")}')">
-              <div class="official-weapon-name">${w.split(" (")[0]}</div>
-              ${w.includes("(") ? `<div class="official-weapon-props">${w.match(/\(([^)]+)\)/)[1]}</div>` : ""}
-            </div>
-          `).join("")}
+          ${model.weapons.map(w => {
+            // Разбиваем строку трейтов на отдельные части
+            const traits = w.traits ? w.traits.split('/').map(t => t.trim()).filter(Boolean) : [];
+            return `
+              <div class="official-weapon">
+                <!-- Первая строка: название + урон + RoF + ammo -->
+                <div class="official-weapon-first-line">
+                  <span class="official-weapon-name">${w.name}</span>
+                  <span class="official-weapon-damage">${w.damage || ''}</span>
+                  ${w.rof && w.rof !== '-' ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ''}
+                  ${w.ammo && w.ammo !== '-' ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ''}
+                </div>
+                <!-- Вторая строка: трейты оружия (кликабельные!) -->
+                ${traits.length ? `
+                  <div class="official-weapon-traits-line">
+                    ${traits.map(trait => `
+                      <span class="weapon-trait-chip" onclick="event.stopPropagation(); showTraitDesc('${trait.replace(/'/g, "\\'")}')">
+                        ${trait}
+                      </span>
+                    `).join('')}
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join("")}
         </div>` : ""}
-      <!-- Трейты -->
+
+      <!-- Трейты персонажа (уже кликабельные) -->
       ${model.traits?.length ? `
         <div class="official-section yellow">
           <div class="official-section-title">TRAITS</div>
@@ -236,6 +247,8 @@ function showFullCard(model) {
   `;
   document.getElementById("fullCard").classList.add("active");
 }
+
+//
 function closeFullCard() {
   document.getElementById("fullCard").classList.remove("active");
 }
