@@ -1,6 +1,7 @@
 const models = [
   {
     "name": "Batman (Multiverse)",
+    "real-name": "Bruce Wayne",
     "rep": 150,
     "funding": 0,
     "rank": "Leader",
@@ -16,7 +17,40 @@ const models = [
     },
     "traits": ["Bat Cape", "Bat-Armor Mk I", "Close Combat Master", "Martial Artist", "Sneak Attack", "Bat Family", "Batclaw", "Detective", "Reinforced Gloves"],
     "weapons": ["Batarang (Ranged, Ammo 3)", "Grapnel Gun", "Smoke Grenade", "Unarmed"]
-  }
+  },
+
+  {
+  "name": "Batman (Dark Knight Rises)",
+  "real-name": "Bruce Wayne",
+  "rep": 150,
+  "funding": 0,
+  "rank": "Leader",
+  "faction": "Batman",
+  "img": "https://veland55.github.io/btb/img/Batman_DarkKnightRises.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 5,
+    "Strength": "3+",
+    "Movement": 12,
+    "Willpower": 8,
+    "Endurance": 8
+  },
+  "traits": [
+    "Bat-Armor Mk II",
+    "Batclaw/Grapple Gun",
+    "Combo (Unarmed)",
+    "Reinforced Gloves",
+    "Sneak Attack",
+    "Bat Cape",
+    "Arrest",
+    "Detective",
+    "Master of Stealth"
+  ],
+  "weapons": [
+    "Batarang (Light/S. Range/Throwing)",
+    "Unarmed"
+  ]
+}
   // добавляй остальные модели сюда
 ];
 

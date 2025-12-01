@@ -37,7 +37,7 @@ function showDetails(name) {
       </div>
 
       <div class="stats-grid">
-        <div class="stat-icon clickable" onclick="showInfo('Movement','Количество дюймов за акцию Move')"><span>MV</span><strong>${m.stats.mv}</strong></div>
+        <div class="stat-icon clickable" onclick="showInfo('Movement','Количество дюймов движения')"><span>MV</span><strong>${m.stats.mv}</strong></div>
         <div class="stat-icon clickable" onclick="showInfo('Close Combat','Сила в ближнем бою')"><span>CC</span><strong>${m.stats.cc}</strong></div>
         <div class="stat-icon clickable" onclick="showInfo('Ranged Skill','Меткость при стрельбе')"><span>RS</span><strong>${m.stats.rs}</strong></div>
         <div class="stat-icon clickable" onclick="showInfo('Strength','Физическая сила')"><span>ST</span><strong>${m.stats.st}</strong></div>
