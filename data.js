@@ -245,6 +245,368 @@ const models = [
     ]
   },
 
+//Birds of Prey
+{
+    "name": "Batgirl (Rebirth)",
+    "rep": 69,
+    "funding": 100,
+    "rank": "Sidekick",
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Batgirl_Rebirth.png",
+    "stats": {
+      "Attack": 6,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 4,
+      "Willpower": 10,
+      "Endurance": 3
+    },
+    "traits": [
+      "Acrobat",
+      "Detective",
+      "Light / Range / Throwing",
+      "Martial Artist",
+      "Stealth"
+    ],
+    "weapons": [
+      "Batclaw/Grapple Gun (Combo Unarmed)",
+      "Reinforced Gloves (Limited Equipment)",
+      "True Love: James W. Gordon (Bat Family)"
+    ]
+  },
+  {
+    "name": "Carnivorous Plant",
+    "rep": 14,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": ["Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Carnivorous_Plant.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 6,
+      "Strength": 3,
+      "Movement": 2,
+      "Willpower": 0,
+      "Endurance": 3
+    },
+    "traits": [
+      "Plant",
+      "Cannibal",
+      "Elite (Plants)",
+      "Hardy",
+      "Can't Paralyze"
+    ],
+    "weapons": [
+      "Bite"
+    ]
+  },
+  {
+    "name": "Lady Shiva",
+    "rep": 80,
+    "funding": 0,
+    "rank": "Free Agent",
+    "faction": ["League of Assassins", "Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Lady_Shiva.png",
+    "stats": {
+      "Attack": 8,
+      "Defense": 7,
+      "Strength": 4,
+      "Movement": 4,
+      "Willpower": 11,
+      "Endurance": 3
+    },
+    "traits": [
+      "Acrobat",
+      "Adaptable",
+      "Combo (Unarmed)",
+      "Martial Artist",
+      "Master Fighter",
+      "Moral Compass",
+      "Reinforced Gloves",
+      "Stealth",
+      "Arrogant",
+      "Precise Blow"
+    ],
+    "weapons": [
+      "Martial Artist"
+    ]
+  },
+  {
+    "name": "Spikes Plant",
+    "rep": 13,
+    "funding": 150,
+    "rank": "Henchman",
+    "faction": ["Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Spikes_Plant.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": 3,
+      "Movement": 2,
+      "Willpower": 0,
+      "Endurance": 3
+    },
+    "traits": [
+      "Plant",
+      "Elite (Plants)",
+      "Mechanical",
+      "Range",
+      "Regenerating"
+    ],
+    "weapons": [
+      "Spike Shot"
+    ]
+  },
+  {
+    "name": "Strix",
+    "rep": 60,
+    "funding": 100,
+    "rank": "Sidekick",
+    "faction": ["Birds of Prey", "Court of Owls"],
+    "img": "https://veland55.github.io/btb/img/Strix.png",
+    "stats": {
+      "Attack": 6,
+      "Defense": 6,
+      "Strength": 4,
+      "Movement": 4,
+      "Willpower": 11,
+      "Endurance": 4
+    },
+    "traits": [
+      "Acrobat",
+      "Climbing Claws",
+      "Paired Katanas",
+      "Rapid Fire",
+      "Stealth",
+      "Reanimated Owl",
+      "Weakness to Cold",
+      "Handy",
+      "Overwhelming",
+      "Sharp"
+    ],
+    "weapons": [
+      "Throwing Knives",
+      "Paired Katanas"
+    ]
+  },
+  {
+    "name": "Harley Quinn (Dr. Harleen Frances Quinzel)",
+    "rep": 68,
+    "funding": 300,
+    "rank": "Free Agent",
+    "faction": ["Birds of Prey", "Joker", "Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/Harley_Quinn_DrHarleen.png",
+    "stats": {
+      "Attack": 6,
+      "Defense": 6,
+      "Strength": 3,
+      "Movement": 3,
+      "Willpower": 5,
+      "Endurance": 13
+    },
+    "traits": [
+      "Acrobat",
+      "Chaotic Friends",
+      "Deranged",
+      "Follow Me!",
+      "Heavy",
+      "Technician",
+      "True Love (Joker)",
+      "Unpredictable",
+      "Gotham City Siren"
+    ],
+    "weapons": [
+      "Reinforced Bat",
+      "Twin Guns"
+    ]
+  },
+  {
+    "name": "Poison Ivy (Dr. Pamela Lillian Isley)",
+    "rep": 101,
+    "funding": 0,
+    "rank": "Leader",
+    "faction": ["Birds of Prey", "Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/Poison_Ivy_Pamela.png",
+    "stats": {
+      "Attack": 8,
+      "Defense": 7,
+      "Strength": 3,
+      "Movement": 4,
+      "Willpower": 11,
+      "Endurance": 3
+    },
+    "traits": [
+      "Chlorokinesis",
+      "Control Pheromones",
+      "Acrobat",
+      "Large",
+      "Chlorokinesis",
+      "Gotham City Siren",
+      "Mortal Kiss",
+      "Poison Immunity",
+      "Possessed",
+      "Scientific",
+      "The Song of the Sirens",
+      "Expansive",
+      "Poison / Toxic"
+    ],
+    "weapons": [
+      "Sprinkling Spores"
+    ]
+  },
+  {
+    "name": "Swamp Thing (Alec Holland)",
+    "rep": 150,
+    "funding": 0,
+    "rank": "Leader",
+    "faction": ["Birds of Prey", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Swamp_Thing.png",
+    "stats": {
+      "Attack": 9,
+      "Defense": 12,
+      "Strength": 4,
+      "Movement": 3,
+      "Willpower": 10,
+      "Endurance": 4
+    },
+    "traits": [
+      "Chlorokinesis",
+      "Elite Boss (Plants)",
+      "Green Magic",
+      "Immortal",
+      "Large",
+      "Magical Power (5)",
+      "Natural Immunity",
+      "Pollution Hate",
+      "Regeneration",
+      "Supernatural",
+      "Tough Skin",
+      "Vulnerability to Fire",
+      "Range",
+      "Throwing"
+    ],
+    "weapons": [
+      "Metamorphic Branch",
+      "Spikes"
+    ]
+  },
+  {
+    "name": "Poison Ivy (Dr. Pamela Lillian Isley)",
+    "rep": 97,
+    "funding": 0,
+    "rank": "Leader",
+    "faction": ["Birds of Prey", "Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/Poison_Ivy_Classic.png",
+    "stats": {
+      "Attack": 8,
+      "Defense": 8,
+      "Strength": 3,
+      "Movement": 4,
+      "Willpower": 8,
+      "Endurance": 3
+    },
+    "traits": [
+      "Adaptable",
+      "Chlorokinesis",
+      "Control Pheromones",
+      "Elite Boss (Plants)",
+      "Gotham City Siren",
+      "Large",
+      "Mortal Kiss",
+      "Poison Immunity",
+      "Possessed",
+      "Scientific",
+      "Mechanical",
+      "Protective",
+      "Reach (2)",
+      "Air / Bio-Toxin",
+      "Range / Poison / Toxic (1)"
+    ],
+    "weapons": [
+      "Plants",
+      "Spores"
+    ]
+  },
+  {
+    "name": "Mutated Plant 1",
+    "rep": 17,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": ["Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Mutated_Plant_1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 0,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Plant",
+      "Elite (Plants)",
+      "Shockwave",
+      "Poison"
+    ],
+    "weapons": [
+      "Venomous Bite"
+    ]
+  },
+  {
+    "name": "Mutated Plant 2",
+    "rep": 16,
+    "funding": 250,
+    "rank": "Henchman",
+    "faction": ["Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Mutated_Plant_2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 0,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Plant",
+      "Elite (Plants)",
+      "Power Dampening",
+      "Caustic",
+      "Mechanical",
+      "Range"
+    ],
+    "weapons": [
+      "Venomous Spit"
+    ]
+  },
+  {
+    "name": "Mutated Plant 3",
+    "rep": 14,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": ["Birds of Prey"],
+    "img": "https://veland55.github.io/btb/img/Mutated_Plant_3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 0,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Plant",
+      "Elite (Plants)",
+      "Disruptor",
+      "Handy",
+      "Can't Paralyze"
+    ],
+    "weapons": [
+      "Bite"
+    ]
+  },
+
+
 //CULTS
 {
     "name": "Kobra",

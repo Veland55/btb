@@ -34,6 +34,8 @@
     <button class="tab" data-faction="Court">COURT</button>
     <button class="tab" data-faction="Cults">Cults</button>
     <button class="tab" data-faction="Doom Patrol">Doom Patrol</button>
+    <button class="tab" data-faction="Birds of Prey">Birds of Prey</button>
+    <button class="tab" data-faction="Court of Owls">Court of Owls</button>
   </div>
 </div>
 <!-- ПОИСК -->
@@ -165,7 +167,7 @@ function showFullCard(model) {
       <!-- Заголовок -->
       <div class="official-header">
         <div class="official-name">${model.name.toUpperCase()}</div>
-        <div class="official-subtitle">${model.real-name} • ${model.rank || "Free Agent"} • ${factionsDisplay} • ${model.rep} REP • $${model.funding || 0}</div>
+        <div class="official-subtitle">${model.rank || "Free Agent"} • ${factionsDisplay} • ${model.rep} REP • $${model.funding || 0}</div>
       </div>
       <!-- Главный блок: фото + статы -->
       <div class="official-main">
