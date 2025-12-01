@@ -144,7 +144,7 @@ function renderMiniCards() {
         <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(models[${model._id}])">
           ${inCrew?"−":"+"}
         </button>
-        <img src="${model.img}" onerror="this.src='https://via.placeholder.com/145x115/222/9c1825?text=NO+IMG'">
+        <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
         <div class="mini-info">
           <div class="mini-name">${model.name}</div>
           <div class="mini-rep">${model.rep} Rep • $${model.funding||0}</div>
@@ -173,7 +173,7 @@ function showFullCard(model) {
       <div class="official-main">
         <!-- Фото модели (маленькое, слева) -->
         <div class="official-img-wrapper">
-          <img src="${model.img}" class="official-img" onerror="this.src='https://via.placeholder.com/300x400/222/999?text=NO+IMG'">
+          <img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
         </div>
         <!-- Статы справа от фото -->
         <div class="official-stats">
