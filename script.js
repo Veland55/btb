@@ -158,18 +158,103 @@ const renderModelSearch = () => {
 
 $("modelSearchInput").oninput = renderModelSearch;
 
-// ======================== ТРЕЙТЫ ========================
-const showTraitDesc = keyword => {
-  if (!window.compendium?.[keyword]) { alert("Нет описания: "+keyword); return; }
-  const desc = (compendium[keyword]||"").replace(/\n/g,"<br>");
+// ======================== ТРЕЙТЫ — ИСПРАВЛЕННАЯ ВЕРСИЯ БЕЗ ОШИБОК ========================
+const showTraitDesc = (rawKeyword) => {
+  const keyword = rawKeyword.trim();
+  let title = keyword;
+  let description = "";
+
+  // Вспомогательная функция нормализации
+  const normalize = str => str.toLowerCase()
+    .replace(/:/g, '')
+    .replace(/[^\w\s\(\)]/g, '')
+    .trim();
+
+  // 1. Точное совпадение
+  if (window.compendium[keyword]) {
+    description = window.compendium[keyword].replace(/\n/g, "<br>");
+    // Показываем попап сразу, если нашли
+    showPopup(title, description);
+    return;
+  }
+
+  // 2. Совпадение по нормализованному ключу
+  const foundKey = Object.keys(window.compendium).find(k => normalize(k) === normalize(keyword));
+  if (foundKey) {
+    description = window.compendium[foundKey].replace(/\n/g, "<br>");
+    showPopup(title, description);
+    return;
+  }
+
+  // 3. Трейты с параметром в скобках: CRT (Stunned), Teamwork (HAWK), Elite (Plants), Enervating (3)
+  const match = keyword.match(/^(.*?)\s*\(\s*([^()]+)\s*\)$/);
+  if (match) {
+    let baseName = match[1].trim();      // e.g. "Teamwork"
+    const param = match[2].trim();       // e.g. "HAWK"
+
+    // Возможные варианты названий в compendium
+    const candidates = [
+      `${baseName} (X)`,
+      `${baseName} X`,
+      baseName
+    ];
+
+    let baseDesc = candidates.reduce((desc, c) => desc || window.compendium[c] || 
+      Object.keys(window.compendium).find(k => normalize(k) === normalize(c)) ? 
+      window.compendium[Object.keys(window.compendium).find(k => normalize(k) === normalize(c))] : null, null);
+
+    if (baseDesc) {
+      description = baseDesc.replace(/X/g, param).replace(/\(X\)/g, `(${param})`).replace(/\n/g, "<br>");
+
+      // Если параметр — это другой эффект (не число и не имя модели вроде HAWK), добавляем его описание
+      if (isNaN(param) && window.compendium[param]) {  // Проверяем, существует ли как ключ (игнорируем имена моделей)
+        description += `<br><br><strong>${param}:</strong><br>${window.compendium[param].replace(/\n/g, "<br>")}`;
+      }
+    }
+  }
+
+  // 4. Трейты с двоеточием: True Love: Batman, Teamwork: Robin
+  if (!description && keyword.includes(":")) {
+    const main = keyword.split(":")[0].trim();
+    const candidates = [main, "True Love", "Teamwork", "Elite"];
+    description = candidates.reduce((desc, c) => desc || window.compendium[c] || 
+      (Object.keys(window.compendium).find(k => normalize(k) === normalize(c)) ? 
+      window.compendium[Object.keys(window.compendium).find(k => normalize(k) === normalize(c))].replace(/\n/g, "<br>") : null), null);
+  }
+
+  // 5. Последний резерв — поиск по вхождению подстроки (если ничего не нашли)
+  if (!description) {
+    const loose = Object.keys(window.compendium).find(k => 
+      k.toLowerCase().includes(keyword.toLowerCase()) || keyword.toLowerCase().includes(k.toLowerCase().replace(/\(x\)/g, '').trim())
+    );
+    if (loose) {
+      description = window.compendium[loose].replace(/\n/g, "<br>");
+      title += ` → ${loose}`;
+    }
+  }
+
+  // Если ничего не нашли
+  if (!description) {
+    alert("Нет описания: " + keyword);
+    return;
+  }
+
+  // Показываем попап
+  showPopup(title, description);
+};
+
+// Вспомогательная функция для попапа (чтобы не дублировать)
+const showPopup = (title, desc) => {
   const popup = document.createElement("div");
   popup.className = "trait-popup";
-  popup.innerHTML = `<div class="trait-popup-content">
-    <div class="trait-popup-header"><div>${keyword}</div>
-      <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
-    </div>
-    <div class="trait-popup-text">${desc}</div>
-  </div>`;
+  popup.innerHTML = `
+    <div class="trait-popup-content">
+      <div class="trait-popup-header">
+        <div>${title}</div>
+        <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
+      </div>
+      <div class="trait-popup-text">${desc}</div>
+    </div>`;
   popup.onclick = e => e.target === popup && popup.remove();
   document.body.appendChild(popup);
 };

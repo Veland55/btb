@@ -86,7 +86,7 @@ const models = [
     "Master of Stealth"
   ],
   "weapons": [
-    "Batarang (Light/S. Range/Throwing)"
+    "Batarang (Light /S. Range/ Throwing)"
   ]
 },
 
@@ -1197,11 +1197,10 @@ const models = [
       "Death Pack",
       "Don't Mind Me",
       "Exalt",
-      "Good",
+      "Goad",
       "Immortal",
       "Martyrdom",
       "Reinforced Gloves",
-      "Steal / Energizing 2 / Hypnotize",
       "The Good Command"
     ],
     "weapons": [
@@ -1580,7 +1579,7 @@ const traitDescriptions = {
 	"Bat Cape": "This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling.",
 	"Batclaw": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun! ",
 	"Batclaw/Grapple Gun": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun! ",
-    "Batman Lives": "This model may perform an extra Movement action at the start of its activation if no enemy models have LoS to it. When in contact with a KO enemy model that does not have Affiliation: BATMAN, this model may remove it as a Casualty by spending a Special Action. In addition, when this model is included in your crew, you can also include a model with Name: William Cobb (ignoring its Affiliation), but if you do so you may not include any model with the Free Agent rank unless it also has Affiliation: BANE.",
+  "Batman Lives": "This model may perform an extra Movement action at the start of its activation if no enemy models have LoS to it. When in contact with a KO enemy model that does not have Affiliation: BATMAN, this model may remove it as a Casualty by spending a Special Action. In addition, when this model is included in your crew, you can also include a model with Name: William Cobb (ignoring its Affiliation), but if you do so you may not include any model with the Free Agent rank unless it also has Affiliation: BANE.",
 	"Batman’s Tumbler": "This model can neither Jump nor Climb. When the Upgrade Card becomes disabled, you can immediately exchange this Upgrade Card with the Batman’s Batpod Upgrade card.",
 	"Bat-Signal": "One use only. This model can use this trait to place a friendly model (not KO or Knocked Down) with Alias: Batman in contact with itself. Until the end of that round, this model is considered Illuminated.",
 	"Bipolar (Mental Disorder)": "At the beginning of this model’s activation, roll a die or flip a coin. If the result is even/heads, this model may make 1 Effort this round without taking a ★ marker. If the result is odd/tails, this model suffers the Enervating 1 effect.",
@@ -1605,7 +1604,7 @@ const traitDescriptions = {
 	"Business Agent": "When this model is recruited, add $350 to the crew’s available Funding.",
 
   // C
-    "Canary Cry": "Place the Spray template in base contact with this model – all models affected receive one automatic hit with the Sonic special rule. Affected models must pass a Willpower roll or take 🩸 Damage and become Stunned.",
+  "Canary Cry": "Place the Spray template in base contact with this model – all models affected receive one automatic hit with the Sonic special rule. Affected models must pass a Willpower roll or take 🩸 Damage and become Stunned.",
 	"Cannibal": "When this model removes an enemy model (not a Vehicle) as a Casualty in Melee, remove up to 2 Damage markers (any type) from its character card.",
 	"Can you solve this? X": "Once per round, this model may move up to 4” a suspect marker within 4” during its activation by rolling a +X result in a die roll.",
 	"Carry": "If this model passes within 2” of one or more friendly models during a Movement Action, it may make an Effort and target one of those models and place it in base contact at the end of the move. The chosen model cannot have the Large or Huge traits. The target model suffers Impaired Movement during its next activation unless it is Damian Wayne. This model cannot use the Carry trait in two consecutive activations.",
@@ -1703,8 +1702,8 @@ const traitDescriptions = {
 	"Electric Handshake": "Choose a model in contact. The target model must pass a Willpower roll or suffer the Stunned effect.",
 	"Electric Storm": "Center the Explosive template on this model. Roll a Strength 3+ die against all models affected by the template (except the attacking model itself) with Damage ★★.",
 	"Eldritch": "This model can use Eldritch Spells. In addition, once per game during its activation, the model gains +1 to its Attacks value until the end of the round.",
-	"Elite: X": "Your crew can only include 1 Elite model of each type, unless you also include the Elite Boss: Type.",
-	"Elite Boss: X": "If your crew includes a model with this trait, you may include any number of Elite models of the same type as the Elite Boss (following the normal restrictions for forming a crew).",
+	"Elite": "Your crew can only include 1 Elite model of each type, unless you also include the Elite Boss: Type.",
+	"Elite Boss": "If your crew includes a model with this trait, you may include any number of Elite models of the same type as the Elite Boss (following the normal restrictions for forming a crew).",
 	"Elusive": "When targeted by a Ranged Attack, this model may make an Effort to force the attacker to reroll one attack die.",
 	"EMP": "This model rerolls failed Strength die rolls against models with the Cybernetic, Bot or Robot traits, and against models with the Vehicle rank.",
 	"Enemies of the Court": "While this model is in play, if any of your models removes an enemy as a Casualty, you may pick one Objective card from the Spent Resources pile and add it to your hand.",
@@ -1820,7 +1819,7 @@ const traitDescriptions = {
 	"Kryptonite": "While a model with this trait is within 4'' of a model with the Kryptonian trait, the Kryptonian model loses the Invulnerability and Regeneration traits (if they possess them).",
 
   // L
-  	"Lantern": "A model with this trait can activate it at any time during its activation. The model counts as a Light source with a radius of 2” until the end of the round.",
+  "Lantern": "A model with this trait can activate it at any time during its activation. The model counts as a Light source with a radius of 2” until the end of the round.",
 	"Large": "This model ignores up to 1 ★ Damage per attack suffered.",
 	"Laser Sight": "Target one model in line of sight. The target counts as being under the effect of Lights until the end of the round, or until the target moves or changes its current position.",
 	"Lasso of Persuasion": "One use only. Target an enemy model within 2”. That model suffers the Hypnotize effect.",
@@ -1980,8 +1979,8 @@ const traitDescriptions = {
 	"Sewer Swarm X": "After deployment, but before the game begins, place X Sewer Swarm models within 2” of this model. If, during this model's activation, you have less than X Sewer Swarms in play, you may make X Efforts to place X Sewer Swarm models within 2” of this model, then, the opponent gains X Pass markers. While a Sewer Swarm is within 8” of this model, it gains the Poison Master rule. In addition, if this model is hit by an enemy attack (close combat or ranged), you may make an Effort to nominate a friendly Sewer Swarm model within 4” and LoS to take the attack instead. Resolve any Damage and/or effects against the nominated model.",
 	"Sewer Worker": "One use only. During this model’s activation, you can place a Sewer marker anywhere on the gaming area at least 2” from any other marker.",
 	"Shapeshifting": "At the start of the Raise the Plan phase, if this model is not KO then it may exchange an Upgrade card with the name '(Animal) Form'. Place the new model in contact, then remove the original model.",
-    "Shapeshifting Human Progress": "This model allows you to keep aside all the models that have in its Alias: Beast Boy – (X) without recruiting they. When a model uses the Shapeshifting trait to place this model in play, during this round this model may use the Vigilante’s Work trait to place or reveal a Suspect marker within 3'' and LoS instead of in contact.",
-    "Sharpshooter": "Ranged Attacks made by this model ignore the Cover rule.",
+  "Shapeshifting Human Progress": "This model allows you to keep aside all the models that have in its Alias: Beast Boy – (X) without recruiting they. When a model uses the Shapeshifting trait to place this model in play, during this round this model may use the Vigilante’s Work trait to place or reveal a Suspect marker within 3'' and LoS instead of in contact.",
+  "Sharpshooter": "Ranged Attacks made by this model ignore the Cover rule.",
 	"Shockwave": "Enemy models within 4” of this model suffer the Slow 2 effect.",
 	"Shooter": "When this model performs Ranged Attacks against targets within 8”, the target does not benefit from the Cover rule.",
 	"Simple Mind": "This model cannot benefit from the Inspire rule.",
@@ -2014,6 +2013,8 @@ const traitDescriptions = {
 	"Sustained Defense": "For every two successful defense rolls made by this model, cancel one extra enemy hit.",
 	"Swarm": "This model cannot be recruited, but can only be brought into play by the Sewer Swarm X trait. This model gains +1 Defense skill vs enemy Ranged Attacks. This model cannot perform Manipulate Actions by any means. Swarms do not fulfill enemy Objective criteria for making models KO or removing them as Casualties. If this model is made KO, remove it as a Casualty.",
 	"Swift": "This model can make 1 Effort to improve its basic move distance by +2” for the remainder of the round.",
+        "CRT (X)": "Natural 6 on the Strength die = Critical Hit. Target is Knocked Down by default. Weapons may list a special CRT effect ( CRT (Stunned) ). If present, player chooses one effect: the listed one or Knocked Down.",
+
 
   // T
 	"Tachyon Device": "In the Drain Speed Force sub-phase, if there aren’t any Speed Force markers in the Speed Force pool, this model adds up to 2 Speed Force markers to its own reserve.",
@@ -2021,6 +2022,7 @@ const traitDescriptions = {
 	"Takedown": "When this model makes another model KO with an Attack, it may immediately make an Effort to make the target a Casualty.",
 	"Taunt": "Choose one enemy model (not a Vehicle) within 8” and line of sight. Perform an opposed Willpower roll against that model. If it successful, then for the rest of the round increase the target’s Attacks skill by +1, but reduce its Defense skill by -2.",
 	"Teamwork X (All)": "During its activation, this model may roll X additional dice when performing Melee Attacks and defense rolls while another model with the Teamwork trait is within 4”.",
+      "Teamwork": "During its activation, this model may roll X additional dice when performing Melee Attacks and defense rolls while the named model is within 4”.",
 	"Teamwork X (Model)": "During its activation, this model may roll X additional dice when performing Melee Attacks and defense rolls while the named model is within 4”.",
 	"Technique": "Once this trait is activated, for the rest of the round when this model damages a non-vehicle enemy with a Melee Attack Action, the damaged model suffers the Paralyze effect too.",
 	"Teen Titans Founder": "This model can be recruited in a Teen Titans Team, ignoring ‘The Sidekick’ trait. When operating as part of a Teen Titans crew, this model gains +1 Willpower, +1 Strength and the Reinforced Gloves trait.",
@@ -2062,7 +2064,7 @@ const traitDescriptions = {
 	"Transport X": "X friendly models (not a Vehicle) in contact with this model during its activation can perform a Manipulate action to be removed from the game – the friendly model is not a Casualty, but is now effectively transported inside this model as a ‘passenger’ – attach this model’s Upgrade card to the passenger. Any effects affecting a passenger trigger as normal at the end of the round. The passenger must be activated as normal during each round, but the range of its traits and attacks are measured from this model’s base (unless the Vehicle has the Sealed Cabin trait). The passenger cannot be affected by any attack. During any subsequent round, the passenger can disembark the Vehicle by performing a Manipulate action – place it in contact with this model, and disable the Upgrade card, then continue its activation as normal.",
 	"Treacherous": "This model cannot be the Boss of your crew.",
 	"Trickster": "If this model does not have an Audacity marker when it is activated, it may take one from another friendly model that is yet to activate this round.",
-	"True Love (Name)": "If the model named as the True Love (in parentheses) is in the same crew, and is removed as a Casualty, this model gains +1 Willpower and +1 Attack until the end of the game.",
+	"True Love": "If the model named as the True Love (in parentheses) is in the same crew, and is removed as a Casualty, this model gains +1 Willpower and +1 Attack until the end of the game.",
 	"Truly Immortal": "This model cannot become KO or be removed as Casualty from the game by any means. Instead, remove one Damage marker, then the opponent relocates this model, placing it within 4''.",
 	"Truth-Seeker": "When a model within 10” of this model becomes KO or is removed as a Casualty, you may first place a friendly Suspect marker in contact with it (ignoring the normal minimum distance between Suspect markers). This model may remove 1 friendly Suspect marker within 4” during its activation to perform an extra move of up to 4”. In addition, when a friendly model within 4” of a friendly Suspect marker scores an Objective card, you may remove that marker to draw an additional Objective card. ",
 
@@ -2144,7 +2146,7 @@ const traitDescriptions = {
 	"Blind (FLASH)": "A model suffering from Blind cannot trace Line of Sight, and cannot perform Ranged Attacks. All of the model’s attack, Strength and defense dice rolls will only succeed on a natural result of 6. In addition, the model cannot use its Movement value to increase its basic move distance. This effect lasts until the end of the round.",
 	"Casualty": "If this effect is triggered (as part of a Critical effect for example), then the target model is removed from play as though it had received its maximum allocation of 🩸 counters.",
 	"Cooled": "Place a Cooled marker on the character card of the affected model. A cooled model reduces its Defense skill by -1, and cannot make Efforts. Affected Speedsters cannot use Speed Force Powers. This effect lasts until the end of the round.",
-	"Enervating X": "The target reduces its Effort Limit by -X for the next Effort itwants to make.",
+	"Enervating (X)": "The target reduces its Effort Limit by -X for the next Effort itwants to make.",
 	"Fire": "If a model is affected by Fire, place a Fire marker on its character card (a model may have more than one Fire marker). During an activation, a model with Fire markers must perform a Movement action if it can. Before moving, a model may choose to suffer -X Movement marker to replace Fire markers, at cost of -2'' penalty suffered for each Fire marker removed (so a model that receives a 6 marker removes 3 Fire markers, for example). During the Recount phase, models with at least one Fire marker receive 🩸 for each Fire marker they have, and add 1 more Fire marker.",
 	"Freeze": "Place a Freeze marker on the character card of the affected model. The model reduces its Defense skill by -1, and cannot perform Actions. At the beginning of the model’s activation, it must pass an Endurance roll to remove the Freeze effect. Speedsters cannot use Speed Force Powers If they are affected by the Freeze effect.",
 	"Hypnotize": "Any non-vehicle model affected by Hypnotize must make a Willpower roll immediately. If it fails, it immediatelly performs up to 2 different actions under the control of the player who hypnotized it counting as one of that player’s crew in all respects. Counts as if you are performing an activation for traits and performing actions. Models that are Hypnotized cannot be moved so they would Fall or otherwise take Damage. Nb: If you move and shoot per example, you lose attack dice as usual, you cannot repeat actions, but you are affected by active traits (special actions) that remains active for the activation of the model (like Inspire, Sewer Worker...). That model may be activated by its owner later, because is not an activation.",
@@ -2153,12 +2155,12 @@ const traitDescriptions = {
 	"Push": "The affected model is moved directly away from the attacker up to X” (where X is the number of hits inflicted or a fixed value if any). If the affected model cannot be moved the full distance, simply move as far as you can up to the maximum, then end the move.",
 	"Poison 1": "If a non-vehicle model is affected by Poison, place a Poison marker on its character card. A model affected a subsequent time by the Poison effect increases its Poison value by 1 (up to a maximum of 4). During the Recount phase, the poisoned model must make an Endurance roll, with a -X penalty to its Endurance value for the roll (where X is the current Poison value). If the roll fails, the model suffers 1 🩸 Damage if its Poison value is 1-3, or 🩸🩸 if it has a Poison value of 4.",
 	"Scared": "The affected non-vehicle model cannot use the Dodging rule, and suffers -1 to its attack and defense dice rolls. This effect lasts until the end of the round.",
-	"Slow X 2": "A model suffering this effect reduces by its basic movement distance by X” during its next Movement action.",
+	"Slow (X)": "A model suffering this effect reduces by its basic movement distance by X” during its next Movement action.",
 	"Smoke": "Place an Explosive template in the location of the Smoke cloud. Models cannot draw line of sight through the template. Models affected (or models that enter/contact the template) suffer the Blind effect. The Smoke template is removed at the end of the Recovery phase. Weapons with the Smoke rule cannot be canceled. Unlike other templates, a Smoke template is considered to be of infinite height.",
 	"Steal": "If you trigger this effect, the opponent must show you their Objective card hand. Choose one of those cards – the opponent must Discard it.",
 	"Stunned": "A Stunned model can only perform Movement actions until the end of the round.",
-	"Terror X 1": "When a non-vehicle model is affected by Terror, it reduces the number of Actions it can perform by X during its next activation. Additionally, until its next activation the target reduces by -X its Effort Limit and its Willpower value when performing a Willpower roll.",
-	"Toxic X": "The target receives a number of 🩸 Damage markers equal to X."
+	"Terror (X)": "When a non-vehicle model is affected by Terror, it reduces the number of Actions it can perform by X during its next activation. Additionally, until its next activation the target reduces by -X its Effort Limit and its Willpower value when performing a Willpower roll.",
+	"Toxic (X)": "The target receives a number of 🩸 Damage markers equal to X."
 };
 
 // ==================================================================
