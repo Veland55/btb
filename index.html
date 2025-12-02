@@ -6,314 +6,336 @@
   <title>BMG Crew Builder Mobile</title>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ДОПОЛНЕНИЕ: делаем поиск моделей идентичным компендиуму */
+    #modelSearchModal .compendium-search {
+      border: 2px solid #e94560;
+      box-shadow: 0 0 0 rgba(233,69,96,.3);
+      transition: all .3s;
+    }
+    #modelSearchModal .compendium-search:focus-within {
+      box-shadow: 0 0 25px rgba(233,69,96,.8);
+      border-color: #ff3366;
+    }
+    #modelSearchModal .search-icon { fill: #e94560; }
+    #modelSearchModal .clear-search:hover { background: #ff3366; }
+
+    /* Новая стилизация для вертикальных лейблов Willpower и Endurance */
+    .vertical-stat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+    .vertical-stat .official-value {
+      font-size: 50px;
+      line-height: 1;
+      margin-right: 10px; /* Отступ слева от значения до лейбла */
+    }
+.vertical-stat .official-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);   /* текст теперь читается снизу вверх */
+  font-size: 18px;
+  letter-spacing: 1px;
+  opacity: .9;
+}
+  </style>
 </head>
 <body>
+
 <!-- ТОП-БАР -->
 <div class="top-bar">
   <div class="top-bar-content">
     <h1>BMG CREW BUILDER</h1>
-    <div class="compendium-small-btn" onclick="openCompendium()">
-      <img src="https://veland55.github.io/btb/img/icon-font-search.png" alt="C">
-      <span>COMPENDIUM</span>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <div class="compendium-small-btn" onclick="openModelSearch()">
+        <svg style="width:24px;height:24px;fill:#fff;" viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <span>Модели</span>
+      </div>
+
+      <div class="compendium-small-btn" onclick="openCompendium()">
+        <svg style="width:24px;height:24px;fill:#fff;" viewBox="0 0 24 24">
+          <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h12v16zm-4-8H10v-1h4v1zm0-3H10V8h4v1zm0-3H10V6h4v1z"/>
+        </svg>
+        <span>COMPENDIUM</span>
+      </div>
+
+      <button id="clearCrewBtn" onclick="clearCrew()" style="background:#c00;color:#fff;border:none;padding:8px 14px;border-radius:30px;font-weight:bold;font-size:13px;cursor:pointer;box-shadow:0 4px 15px rgba(200,0,0,.5);display:none;">
+        ОЧИСТИТЬ
+      </button>
     </div>
   </div>
   <div class="funds">
     ОТРЯД: <span id="crewCount">0</span> | REP: <span id="totalRep">0</span> | $<span id="totalFunding">0</span>
   </div>
 </div>
+
 <!-- ВКЛАДКИ ФРАКЦИЙ -->
+<!-- ВКЛАДКИ ФРАКЦИЙ — компактная версия -->
 <div class="tabs-container">
   <div class="tabs">
-    <button class="tab active" data-faction="Bat Family">Bat Family</button>
-    <button class="tab" data-faction="Joker">JOKER</button>
-    <button class="tab" data-faction="Penguin">PENGUIN</button>
-    <button class="tab" data-faction="Bane">BANE</button>
-    <button class="tab" data-faction="League">LEAGUE</button>
-    <button class="tab" data-faction="GCPD">GCPD</button>
-    <button class="tab" data-faction="Two-Face">TWO-FACE</button>
-    <button class="tab" data-faction="Court">COURT</button>
-    <button class="tab" data-faction="Cults">Cults</button>
-    <button class="tab" data-faction="Doom Patrol"><img src="https://veland55.github.io/btb/img/Doom_Patrol.png" alt="Doom Patrol"></button>
-    <button class="tab" data-faction="Birds of Prey">Birds of Prey</button>
-    <button class="tab" data-faction="Court of Owls">Court of Owls</button>
+    <button class="tab active" data-faction="Bat Family"><span>Bat Family</span></button>
+    <button class="tab" data-faction="Joker"><span>JOKER</span></button>
+    <button class="tab" data-faction="Penguin"><span>PENGUIN</span></button>
+    <button class="tab" data-faction="Bane"><span>BANE</span></button>
+    <button class="tab" data-faction="League"><span>LEAGUE</span></button>
+    <button class="tab" data-faction="GCPD"><span>GCPD</span></button>
+    <button class="tab" data-faction="Two-Face"><span>TWO-FACE</span></button>
+    <button class="tab" data-faction="Court"><span>COURT</span></button>
+    <button class="tab" data-faction="Cults"><span>Cults</span></button>
+    <button class="tab" data-faction="Doom Patrol">
+      <img src="https://veland55.github.io/btb/img/Doom_Patrol.png" alt="Doom Patrol">
+    </button>
+    <button class="tab" data-faction="Birds of Prey"><span>Birds of Prey</span></button>
+    <button class="tab" data-faction="Court of Owls"><span>Court of Owls</span></button>
+    <!-- Добавляй сколько угодно новых — всё влезет! -->
   </div>
 </div>
-<!-- ПОИСК -->
-<div class="search-container">
-  <input type="text" id="searchInput" placeholder="Поиск модели...">
-</div>
+
+
 <!-- СЕТКА МОДЕЛЕЙ -->
 <div class="models-grid" id="modelsGrid"></div>
-<!-- НИЖНЯЯ ПАНЕЛЬ -->
-<div class="crew-bar">
-  <div class="crew-total">
-    ФРАКЦИЯ: <span id="currentFaction">BAT-FAMILY</span>
-  </div>
-  <button onclick="clearCrew()" class="clear-btn">ОЧИСТИТЬ</button>
-</div>
-<!-- COMPENDIUM МОДАЛЬНЫЙ -->
+
+<!-- COMPENDIUM -->
 <div id="compendiumModal" class="compendium-modal">
   <div class="compendium-header">
     <button onclick="closeCompendium()" class="back-btn">НАЗАД</button>
     <h2>COMPENDIUM <span style="font-size:14px;color:#aaa;">v1.4</span></h2>
   </div>
-<div class="search-container compendium-search-wrapper">
-  <div class="compendium-search">
-    <svg class="search-icon" viewBox="0 0 24 24">
-      <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-    </svg>
-    <input type="text" id="compendiumSearch" placeholder="Поиск по трейтам, оружию, правилам...">
-    <button class="clear-search" onclick="clearCompendiumSearch()" style="display:none;">×</button>
+  <div class="compendium-search-wrapper">
+    <div class="compendium-search">
+      <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="compendiumSearch" placeholder="Поиск по трейтам, оружию, правилам...">
+      <button class="clear-search" onclick="clearCompendiumSearch()" style="display:none;">×</button>
+    </div>
   </div>
-</div>
   <div id="compendiumList" class="compendium-content"></div>
 </div>
-<!-- ПОЛНАЯ КАРТОЧКА -->
-<div class="full-card" id="fullCard">
+
+<!-- МОДАЛЬНЫЙ ПОИСК МОДЕЛЕЙ -->
+<div id="modelSearchModal" class="compendium-modal">
+  <div class="compendium-header">
+    <button onclick="closeModelSearch()" class="back-btn">НАЗАД</button>
+    <h2>ПОИСК МОДЕЛЕЙ</h2>
+  </div>
+  <div class="compendium-search-wrapper">
+    <div class="compendium-search"> <!-- тот же класс, те же стили! -->
+      <svg class="search-icon" viewBox="0 0 24 24">
+        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <input type="text" id="modelSearchInput" placeholder="Введите имя модели..." autocomplete="off">
+      <button class="clear-search" onclick="document.getElementById('modelSearchInput').value='';renderModelSearch();$('modelSearchInput').focus();" style="display:none;">×</button>
+    </div>
+  </div>
+  <div id="modelSearchResults" class="compendium-content"></div>
+</div>
+
+<!-- ПОЛНАЯ КАРТОЧКА — САМЫЙ ВЫСОКИЙ Z-INDEX! -->
+<div class="full-card" id="fullCard" style="z-index:9999 !important;">
   <div class="close-full" onclick="closeFullCard()">X</div>
   <div class="full-inner" id="fullCardContent"></div>
 </div>
+
 <script src="data.js"></script>
 <script>
+// ======================== ГЛОБАЛЬНЫЕ ========================
 let crew = [];
-let currentFaction = "Batman";
+let currentFaction = "Bat Family";
 let allCompendiumHTML = "";
 let compendiumKeys = [];
-// Инициализация
+
+const $ = id => document.getElementById(id);
+const hasInCrew = m => crew.some(x => x._id === m._id);
+
+// ======================== ОТРЯД ========================
+const addToCrew = m => {
+  crew = hasInCrew(m) ? crew.filter(x => x._id !== m._id) : [...crew, m];
+  updateCrewBar(); renderMiniCards();
+};
+
+const clearCrew = () => {
+  if (confirm("Очистить отряд?")) { crew = []; updateCrewBar(); renderMiniCards(); }
+};
+
+const updateCrewBar = () => {
+  $("crewCount").textContent = crew.length;
+  $("totalRep").textContent = crew.reduce((a,m)=>a+(m.rep||0),0);
+  $("totalFunding").textContent = crew.reduce((a,m)=>a+(m.funding||0),0);
+  $("clearCrewBtn").style.display = crew.length ? "block" : "none";
+};
+
+// ======================== МИНИ-КАРТОЧКИ ========================
+const renderMiniCards = (() => {
+  let timer;
+  return () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const grid = $("modelsGrid");
+      currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
+      const fragment = document.createDocumentFragment();
+
+      models.filter(m => {
+        const factions = Array.isArray(m.faction)
+          ? m.faction
+          : typeof m.faction === "string"
+            ? m.faction.replace(/ *& */gi,",").replace(/ *\/ */g,",").split(",").map(s=>s.trim())
+            : [];
+        return factions.includes(currentFaction);
+      }).forEach(model => {
+        const inCrew = hasInCrew(model);
+        const div = document.createElement("div");
+        div.className = `mini-card ${inCrew?"in-crew":""}`;
+        div.innerHTML = `
+          <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation();addToCrew(models[${model._id}])">${inCrew?"−":"+"}</button>
+          <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+          <div class="mini-info">
+            <div class="mini-name">${model.name}</div>
+            <div class="mini-rep">${model.rep} Rep • $${model.funding||0}</div>
+          </div>`;
+        div.onclick = () => showFullCard(model);
+        fragment.appendChild(div);
+      });
+      grid.innerHTML = ""; grid.appendChild(fragment);
+    }, 10);
+  };
+})();
+
+// ======================== ПОЛНАЯ КАРТОЧКА (ПОВЕРХ ВСЕГО!) ========================
+const showFullCard = model => {
+  const factions = Array.isArray(model.faction) ? model.faction : [model.faction||"—"];
+  const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
+    const traits = w.traits ? w.traits.split("/").map(t=>t.trim()).filter(Boolean) : [];
+    return `<div class="official-weapon"><div class="official-weapon-first-line">
+      <span class="official-weapon-name">${w.name}</span>
+      ${w.damage?`<span class="official-weapon-damage">${w.damage}</span>`:""}
+      ${w.rof&&w.rof!=="-"?`<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>`:""}
+      ${w.ammo&&w.ammo!=="-"?`<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>`:""}
+    </div>${traits.length?`<div class="official-weapon-traits-line">${traits.map(t=>`<span class="weapon-trait-chip" onclick="event.stopPropagation();showTraitDesc('${t.replace(/'/g,"\\'")}')">${t}</span>`).join("")}</div>`:""}</div>`;
+  }).join("") : "";
+
+  const traitsHTML = model.traits?.length ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${model.traits.map(t=>`<div class="official-trait" onclick="showTraitDesc('${t.replace(/'/g,"\\'")}')">${t}</div>`).join("")}</div></div>` : "";
+
+  $("fullCardContent").innerHTML = `<div class="official-card">
+    <div class="official-header"><div class="official-name">${model.name.toUpperCase()}</div>
+    <div class="official-subtitle">${model.rank||"Free Agent"} • ${factions.join(" • ")} • ${model.rep} REP • $${model.funding||0}</div></div>
+    <div class="official-main">
+      <div class="official-img-wrapper"><img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'"></div>
+      <div class="official-stats">
+        <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Willpower||"-"}</span><span class="official-label">Willpower</span></div>
+        <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Endurance||"-"}</span><span class="official-label">Endurance</span></div>
+        <div class="official-stat"><span class="official-value">${model.stats.Attack||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon"></span></div>
+        <div class="official-stat"><span class="official-value">${model.stats.Defense||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon"></span></div>
+        <div class="official-stat"><span class="official-value">${model.stats.Strength||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon"></span></div>
+        <div class="official-stat"><span class="official-value">${model.stats.Movement||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon"></span></div>
+      </div>
+    </div>
+    ${model.weapons?.length?`<div class="official-section"><div class="official-section-title">WEAPONS</div>${weaponsHTML}</div>`:""}
+    ${traitsHTML}
+  </div>`;
+
+  $("fullCard").classList.add("active");
+};
+
+const closeFullCard = () => $("fullCard").classList.remove("active");
+
+// ======================== COMPENDIUM ========================
+const openCompendium = () => {
+  $("compendiumModal").classList.add("active");
+  $("compendiumSearch").value = "";
+  $("compendiumList").innerHTML = allCompendiumHTML;
+  setTimeout(() => $("compendiumSearch").focus(), 300);
+};
+const closeCompendium = () => $("compendiumModal").classList.remove("active");
+
+$("compendiumSearch").oninput = function(){
+  const q = this.value.toLowerCase().trim();
+  document.querySelector("#compendiumModal .clear-search").style.display = q?"flex":"none";
+  if(!q){$("compendiumList").innerHTML=allCompendiumHTML;return;}
+  const html = compendiumKeys.filter(k=>k.toLowerCase().includes(q)).map(k=>`
+    <div class="comp-entry"><div class="comp-title">${k}</div><div class="comp-text">${(compendium[k]||"").replace(/\n/g,"<br>")}</div></div>`).join("");
+  $("compendiumList").innerHTML = html || `<div style="text-align:center;color:#888;padding:80px;font-size:18px;">Ничего не найдено</div>`;
+};
+
+// ======================== ПОИСК МОДЕЛЕЙ ========================
+const openModelSearch = () => {
+  $("modelSearchModal").classList.add("active");
+  setTimeout(() => $("modelSearchInput").focus(), 300);
+  renderModelSearch();
+};
+
+const closeModelSearch = () => $("modelSearchModal").classList.remove("active");
+
+const renderModelSearch = () => {
+  const query = $("modelSearchInput").value.toLowerCase().trim();
+  document.querySelector("#modelSearchModal .clear-search").style.display = query?"flex":"none";
+
+  const results = models
+    .filter(m => {
+      const factions = Array.isArray(m.faction)
+        ? m.faction
+        : typeof m.faction==="string"
+          ? m.faction.replace(/ *& */gi,",").replace(/ *\/ */g,",").split(",").map(s=>s.trim())
+          : [];
+      return factions.includes(currentFaction) && m.name.toLowerCase().includes(query);
+    })
+    .sort((a,b)=>a.name.localeCompare(b.name));
+
+  const html = results.length ? results.map(m=>`
+    <div class="comp-entry" style="cursor:pointer" onclick="showFullCard(models[${m._id}])">
+      <div class="comp-title" style="background:#222;padding:16px;font-size:18px">
+        ${m.name}<span style="float:right;color:#e94560;font-weight:bold">${m.rep} Rep</span>
+      </div>
+      <div class="comp-text" style="padding:12px;font-size:14px;color:#aaa">
+        ${m.rank||"Free Agent"} • ${Array.isArray(m.faction)?m.faction.join(" • "):m.faction||"—"}
+      </div>
+    </div>`).join("") : `<div style="text-align:center;color:#888;padding:100px;font-size:18px">Ничего не найдено</div>`;
+
+  $("modelSearchResults").innerHTML = html;
+};
+
+$("modelSearchInput").oninput = renderModelSearch;
+
+// ======================== ТРЕЙТЫ ========================
+const showTraitDesc = keyword => {
+  if (!window.compendium?.[keyword]) { alert("Нет описания: "+keyword); return; }
+  const desc = (compendium[keyword]||"").replace(/\n/g,"<br>");
+  const popup = document.createElement("div");
+  popup.className = "trait-popup";
+  popup.innerHTML = `<div class="trait-popup-content">
+    <div class="trait-popup-header"><div>${keyword}</div>
+      <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
+    </div>
+    <div class="trait-popup-text">${desc}</div>
+  </div>`;
+  popup.onclick = e => e.target===popup && popup.remove();
+  document.body.appendChild(popup);
+};
+
+// ======================== ВКЛАДКИ ========================
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.onclick = () => {
+    if (crew.length && !confirm("Смена фракции очистит отряд. Продолжить?")) return;
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    crew = []; currentFaction = tab.dataset.faction;
+    updateCrewBar(); renderMiniCards();
+    closeCompendium(); closeModelSearch();
+  };
+});
+
+// ======================== ИНИЦИАЛИЗАЦИЯ ========================
 window.addEventListener("load", () => {
   if (window.compendium) {
     compendiumKeys = Object.keys(window.compendium).sort();
-    allCompendiumHTML = compendiumKeys.map(key => `
-      <div class="comp-entry">
-        <div class="comp-title">${key}</div>
-        <div class="comp-text">${(compendium[key]||"").replace(/\n/g,"<br>")}</div>
-      </div>`).join("");
-    document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
+    allCompendiumHTML = compendiumKeys.map(k=>`
+      <div class="comp-entry"><div class="comp-title">${k}</div><div class="comp-text">${(compendium[k]||"").replace(/\n/g,"<br>")}</div></div>`).join("");
+    $("compendiumList").innerHTML = allCompendiumHTML;
   }
-  if (models) models.forEach((m,i) => m._id = i);
-  renderMiniCards();
-  updateCrewBar();
+  models.forEach((m,i)=>m._id=i);
+  renderMiniCards(); updateCrewBar();
 });
-function isInCrew(m) { return crew.some(x => x._id === m._id); }
-function addToCrew(m) {
-  crew = isInCrew(m) ? crew.filter(x => x._id !== m._id) : [...crew, m];
-  updateCrewBar(); renderMiniCards();
-}
-function clearCrew() { if(confirm("Очистить отряд?")) { crew=[]; updateCrewBar(); renderMiniCards(); }}
-function updateCrewBar() {
-  const activeTab = document.querySelector(".tab.active");
-  document.getElementById("currentFaction").textContent = activeTab?.textContent || "—";
-  document.getElementById("crewCount").textContent = crew.length;
-  document.getElementById("totalRep").textContent = crew.reduce((a,m)=>a+(m.rep||0),0);
-  document.getElementById("totalFunding").textContent = crew.reduce((a,m)=>a+(m.funding||0),0);
-}
-// === ИСПРАВЛЕННАЯ ФУНКЦИЯ: ПОДДЕРЖКА МАССИВА factions ===
-function renderMiniCards() {
-  const grid = document.getElementById("modelsGrid");
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
-  grid.innerHTML = "";
-
-  models
-    .filter(m => {
-      // ─────── НОВАЯ ЛОГИКА (работает со всеми вариантами) ───────
-      let modelFactions = [];
-
-      if (Array.isArray(m.faction)) {
-        modelFactions = m.faction;                            // уже массив
-      } else if (typeof m.faction === "string") {
-        // Разбиваем строку по любым разделителям: запятая, слэш, &, пробел + &
-        modelFactions = m.faction
-          .replace(/ *& */gi, ",")   // "Batman & Robin" → "Batman,Robin"
-          .replace(/ *\/ */g, ",")   // "Doom Patrol / GCPD" → "Doom Patrol,GCPD"
-          .split(",")
-          .map(s => s.trim())
-          .filter(Boolean);
-      }
-
-      const belongsToCurrentFaction = modelFactions.includes(currentFaction);
-      const matchesSearch = m.name.toLowerCase().includes(search);
-
-      return belongsToCurrentFaction && matchesSearch;
-    })
-    .forEach(model => {
-      const inCrew = isInCrew(model);
-      const div = document.createElement("div");
-      div.className = `mini-card ${inCrew ? "in-crew" : ""}`;
-      div.innerHTML = `
-        <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation(); addToCrew(models[${model._id}])">
-          ${inCrew?"−":"+"}
-        </button>
-        <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
-        <div class="mini-info">
-          <div class="mini-name">${model.name}</div>
-          <div class="mini-rep">${model.rep} Rep • $${model.funding||0}</div>
-        </div>`;
-      div.onclick = () => showFullCard(model);
-      grid.appendChild(div);
-    });
-}
-
-// === ИСПРАВЛЕННАЯ ФУНКЦИЯ: ПОКАЗ ВСЕХ ФРАКЦИЙ В КАРТОЧКЕ ===
-function showFullCard(model) {
-  // Получаем все фракции как массив
-  const factionsArray = Array.isArray(model.faction) ? model.faction : 
-                        (typeof model.faction === 'string' ? [model.faction] : ['—']);
-  const factionsDisplay = factionsArray.join(' • ');
-
-  document.getElementById("fullCardContent").innerHTML = `
-    <div class="official-card">
-      <!-- Заголовок -->
-      <div class="official-header">
-        <div class="official-name">${model.name.toUpperCase()}</div>
-        <div class="official-subtitle">${model.rank || "Free Agent"} • ${factionsDisplay} • ${model.rep} REP • $${model.funding || 0}</div>
-      </div>
-
-      <!-- Фото + статы -->
-      <div class="official-main">
-        <div class="official-img-wrapper">
-          <img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
-        </div>
-        <div class="official-stats">
-          <div class="official-stat willpower">
-            <span class="official-value">${model.stats.Willpower || "-"}</span>
-            <span class="official-label">🧠</span>
-          </div>
-          <div class="official-stat endurance">
-            <span class="official-value">${model.stats.Endurance || "-"}</span>
-            <span class="official-label">❤️</span>
-          </div>
-          <div class="official-stat attack">
-            <span class="official-value">${model.stats.Attack || "-"}</span>
-            <span class="official-label"><img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon"></span>
-          </div>
-          <div class="official-stat defense">
-            <span class="official-value">${model.stats.Defense || "-"}</span>
-            <span class="official-label"><img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon"></span>
-          </div>
-          <div class="official-stat strength">
-            <span class="official-value">${model.stats.Strength || "-"}</span>
-            <span class="official-label"><img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon"></span>
-          </div>
-          <div class="official-stat movement">
-            <span class="official-value">${model.stats.Movement || "-"}</span>
-            <span class="official-label"><img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon"></span>
-          </div>    
-        </div>
-      </div>
-
-      <!-- ОРУЖИЕ — теперь с кликабельными трейтами -->
-      ${model.weapons?.length ? `
-        <div class="official-section">
-          <div class="official-section-title">WEAPONS</div>
-          ${model.weapons.map(w => {
-            // Разбиваем строку трейтов на отдельные части
-            const traits = w.traits ? w.traits.split('/').map(t => t.trim()).filter(Boolean) : [];
-            return `
-              <div class="official-weapon">
-                <!-- Первая строка: название + урон + RoF + ammo -->
-                <div class="official-weapon-first-line">
-                  <span class="official-weapon-name">${w.name}</span>
-                  <span class="official-weapon-damage">${w.damage || ''}</span>
-                  ${w.rof && w.rof !== '-' ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ''}
-                  ${w.ammo && w.ammo !== '-' ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ''}
-                </div>
-                <!-- Вторая строка: трейты оружия (кликабельные!) -->
-                ${traits.length ? `
-                  <div class="official-weapon-traits-line">
-                    ${traits.map(trait => `
-                      <span class="weapon-trait-chip" onclick="event.stopPropagation(); showTraitDesc('${trait.replace(/'/g, "\\'")}')">
-                        ${trait}
-                      </span>
-                    `).join('')}
-                  </div>
-                ` : ''}
-              </div>
-            `;
-          }).join("")}
-        </div>` : ""}
-
-      <!-- Трейты персонажа (уже кликабельные) -->
-      ${model.traits?.length ? `
-        <div class="official-section yellow">
-          <div class="official-section-title">TRAITS</div>
-          <div class="official-traits-grid">
-            ${model.traits.map(t => `
-              <div class="official-trait" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>
-            `).join("")}
-          </div>
-        </div>` : ""}
-    </div>
-  `;
-  document.getElementById("fullCard").classList.add("active");
-}
-
-//
-function closeFullCard() {
-  document.getElementById("fullCard").classList.remove("active");
-}
-// ОТКРЫТИЕ И ЗАКРЫТИЕ COMPENDIUM — ЭТО БЫЛО УДАЛЕНО!
-function openCompendium() {
-  document.getElementById("compendiumModal").classList.add("active");
-  // Сброс поиска при открытии
-  const searchInput = document.getElementById("compendiumSearch");
-  if (searchInput) searchInput.value = "";
-  document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
-}
-function closeCompendium() {
-  document.getElementById("compendiumModal").classList.remove("active");
-}
-// ПОИСК В COMPENDIUM — ТОЖЕ БЫЛ УДАЛЁН!
-document.getElementById("compendiumSearch").oninput = function() {
-  const query = this.value.toLowerCase().trim();
-  if (!query) {
-    document.getElementById("compendiumList").innerHTML = allCompendiumHTML;
-    return;
-  }
-  const filtered = compendiumKeys
-    .filter(key => key.toLowerCase().includes(query))
-    .map(key => `
-      <div class="comp-entry">
-        <div class="comp-title">${key}</div>
-        <div class="comp-text">${(compendium[key]||"").replace(/\n/g,"<br>")}</div>
-      </div>
-    `).join("");
-  document.getElementById("compendiumList").innerHTML = filtered ||
-    "<div style='text-align:center;color:#888;padding:80px;font-size:18px;'>Ничего не найдено</div>";
-};
-// ВСПЛЫВАЮЩИЙ ПОПАП — КАК НА ТВОЁМ СКРИНШОТЕ COMPENDIUM
-function showTraitDesc(keyword) {
-  if (!window.compendium || !compendium[keyword]) {
-    alert("Нет описания: " + keyword);
-    return;
-  }
-  const desc = (compendium[keyword]||"").replace(/\n/g, "<br>");
-  const popup = document.createElement("div");
-  popup.className = "trait-popup";
-  popup.innerHTML = `
-    <div class="trait-popup-content">
-      <div class="trait-popup-header">
-        <div class="trait-popup-title">${keyword}</div>
-        <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
-      </div>
-      <div class="trait-popup-text">${desc}</div>
-    </div>
-  `;
-  popup.onclick = e => { if (e.target === popup) popup.remove(); };
-  document.body.appendChild(popup);
-}
-// Остальное (compendium, вкладки) — оставь как было, только добавь эти две строчки в конец:
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.onclick = () => {
-    closeCompendium();
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-    if (crew.length && !confirm("Смена фракции очистит отряд. Ок?")) return;
-    crew = []; currentFaction = tab.dataset.faction;
-    renderMiniCards(); updateCrewBar();
-  };
-});
-document.getElementById("searchInput").oninput = renderMiniCards;
 </script>
 </body>
 </html>

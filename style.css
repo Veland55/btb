@@ -1,36 +1,132 @@
 /* ============================================= */
 /* BMG Crew Builder Mobile — style.css (2025)   */
-/* Только используемые стили, ничего лишнего    */
-/* Цветовая тема: #e94560 (красный) + жёлтый    */
+/* Финальная, чистая и оптимизированная версия  */
 /* ============================================= */
 
 * { margin:0; padding:0; box-sizing:border-box; touch-action:manipulation; }
 body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:100vh; padding-bottom:100px; -webkit-tap-highlight-color:transparent; }
 
-/* ТОП-БАР */
-.top-bar { background:linear-gradient(#111,#000); padding:18px 15px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100; box-shadow:0 4px 15px rgba(0,0,0,.6); }
-.top-bar h1 { font-size:26px; letter-spacing:6px; color:#e94560; text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }
+/* === ТОП-БАР === */
+.top-bar {
+  background:linear-gradient(#111,#000);
+  padding:18px 15px;
+  text-align:center;
+  border-bottom:4px solid #e94560;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 4px 15px rgba(0,0,0,.6);
+}
+.top-bar h1 {
+  font-size:26px;
+  letter-spacing:6px;
+  color:#e94560;
+  text-shadow:0 0 20px rgba(233,69,96,.7);
+  margin-bottom:6px;
+}
 .top-bar-content { display:flex; justify-content:space-between; align-items:center; padding:0 15px; }
-.compendium-small-btn { display:flex; align-items:center; gap:8px; background:#e94560; color:#fff; padding:8px 14px; border-radius:30px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 4px 15px rgba(233,69,96,.5); transition:all .3s; }
+.compendium-small-btn {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#e94560;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:30px;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 4px 15px rgba(233,69,96,.5);
+  transition:all .3s;
+}
 .compendium-small-btn:hover { background:#ff3366; transform:translateY(-2px); }
-.compendium-small-btn img { width:28px; height:28px; }
 .funds { font-size:17px; font-weight:bold; margin-top:8px; }
 .funds span { color:#e94560; margin:0 10px; }
 
-/* ВКЛАДКИ ФРАКЦИЙ */
-.tabs-container { background:#111; padding:12px 10px; }
-.tabs { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-.tab { flex:1; min-width:110px; max-width:150px; padding:10px 8px; background:#222; border:2px solid #444; color:#ccc; border-radius:12px; font-size:13.5px; font-weight:bold; text-align:center; transition:all .3s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.tab.active, .tab:hover { background:#e94560; border-color:#e94560; color:#fff; transform:scale(1.05); box-shadow:0 0 20px rgba(233,69,96,.6); }
+/* === ВКЛАДКИ ФРАКЦИЙ === */
+/* === ВКЛАДКИ ФРАКЦИЙ — СУПЕРКОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ === */
+.tabs-container {
+  background:#111;
+  padding:10px 0 8px;
+  border-bottom:3px solid #222;
+  overflow:hidden;
+}
 
-/* ПОИСК */
-.search-container { padding:14px; background:#111; }
-#searchInput { width:100%; padding:16px 20px; background:#222; border:2px solid #444; border-radius:14px; color:#fff; font-size:17px; text-align:center; outline:none; }
-#searchInput::placeholder { color:#777; }
+.tabs {
+  display:flex;
+  overflow-x:auto;
+  gap:8px;
+  padding:0 12px 8px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
 
-/* СЕТКА МОДЕЛЕЙ */
-.models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:14px; padding:14px; }
-.mini-card { background:#1a1a1a; border-radius:14px; overflow:hidden; position:relative; cursor:pointer; border:2px solid transparent; box-shadow:0 4px 12px rgba(0,0,0,.5); transition:all .3s; }
+/* Скрываем скроллбар, но оставляем скролл пальцем */
+.tabs::-webkit-scrollbar { display:none; }
+.tabs { -ms-overflow-style:none; scrollbar-width:none; }
+
+/* Кнопки фракций — максимально компактные и красивые */
+.tab {
+  flex:0 0 auto;
+  min-width:88px;        /* было 110px → стало 88px */
+  max-width:120px;
+  padding:9px 6px;       /* меньше отступов */
+  background:#222;
+  border:2px solid #444;
+  border-radius:20px;    /* более круглые */
+  color:#ccc;
+  font-size:12.5px;      /* было 13.5 → стало 12.5 */
+  font-weight:bold;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  transition:all .25s ease;
+  scroll-snap-align:center;
+  box-shadow:0 3px 8px rgba(0,0,0,.4);
+}
+
+.tab img {
+  height:20px;
+  width:auto;
+  margin:2px auto;
+  display:block;
+}
+
+/* Активная / ховер */
+.tab.active,
+.tab:hover {
+  background:#e94560;
+  border-color:#e94560;
+  color:#fff;
+  transform:scale(1.06);
+  box-shadow:0 0 18px rgba(233,69,96,.7);
+}
+
+/* Для Doom Patrol — только иконка без текста */
+.tab[data-faction="Doom Patrol"] {
+  min-width:64px;
+  padding:8px 4px;
+}
+.tab[data-faction="Doom Patrol"] span { display:none; }
+
+/* === СЕТКА МОДЕЛЕЙ === */
+.models-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
+  gap:14px;
+  padding:14px;
+}
+.mini-card {
+  background:#1a1a1a;
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  border:2px solid transparent;
+  box-shadow:0 4px 12px rgba(0,0,0,.5);
+  transition:all .3s;
+}
 .mini-card:hover { transform:translateY(-6px); box-shadow:0 12px 25px rgba(233,69,96,.4); }
 .mini-card.in-crew { border:4px solid #e94560; box-shadow:0 0 30px rgba(233,69,96,.8); transform:scale(1.04); }
 .mini-card img { width:100%; height:115px; object-fit:cover; }
@@ -38,276 +134,340 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .mini-name { font-weight:bold; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
 .mini-rep { color:#e94560; font-weight:bold; font-size:14px; }
 
-/* КНОПКИ + / − */
-.add-btn, .remove-btn { position:absolute; top:8px; right:8px; width:40px; height:40px; border-radius:50%; font-size:24px; font-weight:bold; border:none; z-index:10; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; }
+/* === КНОПКИ + / − === */
+.add-btn, .remove-btn {
+  position:absolute;
+  top:8px; right:8px;
+  width:40px; height:40px;
+  border-radius:50%;
+  font-size:24px; font-weight:bold;
+  border:none; z-index:10;
+  box-shadow:0 3px 10px rgba(0,0,0,.6);
+  transition:all .3s;
+  cursor:pointer;
+}
 .add-btn { background:#e94560; color:#fff; }
 .add-btn:hover { background:#ff3366; transform:scale(1.25); }
 .remove-btn { background:#c00; color:#fff; }
 .remove-btn:hover { background:#f00; transform:scale(1.25); }
 
-/* НИЖНЯЯ ПАНЕЛЬ */
-.crew-bar { position:fixed; bottom:0; left:0; right:0; background:linear-gradient(to top,#000,#111); border-top:4px solid #e94560; padding:14px; text-align:center; z-index:999; box-shadow:0 -8px 25px rgba(0,0,0,.8); }
-.crew-total { font-size:18px; color:#e94560; font-weight:bold; letter-spacing:1.2px; }
-.clear-btn { margin-top:10px; padding:11px 24px; background:#c00; color:#fff; border:none; border-radius:12px; font-size:15px; font-weight:bold; cursor:pointer; }
-
-/* ПОЛНАЯ КАРТОЧКА */
-.full-card { position:fixed; inset:0; background:#000; z-index:1000; overflow-y:auto; display:none; padding:10px; }
+/* === ПОЛНАЯ КАРТОЧКА (поверх всего) === */
+.full-card {
+  position:fixed; inset:0;
+  background:#000;
+  z-index:9999;
+  overflow-y:auto;
+  display:none;
+  padding:10px;
+}
 .full-card.active { display:block; }
-.full-inner { max-width:460px; margin:0 auto; background:#111; border:5px solid #e94560; border-radius:20px; overflow:hidden; box-shadow:0 0 50px rgba(233,69,96,.7); position:relative; }
-.close-full { position:absolute; top:12px; right:20px; font-size:52px; color:#e6e945; cursor:pointer; z-index:10; font-weight:bold; }
+.full-inner {
+  max-width:460px;
+  margin:0 auto;
+  background:#111;
+  border:5px solid #e94560;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 0 50px rgba(233,69,96,.7);
+  position:relative;
+}
+.close-full {
+  position:absolute;
+  top:26px; right:30px;
+  font-size:36px;
+  color:#e6e945;
+  cursor:pointer;
+  z-index:10;
+  font-weight:bold;
+}
 
-/* Заголовок и ранг */
-.full-header { background:#e94560; color:#fff; padding:22px 20px; text-align:center; font-size:28px; font-weight:bold; position:relative; }
-.full-rank { position:absolute; bottom:-18px; left:50%; transform:translateX(-50%); background:#000; color:#e94560; padding:8px 26px; border-radius:30px; font-size:16px; font-weight:bold; border:3px solid #e94560; white-space:nowrap; }
-.full-img { width:100%; height:auto; max-height:400px; object-fit:contain; background:#000; border-bottom:6px solid #e94560; }
-
-/* СТАТЫ — твоя текущая версия со смайликами */
-.stats-compact { padding:20px 16px; background:#0a0a0a; text-align:center; }
-.stat-row { display:flex; justify-content:space-around; gap:12px; margin:14px 0; }
-.stat-big { font-size:48px; font-weight:bold; color:#e94560; }
-.stat-small { font-size:36px; font-weight:bold; color:#e8c63a; }
-
-/* Оружие и трейты */
-.section-title { background:#e94560; color:#fff; padding:14px; text-align:center; font-size:20px; font-weight:bold; margin:20px 0 15px; }
-.weapons-compact, .traits-compact { padding:0 15px 20px; }
-.weapon-line, .trait-chip { background:#222; margin:10px 0; padding:14px; border-radius:12px; cursor:pointer; transition:all .2s; }
-.weapon-line:hover, .trait-chip:hover { background:#333; transform:translateX(4px); }
-.weapon-name { font-weight:bold; font-size:16px; }
-.weapon-props { color:#aaa; font-size:14px; }
-.trait-chip { display:inline-block; background:#e94560; color:#fff; padding:10px 18px; border-radius:30px; font-weight:bold; margin:6px; }
-
-/* COMPENDIUM МОДАЛЬНЫЙ */
-.compendium-modal { position:fixed; inset:0; background:#000; z-index:2000; overflow-y:auto; display:none; flex-direction:column; }
+/* === COMPENDIUM И ПОИСК МОДЕЛЕЙ === */
+.compendium-modal {
+  position:fixed; inset:0;
+  background:#000;
+  z-index:2000;
+  overflow-y:auto;
+  display:none;
+  flex-direction:column;
+}
 .compendium-modal.active { display:flex; }
-.compendium-header { background:#111; padding:15px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:10; }
+
+.compendium-header {
+  background:#111;
+  padding:15px;
+  text-align:center;
+  border-bottom:4px solid #e94560;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
 .compendium-header h2 { color:#e94560; font-size:24px; margin:0; }
-.back-btn { position:absolute; left:15px; top:50%; transform:translateY(-50%); background:#e94560; color:#fff; border:none; padding:10px 18px; border-radius:30px; font-weight:bold; font-size:14px; cursor:pointer; }
+.back-btn {
+  position:absolute;
+  left:15px; top:50%;
+  transform:translateY(-50%);
+  background:#e94560;
+  color:#fff;
+  border:none;
+  padding:10px 18px;
+  border-radius:30px;
+  font-weight:bold;
+  font-size:14px;
+  cursor:pointer;
+}
 
-/* Поиск в компендиуме */
-.compendium-search-wrapper { padding:16px 15px 10px; background:#111; position:sticky; top:59px; z-index:10; box-shadow:0 4px 10px rgba(0,0,0,.5); }
-.compendium-search { position:relative; display:flex; align-items:center; background:#222; border-radius:50px; border:2px solid #e94560; overflow:hidden; }
-.compendium-search:focus-within { box-shadow:0 6px 25px rgba(233,69,96,.6); }
-.search-icon { width:20px; height:20px; fill:#e94560; margin:0 14px; pointer-events:none; }
-#compendiumSearch { flex:1; background:transparent; border:none; outline:none; color:#fff; font-size:16px; padding:14px 10px 14px 0; }
-#compendiumSearch::placeholder { color:#aaa; }
-.clear-search { background:#e94560; color:#fff; border:none; width:36px; height:36px; border-radius:50%; font-size:20px; cursor:pointer; margin-right:8px; display:flex; align-items:center; justify-content:center; }
+/* === ЕДИНЫЙ КРАСИВЫЙ ПОИСК (и Compendium, и Модели) === */
+.compendium-search-wrapper { padding:16px; background:#111; }
+.compendium-search {
+  display:flex;
+  align-items:center;
+  background:#222;
+  border:2px solid #e94560;
+  border-radius:50px;
+  overflow:hidden;
+  transition:all .3s ease;
+  box-shadow:0 4px 15px rgba(0,0,0,.4);
+}
+.compendium-search:focus-within {
+  border-color:#ff3366;
+  box-shadow:0 0 25px rgba(233,69,96,.8);
+  transform:scale(1.02);
+}
+.compendium-search .search-icon {
+  width:20px;
+  height:20px;
+  fill:#e94560;
+  margin:0 14px;
+  pointer-events:none;
+}
+.compendium-search input {
+  flex:1;
+  background:transparent;
+  border:none;
+  outline:none;
+  color:#fff;
+  font-size:16px;
+  padding:14px 10px 14px 0;
+}
+.compendium-search input::placeholder { color:#aaa; }
+.compendium-search .clear-search {
+  background:#e94560;
+  color:#fff;
+  border:none;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  font-size:20px;
+  cursor:pointer;
+  margin-right:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:background .2s;
+}
+.compendium-search .clear-search:hover { background:#ff3366; }
 
-/* Содержимое компендиума */
+/* === СОДЕРЖИМОЕ COMPENDIUM И ПОИСКА === */
 .compendium-content { flex:1; padding-bottom:100px; }
-.comp-entry { margin:28px 15px 10px; background:#111; border-radius:16px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,.4); border:1px solid #333; }
-.comp-title { background:#e94560; color:#fff; padding:16px 20px; font-weight:bold; font-size:22px; text-align:center; letter-spacing:1px; }
-.comp-text { background:#1a1a1a; padding:22px 20px; line-height:1.75; color:#eee; font-size:15.5px; }
+.comp-entry {
+  margin:28px 15px 10px;
+  background:#111;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 4px 15px rgba(0,0,0,.4);
+  border:1px solid #333;
+}
+.comp-title {
+  background:#e94560;
+  color:#fff;
+  padding:16px 20px;
+  font-weight:bold;
+  font-size:22px;
+  text-align:center;
+  letter-spacing:1px;
+}
+.comp-text {
+  background:#1a1a1a;
+  padding:22px 20px;
+  line-height:1.75;
+  color:#eee;
+  font-size:15.5px;
+}
 
-/* ВСПЛЫВАЮЩИЙ ПОПАП ТРЕЙТОВ */
-.trait-popup { position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
-.trait-popup-content { background:#111; border:5px solid #e94560; border-radius:16px; max-width:95%; max-height:90vh; overflow-y:auto; box-shadow:0 0 60px rgba(233,69,96,.8); }
-.trait-popup-header { background:#e94560; color:#000; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; font-size:24px; font-weight:bold; }
-.trait-popup-close { width:48px; height:48px; background:#000; color:#e94560; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; cursor:pointer; }
-.trait-popup-text { padding:24px 20px; line-height:1.8; color:#eee; font-size:16px; background:#0a0a0a; }
+/* === ПОПАП ТРЕЙТОВ === */
+.trait-popup {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.97);
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-y:auto;
+}
+.trait-popup-content {
+  background:#111;
+  border:5px solid #e94560;
+  border-radius:16px;
+  max-width:95%;
+  max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 0 60px rgba(233,69,96,.8);
+}
+.trait-popup-header {
+  background:#e94560;
+  color:#000;
+  padding:16px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:24px;
+  font-weight:bold;
+}
+.trait-popup-close {
+  width:48px;
+  height:48px;
+  background:#000;
+  color:#e94560;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  cursor:pointer;
+}
+.trait-popup-text {
+  padding:24px 20px;
+  line-height:1.8;
+  color:#eee;
+  font-size:16px;
+  background:#0a0a0a;
+}
 
-/* Адаптивность */
+/* === ОФИЦИАЛЬНАЯ КАРТОЧКА МОДЕЛИ === */
+.official-card { background:#ffd700; color:#000; border-radius:20px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6); margin:10px; font-family:'Oswald',sans-serif; }
+.official-header { background:#000; color:#ffd700; padding:8px; text-align:center; }
+.official-name { font-size:28px; font-weight:bold; letter-spacing:2px; }
+.official-subtitle { font-size:16px; margin-top:6px; opacity:.9; }
+.official-main { display:flex; padding:20px; gap:20px; background:url('https://veland55.github.io/btb/img/card-bg.jpg') center/cover no-repeat #f5f5f5; min-height:250px; }
+.official-img-wrapper { flex:0 0 140px; border-radius:12px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,.5); }
+.official-img { width:100%; height:100%; object-fit:cover; }
+.official-stats { flex:1; display:grid; grid-template-columns:1fr 1fr; gap:16px; align-content:start; }
+.official-stat { background:#000; color:#ffd700; padding:8px; border-radius:12px; text-align:center; font-weight:bold; box-shadow:0 4px 12px rgba(0,0,0,.4); }
+.official-value { font-size:30px; display:block; line-height:1; }
+.official-label { font-size:20px; letter-spacing:2px; opacity:.9; margin-top:4px; }
+.official-section { padding:0 20px 20px; }
+.official-section.yellow { background:#000; margin:0 -20px; padding:20px; }
+.official-section-title { background:#000; color:#ffd700; padding:8px; font-size:20px; font-weight:bold; text-align:center; margin:0 -20px 16px; }
+.official-weapon { background:#333; color:#fff; padding:14px; border-radius:12px; margin:8px 0; cursor:pointer; transition:all .2s; }
+.official-weapon:hover { background:#555; transform:translateX(6px); }
+.official-weapon-first-line { display:flex; align-items:center; gap:8px; font-weight:bold; font-size:16px; }
+.official-weapon-damage { color:yellow; }
+.weapon-trait-chip { background:#ffd700; color:#000; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold; cursor:pointer; transition:all .2s; }
+.weapon-trait-chip:hover { background:#fff; transform:scale(1.08); }
+.official-traits-grid { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:10px; }
+.official-trait { background:#ffd700; color:#000; padding:10px 16px; border-radius:30px; font-weight:bold; font-size:14px; cursor:pointer; }
+.official-trait:hover { background:#fff; transform:scale(1.05); }
+.stat-icon { width:24px; height:24px; vertical-align:middle; margin-left:6px; }
+
+/* === АДАПТИВНОСТЬ === */
 @media (max-width:380px) {
   .tab { min-width:100px; font-size:13px; }
-  .stat-big { font-size:42px; }
-  .stat-small { font-size:32px; }
 }
 
 
-
-
-
-
-/* ОФИЦИАЛЬНАЯ КАРТОЧКА — КАК В ПРИЛОЖЕНИИ BMG */
-.official-card {
-  background: #ffd700;
-  color: #000;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  margin: 10px;
-  font-family: 'Oswald', sans-serif;
-}
-
-.official-header {
-  background: #000;
-  color: #ffd700;
-  padding: 2px 2px;
-  text-align: center;
-}
-.official-name {
-  font-size: 28px;
-  font-weight: bold;
-  letter-spacing: 2px;
-}
-.official-subtitle {
-  font-size: 16px;
-  margin-top: 6px;
-  opacity: 0.9;
-}
-
-.official-main {
-  display: flex;
-  padding: 20px;
-  gap: 20px;
-  background: url('https://veland55.github.io/btb/img/card-bg.jpg') center/cover no-repeat;
-  background-color: #f5f5f5;
-  min-height: 250px;
-}
-
-.official-img-wrapper {
-  flex: 0 0 140px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-}
-.official-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.official-stats {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  align-content: start;
-}
-.official-stat {
-  background: #000;
-  color: #ffd700;
-  padding: 4px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: bold;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-.official-value {
-  font-size: 30px;
-  display: block;
-  line-height: 1;
-}
-.official-label {
-  font-size: 22px;
-  letter-spacing: 2px;
-  opacity: 0.9;
-  margin-top: 4px;
-}
-
-.official-section {
-  padding: 0 20px 20px;
-}
-.official-section.yellow {
-  background: #000;
-  margin: 0 -20px;
-  padding: 20px;
-}
-.official-section-title {
-  background: #000;
-  color: #ffd700;
-  padding: 2px 2px;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  margin: 0 -20px 16px;
-}
-
+/*Правки*/
+/* === ОРУЖИЕ — БОЛЕЕ ПРОСТОРНО И ЧИТАЕМО === */
 .official-weapon {
-  background: #333;
-  color: #fff;
-  padding: 14px;
-  border-radius: 12px;
-  margin: 8px 0;
-  cursor: pointer;
-  transition: all 0.2s;
+  background:#2a2a2a;
+  color:#fff;
+  padding:16px 18px;           /* увеличил отступы */
+  border-radius:14px;
+  margin:12px 8px;             /* больше воздуха между оружиями */
+  border-left:4px solid #e94560;
+  box-shadow:0 4px 12px rgba(0,0,0,.5);
+  transition:all .25s;
 }
 .official-weapon:hover {
-  background: #555;
-  transform: translateX(6px);
-}
-.official-weapon-name {
-  font-weight: bold;
-  font-size: 16px;
-}
-.official-weapon-props {
-  font-size: 13px;
-  color: #ffd700;
-  margin-top: 4px;
+  background:#333;
+  transform:translateX(8px);
+  box-shadow:0 6px 20px rgba(233,69,96,.4);
 }
 
+/* Первая строка — название и характеристики с красивым разделителем */
 .official-weapon-first-line {
-  display: flex;
-  align-items: center;
-  gap: 8px;  /* Промежутки между элементами */
-  font-weight: bold;
-  font-size: 16px;
-}
-.official-weapon-damage {
-  color: yellow;  /* Звёздочки/капли жёлтые, как на скриншоте */
-}
-.official-weapon-rof {
-  color: white;  /* Прицел белый */
-}
-.official-weapon-ammo {
-  color: white;  /* Пуля белая */
-}
-.official-weapon-traits {
-  font-size: 13px;
-  color: #ffd700;  /* Жёлтый, как props на скриншоте */
-  margin-top: 4px;
+  display:flex;
+  align-items:center;
+  gap:14px;                    /* больше пространства между элементами */
+  flex-wrap:wrap;
+  font-size:17px;
+  font-weight:bold;
+  margin-bottom:8px;
 }
 
+/* Добавляем маленькие разделители между характеристиками */
+.official-weapon-first-line > span:not(:first-child)::before {
+  content:"";
+  margin-right:14px;
+  vertical-align:middle;
+}
+
+.official-weapon-name { 
+  color:#ffd700; 
+  font-size:18px;
+}
+.official-weapon-damage { color:#44ff44; }
+.official-weapon-rof { color:#44ff44; display:flex; align-items:center; gap:6px; }
+.official-weapon-ammo { color:#44ff44; display:flex; align-items:center; gap:6px; }
+
+/* Трейты оружия — отдельно и просторно */
 .official-weapon-traits-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 6px;
-  padding: 0 4px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed #444;   /* лёгкий разделитель */
 }
 
 .weapon-trait-chip {
-  background: #ffd700;
-  color: #000;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
+  background:#ffd700;
+  color:#000;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12.5px;
+  font-weight:bold;
+  transition:all .25s;
 }
-
 .weapon-trait-chip:hover {
-  background: #fff;
-  transform: scale(1.08);
+  background:#ffffff;
+  transform:scale(1.08);
 }
 
-/* Если хотите кастомные иконки вместо ○ и •, добавьте img и замените в HTML на <img src="target.png"> */
-
+/* === ТРЕЙТЫ МОДЕЛИ — ТОЖЕ СТАЛО СВОБОДНЕЕ === */
 .official-traits-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 14px;               /* больше расстояния между трейтами */
+  justify-content:center;
+  margin-top:16px;
+  padding:16px 8px;
 }
+
 .official-trait {
-  background: #ffd700;
-  color: #000;
-  padding: 10px 16px;
-  border-radius: 30px;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  background:#ffd700;
+  color:#000;
+  padding:11px 18px;
+  border-radius:30px;
+  font-weight:bold;
+  font-size:14.5px;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,.3);
+  transition:all .25s;
 }
 .official-trait:hover {
-  background: #fff;
-  transform: scale(1.05);
+  background:#fff;
+  transform:scale(1.07);
 }
 
-.stat-icon {
-  width: 24px;
-  height: 24px;
-  vertical-align: middle;
-  margin-left: 6px;
-}
+

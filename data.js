@@ -176,7 +176,7 @@ const models = [
     "weapons": [
     {
       "name": "Hidden Gun",
-      "damage": "•★", 
+      "damage": "🩸★", 
       "rof": 2,
       "ammo": 2,
       "traits": "Firearm / S. Range"
@@ -235,7 +235,7 @@ const models = [
     "weapons": [
     {
       "name": "Lightning",
-      "damage": "•★", 
+      "damage": "🩸★", 
       "rof": 3,
       "ammo": "-",
       "traits": "Beam / Electric / M. Range / Throwing"
