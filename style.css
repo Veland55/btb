@@ -398,7 +398,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-weapon-first-line {
   display:flex;
   align-items:center;
-  gap:14px;                    /* больше пространства между элементами */
+  gap:6px;                    /* больше пространства между элементами */
   flex-wrap:wrap;
   font-size:17px;
   font-weight:bold;
@@ -424,7 +424,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-weapon-traits-line {
   display:flex;
   flex-wrap:wrap;
-  gap:2px;
+  gap:8px;
   margin-top:10px;
   padding-top:10px;
   border-top:1px dashed #444;   /* лёгкий разделитель */
