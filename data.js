@@ -1,12 +1,14 @@
 const models = [
     {
-  "name": "Batwoman",
-  "rep": 111,
-  "funding": 0,
-  "rank": "Leader",
-  "faction": "Bat Family",
-  "img": "https://veland55.github.io/btb/img/Batwoman.png",  // Подставьте реальную ссылку
-  "stats": { 
+  "name": "Batwoman",   //Имя 
+  "realname": "Kate Kane",   //Настоящее имя
+  "base": "40mm",   //Размер базы
+  "rep": 111,   //Стоимость в репутации
+  "funding": 0,   //Стоимость в деньгах
+  "rank": "Leader",   //Роли в банде
+  "faction": "Bat Family",  //Фракция
+  "img": "https://veland55.github.io/btb/img/Batwoman.png",  // Картинка модели
+  "stats": {   //Статы
     "Attack": 4, 
     "Defense": 4, 
     "Strength": "4+", 
@@ -14,14 +16,14 @@ const models = [
     "Willpower": 8, 
     "Endurance": 7 
   },
-  "traits": ["Air Combat", "Arrest", "Bat Cape", "Bat Family", "Bat-Armor Mk I", "Batclaw/Grapple Gun", "Criminology", "Interrogation", "Military Teamwork", "Night Vision", "Searcher", "Stealth"],
+  "traits": ["Air Combat", "Arrest", "Bat Cape", "Bat Family", "Bat-Armor Mk I", "Batclaw/Grapple Gun", "Criminology", "Interrogation", "Military Teamwork", "Night Vision", "Searcher", "Stealth"],  //Трейты модели
   "weapons": [ 
     {
       "name": "BATARANG",
-      "damage": "★★",  // Два stun (★=stun, •=blood)
+      "damage": "★★",  // Два stun (★=stun, 🩸=blood)
       "rof": 2,        // Rate of Fire (кубы атаки)
       "ammo": 2,       // Патроны
-      "traits": "M. Range / Remote Controlled / Throwing"
+      "traits": "M. Range / Remote Controlled / Throwing"  // Трейты оружия
     },
     {
       "name": "SHOCK GLOVES",
@@ -32,6 +34,7 @@ const models = [
     }
   ]
 },
+
 {
   "name": "Batman (Multiverse)",
   "rep": 150,
@@ -56,67 +59,6 @@ const models = [
       "ammo": 2,
       "traits": "Light / S. Range / Throwing"
     }
-  ]
-},
-
-  {
-  "name": "Batman (Dark Knight Rises)",
-  "rep": 150,
-  "funding": 0,
-  "rank": "Leader",
-  "faction": "Bat Family",
-  "img": "https://veland55.github.io/btb/img/Batman_DarkKnightRises.png",
-  "stats": {
-    "Attack": 4,
-    "Defense": 5,
-    "Strength": "3+",
-    "Movement": 12,
-    "Willpower": 8,
-    "Endurance": 8
-  },
-  "traits": [
-    "Bat-Armor Mk II",
-    "Batclaw/Grapple Gun",
-    "Combo (Unarmed)",
-    "Reinforced Gloves",
-    "Sneak Attack",
-    "Bat Cape",
-    "Arrest",
-    "Detective",
-    "Master of Stealth"
-  ],
-  "weapons": [
-    "Batarang (Light /S. Range/ Throwing)"
-  ]
-},
-
-{
-  "name": "Harley Quinn (Arkham Knight)",
-  "rep": 45,
-  "funding": 0,
-  "rank": "Sidekick",
-  "faction": "Bat Family",
-  "img": "https://veland55.github.io/btb/img/Harley_Quinn_ArkhamKnight.png",
-  "stats": {
-    "Attack": 4,
-    "Defense": 4,
-    "Strength": 5,
-    "Movement": 13,
-    "Willpower": 7,
-    "Endurance": 7
-  },
-  "traits": [
-    "Bluff",
-    "Discourage",
-    "Mobster",
-    "Unpredictable",
-    "Acrobat",
-    "Escape Artist",
-    "Play Nice!"
-  ],
-  "weapons": [
-    "Reinforced Bat (Handy/Heavy)",
-    "SMG (Firearm/S. Range)"
   ]
 },
 
@@ -304,122 +246,1025 @@ const models = [
     ]
   },
 
+
+//---------------------------------------------------------------------------------------------------------// 
 //Birds of Prey
+//---------------------------------------------------------------------------------------------------------// 
+
 {
-    "name": "Batgirl (Rebirth)",
-    "rep": 60,
-    "funding": 100,
-    "rank": "Sidekick",
-    "faction": ["Bat Family", "GCPD"],
-    "img": "https://veland55.github.io/btb/img/Batgirl_Rebirth.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "4+",
-      "Movement": 10,
-      "Willpower": 6,
-      "Endurance": 6
-    },
-    "traits": [
-      "Acrobat",
-      "Detective",
-      "Light / Range / Throwing",
-      "Martial Artist",
-      "Stealth"
-    ],
-    "weapons": [
-      "Batclaw/Grapple Gun (Combo Unarmed)",
-      "Reinforced Gloves (Limited Equipment)",
-      "True Love: James W. Gordon (Bat Family)"
-    ]
+  "name": "Poison Ivy 1997",
+  "realname": "Dr. Pamela Lillian Isley",
+  "base": "40mm",
+  "rep": 66,
+  "funding": 0,
+  "rank": "Leader",
+  "faction": "Birds of Prey",
+  "img": "https://veland55.github.io/btb/img/PoisonIvy_1997.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 8,
+    "Willpower": 7,
+    "Endurance": 6
   },
+  "traits": [
+    "Affinity (Mr. Freeze (1997))",
+    "Elite Boss (Plants)",
+    "Mortal Kiss",
+    "Poison Immunity",
+    "Scientific",
+    "Control Pheromones",
+    "Let's Cool It For Now",
+    "Nature's Arm",
+    "Protect Me!"
+  ],
+  "weapons": [
+    {
+      "name": "Sprinkling Spores",
+      "damage": "",
+      "rof": 1,
+      "ammo": "-",
+      "traits": "Expansive / Poison / Toxic (1)"
+    },
+    {
+      "name": "Plants",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Mechanical / Protective / Reach (2)"
+    }
+  ]
+},
+
+{
+  "name": "Harley Quinn Roller Derby",
+  "realname": "Dr. Harleen Frances Quinzel",
+  "base": "40mm",
+  "rep": 84,
+  "funding": 0,
+  "rank": ["Sidekick", "Leader"],
+  "faction": "Birds of Prey",
+  "img": "https://veland55.github.io/btb/img/HarleyQuinn_RollerDerby.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 12,
+    "Willpower": 8,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Charismatic",
+    "Goad",
+    "Harlequin Show",
+    "Adaptable",
+    "Fast (2)",
+    "Harlequin",
+    "True Love (Poison Ivy)"
+  ],
+  "weapons": [
+    {
+      "name": "Reinforced Bat",
+      "damage": "★★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Heavy"
+    }
+  ]
+},
+
+{
+  "name": "Poison Ivy",
+  "realname": "Dr. Pamela Lillian Isley",
+  "base": "40mm / 60mm",
+  "rep": 93,
+  "funding": 0,
+  "rank": ["Sidekick", "Leader"],
+  "faction": "Birds of Prey",
+  "img": "https://veland55.github.io/btb/img/PoisonIvy.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 8,
+    "Willpower": 8,
+    "Endurance": 7
+  },
+  "traits": [
+    "Adaptable",
+    "Control Pheromones",
+    "Green Web",
+    "Poison Immunity",
+    "Protect Me!",
+    "Chlorokinesis",
+    "Elite Boss (Plants)",
+    "Mortal Kiss",
+    "Pollination",
+    "Scientific"
+  ],
+  "weapons": [
+    {
+      "name": "Plants",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Mechanical / Protective / Reach (2)"
+    },
+    {
+      "name": "Spores",
+      "damage": "🩸",
+      "rof": 1,
+      "ammo": 3,
+      "traits": "Acid / Explosive / Mechanical / S. Range / Poison"
+    }
+  ]
+},
+
+{
+  "name": "Black Canary (Rebirth)",
+  "realname": "Dinah Lance",
+  "base": "40mm",
+  "rep": 80,
+  "funding": 0,
+  "rank": "Free Agent",
+  "faction": ["GCPD", "Birds of Prey"],
+  "img": "https://veland55.github.io/btb/img/BlackCanary_Rebirth.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 13,
+    "Willpower": 7,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Hidden",
+    "Shockwave",
+    "Street Fighter",
+    "Teamwork (1) Green Arrow",
+    "Canary Cry",
+    "Reverberation",
+    "Stealth",
+    "Street Guy"
+  ],
+  "weapons": [
+    {
+      "name": "Martial Prowess",
+      "damage": "★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Overwhelming / CRT (Paralyze)"
+    }
+  ]
+},
+
+{
+  "name": "Harley Quinn",
+  "realname": "Dr. Harleen Frances Quinzel",
+  "base": "30mm",
+  "rep": 98,
+  "funding": 0,
+  "rank": "Free Agent",
+  "faction": ["Birds of Prey", "Suicide Squad"],
+  "img": "https://veland55.github.io/btb/img/HarleyQuinn.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 13,
+    "Willpower": 8,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Charismatic",
+    "Confusion",
+    "The Voices (Mental Disorder)",
+    "Adaptable",
+    "Combat Flip",
+    "Goad"
+  ],
+  "weapons": [
+    {
+      "name": "Mallet",
+      "damage": "★★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Heavy / Reach (1)"
+    }
+  ]
+},
+
+{
+  "name": "Katana (Rebirth)",
+  "realname": "Tatsu Yamashiro",
+  "base": "40mm",
+  "rep": 75,
+  "funding": 100,
+  "rank": "Free Agent",
+  "faction": ["GCPD", "Suicide Squad", "Birds of Prey"],
+  "img": "https://veland55.github.io/btb/img/Katana_Rebirth.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "5+",
+    "Movement": 11,
+    "Willpower": 7,
+    "Endurance": 6
+  },
+  "traits": [
+    "Acrobat",
+    "Feint",
+    "Precise Blow",
+    "Stealth",
+    "Adaptable",
+    "Martial Artist",
+    "Soul Voices"
+  ],
+  "weapons": [
+    {
+      "name": "Shurikens",
+      "damage": "★★",
+      "rof": 2,
+      "ammo": 2,
+      "traits": "Light / S. Range / Throwing"
+    },
+    {
+      "name": "Soultaker",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Sharp / Steal"
+    }
+  ]
+},
+
+{
+  "name": "Black Canary",
+  "realname": "Dinah Lance",
+  "base": "30mm",
+  "rep": 78,
+  "funding": 0,
+  "rank": "Sidekick",
+  "faction": "Birds of Prey",
+  "img": "https://veland55.github.io/btb/img/BlackCanary.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 11,
+    "Willpower": 7,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Shockwave",
+    "Street Guy",
+    "Persuasive",
+    "Street Fighter",
+    "Undercover"
+  ],
+  "weapons": [
+    {
+      "name": "Good Night Bat",
+      "damage": "★★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Heavy"
+    },
+    {
+      "name": "Canary Cry",
+      "damage": "🩸",
+      "rof": 1,
+      "ammo": "-",
+      "traits": "Beam / Expansive / Sonic / Throwing / CRT (Stunned) / Push (2)"
+    }
+  ]
+},
+
+{
+  "name": "Lady Shiva",
+  "realname": "Sandra Wu-San",
+  "base": "40mm",
+  "rep": 88,
+  "funding": 0,
+  "rank": "Sidekick",
+  "faction": ["League of Shadows", "Birds of Prey"],
+  "img": "https://veland55.github.io/btb/img/LadyShiva.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 11,
+    "Willpower": 8,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Arrogant",
+    "Martial Artist",
+    "Moral Compass",
+    "Reinforced Gloves",
+    "Adaptable",
+    "Combo (Unarmed)",
+    "Master Fighter",
+    "Precise Blow",
+    "Stealth"
+  ],
+  "weapons": []
+},
+
+{
+  "name": "Oracle",
+  "realname": "Barbara Gordon",
+  "base": "40mm",
+  "rep": 50,
+  "funding": 0,
+  "rank": ["Sidekick", "Free Agent"],
+  "faction": ["Bat Family", "GCPD", "Birds of Prey"],
+  "img": "https://veland55.github.io/btb/img/Oracle.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 8,
+    "Willpower": 7,
+    "Endurance": 4
+  },
+  "traits": [
+    "Bat Family",
+    "Informer",
+    "Scheming (3)",
+    "Hacking",
+    "Intel Support (4)"
+  ],
+  "weapons": [
+    {
+      "name": "Informatic Assault",
+      "damage": "★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Steal / Limited Attack"
+    }
+  ]
+},
+
+{
+  "name": "Floronic Man",
+  "realname": "Jason Woodrue",
+  "base": "40mm",
+  "rep": 65,
+  "funding": 0,
+  "rank": "Sidekick",
+  "faction": ["Birds of Prey"],
+  "img": "https://veland55.github.io/btb/img/FloronicMan.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "4+",
+    "Movement": 8,
+    "Willpower": 6,
+    "Endurance": 6
+  },
+  "traits": [
+    "Chlorokinesis",
+    "Green Web",
+    "Parliament of Flowers",
+    "Pollination",
+    "Elite Boss (Plants)",
+    "Life Growth",
+    "Plant",
+    "Walking Plant"
+  ],
+  "weapons": [
+    {
+      "name": "Tendrils",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Reach (4)"
+    }
+  ]
+},
+
+{
+  "name": "Killer Frost (Rebirth)",
+  "realname": "Caitlin Snow",
+  "base": "40mm",
+  "rep": 60,
+  "funding": 100,
+  "rank": "Henchman",
+  "faction": ["Suicide Squad", "Birds of Prey"],
+  "img": "https://veland55.github.io/btb/img/KillerFrost_Rebirth.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 10,
+    "Willpower": 6,
+    "Endurance": 6
+  },
+  "traits": [
+    "Acrobat",
+    "Chill Touch",
+    "It's Mine",
+    "Adaptable",
+    "Ice Flash",
+    "Snow Storm"
+  ],
+  "weapons": [
+    {
+      "name": "Ice Daggers",
+      "damage": "🩸★",
+      "rof": 2,
+      "ammo": "-",
+      "traits": "M.Range / Throwing / Cold / Exposure"
+    }
+  ]
+},
+{
+  "name": "Rabid Plant 1",
+  "realname": "Unknown",
+  "base": "40mm",
+  "rep": 24,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Birds of Prey",
+  "img": "https://veland55.github.io/btb/img/RabidPlant1.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 2,
+    "Strength": "4+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 5
+  },
+  "traits": [
+    "Charge",
+    "Elite (Plants)",
+    "Walking Plant",
+    "Death Pack",
+    "Plant"
+  ],
+  "weapons": [
+    {
+      "name": "Claws & Teeth",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Enervating (1)"
+    }
+  ]
+},
+{
+  "name": "Roller Derby Thug 4",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 24,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Birds of Prey",
+  "rivals": "GCPD",
+  "img": "https://veland55.github.io/btb/img/RollerDerbyThug4.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "3+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 5
+  },
+  "traits": [
+    "Charge",
+    "Harlequin",
+    "Fast (2)"
+  ],
+  "weapons": [
+    {
+      "name": "Hockey Stick",
+      "damage": "★★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Reach (1)"
+    }
+  ]
+},
+
+{
+  "name": "Roller Derby Thug 2",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 26,
+  "funding": 150,
+  "rank": "Henchman",
+  "faction": "Birds of Prey",
+  "rivals": "GCPD",
+  "img": "https://veland55.github.io/btb/img/RollerDerbyThug2.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 4
+  },
+  "traits": [
+    "Charge",
+    "Flaming Wave",
+    "Fast (2)",
+    "Harlequin"
+  ],
+  "weapons": [
+    {
+      "name": "Custom Flamethrower",
+      "damage": "🩸★",
+      "rof": 1,
+      "ammo": 2,
+      "traits": "Expansive / Mechanical / Fire / Motion (3)"
+    }
+  ]
+},
+{
+  "name": "Rabid Plant 2",
+  "realname": "Unknown",
+  "base": "40mm",
+  "rep": 24,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Birds of Prey",
+  "img": "https://veland55.github.io/btb/img/RabidPlant2.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 2,
+    "Strength": "4+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 5
+  },
+  "traits": [
+    "Death Pack",
+    "Growling Hound",
+    "Walking Plant",
+    "Elite (Plants)",
+    "Plant"
+  ],
+  "weapons": [
+    {
+      "name": "Claws & Teeth",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Enervating (1)"
+    }
+  ]
+},
+{
+  "name": "Huntress",
+  "realname": "Helena Bertinelli",
+  "base": "30mm",
+  "rep": 76,
+  "funding": 400,
+  "rank": "Henchman",
+  "faction": "Birds of Prey",
+  "img": "https://veland55.github.io/btb/img/Huntress.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 11,
+    "Willpower": 7,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Martial Artist",
+    "Stealth",
+    "Informer",
+    "Master Marksman",
+    "The Time Has Come"
+  ],
+  "weapons": [
+    {
+      "name": "Repeater Crossbow",
+      "damage": "🩸🩸",
+      "rof": 3,
+      "ammo": 3,
+      "traits": "Assault / Mechanical / S.Range"
+    }
+  ]
+},
+{
+  "name": "Roller Derby Thug 3",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 25,
+  "funding": 200,
+  "rank": "Henchman",
+  "faction": "Birds of Prey",
+  "rivals": "GCPD",
+  "img": "https://veland55.github.io/btb/img/RollerDerbyThug3.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 2,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 4,
+    "Endurance": 5
+  },
+  "traits": [
+    "Charge",
+    "Fast (2)",
+    "Dispersion",
+    "Harlequin"
+  ],
+  "weapons": [
+    {
+      "name": "Improvised Launcher",
+      "damage": "🩸★",
+      "rof": 1,
+      "ammo": 2,
+      "traits": "M.Range / Explosive / Firearm / Grenade / Recoil (3)"
+    },
+    {
+      "name": "Improvised Gas Launcher",
+      "damage": "★",
+      "rof": 1,
+      "ammo": 2,
+      "traits": "M.Range / Explosive / Mechanical / Grenade / Gas / Enervating (2) / Recoil (3)"
+    }
+  ]
+},
+
   {
-    "name": "Carnivorous Plant",
-    "rep": 14,
+    "name": "Hawk",
+    "realname": "Hank Hall",
+    "base": "30mm",
+    "rep": 30,
     "funding": 0,
     "rank": "Henchman",
-    "faction": ["Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Carnivorous_Plant.png",
+    "faction": ["Bat Family", "Birds of Prey"],
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/Hawk.png",
     "stats": {
       "Attack": 3,
-      "Defense": 2,
-      "Strength": "4+",
-      "Movement": 0,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
       "Willpower": 5,
       "Endurance": 6
     },
     "traits": [
-      "Plant",
-      "Cannibal",
-      "Elite (Plants)",
-      "Hardy",
-      "Can't Paralyze"
+      "Agent of Chaos",
+      "Reinforced Gloves",
+      "Teamwork (1) (Dove)",
+      "True Love (Dove)",
+      "Hardened",
+      "Sturdy",
+      "Teen Titans"
     ],
     "weapons": [
-      "Bite"
+      {
+        "name": "Hawk's Gloves",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Motion (3)"
+      }
     ]
   },
+
   {
-    "name": "Lady Shiva",
-    "rep": 80,
-    "funding": 0,
-    "rank": "Free Agent",
-    "faction": ["League of Assassins", "Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Lady_Shiva.png",
+    "name": "Dove",
+    "realname": "Dawn Granger",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 200,
+    "rank": "Henchman",
+    "faction": ["Bat Family", "Birds of Prey"],
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/Dove.png",
     "stats": {
-      "Attack": 4,
+      "Attack": 3,
       "Defense": 4,
       "Strength": "4+",
-      "Movement": 11,
-      "Willpower": 8,
-      "Endurance": 7
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 4
     },
     "traits": [
-      "Acrobat",
-      "Adaptable",
-      "Combo (Unarmed)",
-      "Martial Artist",
-      "Master Fighter",
-      "Moral Compass",
-      "Reinforced Gloves",
-      "Stealth",
-      "Arrogant",
-      "Precise Blow"
+      "Agent of Order",
+      "Light Radiance",
+      "Teamwork (2) (Hawk)",
+      "Agile",
+      "Medic",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Light Projection",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Beam / S.Range / Throwing / Healing Radiance"
+      }
+    ]
+  },
+
+  {
+    "name": "Bruce the Hyena",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Birds of Prey",
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/BruceTheHyena.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Animal",
+      "Death Pack",
+      "Mobster",
+      "Claws",
+      "Harley's Best Friends",
+      "Sneak Attack"
     ],
     "weapons": []
   },
+
   {
-    "name": "Spikes Plant",
-    "rep": 13,
-    "funding": 150,
+    "name": "Mutated Plant 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 16,
+    "funding": 250,
     "rank": "Henchman",
-    "faction": ["Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Spikes_Plant.png",
+    "faction": "Birds of Prey",
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/MutatedPlant2.png",
     "stats": {
-      "Attack": 3,
-      "Defense": 2,
+      "Attack": 2,
+      "Defense": 3,
       "Strength": "5+",
       "Movement": 0,
       "Willpower": 4,
       "Endurance": 5
     },
     "traits": [
-      "Plant",
       "Elite (Plants)",
-      "Mechanical",
-      "Range",
-      "Regenerating"
+      "Power Dampening",
+      "Plant"
     ],
     "weapons": [
-      "Spike Shot"
+      {
+        "name": "Venomous Spit",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Caustic / Mechanical / M.Range"
+      }
     ]
   },
+  
+  {
+    "name": "Unknown",
+    "realname": "Cassandra Cain",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Birds of Prey",
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/CassandraCain.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Escape Artist",
+      "Pickpocket",
+      "Handyman",
+      "Small"
+    ],
+    "weapons": []
+  },
+
+  {
+    "name": "Batgirl Rebirth",
+    "realname": "Barbara Gordon",
+    "base": "30mm",
+    "rep": 45,
+    "funding": 100,
+    "rank": "Henchman",
+    "faction": ["Bat Family", "GCPD", "Birds of Prey"],
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/BatgirlRebirth.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Batclaw/Grapple Gun",
+      "Limited Equipment",
+      "True Love (James W. Gordon)",
+      "Bat Family",
+      "Combo (Unarmed)",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S.Range / Throwing"
+      }
+    ]
+  },
+
+  {
+    "name": "Mutated Plant 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 17,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Birds of Prey",
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/MutatedPlant1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 0,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Elite (Plants)",
+      "Shockwave",
+      "Plant"
+    ],
+    "weapons": [
+      {
+        "name": "Venomous Bite",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Poison"
+      }
+    ]
+  },
+
+  {
+    "name": "Frank the Plant",
+    "realname": "Frank",
+    "base": "60mm",
+    "rep": 32,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Birds of Prey",
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/FrankThePlant.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 0,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Biting",
+      "Plant",
+      "Suspicious Plant",
+      "Elite (Plants)",
+      "Slow Digestion"
+    ],
+    "weapons": [
+      {
+        "name": "Devour",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy"
+      }
+    ]
+  },
+
+  {
+    "name": "Detective Montoya",
+    "realname": "Renée Maria Montoya",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 300,
+    "rank": "Henchman",
+    "faction": "Birds of Prey",
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/DetectiveMontoya.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Cop",
+      "Truth-Seeker",
+      "Vocational",
+      "Detective",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      },
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "S.Range / Firearm / Light"
+      }
+    ]
+  },
+
+  {
+    "name": "Batgirl Classic Costume",
+    "realname": "Barbara Gordon",
+    "base": "40mm",
+    "rep": 71,
+    "funding": 0,
+    "rank": "Free Agent",
+    "faction": ["Bat Family", "GCPD", "Birds of Prey"],
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/BatgirlClassic.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Arrest",
+      "Bat Family",
+      "Combo: Unarmed",
+      "One of the Boys",
+      "Reinforced Gloves",
+      "Teen Titans",
+      "Bat Cape",
+      "Batclaw",
+      "Informer",
+      "Radio",
+      "Scout"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S.Range / Throwing"
+      }
+    ]
+  },
+
   {
     "name": "Strix",
+    "realname": "Mary Turner",
+    "base": "30mm",
     "rep": 60,
     "funding": 100,
-    "rank": "Sidekick",
-    "faction": ["Birds of Prey", "Court of Owls"],
+    "rank": "Henchman",
+    "faction": ["Court of Owls", "Birds of Prey"],
+    "rivals": "",
     "img": "https://veland55.github.io/btb/img/Strix.png",
     "stats": {
       "Attack": 4,
@@ -431,218 +1276,40 @@ const models = [
     },
     "traits": [
       "Acrobat",
-      "Climbing Claws",
-      "Paired Katanas",
       "Rapid Fire",
       "Stealth",
+      "Climbing Claws",
       "Reanimated Owl",
-      "Weakness to Cold",
-      "Handy",
-      "Overwhelming",
-      "Sharp"
+      "Weakness to Cold"
     ],
     "weapons": [
-      "Throwing Knives",
-      "Paired Katanas"
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Sharp / S.Range / Throwing"
+      },
+      {
+        "name": "Paired Katanas",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Overwhelming / Sharp"
+      }
     ]
   },
-  {
-    "name": "Harley Quinn (Dr. Harleen Frances Quinzel)",
-    "rep": 68,
-    "funding": 300,
-    "rank": "Free Agent",
-    "faction": ["Birds of Prey", "Joker", "Suicide Squad"],
-    "img": "https://veland55.github.io/btb/img/Harley_Quinn_DrHarleen.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 4,
-      "Strength": "5+",
-      "Movement": 13,
-      "Willpower": 6,
-      "Endurance": 6
-    },
-    "traits": [
-      "Acrobat",
-      "Chaotic Friends",
-      "Deranged",
-      "Follow Me!",
-      "Heavy",
-      "Technician",
-      "True Love (Joker)",
-      "Unpredictable",
-      "Gotham City Siren"
-    ],
-    "weapons": [
-      "Reinforced Bat",
-      "Twin Guns"
-    ]
-  },
-  {
-    "name": "Poison Ivy (Dr. Pamela Lillian Isley)",
-    "rep": 101,
-    "funding": 0,
-    "rank": "Leader",
-    "faction": ["Birds of Prey", "Suicide Squad"],
-    "img": "https://veland55.github.io/btb/img/Poison_Ivy_Pamela.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 4,
-      "Strength": "5+",
-      "Movement": 11,
-      "Willpower": 8,
-      "Endurance": 7
-    },
-    "traits": [
-      "Chlorokinesis",
-      "Control Pheromones",
-      "Acrobat",
-      "Large",
-      "Chlorokinesis",
-      "Gotham City Siren",
-      "Mortal Kiss",
-      "Poison Immunity",
-      "Possessed",
-      "Scientific",
-      "The Song of the Sirens",
-      "Expansive",
-      "Poison / Toxic"
-    ],
-    "weapons": [
-      "Sprinkling Spores"
-    ]
-  },
-  {
-    "name": "Swamp Thing (Alec Holland)",
-    "rep": 150,
-    "funding": 0,
-    "rank": "Leader",
-    "faction": ["Birds of Prey", "GCPD"],
-    "img": "https://veland55.github.io/btb/img/Swamp_Thing.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 3,
-      "Strength": "3+",
-      "Movement": 10,
-      "Willpower": 9,
-      "Endurance": 12
-    },
-    "traits": [
-      "Chlorokinesis",
-      "Elite Boss (Plants)",
-      "Green Magic",
-      "Immortal",
-      "Large",
-      "Magical Power (5)",
-      "Natural Immunity",
-      "Pollution Hate",
-      "Regeneration",
-      "Supernatural",
-      "Tough Skin",
-      "Vulnerability to Fire",
-      "Range",
-      "Throwing"
-    ],
-    "weapons": [
-      "Metamorphic Branch",
-      "Spikes"
-    ]
-  },
-  {
-    "name": "Poison Ivy (Dr. Pamela Lillian Isley)",
-    "rep": 97,
-    "funding": 0,
-    "rank": "Leader",
-    "faction": ["Birds of Prey", "Suicide Squad"],
-    "img": "https://veland55.github.io/btb/img/Poison_Ivy_Classic.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 4,
-      "Strength": "5+",
-      "Movement": 8,
-      "Willpower": 8,
-      "Endurance": 8
-    },
-    "traits": [
-      "Adaptable",
-      "Chlorokinesis",
-      "Control Pheromones",
-      "Elite Boss (Plants)",
-      "Gotham City Siren",
-      "Large",
-      "Mortal Kiss",
-      "Poison Immunity",
-      "Possessed",
-      "Scientific",
-      "Mechanical",
-      "Protective",
-      "Reach (2)",
-      "Air / Bio-Toxin",
-      "Range / Poison / Toxic (1)"
-    ],
-    "weapons": [
-      "Plants",
-      "Spores"
-    ]
-  },
-  {
-    "name": "Mutated Plant 1",
-    "rep": 17,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": ["Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Mutated_Plant_1.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 3,
-      "Strength": "4+",
-      "Movement": 0,
-      "Willpower": 5,
-      "Endurance": 5
-    },
-    "traits": [
-      "Plant",
-      "Elite (Plants)",
-      "Shockwave",
-      "Poison"
-    ],
-    "weapons": [
-      "Venomous Bite"
-    ]
-  },
-  {
-    "name": "Mutated Plant 2",
-    "rep": 16,
-    "funding": 250,
-    "rank": "Henchman",
-    "faction": ["Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Mutated_Plant_2.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 3,
-      "Strength": "5+",
-      "Movement": 0,
-      "Willpower": 4,
-      "Endurance": 5
-    },
-    "traits": [
-      "Plant",
-      "Elite (Plants)",
-      "Power Dampening",
-      "Caustic",
-      "Mechanical",
-      "Range"
-    ],
-    "weapons": [
-      "Venomous Spit"
-    ]
-  },
+
   {
     "name": "Mutated Plant 3",
+    "realname": "Unknown",
+    "base": "30mm",
     "rep": 14,
     "funding": 0,
     "rank": "Henchman",
-    "faction": ["Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Mutated_Plant_3.png",
+    "faction": "Birds of Prey",
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/MutatedPlant3.png",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -652,887 +1319,26 @@ const models = [
       "Endurance": 5
     },
     "traits": [
-      "Plant",
-      "Elite (Plants)",
       "Disruptor",
-      "Handy",
-      "Can't Paralyze"
+      "Plant",
+      "Elite (Plants)"
     ],
     "weapons": [
-      "Bite"
-    ]
-  },
-  {
-    "name": "Dove (Dawn Granger)",
-    "rep": 30,
-    "funding": 200,
-    "rank": "Sidekick",
-    "faction": ["Birds of Prey", "Bat Family"],
-    "img": "https://veland55.github.io/btb/img/Dove_DawnGranger.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 4,
-      "Strength": "4+",
-      "Movement": 10,
-      "Willpower": 6,
-      "Endurance": 4
-    },
-    "traits": [
-      "Medic (2) (HAWK)",
-      "Teamwork (HAWK)",
-      "Light Radiance",
-      "Agent of Order"
-    ],
-    "weapons": [
-      "Light Projection (Beam / Range / Throwing / Healing)"
-    ]
-  },
-  {
-    "name": "Hawk",
-    "rep": 30,
-    "funding": 0,
-    "rank": "Sidekick",
-    "faction": ["Birds of Prey", "Bat Family"],
-    "img": "https://veland55.github.io/btb/img/Hawk.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 3,
-      "Strength": "3+",
-      "Movement": 10,
-      "Willpower": 5,
-      "Endurance": 6
-    },
-    "traits": [
-      "Reinforced Gloves",
-      "Hardened Gloves",
-      "True Love (Dove)",
-      "Teamwork (Dove)",
-      "Sturdy",
-      "Agent of Chaos"
-    ],
-    "weapons": [
-      "Hawk Gloves"
-    ]
-  },
-  {
-    "name": "Tyrant",
-    "rep": 40,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": ["Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Tyrant.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 2,
-      "Strength": "3+",
-      "Movement": 6,
-      "Willpower": 5,
-      "Endurance": 7
-    },
-    "traits": [
-      "Hardened",
-      "Obstinate",
-      "Large",
-      "Self-Discipline"
-    ],
-    "weapons": [
-      "Improved Weapon (Bleed / Handy)"
-    ]
-  },
-  {
-    "name": "Oracle (Barbara Gordon)",
-    "rep": 50,
-    "funding": 0,
-    "rank": "Sidekick",
-    "faction": ["Bat Family", "Birds of Prey", "GCPD"],
-    "img": "https://veland55.github.io/btb/img/Oracle_BarbaraGordon.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 3,
-      "Strength": "5+",
-      "Movement": 8,
-      "Willpower": 7,
-      "Endurance": 4
-    },
-    "traits": [
-      "Hacking",
-      "Intel Support (4)",
-      "Informer",
-      "Scheming (3)"
-    ],
-    "weapons": [
-      "Informatic Assault (Stealth / Limited Attack)"
-    ]
-  },
-  {
-    "name": "Katana (Rebirth)",
-    "rep": 75,
-    "funding": 100,
-    "rank": "Free Agent",
-    "faction": ["GCPD", "Suicide Squad", "Birds of Prey"],
-    "img": "https://veland55.github.io/btb/img/Katana_Rebirth.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "5+",
-      "Movement": 11,
-      "Willpower": 7,
-      "Endurance": 6
-    },
-    "traits": [
-      "Soultaker",
-      "Soul Voices",
-      "Stealth",
-      "Martial Artist",
-      "Fient",
-      "Precise Blow",
-      "Adaptable",
-      "Acrobat",
-      "Handy",
-      "Sharp",
-      "Light / Range / Throwing"
-    ],
-    "weapons": [
-      "Shurikens",
-      "Soultaker"
-    ]
-  },
-  {
-    "name": "Poison Ivy",
-    "rep": 93,
-    "funding": 0,
-    "rank": "Leader",
-    "faction": ["Birds of Prey", "Suicide Squad"],
-    "img": "https://veland55.github.io/btb/img/Poison_Ivy_Green.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 3,
-      "Strength": "5+",
-      "Movement": 8,
-      "Willpower": 8,
-      "Endurance": 7
-    },
-    "traits": [
-      "Adaptable",
-      "Chlorokinesis",
-      "Control Pheromones",
-      "Elite Boss (Plants)",
-      "Green Web",
-      "Mortal Kiss",
-      "Poison Immunity",
-      "Pollution Hate",
-      "Protect Me!",
-      "Scientific",
-      "Mechanical",
-      "Protective",
-      "Reach (2)",
-      "Acid / Explosion / Mechanical / S",
-      "Range / Poison"
-    ],
-    "weapons": [
-      "Plants",
-      "Spores"
-    ]
-  },
-
-
-
-//CULTS
-{
-    "name": "Kobra",
-    "rep": 122,
-    "funding": 0,
-    "rank": "Leader",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Kobra.png",
-    "stats": {
-      "Attack": 5,
-      "Defense": 5,
-      "Strength": "3+",
-      "Movement": 10,
-      "Willpower": 9,
-      "Endurance": 8
-    },
-    "traits": [
-      "Grand Strategist",
-      "Immortal",
-      "Martial Artist",
-      "Master Fighter",
-      "Reinforced Gloves",
-      "Void Priest",
-      "Kobra Armor",
-      "Kobra Cultist",
-      "Order",
-      "Deadliest Man on Earth"
-    ],
-    "weapons": [
-      "Hidden Sword (Sharp)"
-    ]
-  },
-  {
-    "name": "Kobra Bestowed",
-    "rep": 35,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Kobra_Bestowed.png",
-    "stats": {
-      "Attack": 5,
-      "Defense": 2,
-      "Strength": 5,
-      "Movement": 10,
-      "Willpower": 6,
-      "Endurance": 5
-    },
-    "traits": [
-      "Cobras",
-      "Caustic Poison",
-      "Kobra Cultist",
-      "Void Priest",
-      "Poisoned Senses"
-    ],
-    "weapons": [
-      "Unarmed"
-    ]
-  },
-
-  {
-    "name": "Lady Eve",
-    "rep": 66,
-    "funding": 0,
-    "rank": "Sidekick",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Lady_Eve.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": 4,
-      "Movement": 10,
-      "Willpower": 7,
-      "Endurance": 6
-    },
-    "traits": [
-      "Kobra Sword",
-      "Kobra Gas",
-      "Kobra Armor",
-      "Kobra Cultist",
-      "Void Priest",
-      "Serpent Follower"
-    ],
-    "weapons": [
-      "Kobra Sword (Sharp / Penetrating 1)",
-      "Expansive Gas (Slow 4)"
-    ]
-  },
-
-  {
-    "name": "The Nagas",
-    "rep": 38,
-    "funding": 300,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/The_Nagas.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 6
-    },
-    "traits": [
-      "Hidden",
-      "Kobra Cultist",
-      "Radio",
-      "Veteran"
-    ],
-    "weapons": [
-      "Automatic Gun (Range / Firearm / Light)",
-      "Poisoned Knife (Sharp / Crit Paralyze / Poison)"
-    ]
-  },
-  {
-    "name": "Kobra Hybrid",
-    "rep": 43,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Kobra_Hybrid.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 3,
-      "Strength": 5,
-      "Movement": 10,
-      "Willpower": 6,
-      "Endurance": 8
-    },
-    "traits": [
-      "Large",
-      "Kobra Cultist",
-      "Safe Hands",
-      "Sturdy"
-    ],
-    "weapons": [
-      "Hybrid Strike (Crit Paralyze / Poison)"
-    ]
-  },
-  {
-    "name": "Lancehead Captain",
-    "rep": 34,
-    "funding": 400,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Lancehead_Captain.png",
-    "stats": {
-      "Attack": 5,
-      "Defense": 3,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 5
-    },
-    "traits": [
-      "Kobra Armor",
-      "Kobra Cultist",
-      "Take Cover!"
-    ],
-    "weapons": [
-      "Custom SMG (Assault / Firearm / M. Range)"
-    ]
-  },
-  {
-    "name": "Lancehead Soldier",
-    "rep": 23,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Lancehead_Soldier.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 5,
-      "Strength": 5,
-      "Movement": 8,
-      "Willpower": 5,
-      "Endurance": 5
-    },
-    "traits": [
-      "Kobra Armor",
-      "Kobra Cultist",
-      "Minion (3)"
-    ],
-    "weapons": [
-      "Sword (Sharp)"
-    ]
-  },
-  {
-    "name": "Cobra Swarm",
-    "rep": 0,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Cobra_Swarm.png",
-    "stats": {
-      "Attack": 1,
-      "Defense": 6,
-      "Strength": 1,
-      "Movement": 8,
-      "Willpower": 3,
-      "Endurance": 1
-    },
-    "traits": [
-      "Animal",
-      "Poison Master",
-      "Swarm",
-      "Simple Mind"
-    ],
-    "weapons": [
-      "Poisoned Fangs (Caustic / Poison / Slow 1)"
-    ]
-  },
-  {
-    "name": "Lancehead 1",
-    "rep": 14,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Lancehead_1.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 5,
-      "Strength": 5,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 5
-    },
-    "traits": [
-      "Kobra Armor",
-      "Kobra Cultist",
-      "Minion (3)"
-    ],
-    "weapons": [
-      "Knife (Sharp)"
-    ]
-  },
-  {
-    "name": "Lancehead 2",
-    "rep": 20,
-    "funding": 350,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Lancehead_2.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 5,
-      "Strength": 5,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 5
-    },
-    "traits": [
-      "Kobra Armor",
-      "Kobra Cultist",
-      "Minion (3)"
-    ],
-    "weapons": [
-      "Carbine (Assault / Firearm / M. Range)"
-    ]
-  },
-  {
-    "name": "Naga Hazard Trooper 1",
-    "rep": 43,
-    "funding": 500,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Naga_Hazard_Trooper_1.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 6,
-      "Strength": 6,
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 7
-    },
-    "traits": [
-      "Follow Me!",
-      "Kobra Cultist",
-      "Naga Hazard Armor"
-    ],
-    "weapons": [
-      "Custom SMG + Attached Grenade Launcher (Assault / Firearm / M. Range)",
-      "Grenade Launcher (Explosive / Firearm / Grenade / M. Range)"
-    ]
-  },
-  {
-    "name": "Naga Hazard Trooper 2",
-    "rep": 40,
-    "funding": 350,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Naga_Hazard_Trooper_2.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 6,
-      "Strength": 6,
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 7
-    },
-    "traits": [
-      "Discharge",
-      "Hazard Armor",
-      "Kobra Cultist",
-      "Kobra Flamethrower"
-    ],
-    "weapons": [
-      "Flamethrower (Caustic / Expansive / Mechanical / Fire 21)"
-    ]
-  },
-  {
-    "name": "Raptor",
-    "rep": 60,
-    "funding": 0,
-    "rank": "Sidekick",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Raptor.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "4+",
-      "Movement": 10,
-      "Willpower": 6,
-      "Endurance": 7
-    },
-    "traits": [
-      "Batclaw",
-      "Desensitized",
-      "Street Fighter",
-      "Sturdy",
-      "Thief",
-      "Kobra Cultist"
-    ],
-    "weapons": [
-      "Raptor's Claw (Sharp / Penetrating 1)",
-      "Raptor's Gas (Beam / Expansive / Gas / Debilitate 2)"
-    ]
-  },
-  {
-    "name": "Deacon Blackfire",
-    "rep": 100,
-    "funding": 0,
-    "rank": "Leader",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Deacon_Blackfire.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 4,
-      "Strength": "3+",
-      "Movement": 10,
-      "Willpower": 9,
-      "Endurance": 8
-    },
-    "traits": [
-      "Aggressive Preach",
-      "Blackfire Cultist",
-      "Blackfire Totem",
-      "Death Pack",
-      "Don't Mind Me",
-      "Exalt",
-      "Goad",
-      "Immortal",
-      "Martyrdom",
-      "Reinforced Gloves",
-      "The Good Command"
-    ],
-    "weapons": [
-      "Combat Machete (Sharp)",
-      "Drugs"
-    ]
-  },
-  {
-    "name": "Jake",
-    "rep": 50,
-    "funding": 0,
-    "rank": "Sidekick",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Jake.png",
-    "stats": {
-      "Attack": 5,
-      "Defense": 3,
-      "Strength": 5,
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 7
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Fervent Follower",
-      "Lieutenant (Deacon Blackfire)",
-      "Protect Me!",
-      "Serve Well",
-      "Undercity Command",
-      "Undercity Knowledge"
-    ],
-    "weapons": [
-      "SMG (Firearm / S. Range)",
-      "Drugs (Steal / Energizing 2 / Hypnotize)"
-    ]
-  },
-  {
-    "name": "Young Woman",
-    "rep": 45,
-    "funding": 0,
-    "rank": "Sidekick",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Young_Woman.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 6,
-      "Strength": 2,
-      "Movement": 8,
-      "Willpower": 5,
-      "Endurance": 4
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Protect Me!",
-      "Religious Vengeance",
-      "Terrible Revelation"
-    ],
-    "weapons": [
-      "Unarmed"
-    ]
-  },
-  {
-    "name": "Ratface",
-    "rep": 35,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Ratface.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 5,
-      "Strength": 5,
-      "Movement": 10,
-      "Willpower": 6,
-      "Endurance": 6
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Fervent Follower",
-      "Lord of the Sewers",
-      "Punishment",
-      "Stealth",
-      "Served Well"
-    ],
-    "weapons": [
-      "Knife (Sharp)"
-    ]
-  },
-  {
-    "name": "Underworlder 1",
-    "rep": 14,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_1.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 6,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 4
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Go My Little Birds"
-    ],
-    "weapons": [
-      "Unarmed"
-    ]
-  },
-  {
-    "name": "Underworlder 2",
-    "rep": 16,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_2.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 6,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 4
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Meow"
-    ],
-    "weapons": [
-      "Unarmed"
-    ]
-  },
-  {
-    "name": "Underworlder 3",
-    "rep": 11,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_3.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 6,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 4
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Horde"
-    ],
-    "weapons": [
-      "Knife (Sharp)"
-    ]
-  },
-  {
-    "name": "Underworlder 4",
-    "rep": 10,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_4.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 6,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 4
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Horde"
-    ],
-    "weapons": [
-      "Broken Glass (One-Use / Sharp)"
-    ]
-  },
-  {
-    "name": "Underworlder 5",
-    "rep": 11,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_5.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 6,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 4
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Horde"
-    ],
-    "weapons": [
-      "Tube (Handy / Heavy)"
-    ]
-  },
-  {
-    "name": "Underworlder 6",
-    "rep": 10,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_6.png",
-    "stats": {
-      "Attack": 2,
-      "Defense": 6,
-      "Strength": 4,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 4
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Death Pack",
-      "Don't Mind Me",
-      "Horde"
-    ],
-    "weapons": [
-      "Grab (Enervating 1)"
-    ]
-  },
-  {
-    "name": "Underworlder Vagon 1",
-    "rep": 22,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_Vagon_1.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 6,
-      "Strength": 6,
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 6
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Charge",
-      "Death Pack",
-      "Don't Mind Me",
-      "Inertia",
-      "Junk Hoarder"
-    ],
-    "weapons": [
-      "Unarmed"
-    ]
-  },
-  {
-    "name": "Underworlder Vagon 2",
-    "rep": 26,
-    "funding": 0,
-    "rank": "Henchman",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Underworlder_Vagon_2.png",
-    "stats": {
-      "Attack": 3,
-      "Defense": 6,
-      "Strength": 5,
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 8
-    },
-    "traits": [
-      "Blackfire Cultist",
-      "Charge",
-      "Death Pack",
-      "Don't Mind Me",
-      "Inertia",
-      "Light Armor"
-    ],
-    "weapons": [
-      "Slap and Slash (Handy / Heavy / Blunt 3 / Devastating)"
-    ]
-  },
-  {
-    "name": "Batman (The Cult)",
-    "rep": 70,
-    "funding": 0,
-    "rank": "Free Agent",
-    "faction": "Cults",
-    "img": "https://veland55.github.io/btb/img/Batman_TheCult.png",
-    "stats": {
-      "Attack": 5,
-      "Defense": 4,
-      "Strength": "3+",
-      "Movement": 10,
-      "Willpower": 7,
-      "Endurance": 7
-    },
-    "traits": [
-      "Bat Cape",
-      "Blackfire Cultist",
-      "Controlled by Drugs",
-      "Detective",
-      "Hidden",
-      "I See The Light",
-      "Master of Stealth",
-      "Reinforced Gloves",
-      "Sneak Attack",
-      "Sturdy",
-      "Vigilante's Work"
-    ],
-    "weapons": [
-      "Batarangs (Light / S. Range / Throwing)"
+      {
+        "name": "Bite",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Crt (Paralyze)"
+      }
     ]
   }
+  
+//--------------------------------------------------------------------------------------------------------------------
+//CULTS
+//--------------------------------------------------------------------------------------------------------------------
 
-  // добавляй остальные модели сюда
+
 ];
 
 const traitDescriptions = {
