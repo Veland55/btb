@@ -1451,6 +1451,7 @@ const traitDescriptions = {
 	"Cruel": "Choose a KO enemy (not a Vehicle) in contact. That model is removed from play as a Casualty.",
 	"Cybernetic": "This model gains +1 to its Defense rolls, and can reroll Recovery rolls.",
 	"Cyclops": "This model’s ranged attacks gain the Imprecise rule when the target is more than 8” away.",
+  "Combo (X)": "For every two successful hits in its attack roll while using the specified (weapon) or (trait) (before the enemy rolls to defend), this model gains an additional hit.",
 
   // D
 	"Daddy’s Girrrl": "If this model starts its activation within 6” of the Boss, its gains +1 + .",
