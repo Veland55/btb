@@ -1642,6 +1642,7 @@ const traitDescriptions = {
 	"Luck": "Once per round, this model may reroll any single die that it has rolled, for whatever reason.",
 	"Lunatic Laugh": "All other models (not Vehicles) within 4” of this model lose 1 Defense die during their next roll.",
   "Limited Attack": "An attack with this weapon inflicts its damage only once, regardless of the number of successful hits and does not inflict Knocked Down when scoring a CRT",
+  "Limited Equipment": "This model can only purchase up to 1 Equipment.",
 
   // M
 	"Magical Power (X)": "All models with this trait can use Elemental Spells. The value 'X' is the number of Magic Points (MP) the model can spend during a round. Each spell costs a number of MPs to cast. At the Beginning of the Raise the Plan phase, the model gains a number of MPs equal to X. At the end Recovery phase, all unspent MPs are lost.",
