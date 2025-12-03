@@ -681,7 +681,7 @@ const models = [
       "damage": "🩸★",
       "rof": 2,
       "ammo": "-",
-      "traits": "M.Range / Throwing / Cold / Exposure"
+      "traits": "M. Range / Throwing / Cold / Exposure"
     }
   ]
 },
@@ -852,7 +852,7 @@ const models = [
       "damage": "🩸🩸",
       "rof": 3,
       "ammo": 3,
-      "traits": "Assault / Mechanical / S.Range"
+      "traits": "Assault / Mechanical / S. Range"
     }
   ]
 },
@@ -886,14 +886,14 @@ const models = [
       "damage": "🩸★",
       "rof": 1,
       "ammo": 2,
-      "traits": "M.Range / Explosive / Firearm / Grenade / Recoil (3)"
+      "traits": "M. Range / Explosive / Firearm / Grenade / Recoil (3)"
     },
     {
       "name": "Improvised Gas Launcher",
       "damage": "★",
       "rof": 1,
       "ammo": 2,
-      "traits": "M.Range / Explosive / Mechanical / Grenade / Gas / Enervating (2) / Recoil (3)"
+      "traits": "M. Range / Explosive / Mechanical / Grenade / Gas / Enervating (2) / Recoil (3)"
     }
   ]
 },
@@ -968,7 +968,7 @@ const models = [
         "damage": "★",
         "rof": 1,
         "ammo": 3,
-        "traits": "Beam / S.Range / Throwing / Healing Radiance"
+        "traits": "Beam / S. Range / Throwing / Healing Radiance"
       }
     ]
   },
@@ -1031,7 +1031,7 @@ const models = [
         "damage": "🩸★",
         "rof": 3,
         "ammo": 2,
-        "traits": "Caustic / Mechanical / M.Range"
+        "traits": "Caustic / Mechanical / M. Range"
       }
     ]
   },
@@ -1096,7 +1096,7 @@ const models = [
         "damage": "★★",
         "rof": 2,
         "ammo": 2,
-        "traits": "Light / S.Range / Throwing"
+        "traits": "Light / S. Range / Throwing"
       }
     ]
   },
@@ -1209,7 +1209,7 @@ const models = [
         "damage": "🩸★",
         "rof": 3,
         "ammo": 3,
-        "traits": "S.Range / Firearm / Light"
+        "traits": "S. Range / Firearm / Light"
       }
     ]
   },
@@ -1251,7 +1251,7 @@ const models = [
         "damage": "★★",
         "rof": 2,
         "ammo": 2,
-        "traits": "Light / S.Range / Throwing"
+        "traits": "Light / S. Range / Throwing"
       }
     ]
   },
@@ -1288,7 +1288,7 @@ const models = [
         "damage": "🩸",
         "rof": 2,
         "ammo": 2,
-        "traits": "Sharp / S.Range / Throwing"
+        "traits": "Sharp / S. Range / Throwing"
       },
       {
         "name": "Paired Katanas",
@@ -1382,7 +1382,8 @@ const traitDescriptions = {
 	"Bat-Armor Mk I": "Enemy models don’t roll a Strength die when attacking this model.",
 	"Bat-Armor Mk II": "This model ignores enemy Strength dice unless the roll is a natural 6. In addition, this model gains +1” to its basic move distance.",
 	"Bat-Armor Mk III": "Enemy models don’t roll a Strength die when attacking this model. In addition, if this model has moved this activation, it can make Melee Attacks against enemies up to 2” away in line of sight (ignore all traits that improve the model’s line of sight, such as Total Vision, for the purpose of these attacks).",
-	"Bat Cape": "This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling.",
+	"Bat Family": "Keyword",
+  "Bat Cape": "This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling.",
 	"Batclaw": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun! ",
 	"Batclaw/Grapple Gun": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun! ",
   "Batman Lives": "This model may perform an extra Movement action at the start of its activation if no enemy models have LoS to it. When in contact with a KO enemy model that does not have Affiliation: BATMAN, this model may remove it as a Casualty by spending a Special Action. In addition, when this model is included in your crew, you can also include a model with Name: William Cobb (ignoring its Affiliation), but if you do so you may not include any model with the Free Agent rank unless it also has Affiliation: BANE.",
@@ -1584,6 +1585,7 @@ const traitDescriptions = {
 	"Homo Magi": "This model counts its Willpower value as 1 point higher when taking Magical tests.",
 	"Hover": "At the start of this model’s activation, you may place a Hover marker on the character card until the end of the round, to show that it is in Hover mode. While a model is in Hover mode, it can only be hit in Melee on a natural result of 6. A model with a Hover marker cannot benefit from the Cover rule and cannot perform the Manipulate action.",
 	"Huge": "This model ignores up to 2 ★ Damage per enemy Attack.",
+  "Healing Radiance": "A friendly model within 4'' of the target of the attack, removes up to 1 Damage.",
 
   // I
 	"I Believe in Harvey Dent": "If this model is the Boss, friendly Henchmen must roll a die or flip a coin at the start of their activation. If the result is even/heads, that model gains 1 free Effort until the end of the round. If the result is odd/tails, it suffers Enervating 1.",
@@ -1598,7 +1600,7 @@ const traitDescriptions = {
 	"Inspire": "All friendly Henchmen that start their activation within 8” of this model gain 1 extra Manipulate action.",
 	"Inspire Fear": "Target an enemy model (not a Vehicle) within 4” and line of sight. The target must take a Willpower roll. If this roll is failed, consult the following chart: \n Fails by 1-2: Target suffers the Scared effect. \n Fails by 3-5: Target suffers the Scared, Terror 1 and Slow 2 effects. \n Fails by 6 or more: Target is removed as a casualty.",
 	"Instinctive Shooting": "In the round in which this trait is activated, this model’s ranged weapons don’t lose dice for moving before attacking.",
-	"Intel Support": "This model cannot be the target of an attack, and does not suffer effects or damage inflicted by traits. When an enemy model removes 1 of your Suspects, this model takes 1  damage. When this model would be removed as a Casualty, remove all the damage from its character card and remove the model from the gaming area. In any subsequent Raise the Plan phase, you may reduce your Audacity markers by 1 during that round to return this model to play, placing it anywhere on the gaming area. ",
+	"Intel Support (X)": "This model cannot be targeted/affected by an attack, and does not suffer Statuses or Damage and cannot perform Unarmed attacks. It is only considered in contact with other models during its activation. When this model performs a Move, it is instead a Place. This model cannot use the Sewers in any way. When an enemy model removes 1 of your Suspects, place 1 Disruption token on this model. When this model has X Disruption tokens remove the tokens and the model from the gaming area. In any subsequent Raise the Plan phase, you may reduce your Audacity markers by 1 during that round to return this model to play, placing it anywhere on the gaming area. This model is considered a Casualty/KO when it is removed from the game for the purpose of scoring a card.",
 	"Interrogation": "When this model scores at least 2 hits with a Melee Attack, this model or another friendly model in play, may immediately make an extra move of 4” or place a Suspect marker.",
 	"Intimidate": "Target an enemy model (not a Vehicle) within 8” and line of sight. For the rest of the round, the target cannot perform Special Actions and loses a die when performing Willpower rolls.",
 	"Intimidation": "Target an enemy model (not a Vehicle) within 8” and line of sight. The target must pass a Willpower roll or be unable to perform Melee Attacks this round.",
@@ -1639,9 +1641,10 @@ const traitDescriptions = {
 	"Lord of the Sewers": "This model may deploy in contact with any Sewer marker. In addition, this model’s crew generates 1 extra Sewer marker. Once per game, this model can exit from a sewer and continue moving.",
 	"Luck": "Once per round, this model may reroll any single die that it has rolled, for whatever reason.",
 	"Lunatic Laugh": "All other models (not Vehicles) within 4” of this model lose 1 Defense die during their next roll.",
+  "Limited Attack": "An attack with this weapon inflicts its damage only once, regardless of the number of successful hits and does not inflict Knocked Down when scoring a CRT",
 
   // M
-	"Magical Power X": "All models with this trait can use Elemental Spells. The value 'X' is the number of Magic Points (MP) the model can spend during a round. Each spell costs a number of MPs to cast. At the Beginning of the Raise the Plan phase, the model gains a number of MPs equal to X. At the end Recovery phase, all unspent MPs are lost.",
+	"Magical Power (X)": "All models with this trait can use Elemental Spells. The value 'X' is the number of Magic Points (MP) the model can spend during a round. Each spell costs a number of MPs to cast. At the Beginning of the Raise the Plan phase, the model gains a number of MPs equal to X. At the end Recovery phase, all unspent MPs are lost.",
 	"Magic Tattoos": "This model is immune to the Steal and Fire effects.",
 	"Make them Perfect": "This model’s Attack actions gain the Push effect, but the direction of the Push must be directly towards a friendly Professor Pyg model if he is in play.",
 	"Manipulative": "When this model is in your Crew, you may redeploy up to two friendly models after normal deployment but before the game starts. In addition, at the end of each Raise the Plan phase you may nominate one model to take a Willpower roll. If this roll fails, the target model must be the last model in its crew to be activated that round.",
@@ -1681,6 +1684,7 @@ const traitDescriptions = {
 	"Multitask": "This model chooses one of the following options before the game begins: \n • Explorer: Gain the Undercover trait and +2 basic move distance. \n • Hacker: Gain +1 Willpower. Also gains the Computer Intrusion trait. \n • Defender: Gain +2 Endurance. Also gains the Force Field trait. \n • Fighter: Gains +1 Attack, +1 Defense and the Claws trait.",
 	"Multiverse Teleportation Device": "This model may not be deployed as normal at the start of the game. Instead, at the start of the Raise the Plan phase of the second round, place this model anywhere on the board (but not inside a building or similar enclosed space).",
 	"My Idol!": "This model can only be recruited if a model with the Alias: Zur-En-Arrh Batman is part of the crew. In addition, while a friendly model with Alias: Zur-En-Arrh Batman is in play and not KO, this model gains +1 Willpower.",
+  "Motion (X)": "When using this weapon, if any hits are scored the wielder may immediately Move X''.",
 
   // N
 	"Narcotic Dose (DOSE)": "A model may use a Narcotics Dose at any time during its activation. If it does so, the model gains the Desensitized trait until the end of the round.",
