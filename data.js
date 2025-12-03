@@ -1588,6 +1588,7 @@ const traitDescriptions = {
 	"Hover": "At the start of this model’s activation, you may place a Hover marker on the character card until the end of the round, to show that it is in Hover mode. While a model is in Hover mode, it can only be hit in Melee on a natural result of 6. A model with a Hover marker cannot benefit from the Cover rule and cannot perform the Manipulate action.",
 	"Huge": "This model ignores up to 2 ★ Damage per enemy Attack.",
   "Healing Radiance": "A friendly model within 4'' of the target of the attack, removes up to 1 Damage.",
+  "Harlequin": "Keyword",
 
   // I
 	"I Believe in Harvey Dent": "If this model is the Boss, friendly Henchmen must roll a die or flip a coin at the start of their activation. If the result is even/heads, that model gains 1 free Effort until the end of the round. If the result is odd/tails, it suffers Enervating 1.",
