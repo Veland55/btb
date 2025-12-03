@@ -1376,6 +1376,7 @@ const traitDescriptions = {
 	"Attorney’s Allegation": "One Use Only. All friendly Henchman within 8” gain 1 extra Action.",
 	"Autorepair X": "At the beginning of the Recount phase, this model rolls 1D6. On a result of X+ remove a Damage marker (any type) from this model.",
 	"Aversion X": "This model cannot be included in the same crew as the specified model.",
+  "Affinity (X)": "This model may be recruited by any crew that also includes the model named in parentheses, even if they would not ordinarily be permitted to join that crew. This model may treat its rank as for the purposes of forming the crew (but cannot use the Rank during the game). Recruiting this model does not allow a further use of the trait (if, for example, another character has an Affinity to this model).",
  
    //B
 	"Backpack": "This model can perform a Reveal Manipulate action once per activation without spending an Action.",
@@ -1644,6 +1645,7 @@ const traitDescriptions = {
 	"Lunatic Laugh": "All other models (not Vehicles) within 4” of this model lose 1 Defense die during their next roll.",
   "Limited Attack": "An attack with this weapon inflicts its damage only once, regardless of the number of successful hits and does not inflict Knocked Down when scoring a CRT",
   "Limited Equipment": "This model can only purchase up to 1 Equipment.",
+  "Let's Cool It For Now": "Once per round, after this model places a suspect, target another model within 4'' of that suspestc, it gains +1 or -1 Defense Modifiers Markers",
 
   // M
 	"Magical Power (X)": "All models with this trait can use Elemental Spells. The value 'X' is the number of Magic Points (MP) the model can spend during a round. Each spell costs a number of MPs to cast. At the Beginning of the Raise the Plan phase, the model gains a number of MPs equal to X. At the end Recovery phase, all unspent MPs are lost.",
@@ -1696,6 +1698,7 @@ const traitDescriptions = {
 	"Night Vision": "This model ignores the Night rule.",
 	"No Mercy!!!": "All friendly Henchmen add the Bleed 1 effect to their Attacks.",
 	"Non-Lethal Ammo": "When this model attacks non-Vehicle models with its ranged weapons, all 🩸 damage becomes ★ damage.",
+  "Nature's Arm": "Until the end of the round, This model may place or reveal a Suspect marker within 4'' and LoS instead of in contact. An enemy model in contact with that suspect increases the Slow Status value by (2), unless it doesn't have it, then it suffers the Slow (2) Status.",
 
   // O
 	"Objectives? Puzzles everywhere!!!": "A crew that includes this model does not accomplish Objective cards following the normal rules. Instead, when a model that share an Affiliation with this model place a Suspect marker, you must roll 1D3. Place a Number Counter on top of that Suspect marker with an equal value as the roll. At the end of the round, you score Objective cards that shown the same VP value as the Number Counters on top of the friendly Suspect markers. Each Number Counter only accomplish 1 Objective card and then, is removed.",
