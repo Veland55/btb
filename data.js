@@ -1567,13 +1567,54 @@ const models = [
       "traits": "S. Range / Mechanical / Scared / Crt (True Fear)"
     }
   ]
-}
+},
 
 
 
 //--------------------------------------------------------------------------------------------------------------------
 //CULTS
 //--------------------------------------------------------------------------------------------------------------------
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//Unknown
+//--------------------------------------------------------------------------------------------------------------------
+{
+  "name": "Calendar Man",
+  "realname": "Julian Gregory Day",
+  "base": "40mm",
+  "rep": 36,
+  "funding": 0,
+  "rank": ["Free Agent"],
+  "faction": "Unknown",
+  "img": "https://veland55.github.io/btb/img/CalendarMan.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 6,
+    "Endurance": 6
+  },
+  "traits": [
+    "Distract",
+    "Scheming (1)",
+    "Strategist",
+    "Runaway",
+    "Seasonal Criminal",
+    "Trickster"
+  ],
+  "weapons": [
+    {
+      "name": "Taser",
+      "damage": "⭐⭐",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Mechanical / Reach (3) / Crt (Stunned)"
+    }
+  ]
+}
 
 
 ];
@@ -2085,6 +2126,9 @@ const traitDescriptions = {
 	"Swift": "This model can make 1 Effort to improve its basic move distance by +2” for the remainder of the round.",
   "Shady Dealings": "Discard two objective cards from your hand.",
   "Small Nightmare": "This model doesn't follows the Nightmare trait rules to come back to play while removed as a Casualty, instead they can be Set in play in contact with a friendly Suspect when a Fear card is returned to the Fear pile, they can only take an activation if they didn't take it before. In addition, this model gains +1 Defense against enemy Ranged Attacks.",
+  "Seasonal Criminal": "At the end of every round, check the total Victory Points scored by all players. For every full 12 VP scored, Calendar Man gains one of the following benefits, advancing one step on the list for each 12 VP scored.<br><br><img src=\"https://veland55.github.io/btb/img/Seasonal_Criminal.png\" style=\"width:100%;max-width:420px;border-radius:12px;margin:20px 0;display:block;\">Example: The players total 24 VPs, so Calendar Man gains +2 Attack skill (12 x 2 = 24). At the end of the next round, the players have scored another VPs between them. The total is now 37- the wheel advances 3 spaces (it started at 2, and now it cycles all the way around to 1). Calendar Man loses the +2 Attack bonus, and gains +4 Movement instead. \n \n•12-23: +4 Movement \n•24-35: +2 Attacks \n•36-47: +2 Defense \n•48-59: Handyman \n•60-71: +4 Movement \n•72-83: +2 Attack \n•84-95:+2 Defense",
+
+
 
 
   // T
