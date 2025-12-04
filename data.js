@@ -1332,8 +1332,245 @@ const models = [
         "traits": "Handy / Crt (Paralyze)"
       }
     ]
-  }
+  },
   
+//---------------------------------------------------------------------------------------------------------// 
+//Scarecrow
+//---------------------------------------------------------------------------------------------------------// 
+{
+  "name": "Scarecrow (The Worst Nightmare)",
+  "realname": "Jonathan Crane",
+  "base": "60mm",
+  "rep": 85,
+  "funding": 0,
+  "rank": "Leader",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/ScarecrowTheWorstNightmare.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 12,
+    "Willpower": 8,
+    "Endurance": 6
+  },
+  "traits": ["Animal", "Charm", "Casting Fears", "Control Through Fear", "Induction", "Inspire Fear", "Psychologist", "Scientific", "The Fear Master", "Undercover"],
+  "weapons": [
+    {
+      "name": "TERRORIFIC SCYTHE",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Bleed (2) / Reach (1) / Sharp / Terror"
+    },
+    {
+      "name": "TRUE FEAR SPRAY",
+      "damage": "🩸",
+      "rof": 1,
+      "ammo": 3,
+      "traits": "Expansive / Gas / Mechanical / True Fear"
+    }
+  ]
+},
+{
+  "name": "Dr. Friitawa",
+  "realname": "Linda Friitawa",
+  "base": "40mm",
+  "rep": 60,
+  "funding": 0,
+  "rank": "Sidekick",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/DrFriitawa.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 2,
+    "Strength": "5+",
+    "Movement": 8,
+    "Willpower": 7,
+    "Endurance": 5
+  },
+  "traits": ["Casting Fears", "Inspire Fear", "Lieutenant (Scarecrow)", "Scientific", "Induction", "Intel Support (5)", "Poison Catalyst", "Shady Dealings"],
+  "weapons": [
+    {
+      "name": "LURE",
+      "damage": "-",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Pull (4) / Boosted (3) / Reach (8)"
+    }
+  ]
+},
+{
+  "name": "Nightmare of Fear",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 22,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/NightmareOfFear.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 2,
+    "Strength": "4+",
+    "Movement": 0,
+    "Willpower": 2,
+    "Endurance": 2
+  },
+  "traits": ["Insidious", "Inspire Fear", "Limited Equipment", "Nightmare", "Paranoid (Mental Disorder)", "Tangible Fear"],
+  "weapons": [
+    {
+      "name": "FEARSOME PRESENCE",
+      "damage": "🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Devastating / Crt (Terror) / True Fear"
+    }
+  ]
+},
+{
+  "name": "Nightmare of Demotivation",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 20,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/NightmareOfDemotivation.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 2,
+    "Strength": "4+",
+    "Movement": 0,
+    "Willpower": 2,
+    "Endurance": 2
+  },
+  "traits": ["Demotivate", "Insidious", "Limited Equipment", "Nightmare", "OCD (Mental Disorder)", "Tangible Fear"],
+  "weapons": [
+    {
+      "name": "DEMOTIVATING PRESENCE",
+      "damage": "★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Devastating / Crt (True Fear) / Poison"
+    }
+  ]
+},
+{
+  "name": "Nightmare of Anger",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 21,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/NightmareOfAnger.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 2,
+    "Strength": "4+",
+    "Movement": 0,
+    "Willpower": 2,
+    "Endurance": 2
+  },
+  "traits": ["Anger Management (Mental Disorder)", "Insidious", "Limited Equipment", "Nightmare", "Poison Catalyst", "Tangible Fear"],
+  "weapons": [
+    {
+      "name": "ANGERING PRESENCE",
+      "damage": "🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Devastating / Crt (True Fear) / Terror"
+    }
+  ]
+},
+{
+  "name": "Nightmare of Insignificance",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 20,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/NightmareOfInsignificance.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 2,
+    "Strength": "4+",
+    "Movement": 0,
+    "Willpower": 2,
+    "Endurance": 2
+  },
+  "traits": ["Bluff", "Insidious", "Limited Equipment", "Nightmare", "Obsessive (Mental Disorder)", "Tangible Fear"],
+  "weapons": [
+    {
+      "name": "INSIGNIFICANT PRESENCE",
+      "damage": "★",
+      "rof": 3,
+      "ammo": "-",
+      "traits": "M. Range / Crt (True Fear) / Mechanical / High Caliber / Scared"
+    }
+  ]
+},
+{
+  "name": "Fearbeast Nightmare",
+  "realname": "Unknown",
+  "base": "60mm",
+  "rep": 54,
+  "funding": 0,
+  "rank": "Henchman",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/FearbeastNightmare.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 2,
+    "Strength": "3+",
+    "Movement": 0,
+    "Willpower": 6,
+    "Endurance": 6
+  },
+  "traits": ["Bloodthirsty (Mental Disorder)", "Bodyguard", "Huge", "Insidious", "Inspire Fear", "Limited Equipment", "Nightmare", "Tangible Fear"],
+  "weapons": [
+    {
+      "name": "TERRORIFIC CLAWS",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Terror / True Fear"
+    }
+  ]
+},
+{
+  "name": "Little Nightmare",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 20,
+  "funding": 100,
+  "rank": "Henchman",
+  "faction": "Scarecrow",
+  "img": "https://veland55.github.io/btb/img/LittleNightmare.png",
+  "stats": {
+    "Attack": 2,
+    "Defense": 2,
+    "Strength": "5+",
+    "Movement": 0,
+    "Willpower": 2,
+    "Endurance": 2
+  },
+  "traits": ["Horde", "Insidious", "Nightmare", "Paranoid (Mental Disorder)", "Small Nightmare", "Tangible Fear"],
+  "weapons": [
+    {
+      "name": "LESS THAN INSIGNIFICANT",
+      "damage": "★",
+      "rof": 1,
+      "ammo": "-",
+      "traits": "S. Range / Mechanical / Scared / Crt (True Fear)"
+    }
+  ]
+}
+
+
+
 //--------------------------------------------------------------------------------------------------------------------
 //CULTS
 //--------------------------------------------------------------------------------------------------------------------
@@ -1410,6 +1647,7 @@ const traitDescriptions = {
 	"Bullet Time": "One use only. After activating this trait, if this model performs a Ranged Attack, it gains an extra Ranged Attack action. The model cannot use the same ranged weapon more than once. This model doesn’t lose attack dice this round for firing after moving.",
 	"Bulletproof Vest": "Traits and attacks with the Firearm rule deduct 1 attack die when rolling against this model.",
 	"Business Agent": "When this model is recruited, add $350 to the crew’s available Funding.",
+  "Boosted (X)": "While making an attack with this weapon, roll X additional attack dice.",
 
   // C
   "Canary Cry": "Place the Spray template in base contact with this model – all models affected receive one automatic hit with the Sonic special rule. Affected models must pass a Willpower roll or take 🩸 Damage and become Stunned.",
@@ -1430,7 +1668,6 @@ const traitDescriptions = {
 	"Cloak of Bats": "Enemy models can only see this model if it is in contact with them. This ability works even when the model is within the area of effect of a Light. However, the model is still subject to other rules that aid detection, such as Total Vision or Night Vision, etc. This model can be affected by templates, but cannot be targeted directly. Also, when an enemy model enters contact with this model, or this model enters contact with an enemy model, that model must take a Willpower roll: if the roll is failed, the model suffers the Scared effect.",
 	"Close Combat Master": "When fighting Unarmed, this model may reroll failed attack dice in Melee.",
 	"Combat Flip": "This ability may be used when the model is in contact with an enemy. Move this model up to 3”.",
-	"Combo: (Weapon)": "For every two successful hits in its attack roll while using the specified weapon or trait (before the enemy rolls to defend), this model gains an additional hit.",
 	"Commissioner": "Friendly models with the Arrest trait within 6” of this model can use that trait as an extra action.",
 	"Concealment": "Until the end of the round in which this ability is used, enemy models can only see this model if it is in contact with them. This ability works even when the model is within the area of effect of a Light. However, the model is still subject to other rules that aid detection, such as Total Vision or Superior Sense of Smell, etc. This model can be affected by templates, but cannot be targeted directly.",
 	"Confusion": "Target an enemy model (not a Vehicle) within 8” and line of sight. Perform an opposed Willpower roll against the target. If successful, reduce the target model’s Attack and Defense skills by 1. Also, the target cannot perform Special Actions. Both effects last until the end of the round.",
@@ -1453,6 +1690,11 @@ const traitDescriptions = {
 	"Cybernetic": "This model gains +1 to its Defense rolls, and can reroll Recovery rolls.",
 	"Cyclops": "This model’s ranged attacks gain the Imprecise rule when the target is more than 8” away.",
   "Combo (X)": "For every two successful hits in its attack roll while using the specified (weapon) or (trait) (before the enemy rolls to defend), this model gains an additional hit.",
+  "Control Through Fear": "Target an enemy model with the Scared effect that is within 8'' and LoS. That model suffers the Terror Status and you Move 4'' it.",
+  "Casting Fears": "Make an Attack with a friendly model with the Nightmare trait that is within 4'' and LoS. If the target wants to Effort against this Attack, it must first suffer the Terror Status.",
+  "CRT (X)": "Natural 6 on the Strength die = Critical Hit. Target is Knocked Down by default. Weapons may list a special CRT effect ( CRT (X) ). If present, player chooses one effect: the listed one or Knocked Down.",
+
+
 
   // D
 	"Daddy’s Girrrl": "If this model starts its activation within 6” of the Boss, its gains +1 + .",
@@ -1589,6 +1831,8 @@ const traitDescriptions = {
 	"Huge": "This model ignores up to 2 ★ Damage per enemy Attack.",
   "Healing Radiance": "A friendly model within 4'' of the target of the attack, removes up to 1 Damage.",
   "Harlequin": "Keyword",
+  "Horde": "This model can be recruited up to four times in a crew, regardless of its Name.",
+
 
   // I
 	"I Believe in Harvey Dent": "If this model is the Boss, friendly Henchmen must roll a die or flip a coin at the start of their activation. If the result is even/heads, that model gains 1 free Effort until the end of the round. If the result is odd/tails, it suffers Enervating 1.",
@@ -1611,6 +1855,8 @@ const traitDescriptions = {
 	"Invulnerability (X)": "This model is immune to the CRT: Casualty effect. In addition, the first 'X' Damage markers received by this model during each round are ignored.",
 	"It’s Mine": "Enemy models cannot Reveal your Suspect markers while the marker is within 2” of this model.",
 	"I Will Break You": "When you recruit this model, choose one of the following options: \n • Bane gains +3 Extra Venom Doses and may apply them to a friendly model within 4'' during his activation. \n • Bane gains Exhaustive Planner and +1 Willpower. \n • Bane Gains Close Combat Master.",
+  "Induction": "Once per round, when this model places a Suspect and/or when it affects an enemy model with the Inspire Fear trait you may place a Fear card into the Objective deck.",
+  "Insidious": "Enemy models within 4'' of this model receive +1 to their Willpower roll results (cumulative up to 3)",
 
   //J
 	"Joker’s Gas": "All other models within 4” and LoS suffer Enervating 1 and the Poison effect, with the Gas rule.",
@@ -1647,6 +1893,8 @@ const traitDescriptions = {
   "Limited Attack": "An attack with this weapon inflicts its damage only once, regardless of the number of successful hits and does not inflict Knocked Down when scoring a CRT",
   "Limited Equipment": "This model can only purchase up to 1 Equipment.",
   "Let's Cool It For Now": "Once per round, after this model places a suspect, target another model within 4'' of that suspestc, it gains +1 or -1 Defense Modifiers Markers",
+  "Lieutenant (X)": "If the crew contain a model with Alias (X), this model reduces its funding cost to 0 and all friendly models with Rank that start their activation within 8'' of this model are affected by the Inspire trait of the friendly model with Alias: (X).",
+
 
   // M
 	"Magical Power (X)": "All models with this trait can use Elemental Spells. The value 'X' is the number of Magic Points (MP) the model can spend during a round. Each spell costs a number of MPs to cast. At the Beginning of the Raise the Plan phase, the model gains a number of MPs equal to X. At the end Recovery phase, all unspent MPs are lost.",
@@ -1700,6 +1948,8 @@ const traitDescriptions = {
 	"No Mercy!!!": "All friendly Henchmen add the Bleed 1 effect to their Attacks.",
 	"Non-Lethal Ammo": "When this model attacks non-Vehicle models with its ranged weapons, all 🩸 damage becomes ★ damage.",
   "Nature's Arm": "Until the end of the round, This model may place or reveal a Suspect marker within 4'' and LoS instead of in contact. An enemy model in contact with that suspect increases the Slow Status value by (2), unless it doesn't have it, then it suffers the Slow (2) Status.",
+  "Nightmare": "At the start of a Nightmare's activation, you may place it in contact with a friendly Suspect. A Nightmare can only be Move or being Placed by this rule. \n This model is always considered an active model and is inside the gaming area so, it may receive Audacity even if it is not in play. \n• If a Nightmare gets Knocked Out, immediately remove it as a Casualty. \n• When a Nightmare is removed as a Casualty, it can be returned to play again in a subsequent round, with its usual rules, removing all Damage and Statuses suffered previously by that Nightmare. \n• Nightmares have a 4'' 'action zone' radius. Within that radius, Nightmares are able to attack in Melee (no contact is needed), and may perform the Manipulate action. \n• Nightmares cannot Place/Reveal Suspects more than once during its Activation.",
+
 
   // O
 	"Objectives? Puzzles everywhere!!!": "A crew that includes this model does not accomplish Objective cards following the normal rules. Instead, when a model that share an Affiliation with this model place a Suspect marker, you must roll 1D3. Place a Number Counter on top of that Suspect marker with an equal value as the roll. At the end of the round, you score Objective cards that shown the same VP value as the Number Counters on top of the friendly Suspect markers. Each Number Counter only accomplish 1 Objective card and then, is removed.",
@@ -1751,6 +2001,10 @@ const traitDescriptions = {
 	"Public Resources": "If this model is included in your crew, add $300 to the crew’s available Funding. In addition, you may place one additional Streetlamp and Sewer marker before the game starts.",
 	"Puzzle Master": "This model can place 2 Suspect markers when performing a Manipulate action, and can place them within 6” instead of in contact.",
 	"Pyromania (Mental Disorder)": "If, at the beginning of its activation, this model can see any model with a Fire marker, this model gains a Defense Marker.",
+  "Pull (X)": "The affected model is moved directly towards to the attacker X''.",
+  "Poison Catalyst": "A model within 4'' suffering the Poison Status must make a Poison test.",
+
+
 
    //Q
 	"Quiz Master": "When this model scores an Objective card with multiple copies in the deck, you can search the Objective deck for another copy of the same card and put it in your hand. Then, shuffle your deck.",
@@ -1829,7 +2083,8 @@ const traitDescriptions = {
 	"Sustained Defense": "For every two successful defense rolls made by this model, cancel one extra enemy hit.",
 	"Swarm": "This model cannot be recruited, but can only be brought into play by the Sewer Swarm X trait. This model gains +1 Defense skill vs enemy Ranged Attacks. This model cannot perform Manipulate Actions by any means. Swarms do not fulfill enemy Objective criteria for making models KO or removing them as Casualties. If this model is made KO, remove it as a Casualty.",
 	"Swift": "This model can make 1 Effort to improve its basic move distance by +2” for the remainder of the round.",
-        "CRT (X)": "Natural 6 on the Strength die = Critical Hit. Target is Knocked Down by default. Weapons may list a special CRT effect ( CRT (Stunned) ). If present, player chooses one effect: the listed one or Knocked Down.",
+  "Shady Dealings": "Discard two objective cards from your hand.",
+  "Small Nightmare": "This model doesn't follows the Nightmare trait rules to come back to play while removed as a Casualty, instead they can be Set in play in contact with a friendly Suspect when a Fear card is returned to the Fear pile, they can only take an activation if they didn't take it before. In addition, this model gains +1 Defense against enemy Ranged Attacks.",
 
 
   // T
@@ -1884,6 +2139,11 @@ const traitDescriptions = {
 	"True Love": "If the model named as the True Love (in parentheses) is in the same crew, and is removed as a Casualty, this model gains +1 Willpower and +1 Attack until the end of the game.",
 	"Truly Immortal": "This model cannot become KO or be removed as Casualty from the game by any means. Instead, remove one Damage marker, then the opponent relocates this model, placing it within 4''.",
 	"Truth-Seeker": "When a model within 10” of this model becomes KO or is removed as a Casualty, you may first place a friendly Suspect marker in contact with it (ignoring the normal minimum distance between Suspect markers). This model may remove 1 friendly Suspect marker within 4” during its activation to perform an extra move of up to 4”. In addition, when a friendly model within 4” of a friendly Suspect marker scores an Objective card, you may remove that marker to draw an additional Objective card. ",
+  "True Fear": "When scoring any number of successful hits during an Attack, add 1 Fear card to your Objective deck.",
+  "Tangible Fear": "Any time a model within 4'' of this model receives a hit, or fails a Willpower roll, you may discard 1 card from the top of the friendly objective deck (not cumulative). \n In addition, while this model attacks, the target's Defense is reduced by 1 if its Willpower is less than 6. \n While this model is attacked, the Attack value of the attacking model is reduced by 1 if its Willpower is less than 6.\n In addition, this model cannot remove damage caused by other model's effects unless specified.",
+
+
+
 
    //U
 	"Undead": "This model is immune to all effects and CRT, except Knock Down and Smoke.",
