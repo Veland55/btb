@@ -24,7 +24,63 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .tab { flex:0 0 auto; min-width:88px; max-width:120px; padding:9px 6px; background:#222; border:2px solid #444; border-radius:20px; color:#ccc; font-size:12.5px; font-weight:bold; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition:all .25s ease; scroll-snap-align:center; box-shadow:0 3px 8px rgba(0,0,0,.4); }
 .tab img { height:20px; width:auto; margin:2px auto; display:block; }
 .tab.active, .tab:hover { background:#e94560; border-color:#e94560; color:#fff; transform:scale(1.06); box-shadow:0 0 18px rgba(233,69,96,.7); }
-.tab[data-faction="Doom Patrol"] { min-width:64px; padding:8px 4px; }
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px; /* Оставляем, но можно уменьшить до 6px для компактности */
+  padding: 0 12px 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: 0 0 auto;
+  width: 90px; /* Фиксированная ширина для всех табов (было min-width:88px; max-width:120px) */
+  height: 50px; /* Добавляем фиксированную высоту для квадратного вида */
+  padding: 8px 6px; /* Унифицированные отступы (убираем специальные для Doom Patrol) */
+  background: #222;
+  border: 2px solid #444;
+  border-radius: 20px;
+  color: #ccc;
+  font-size: 12.5px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all .25s ease;
+  scroll-snap-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,.4);
+  display: flex; /* Добавляем flex для центрирования содержимого */
+  align-items: center;
+  justify-content: center;
+}
+
+.tab img {
+  width: auto; /* Авто-ширина, чтобы не искажать пропорции */
+  height: 30px; /* Фиксированная высота для всех изображений (увеличьте, если нужно) */
+  max-width: 100%; /* Не выходит за пределы таба */
+  object-fit: contain; /* Масштабирует изображение без обрезки, сохраняя пропорции */
+  margin: 0 auto; /* Центрируем */
+}
+
+.tab span {
+  font-size: 14px; /* Чуть больше, чтобы текст был на уровне изображений */
+  line-height: 1; /* Убираем лишние отступы */
+}
+
+.tab.active, .tab:hover {
+  background: #e94560;
+  border-color: #e94560;
+  color: #fff;
+  transform: scale(1.06);
+  box-shadow: 0 0 18px rgba(233,69,96,.7);
+}
 
 /* СЕТКА МОДЕЛЕЙ */
 .models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:14px; padding:14px; }
