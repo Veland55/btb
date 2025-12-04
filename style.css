@@ -23,7 +23,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .tabs::-webkit-scrollbar { display:none; }
 .tab { flex:0 0 auto; min-width:88px; max-width:120px; padding:9px 6px; background:#222; border:2px solid #444; border-radius:20px; color:#ccc; font-size:12.5px; font-weight:bold; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition:all .25s ease; scroll-snap-align:center; box-shadow:0 3px 8px rgba(0,0,0,.4); }
 .tab img { height:20px; width:auto; margin:2px auto; display:block; }
-.tab.active, .tab:hover { background:#e94560; border-color:#e94560; color:#fff; transform:scale(1.06); box-shadow:0 0 18px rgba(233,69,96,.7); }
+.tab.active, .tab:hover { background:#e94560; border-color:#e94560; color:#fff; box-shadow:0 0 18px rgba(233,69,96,.7); }
 .tabs {
   display: flex;
   overflow-x: auto;
@@ -78,7 +78,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   background: #e94560;
   border-color: #e94560;
   color: #fff;
-  transform: scale(1.06);
   box-shadow: 0 0 18px rgba(233,69,96,.7);
 }
 
@@ -86,16 +85,16 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:14px; padding:14px; }
 .mini-card { background:#1a1a1a; border-radius:14px; overflow:hidden; position:relative; cursor:pointer; border:2px solid transparent; box-shadow:0 4px 12px rgba(0,0,0,.5); transition:all .3s; }
 .mini-card:hover { transform:translateY(-6px); box-shadow:0 12px 25px rgba(233,69,96,.4); }
-.mini-card.in-crew { border:4px solid #e94560; box-shadow:0 0 30px rgba(233,69,96,.8); transform:scale(1.04); }
+.mini-card.in-crew { border:4px solid #e94560; box-shadow:0 0 30px rgba(233,69,96,.8); }
 .mini-card img { width:100%; height:115px; object-fit:cover; }
 .mini-info { padding:10px 8px; text-align:center; }
 .mini-name { font-weight:bold; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
 .mini-rep { color:#e94560; font-weight:bold; font-size:14px; }
 .add-btn, .remove-btn { position:absolute; top:8px; right:8px; width:40px; height:40px; border-radius:50%; font-size:24px; font-weight:bold; border:none; z-index:10; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; }
 .add-btn { background:#e94560; color:#fff; }
-.add-btn:hover { background:#ff3366; transform:scale(1.25); }
+.add-btn:hover { background:#ff3366; }
 .remove-btn { background:#c00; color:#fff; }
-.remove-btn:hover { background:#f00; transform:scale(1.25); }
+.remove-btn:hover { background:#f00; }
 
 /* ПОЛНАЯ КАРТОЧКА */
 .full-card { position:fixed; inset:0; background:#000; z-index:9999; overflow-y:auto; display:none; padding:10px; }
@@ -111,7 +110,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .back-btn { position:absolute; left:15px; top:50%; transform:translateY(-50%); background:#e94560; color:#fff; border:none; padding:10px 18px; border-radius:30px; font-weight:bold; font-size:14px; cursor:pointer; }
 .compendium-search-wrapper { padding:16px; background:#111; }
 .compendium-search { display:flex; align-items:center; background:#222; border:2px solid #e94560; border-radius:50px; overflow:hidden; transition:all .3s ease; box-shadow:0 4px 15px rgba(0,0,0,.4); }
-.compendium-search:focus-within { border-color:#ff3366; box-shadow:0 0 25px rgba(233,69,96,.8); transform:scale(1.02); }
+.compendium-search:focus-within { border-color:#ff3366; box-shadow:0 0 25px rgba(233,69,96,.8); }
 .compendium-search .search-icon { width:20px; height:20px; fill:#e94560; margin:0 14px; pointer-events:none; }
 .compendium-search input { flex:1; background:transparent; border:none; outline:none; color:#fff; font-size:16px; padding:14px 10px 14px 0; }
 .compendium-search input::placeholder { color:#aaa; }
@@ -155,10 +154,10 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-weapon-rof, .official-weapon-ammo { color:#44ff44; display:flex; align-items:center; gap:6px; margin-left:6px; }
 .official-weapon-traits-line { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed #444; }
 .weapon-trait-chip { background:#ffd700; color:#000; padding:6px 12px; border-radius:20px; font-size:12.5px; font-weight:bold; cursor:pointer; transition:all .25s; }
-.weapon-trait-chip:hover { background:#fff; transform:scale(1.08); }
+.weapon-trait-chip:hover { background:#fff; }
 .official-traits-grid { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:16px; padding:16px 8px; }
 .official-trait { background:#ffd700; color:#000; padding:11px 18px; border-radius:30px; font-weight:bold; font-size:14.5px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.3); transition:all .25s; }
-.official-trait:hover { background:#fff; transform:scale(1.07); }
+.official-trait:hover { background:#fff; }
 .stat-icon { width:32px; height:32px; vertical-align:middle; }
 
 /* АДАПТИВ */

@@ -1586,8 +1586,9 @@ const models = [
   "base": "40mm",
   "rep": 36,
   "funding": 0,
-  "rank": ["Free Agent"],
+  "rank": ["Henchman"],
   "faction": "Unknown",
+  "rivals": ["Bat Family", "GCPD"],
   "img": "https://veland55.github.io/btb/img/CalendarMan.png",
   "stats": {
     "Attack": 3,
@@ -1608,7 +1609,7 @@ const models = [
   "weapons": [
     {
       "name": "Taser",
-      "damage": "⭐⭐",
+      "damage": "★★",
       "rof": "-",
       "ammo": "-",
       "traits": "Mechanical / Reach (3) / Crt (Stunned)"
