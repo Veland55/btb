@@ -132,7 +132,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* ОФИЦИАЛЬНЫЕ КАРТОЧКИ */
 .official-card { background:#ffd700; color:#000; border-radius:20px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6); margin:10px; font-family:'Oswald',sans-serif; }
 .official-header { background:#000; color:#ffd700; padding:8px; text-align:center; }
-.official-name { font-size:28px; font-weight:bold; letter-spacing:2px; }
+.official-name { font-size:24px; font-weight:bold; letter-spacing:2px; }
 .official-subtitle { font-size:16px; margin-top:6px; opacity:.9; }
 .official-main { display:flex; padding:20px; gap:20px; background:url('https://veland55.github.io/btb/img/card-bg.jpg') center/cover no-repeat #f5f5f5; min-height:250px; }
 .official-img-wrapper { flex:0 0 140px; border-radius:12px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,.5); }
@@ -150,7 +150,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-weapon { background:#2a2a2a; color:#fff; padding:16px 18px; border-radius:14px; margin:12px 8px; border-left:4px solid #e94560; box-shadow:0 4px 12px rgba(0,0,0,.5); transition:all .25s; }
 .official-weapon:hover { background:#333; transform:translateX(8px); box-shadow:0 6px 20px rgba(233,69,96,.4); }
 .official-weapon-first-line { display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:17px; font-weight:bold; margin-bottom:8px; }
-.official-weapon-name { color:#ffd700; font-size:18px; }
+.official-weapon-name { color:#ffd700; font-size:16px; }
 .official-weapon-damage { color:#44ff44; }
 .official-weapon-rof, .official-weapon-ammo { color:#44ff44; display:flex; align-items:center; gap:6px; margin-left:6px; }
 .official-weapon-traits-line { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed #444; }
