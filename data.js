@@ -1235,7 +1235,7 @@ const models = [
     "traits": [
       "Arrest",
       "Bat Family",
-      "Combo: Unarmed",
+      "Combo (Unarmed)",
       "One of the Boys",
       "Reinforced Gloves",
       "Teen Titans",
@@ -1735,7 +1735,7 @@ const traitDescriptions = {
   "Control Through Fear": "Target an enemy model with the Scared effect that is within 8'' and LoS. That model suffers the Terror Status and you Move 4'' it.",
   "Casting Fears": "Make an Attack with a friendly model with the Nightmare trait that is within 4'' and LoS. If the target wants to Effort against this Attack, it must first suffer the Terror Status.",
   "CRT (X)": "Natural 6 on the Strength die = Critical Hit. Target is Knocked Down by default. Weapons may list a special CRT effect ( CRT (X) ). If present, player chooses one effect: the listed one or Knocked Down.",
-
+  "COMBO (X)": "For every two successful hits in its attack roll while using the specified (weapon) or (trait) (before the enemy rolls to defend), this model gains an additional hit.",
 
 
   // D
