@@ -8,13 +8,13 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
 /* ТОП-БАР */
 .top-bar { background:linear-gradient(#111,#000); padding:10px 12px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100; box-shadow:0 4px 15px rgba(0,0,0,.6); }
-.top-bar h1 { font-size:22px; letter-spacing:6px; color:#e94560; text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }
+.top-bar h1 { font-size:22px; letter-spacing:6px; color:#ffd700; text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }
 .top-bar-content { display:flex; justify-content:space-between; align-items:center; padding:0 15px; }
 .header-buttons { display:flex; gap:12px; }
 .compendium-small-btn { display:flex; align-items:center; gap:8px; background:#e94560; color:#fff; padding:8px 8px; border-radius:30px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 4px 15px rgba(233,69,96,.5); transition:all .3s; }
 .compendium-small-btn:hover { background:#ff3366; transform:translateY(-2px); }
 .compendium-small-btn svg { width:24px; height:24px; fill:#fff; }
-.funds { font-size:17px; font-weight:bold; margin-top:8px; }
+.funds { font-size:14px; font-weight:bold; margin-top:8px; }
 .funds span { color:#e94560; margin:0 10px; }
 
 /* ВКЛАДКИ ФРАКЦИЙ */
