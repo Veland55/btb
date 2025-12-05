@@ -118,8 +118,8 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .compendium-search .clear-search:hover { background:#ff3366; }
 .compendium-content { flex:1; padding-bottom:100px; }
 .comp-entry { margin:28px 15px 10px; background:#111; border-radius:16px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,.4); border:1px solid #333; }
-.comp-title { background:#e94560; color:#fff; padding:16px 20px; font-weight:bold; font-size:22px; text-align:center; letter-spacing:1px; }
-.comp-text { background:#1a1a1a; padding:22px 20px; line-height:1.75; color:#eee; font-size:15.5px; }
+.comp-title { background:#e94560; color:#fff; padding:8px 8px; font-weight:bold; font-size:22px; text-align:center; letter-spacing:1px; }
+.comp-text { background:#1a1a1a; padding:8px 8px; line-height:1.75; color:#eee; font-size:15.5px; }
 
 /* ТРЕЙТЫ ПОПАП */
 .trait-popup { position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
