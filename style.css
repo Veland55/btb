@@ -164,3 +164,75 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 @media (max-width:380px) {
   .tab { min-width:100px; font-size:13px; }
 }
+
+.faction-icon-small {
+  height: 22px;
+  width: auto;
+  margin: 0 4px;
+  vertical-align: middle;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+.faction-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.rank-label {
+  background: rgba(0,0,0,0.5);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+.faction-icon-small {
+  height: 24px;
+  width: auto;
+  margin: 0 6px;
+  vertical-align: middle;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+.faction-line {
+  text-align: center;
+  padding: 8px 0;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  margin: 6px 0;
+}
+
+.rank-rep-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  font-size: 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.rank-badge {
+  background: #e94560;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(233,69,96,0.6);
+}
+
+.rep-funding {
+  color: #ffd700;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255,215,0,0.6);
+}
+

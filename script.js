@@ -59,36 +59,116 @@ const renderMiniCards = (() => {
 
 // ======================== ПОЛНАЯ КАРТОЧКА ========================
 const showFullCard = model => {
-  const factions = Array.isArray(model.faction) ? model.faction : [model.faction||"—"];
+  const realName = model.realname || "—";
+  const base = model.base || "30mm";
+
+  // --- Основные фракции (faction) ---
+  const mainFactions = Array.isArray(model.faction)
+    ? model.faction
+    : typeof model.faction === "string" && model.faction.trim()
+      ? model.faction.replace(/ *& */gi, ",").replace(/ *\/ */g, ",").split(",").map(s => s.trim())
+      : [];
+
+  // --- Rivals (новое поле) ---
+  const rivalFactions = Array.isArray(model.rivals)
+    ? model.rivals
+    : typeof model.rivals === "string" && model.rivals.trim()
+      ? model.rivals.replace(/ *& */gi, ",").replace(/ *\/ */g, ",").split(",").map(s => s.trim())
+      : [];
+
+  // --- Ранг ---
+  const rank = Array.isArray(model.rank)
+    ? model.rank.join(" / ")
+    : model.rank || "Free Agent";
+
+  const rep = model.rep || 0;
+  const funding = model.funding || 0;
+
+  // --- Маппинг иконок (добавь сюда все нужные, если будут новые) ---
+  const factionIcons = {
+    "Bat Family": "BATMAN.png",
+    "GCPD": "GCPD.png",
+    "Birds of Prey": "BIRDS_OF_PREY.png",
+    "Joker": "JOKER.png",
+    "Bane": "SOLDIERS.png",
+    "League of Shadows": "LEAGUE.png",
+    "Royal Flush": "RoyalFlush.png",
+    "Penguin": "PENGUIN.png",
+    "Freeze": "MR_FREEZE.png",
+    "Scarecrow": "SCARECROW.png",
+    "Two-Face": "TWO-FACE.png",
+    "Riddler": "RIDDLER.png",
+    "Organized Crime": "OrganizedCrime.png",
+    "Suicide Squad": "Suicide_Squad.png",
+    "Court of Owls": "OWLS.png",
+    "Watchmen": "Watchmen.png",
+    "Batman Who Laughs": "BatmanWhoLaughs.png",
+    "Cults": "CULTS.png",
+    "Doom Patrol": "Doom_Patrol.png",
+    "Unknown": "UNKNOWN.png"
+  };
+
+  const renderIcons = arr => arr.length
+    ? arr.map(f => {
+        const file = factionIcons[f] || "UNKNOWN.png";
+        return `<img src="https://veland55.github.io/btb/img/${file}" alt="${f}" class="faction-icon-small">`;
+      }).join(" ")
+    : "—";
+
+  const factionIconsHTML = renderIcons(mainFactions);
+  const rivalsIconsHTML   = renderIcons(rivalFactions);
+
+  // --- Оружие и трейты (без изменений) ---
   const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
-    const traits = w.traits ? w.traits.split("/").map(t=>t.trim()).filter(Boolean) : [];
+    if (!w || Object.keys(w).length === 0) return "";
+    const traits = w.traits ? w.traits.split("/").map(t => t.trim()).filter(Boolean) : [];
     return `<div class="official-weapon"><div class="official-weapon-first-line">
-      <span class="official-weapon-name">${w.name}</span>
-      ${w.damage?`<span class="official-weapon-damage">${w.damage}</span>`:""}
-      ${w.rof&&w.rof!=="-"?`<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>`:""}
-      ${w.ammo&&w.ammo!=="-"?`<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>`:""}
-    </div>${traits.length?`<div class="official-weapon-traits-line">${traits.map(t=>`<span class="weapon-trait-chip" onclick="event.stopPropagation();showTraitDesc('${t.replace(/'/g,"\\'")}')">${t}</span>`).join("")}</div>`:""}</div>`;
+      <span class="official-weapon-name">${w.name || "Unnamed"}</span>
+      ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
+      ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ""}
+      ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ""}
+    </div>${traits.length ? `<div class="official-weapon-traits-line">${traits.map(t => `<span class="weapon-trait-chip" onclick="event.stopPropagation();showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</span>`).join("")}</div>` : ""}</div>`;
   }).join("") : "";
 
-  const traitsHTML = model.traits?.length ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${model.traits.map(t=>`<div class="official-trait" onclick="showTraitDesc('${t.replace(/'/g,"\\'")}')">${t}</div>`).join("")}</div></div>` : "";
+  const traitsHTML = model.traits?.length
+    ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${model.traits.map(t => `<div class="official-trait" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>`).join("")}</div></div>`
+    : "";
 
-  $("fullCardContent").innerHTML = `<div class="official-card">
-    <div class="official-header"><div class="official-name">${model.name.toUpperCase()}</div>
-    <div class="official-subtitle">${model.rank||"Free Agent"} • ${factions.join(" • ")} • ${model.rep} REP • $${model.funding||0}</div></div>
-    <div class="official-main">
-      <div class="official-img-wrapper"><img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'"></div>
-      <div class="official-stats">
-        <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Willpower||"-"}</span><span class="official-label">Willpower</span></div>
-        <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Endurance||"-"}</span><span class="official-label">Endurance</span></div>
-        <div class="official-stat"><span class="official-value">${model.stats.Attack||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon"></span></div>
-        <div class="official-stat"><span class="official-value">${model.stats.Defense||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon"></span></div>
-        <div class="official-stat"><span class="official-value">${model.stats.Strength||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon"></span></div>
-        <div class="official-stat"><span class="official-value">${model.stats.Movement||"-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon"></span></div>
+  // --- Финальная сборка карточки ---
+  $("fullCardContent").innerHTML = `
+    <div class="official-card">
+      <div class="official-header">
+        <div class="official-name">${model.name.toUpperCase()}</div>
+        <div class="official-subtitle">${realName} / ${base}</div>
+        
+        <div class="official-subtitle faction-rivals-line">
+          <span class="label-f">F:</span> ${factionIconsHTML}
+          <span class="label-r">R:</span> ${rivalsIconsHTML}
+        </div>
+        
+        <div class="official-subtitle rank-rep-line">
+          <span class="rank-badge">${rank}</span>
+          <span class="rep-funding">${rep} REP • $${funding}</span>
+        </div>
       </div>
-    </div>
-    ${model.weapons?.length ? `<div class="official-section"><div class="official-section-title">WEAPONS</div>${weaponsHTML}</div>` : ""}
-    ${traitsHTML}
-  </div>`;
+
+      <div class="official-main">
+        <div class="official-img-wrapper">
+          <img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+        </div>
+        <div class="official-stats">
+          <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Willpower || "-"}</span><span class="official-label">Willpower</span></div>
+          <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Endurance || "-"}</span><span class="official-label">Endurance</span></div>
+          <div class="official-stat"><span class="official-value">${model.stats.Attack || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon"></span></div>
+          <div class="official-stat"><span class="official-value">${model.stats.Defense || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon"></span></div>
+          <div class="official-stat"><span class="official-value">${model.stats.Strength || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon"></span></div>
+          <div class="official-stat"><span class="official-value">${model.stats.Movement || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon"></span></div>
+        </div>
+      </div>
+
+      ${model.weapons?.length ? `<div class="official-section"><div class="official-section-title">WEAPONS</div>${weaponsHTML}</div>` : ""}
+      ${traitsHTML}
+    </div>`;
 
   $("fullCard").classList.add("active");
 };
