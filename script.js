@@ -94,7 +94,7 @@ const showFullCard = model => {
     "League of Shadows": "LEAGUE.png",
     "Royal Flush": "RoyalFlush.png",
     "Penguin": "PENGUIN.png",
-    "Freeze": "MR_FREEZE.png",
+    "Mr. Freeze": "MR_FREEZE.png",
     "Scarecrow": "SCARECROW.png",
     "Two-Face": "TWO-FACE.png",
     "Riddler": "RIDDLER.png",

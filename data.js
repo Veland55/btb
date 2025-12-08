@@ -246,6 +246,426 @@ const models = [
     ]
   },
 
+//---------------------------------------------------------------------------------------------------------// 
+//Mr. Freeze
+//---------------------------------------------------------------------------------------------------------// 
+
+  {
+    "name": "Mr. Freeze 1997",
+    "realname": "Victor Fries",
+    "base": "40mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/MrFreeze1997.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Cold Acclimation",
+      "Desensitized",
+      "Good Aim",
+      "Ice Flash",
+      "Scientific",
+      "Vulnerability to Fire",
+      "Cryo-Armor (2)",
+      "Freeze Well",
+      "Ice Age",
+      "Large",
+      "True Love (Nora Fries)"
+    ],
+    "weapons": [
+      {
+        "name": "Frozen Gloves",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Cold / Push (4) / Cryo-Weapon"
+      },
+      {
+        "name": "Cryo-Laser",
+        "damage": "🩸",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "M. Range / High Caliber / Beam / Brutal / Crit. Freeze / Cold"
+      }
+    ]
+  },
+  {
+    "name": "Freeze Thug 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/FreezeThug1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Cold Acclimation",
+      "Hacking",
+      "Cryo-Armor (1)",
+      "Radio"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Launcher",
+        "damage": "🩸🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "M. Range / Mechanical / Cold / Cryo-Weapon / Exposure"
+      }
+    ]
+  },
+  {
+    "name": "Freeze Thug 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/FreezeThug2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Cold Acclimation",
+      "Force Field",
+      "Cryo-Armor (1)",
+      "Minion (3)"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Light Cannons",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Mechanical / Cold / Cryo-Weapon / Exposure"
+      }
+    ]
+  },
+  {
+    "name": "Freeze Engineer",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/FreezeEngineer.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Cold Acclimation",
+      "Cryo-Grenade",
+      "Engineer",
+      "Cryo-Armor (1)",
+      "Cryo-Reinforcement",
+      "Handyman"
+    ],
+    "weapons": [
+      {
+        "name": "Torque Wrench",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Handy / Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Freeze Thug 5",
+    "realname": "Seamus O'Farrell",
+    "base": "40mm",
+    "rep": 63,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/FreezeThug5.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Brawler",
+      "Cryo-Armor (1)",
+      "Desensitized",
+      "Large",
+      "Snow Storm",
+      "Cold Acclimation",
+      "Cryo-Charge",
+      "Fight Me!",
+      "Obstinate",
+      "Tough Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-GigaAxe",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Devastating / Cold / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Combat Polar Bear",
+    "realname": "Unknown",
+    "base": "60mm",
+    "rep": 63,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/CombatPolarBear.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 10
+    },
+    "traits": [
+      "Animal",
+      "Claws",
+      "Cryo-Armor (1)",
+      "Drag",
+      "Tough Skin",
+      "Charge",
+      "Cold Acclimation",
+      "Desensitized",
+      "Huge",
+      "Unstoppable"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Claws",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Cold / Overwhelming"
+      }
+    ]
+  },
+
+  {
+    "name": "Freeze Thug 4",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/FreezeThug4.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Cold Acclimation",
+      "Cryo-Charge",
+      "Order",
+      "Cryo-Armor (1)",
+      "Minion (3)"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Sword",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Cold / Devastating / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Freeze Thug 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/FreezeThug3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Cold Acclimation",
+      "Cryo-Charge",
+      "Cryo-Armor (1)",
+      "Drop It!"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Fist",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Cold / Crushing / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Mr. Freeze Cryo-Armor",
+    "realname": "Victor Fries",
+    "base": "40mm/60mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/MrFreezeCryoArmor.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Cold Acclimation",
+      "Cryo-Grenade",
+      "Ice Flash",
+      "Reinforced Gloves",
+      "Scientific",
+      "Vulnerability to Fire",
+      "Cryo-Armor (2)",
+      "Desensitized",
+      "Large",
+      "Scheming (2)",
+      "True Love (Nora Fries)"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Gun",
+        "damage": "🩸",
+        "rof": 4,
+        "ammo": 3,
+        "traits": "M. Range / Mechanical / Cold / Exposure / Cryo-Weapon / Accurate"
+      }
+    ]
+  },
+  {
+    "name": "Mrs. Freeze",
+    "realname": "Nora Fries",
+    "base": "40mm",
+    "rep": 65,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/MrsFreeze.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "A Lot Colder",
+      "Cruel",
+      "Desensitized",
+      "Ice Flash",
+      "Cold Acclimation",
+      "Cryo-Armor (1)",
+      "Escape Artist"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Fist",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Cold / Crushing / Heavy"
+      },
+      {
+        "name": "Cryo-Light Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "S. Range / Mechanical / Exposure / Cryo-Weapon / Cold"
+      }
+    ]
+  },
+  {
+    "name": "Ranged Polar Bear",
+    "realname": "Unknown",
+    "base": "60mm",
+    "rep": 66,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": "Mr. Freeze",
+    "img": "https://veland55.github.io/btb/img/RangedPolarBear.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 10
+    },
+    "traits": [
+      "Animal",
+      "Charge",
+      "Cold Acclimation",
+      "Desensitized",
+      "Tough Skin",
+      "Barrage",
+      "Claws",
+      "Cryo-Armor (1)",
+      "Huge"
+    ],
+    "weapons": [
+      {
+        "name": "Cryo-Heavy Cannon",
+        "damage": "🩸🩸★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "M. Range / Mechanical / Cold / Devastating / Cryo-Weapon / Exposure"
+      }
+    ]
+  },
+
 
 //---------------------------------------------------------------------------------------------------------// 
 //Birds of Prey
