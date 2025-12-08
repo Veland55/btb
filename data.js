@@ -665,7 +665,45 @@ const models = [
       }
     ]
   },
-
+  
+{
+    "name": "Killer Frost Rebirth",
+    "realname": "Caitlin Snow",
+    "base": "40mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": "Mr. Freeze",
+	"img": "https://veland55.github.io/btb/img/KillerFrost_Rebirth.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Boss’s Orders",
+      "Cold Acclimation",
+      "Ice Flash",
+      "Runaway",
+      "Adaptable",
+      "Chill Touch",
+      "Coordination",
+      "Ice Queen"
+    ],
+    "weapons": [
+      {
+        "name": "Ice Daggers",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": "-",
+        "traits": "M. Range / Throwing / Cold / Exposure"
+      }
+    ]
+  },
 
 //---------------------------------------------------------------------------------------------------------// 
 //Birds of Prey
@@ -2099,7 +2137,7 @@ const traitDescriptions = {
 	"Bonebreaker": "Until the end of the round, this model’s unarmed attacks gain Bleed: 2.",
 	"Boom!": "Each time this model receives any damage, roll a D6 – on the natural score of a 6, this model explodes! Alternatively, during its activation, you may choose to make this model explode. When the model explodes, center an Explosive template on it. Roll a Strength 3+ die against each model affected. On a success, the model suffers 🩸🩸★ Damage. After resolving the explosion, remove this model as a Casualty.",
 	"Born in the Darkness": "When this model is not within the area effect of a Light source, it gains a +1 bonus to its Defense rolls, and enemy models cannot benefit from the Sneak Attack trait when targeting this model.",
-	"Boss’s Orders": "All friendly Henchmen that attack an enemy model within 8” of this model gain +1 to their attack dice rolls in close combat until the end of the round.",
+	"Boss's Orders": "All friendly models with Rank Henchman that attack an enemy model within 8\" of this model gain +1 to their attack dice rolls in close combat until the end of the round.",
 	"Bot Bomb": "Choose one of your models with the Bot trait to explode. Center the Explosion template over the bot. Roll a Strength 4+ die against each model affected. On a success, the model suffers 🩸🩸 Damage. Once the trait is resolved, remove the Bot as a Casualty.",
 	"Bot": "This model cannot recover from KO or recover Stun damage in the Recount phase. However, attacks with the Firearm, Mechanical and Beam rule deduct 1 attack die when rolling against this model. In addition, this model cannot use Doses of any kind,and is immune to the Enervating, Hypnotize, Poison, Scared and Terror effects.",
 	"Bot Mechanic": "Target a model with the Bot trait within 4” and Line of Sight. Remove up to 3 Damage markers from that model.",
@@ -2120,7 +2158,7 @@ const traitDescriptions = {
 	"Carry": "If this model passes within 2” of one or more friendly models during a Movement Action, it may make an Effort and target one of those models and place it in base contact at the end of the move. The chosen model cannot have the Large or Huge traits. The target model suffers Impaired Movement during its next activation unless it is Damian Wayne. This model cannot use the Carry trait in two consecutive activations.",
 	"Catcher Gear": "Enemies attacking this model never benefit from the Heavy weapon special rule.",
 	"Chain of Command": "When its crew’s Boss becomes a Casualty, this model immediately becomes the new Boss, taking the . This model does not halve the range of the Inspire trait when taking over as Boss. If more than one model in the crew has this trait, or another trait with the same effect (such as Hidden Boss) the controlling player must choose between them.",
-	"Chill Touch": "Unarmed Melee Attacks made by this model deal 🩸 and gain CRT: Cooled.",
+	"Chill Touch": "Unarmed Melee Attacks made by this model deal 🩸 and gain CRT: Cold.",
 	"Chaotic Friends": "Friendly models with the Gotham City Siren trait in this model’s crew gain the Unpredictable rule until the end of the game.",
 	"Charge": "This trait must be activated before the model moves during its activation. During a Movement action this activation, this model may only move in a straight line. Roll 1 Strength die for each model contacted during this move, inflicting Damage ★★. Any other damage the model could normally inflict is ignored.",
 	"Charismatic": "A crew that includes this model can recruit 1 additional Free Agent, ignoring the usual restrictions.",
@@ -2166,7 +2204,7 @@ const traitDescriptions = {
   "Cryo-Grenade": "Place an Explosive template completely within 8\". All models affected without the Cold Acclimation trait suffer Cold rule and any Suspects affected become Frozen.",
   "Cryo-Charge": "The next Attack action performed this activation gains CRT: Freeze.",
   "Cryo-Reinforcement": "Target a friendly Frozen Suspect and another friendly model with the Cryo-Armor (1) trait within 4\". Remove that Suspect. Until this model is removed from play or uses this trait again, the target model's Cryo Armor (1) trait increases by 1 and its Ranged weapons with S. Range lose it.",
-
+  "Coordination": "Target another friendly model within 8\" of this model that share a keyword with this model, then, immediately perform an action with that model.",
 
 
   // D
@@ -2339,6 +2377,8 @@ const traitDescriptions = {
   "Insidious": "Enemy models within 4'' of this model receive +1 to their Willpower roll results (cumulative up to 3)",
   "Ice Flash": "Target a model within 10\" and LoS. That model must pass an Endurance roll, or suffers the Freeze Status. If it passes the Endurance roll, reduce its Defense skill by 1 and gain -2MOV until the end of the round.",
   "Ice Age": "Once per game chose one: Search in your objecive deck for a card with the name Searching for Nora and put it in your hand, or, Move all friendly models with the \"Cold Acclimation\" trait within 4\" of Mr Freeze or a frozen suspect 4\".",
+  "Ice Queen": "Friendly models with affiliation gain 1 free Effort while they are within 4\" of a Frozen Suspect and/or this model.\nIn addition, once per round as a free action, you may target a Suspect within 4\". That Suspect becomes a Frozen Suspect.",
+
 
   //J
 	"Joker’s Gas": "All other models within 4” and LoS suffer Enervating 1 and the Poison effect, with the Gas rule.",
