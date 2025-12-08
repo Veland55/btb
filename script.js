@@ -97,7 +97,7 @@ const showFullCard = model => {
     "Mr. Freeze": "MR_FREEZE.png",
     "Scarecrow": "SCARECROW.png",
     "Two-Face": "TWO-FACE.png",
-    "Riddler": "RIDDLER.png",
+    "The Riddler": "RIDDLER.png",
     "Organized Crime": "OrganizedCrime.png",
     "Suicide Squad": "Suicide_Squad.png",
     "Court of Owls": "OWLS.png",

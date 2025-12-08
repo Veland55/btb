@@ -706,6 +706,659 @@ const models = [
   },
 
 //---------------------------------------------------------------------------------------------------------// 
+//The Riddler
+//---------------------------------------------------------------------------------------------------------// 
+  
+  {
+    "name": "Quiz 5",
+    "realname": "Francoise Moreau",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz5.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Backpack",
+      "Pickpocket",
+      "Drop a Riddle",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "?Knuckles",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy"
+      }
+    ]
+  },
+  {
+    "name": "Quiz 7",
+    "realname": "Alex Orange",
+    "base": "30mm",
+    "rep": 29,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz7.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Combo (Bat)",
+      "The Crew",
+      "Street Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Bat",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Echo",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 45,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Echo.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 11,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Defensive Stance",
+      "Reinforced Gloves",
+      "Sustained Defense",
+      "Competitive",
+      "It's Mine",
+      "Riddles Addict"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Quiz 8",
+    "realname": "Finn O'Farrell",
+    "base": "40mm",
+    "rep": 47,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz8.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Always on the Move",
+      "Drop a Riddle",
+      "Large",
+      "Mechanical Mount",
+      "Desensitized",
+      "Electric Storm",
+      "Luck",
+      "Reinforced Gloves"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "The Riddler",
+    "realname": "Paul Dano Edward Nigma",
+    "base": "40mm",
+    "rep": 64,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/TheRiddlerPaulDano.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "A Challenge for You",
+      "Confusion",
+      "No More Lies",
+      "Puzzle Master",
+      "Stalker",
+      "A Real Change",
+      "Detonate",
+      "Not Him",
+      "Riddler Followers",
+      "Unmask the Truth"
+    ],
+    "weapons": [
+      {
+        "name": "Carpet Tool",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler",
+    "realname": "Edward Nigma",
+    "base": "60mm",
+    "rep": 80,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/TheRiddler.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 5
+    },
+    "traits": [
+      "A Challenge for You",
+      "Feedback Protection",
+      "Intel Support (5)",
+      "Puzzle Master",
+      "Wizard of Quiz",
+      "Conundrum Champion",
+      "Hacking",
+      "Mastermind",
+      "Quiz Master"
+    ],
+    "weapons": [
+      {
+        "name": "Informatic Assault",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Limited Attack"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler's Follower 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/RiddlerFollower1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Not Him",
+      "Sapper",
+      "Riddler Followers"
+    ],
+    "weapons": [
+      {
+        "name": "Hidden Rifle",
+        "damage": "🩸🩸★",
+        "rof": 3,
+        "ammo": 1,
+        "traits": "Firearm / One Use"
+      }
+    ]
+  },
+  {
+    "name": "Quiz 4",
+    "realname": "Finn O'Farrell",
+    "base": "40mm",
+    "rep": 47,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz4.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bodyguard",
+      "Electric Storm",
+      "Luck",
+      "Self-Discipline",
+      "Desensitized",
+      "Large",
+      "Obstinate"
+    ],
+    "weapons": [
+      {
+        "name": "?Heavy",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric / Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Query",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 45,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Query.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 9,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Persuasive",
+      "Strategist",
+      "Competitive",
+      "Riddles Addict"
+    ],
+    "weapons": [
+      {
+        "name": "LMG",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Explosive / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Quiz 2",
+    "realname": "Igor",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Combat Flip",
+      "Small",
+      "Combo (?Knuckles)"
+    ],
+    "weapons": [
+      {
+        "name": "?Knuckles",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler Modern Age",
+    "realname": "Edward Nigma",
+    "base": "30mm",
+    "rep": 80,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/TheRiddlerModernAge.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "A Challenge for You",
+      "GOAD",
+      "Mind Trick",
+      "Quiz Master",
+      "Confusion",
+      "Mastermind",
+      "Puzzle Master",
+      "Wizard of Quiz"
+    ],
+    "weapons": [
+      {
+        "name": "Cane-Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Quiz 6",
+    "realname": "Charlie C.",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz6.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "Combo (?Heavy)",
+      "Electric Storm"
+    ],
+    "weapons": [
+      {
+        "name": "?Heavy",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric / Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler's Follower 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/RiddlerFollower2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Grapple Gun",
+      "Not Him",
+      "Riddler Followers"
+    ],
+    "weapons": [
+      {
+        "name": "Rope",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Slow (4)"
+      }
+    ]
+  },
+  {
+    "name": "Two-Face",
+    "realname": "Tommy Lee Jones Harvey Dent",
+    "base": "40mm",
+    "rep": 80,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/TwoFaceTommyLeeJones.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bank Robber",
+      "Expert Marksman",
+      "Reinforced Gloves",
+      "Sturdy",
+      "Vengeance",
+      "Bipolar (Mental Disorder)",
+      "Judgment",
+      "Required (The Riddler (Jim Carrey)",
+      "Support (The Riddler)"
+    ],
+    "weapons": [
+      {
+        "name": "Twin-Revolvers",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "M. Range / Firearm / High Caliber / Reload"
+      }
+    ]
+  },
+  {
+    "name": "Quiz 3",
+    "realname": "John Carrie",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Combo (Short Sickle)",
+      "Distract"
+    ],
+    "weapons": [
+      {
+        "name": "Short Sickle",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler",
+    "realname": "Jim Carrey Edward Nigma",
+    "base": "40mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/TheRiddlerJimCarrey.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 6
+    },
+    "traits": [
+      "A Challenge for You",
+      "Detonate",
+      "Hacking",
+      "Showmanship",
+      "As Blind as a Bat",
+      "Drop a Riddle",
+      "Knowledge is Power",
+      "Wizard of Quiz"
+    ],
+    "weapons": [
+      {
+        "name": "Cane",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Quelle",
+    "realname": "Josette",
+    "base": "30mm",
+    "rep": 45,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quelle.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bipolar (Mental Disorder)",
+      "Disarray",
+      "Treacherous",
+      "Undercover",
+      "Demotivate",
+      "Lieutenant (The Riddler)",
+      "Trickster",
+      "Wizard of Quiz"
+    ],
+    "weapons": [
+      {
+        "name": "Precision Gun",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Accurate / Firearm / Handy / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Quiz 1",
+    "realname": "Alexander",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/Quiz1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Hardened",
+      "Rapid Fire"
+    ],
+    "weapons": [
+      {
+        "name": "Custom SMG",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 1,
+        "traits": "Assault / Firearm / S. Range"
+      },
+      {
+        "name": "Custom SMG",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 1,
+        "traits": "Assault / Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler's Follower 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": "The Riddler",
+    "img": "https://veland55.github.io/btb/img/RiddlerFollower3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Hold Breath",
+      "Not Him",
+      "Riddler Followers"
+    ],
+    "weapons": [
+      {
+        "name": "Sniper Rifle",
+        "damage": "🩸🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Aim / Anti-Tank / Bleed (3) / Firearm / Reload / Scope"
+      }
+    ]
+  },
+
+
+
+//---------------------------------------------------------------------------------------------------------// 
 //Birds of Prey
 //---------------------------------------------------------------------------------------------------------// 
 
