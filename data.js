@@ -2062,7 +2062,7 @@ const traitDescriptions = {
 	"Amazon Princess": "This model automatically gains the Charge trait. However, targets of this model’s Charge incur a -1 penalty to their Defense rolls. While this Upgrade Character Card is added to Wonder Woman, she cannot use the Bracelets of Submission trait or the Lasso of Hestia weapon, and does not benefit from the effects of her Magic Shield.",
 	"Amphibious": "This model does not suffer Impaired Movement when moving through Difficult Ground elements that are considered water (i.e. rivers, swamps, canals, ponds, etc.). Players should agree on what counts as a water feature before the game begins. In addition, this Model can enter a Sewer without performing a Manipulate action.",
 	"Anger Management (Mental disorder)": "When performing a Ranged Attack, this model must always select the closest model in line of sight, friend or enemy, as the target.",
-	"Animal": "This model gains a bonus of +2” to its basic move distance. When it moves, it can ignore obstacles up to 2” high, but cannot Climb or Jump. If this model suffers the Fire effect, during the Recount phase (before resolving the effect) make a Willpower roll (which cannot be rerolled). If this roll is failed, the model cannot move in the following round. This model cannot purchase equipment.",
+	"Animal": "When it moves, it can ignore obstacles up to 2” high, but cannot Climb or Jump. If this model suffers the Fire effect, during the Recount phase (before resolving the effect) make a Willpower roll (which cannot be rerolled). If this roll is failed, the model cannot move in the following round. This model cannot purchase equipment.",
 	"Anxiety (Mental Disorder)": "This model gains +2” to its basic move distance, but must perform a Movement action during its activation if the model can do it.",
 	"Archie": "This model is not deployed as normal at the start of the game. Once per game, at the start of the Raise the Plan phase of any round, you may place this model anywhere on the table (not inside a building or within a similarly enclosed space).",
 	"Arkham Asylum Doctor": "All friendly models with a Mental Disorder trait within 4” of this model gain 1 extra Tactical Action.",
@@ -2110,6 +2110,8 @@ const traitDescriptions = {
 	"Bulletproof Vest": "Traits and attacks with the Firearm rule deduct 1 attack die when rolling against this model.",
 	"Business Agent": "When this model is recruited, add $350 to the crew’s available Funding.",
   "Boosted (X)": "While making an attack with this weapon, roll X additional attack dice.",
+  "Brawler": "For each Succesfull hit this model receives, place a Defense Marker on it.",
+  "Barrage": "During this round, you can target any model with Ranged Attack ignoring LoS and Cover, but then suffers a -1 Attack die and -1 to hit for that roll.",
 
   // C
   "Canary Cry": "Place the Spray template in base contact with this model – all models affected receive one automatic hit with the Sonic special rule. Affected models must pass a Willpower roll or take 🩸 Damage and become Stunned.",
@@ -2156,6 +2158,15 @@ const traitDescriptions = {
   "Casting Fears": "Make an Attack with a friendly model with the Nightmare trait that is within 4'' and LoS. If the target wants to Effort against this Attack, it must first suffer the Terror Status.",
   "CRT (X)": "Natural 6 on the Strength die = Critical Hit. Target is Knocked Down by default. Weapons may list a special CRT effect ( CRT (X) ). If present, player chooses one effect: the listed one or Knocked Down.",
   "COMBO (X)": "For every two successful hits in its attack roll while using the specified (weapon) or (trait) (before the enemy rolls to defend), this model gains an additional hit.",
+  "Cryo-Weapon": "When an attack or weapon that uses this rule score at least 1 Successful hit, choose another model and 1 Suspect within 2\" of the target. The chosen model suffers 1 hit from that weapon (doesn't trigger the Cryo-Weapon rule) and the Suspect becomes Frozen.",
+  "Crit. Freeze": "Critical Effect.",
+  "Cold": "When this rule hits, the target model increases the Slow Status value by (2), unless it doesn't have it, then it suffers the Slow (2) Status.",
+  "Cold Acclimation": "Keyword.",
+  "Cryo-Armor (X)": "Enemy models roll X fewer attack dice when targeting this model. In addition, while this model is within 4\" of a Frozen Suspect, it gains X Free Effort when Defending. This model counts as having the Rank Vehicle for traits that removes Damage from it.",
+  "Cryo-Grenade": "Place an Explosive template completely within 8\". All models affected without the Cold Acclimation trait suffer Cold rule and any Suspects affected become Frozen.",
+  "Cryo-Charge": "The next Attack action performed this activation gains CRT: Freeze.",
+  "Cryo-Reinforcement": "Target a friendly Frozen Suspect and another friendly model with the Cryo-Armor (1) trait within 4\". Remove that Suspect. Until this model is removed from play or uses this trait again, the target model's Cryo Armor (1) trait increases by 1 and its Ranged weapons with S. Range lose it.",
+
 
 
   // D
@@ -2181,8 +2192,8 @@ const traitDescriptions = {
 	"Demon Curse": "At the beginning of the Take the Lead phase, if there are no models in contact, roll 2D6 for this model and add the results together. For each friendly model removed as a Casualty in the game so far, add +2 to the result. On a result of 11+, place a friendly Etrigan model within 4” of this model, then remove this model from play.",
 	"Demoralize": "All enemy Henchmen within 6” suffer the Enervating 1 effect.",
 	"Demotivate": "Target a model within 8” and line of sight. That model must pass a Willpower roll or immediately suffer the Enervating 2 effect.",
-	"Desensitized": "This model doesn’t suffer KO through accumulated ★. Instead, once it has accumulated ★ equal to its Willpower, any additional ★ Damage automatically becomes 🩸 Damage instead.",
-	"Detective": "This model may place or reveal a Suspect marker within 3” and LoS instead of in contact.",
+	"Desensitized": "This model can never suffer Knocked Out, once this model has ★ equal to its willpower, any subsequent attack that targets it changes all ★ to 🩸.",
+  "Detective": "This model may place or reveal a Suspect marker within 3” and LoS instead of in contact.",
 	"Detective Mode": "This model does not suffer the Blind effect and can see through Smoke.",
 	"Detonate": "Target a Suspect marker within 8”. Center an Explosive template on that marker. Roll a Strength 3+ die against each model affected. On a success, the model suffers 🩸★. Remove the Suspect marker.",
 	"Devastating Blow": "Once this trait is activated, this model gains a +1 Strength die roll bonus and Bleed 1 on its Melee Attack Actions until the end of the round.",
@@ -2203,8 +2214,8 @@ const traitDescriptions = {
 	"Divine Magic": "This model can use Divine Magic Spells. In addition, once per game this model can spend 1 Magic Point (MP) during its activation to remove 1 Damage marker from its Character Card.",
 	"Dodge": "This model can use the Dodging rule.",
 	"Dollotrons": "When you recruit Professor Pyg, you must also recruit three Dollotron models, at no additional Reputation cost.",
-	"Drag": "If this model passes within 2” of one or more friendly models during a Movement Action, it may make an Effort and target one of those models and place it in base contact at the end of the move. The chosen model cannot have the Large or Huge traits. The target model suffers Impaired Movement during its next activation. This model cannot use the Drag trait in two consecutive activations.",
-	"Drop a Riddle": "If you have played during this round at least 2 Objective cards as Resources, place a Suspect or a Riddle marker within 4” of this model.",
+	"Drag": "During this model's activation, if this model passes within 2\" of a friendly model or Suspect during a Movement Action, it may make an Effort to place it in base contact at the end of the move. Models with the Large or Huge traits may not be targeted. The target model suffers Impaired Movement during its next activation. This model may not use the Drag trait on the same model in consecutive turns.\nIn addition, if this model inflicts Damage with a Melee Attack on an enemy model, you may place at the end of this activation the target in contact with this model.",
+  "Drop a Riddle": "If you have played during this round at least 2 Objective cards as Resources, place a Suspect or a Riddle marker within 4” of this model.",
 	"Duelist": "While in contact with only one enemy model, this model may reroll failed attack dice rolls in Melee.",
 	"Duke of Duality": "When this model scores an Objective card, flip a coin or roll a D6: if the result is 'heads' (or an even number) draw an additional card. If the result is 'tails' (or an odd number), Discard an Objective card at random before drawing a new card.",
 
@@ -2233,6 +2244,9 @@ const traitDescriptions = {
 	"Explosive Gel": "Once per activation, this model may mark a Streetlamp, Sewer or Suspect marker in contact as being sprayed with Explosive Gel (use a spare token or dice to remind you). In any subsequent activation, this model may use a Manipulate action to destroy any number of marked items. Center an Explosive template on each chosen marker, and roll a Strength 3+ die against each affected model. Any model hit suffers ★★ Damage. Then, remove that marked items from the game",
 	"Extended Limbs": "This model can perform Melee Attacks against models up to 3” away as if they were in contact.",
 	"Extremely Mutated": "This model cannot buy more than one item of Equipment.",
+  "Exposure": "For each additional successful hit after the first, the target suffers 1 additional damage marker (any type).",
+  "Engineer": "While attacking or defending against this model, enemy models with one or more pieces of Equipment suffer -1 to its Attack and Defense for the duration of the attack.",
+
 
   // F
 	"Fast": "This model gains +2” to its basic move distance.",
@@ -2250,6 +2264,8 @@ const traitDescriptions = {
 	"For the Family": "If a friendly Carmine Falcone within 4” and LoS of this model suffers any number of hits from an Attack (of any kind), this model may make an Effort to take the hits instead and all the effects of that attack. Only one Effort  is required per enemy Attack. This trait can’t be used against attacks from a model with Name: Selina Kyle. ",
 	"Force Field": "Target friendly model in contact benefits from Cover until the end of the round, even if it is not behind Cover. Fully Equipped: This model can purchase any equipment listed for Jason Todd even if it comes from a different crew’s equipment list.",
 	"Funny Bomb": "Center the Explosive template over this model. This is resolved as an Explosive Ranged Attack, rolling a Strength 3+ die for each affected model – on a successful roll, the model receives 🩸★ Damage. Once this action is resolved, remove this model as a Casualty.",
+  "Freeze Well": "Once per round, when a ranged attack of this model score at least 1 Successful hit, the target makes a Willpower roll. If unsuccessful, that model places a new friendly Suspect in contact ignoring the usual placement rules. That suspect is frozen.",
+  "Fight Me!": "If a friendly model within 4\" of this model and LoS suffers any number of hits from an Attack (of any kind), this model may make an Effort to take the hits instead, and all the Statuses of that attack. Only one Effort is required per enemy Attack.",
 
   // G
  	"Gas Jumper": "This model adds +6” to its basic move distance, and can move in any direction (including vertically). The model can move over obstacles and Difficult Ground without penalty. All models within 4” and Los of this model at the end of the Movement action suffer Poison and Enervating 1, with the Gas effect. When this trait is activated, this model may perform Melee Attacks against models within 3” instead of only in contact, until the end of the round.",
@@ -2268,6 +2284,7 @@ const traitDescriptions = {
 	"Green Web": "Target friendly model with the Plant trait within 8” of this model immediately performs an Attack action.",
 	"Grin Twins": "This model gains +1 to Attack, Defense and Willpower while there is at least one other friendly model in play with this trait.",
 	"Gunman": "After activating this trait, if this model performs a Ranged Attack, it gains an extra Ranged Attack action.",
+  "Good Aim": "During this model's next Ranged attack this activation, before rolling, roll one of your attack dice, on a 2+ that die is a successful hit. If it fails, remove it from the attack.",
 
   // H
 	"Hacking": "This model may move up to 2 markers within 8” up to 4”.",
@@ -2294,6 +2311,7 @@ const traitDescriptions = {
   "Healing Radiance": "A friendly model within 4'' of the target of the attack, removes up to 1 Damage.",
   "Harlequin": "Keyword",
   "Horde": "This model can be recruited up to four times in a crew, regardless of its Name.",
+  "High Caliber": "This weapon's Strength die is the last that must be removed from the attack if the target is within effective range.",
 
 
   // I
@@ -2319,6 +2337,8 @@ const traitDescriptions = {
 	"I Will Break You": "When you recruit this model, choose one of the following options: \n • Bane gains +3 Extra Venom Doses and may apply them to a friendly model within 4'' during his activation. \n • Bane gains Exhaustive Planner and +1 Willpower. \n • Bane Gains Close Combat Master.",
   "Induction": "Once per round, when this model places a Suspect and/or when it affects an enemy model with the Inspire Fear trait you may place a Fear card into the Objective deck.",
   "Insidious": "Enemy models within 4'' of this model receive +1 to their Willpower roll results (cumulative up to 3)",
+  "Ice Flash": "Target a model within 10\" and LoS. That model must pass an Endurance roll, or suffers the Freeze Status. If it passes the Endurance roll, reduce its Defense skill by 1 and gain -2MOV until the end of the round.",
+  "Ice Age": "Once per game chose one: Search in your objecive deck for a card with the name Searching for Nora and put it in your hand, or, Move all friendly models with the \"Cold Acclimation\" trait within 4\" of Mr Freeze or a frozen suspect 4\".",
 
   //J
 	"Joker’s Gas": "All other models within 4” and LoS suffer Enervating 1 and the Poison effect, with the Gas rule.",
@@ -2387,7 +2407,7 @@ const traitDescriptions = {
 	"Mind Control Substance": "When this model is recruited to your crew, friendly models with the Henchman rank cannot have their Willpower value reduced by any means, and during the Recovery phase they recovers automatically from KO.",
 	"Mind Trick": "After a model within 8” of this model reveals a Suspect, you may move one Suspect in play up to 4”.",
 	"Mine": "Convert a Suspect marker in contact with this model into a Mine marker (is still a Suspect marker). When a model moves within 2” of the Mine marker, immediately roll a Strength 2+ die against it. If the roll is successful, the model suffers 🩸🩸 Damage, and the marker is removed from play. If the roll fails, remove the Mine Marker.",
-	"Minion": "This model can be hired up to three times in a crew, regardless of its Name.",
+	"Minion (X)": "This model can be hired up to X times in a crew, regardless of its Name.",
 	"Mixed Combat Style": "After this model performs an Attack action it can perform an extra Attack action (of a different type from the first) during the same activation.",
 	"Mob": "A crew that includes this model may have up to +2 additional Suspect markers in play at any one time.",
 	"Mobster": "When attacking an Outnumbered model in close combat, this model rolls an additional attack die.",
@@ -2416,7 +2436,7 @@ const traitDescriptions = {
   // O
 	"Objectives? Puzzles everywhere!!!": "A crew that includes this model does not accomplish Objective cards following the normal rules. Instead, when a model that share an Affiliation with this model place a Suspect marker, you must roll 1D3. Place a Number Counter on top of that Suspect marker with an equal value as the roll. At the end of the round, you score Objective cards that shown the same VP value as the Number Counters on top of the friendly Suspect markers. Each Number Counter only accomplish 1 Objective card and then, is removed.",
 	"Obsessive (Mental Disorder)": "If this model selects the same target for all of its Attacks in a single activation, it gains +1 to the Strength die roll.",
-	"Obstinate": "Once per round, when this model cannot make an Effort because it has reached the Effort Limit, it gains 1 free Effort. Additionally, this model can make Effort once per round when taking a Willpower roll.",
+	"Obstinate": "This model have 1 free Effort when Attacking, Defending and when taking Willpower rolls even if it reaches its maximum effort limit.",
 	"OCD (Mental Disorder)": "If this model selects the same target for all of its attacks in a single activation, it gains +1 to its attack dice rolls.",
 	"Occultism": "This model can use Occultism Spells. In addition, once per game during its activation, the model gains +1 to its Defense value until the end of the round.",
 	"Offensive Defense": "When this model blocks at least 1 hit from a melee attack, then after resolving the action the attacking model suffers ★★ damage and is Pushed 2” (in a direction of your choice).",
@@ -2501,7 +2521,7 @@ const traitDescriptions = {
 	"Sapper": "One use only. Place a friendly Suspect marker in base contact. That Suspect marker is treated as a small obstacle that provides Cover.",
 	"Savage Fighter": "This model gains +1 to its attack dice rolls and the Push effect when performing a melee attack until the end of the round.",
 	"Scheming (X)": "During the Raise the Plan phase, if this model is in play and not KO, you can move up to X Suspect markers 4”, ignoring the minimum range between Suspect markers.",
-	"Scientific": "This model may roll one additional die when performing a Willpower roll. When this model performs a Special action during its activation, it may perform an additional different Special action as an extra action. ",
+	"Scientific": "This model may roll one additional die when performing a Willpower Skill roll and then then remove 1 of the dice rolled. When this model performs a Special action during its activation, it may perform an additional different Special action as an extra action.",
 	"Scout": "This model may move before the first Take the Lead phase of the game, following the rules for Movement Actions (this does not affect the model’s normal activation).",
 	"Sealed Cabin": "Only attacks listed on the Upgrade card can be made by this model, plus the Charge trait. In addition, this model (and any model transported in it) cannot perform Manipulate actions.",
 	"Searcher": "While this model is in play and not KO, the opponent’s Resource points are reduced by -1.",
@@ -2548,7 +2568,7 @@ const traitDescriptions = {
   "Shady Dealings": "Discard two objective cards from your hand.",
   "Small Nightmare": "This model doesn't follows the Nightmare trait rules to come back to play while removed as a Casualty, instead they can be Set in play in contact with a friendly Suspect when a Fear card is returned to the Fear pile, they can only take an activation if they didn't take it before. In addition, this model gains +1 Defense against enemy Ranged Attacks.",
   "Seasonal Criminal": "At the end of every round, check the total Victory Points scored by all players. For every full 12 VP scored, Calendar Man gains one of the following benefits, advancing one step on the list for each 12 VP scored.<br><br><img src=\"https://veland55.github.io/btb/img/Seasonal_Criminal.png\" style=\"width:100%;max-width:420px;border-radius:12px;margin:20px 0;display:block;\">Example: The players total 24 VPs, so Calendar Man gains +2 Attack skill (12 x 2 = 24). At the end of the next round, the players have scored another VPs between them. The total is now 37- the wheel advances 3 spaces (it started at 2, and now it cycles all the way around to 1). Calendar Man loses the +2 Attack bonus, and gains +4 Movement instead. \n \n•12-23: +4 Movement \n•24-35: +2 Attacks \n•36-47: +2 Defense \n•48-59: Handyman \n•60-71: +4 Movement \n•72-83: +2 Attack \n•84-95:+2 Defense",
-
+  "Snow Storm": "Center the Explosive template on this model. Roll a Strength 3+ die against all other models affected by the template with Damage. Any Suspects affected become Frozen.",
 
 
 
@@ -2606,7 +2626,7 @@ const traitDescriptions = {
 	"Truth-Seeker": "When a model within 10” of this model becomes KO or is removed as a Casualty, you may first place a friendly Suspect marker in contact with it (ignoring the normal minimum distance between Suspect markers). This model may remove 1 friendly Suspect marker within 4” during its activation to perform an extra move of up to 4”. In addition, when a friendly model within 4” of a friendly Suspect marker scores an Objective card, you may remove that marker to draw an additional Objective card. ",
   "True Fear": "When scoring any number of successful hits during an Attack, add 1 Fear card to your Objective deck.",
   "Tangible Fear": "Any time a model within 4'' of this model receives a hit, or fails a Willpower roll, you may discard 1 card from the top of the friendly objective deck (not cumulative). \n In addition, while this model attacks, the target's Defense is reduced by 1 if its Willpower is less than 6. \n While this model is attacked, the Attack value of the attacking model is reduced by 1 if its Willpower is less than 6.\n In addition, this model cannot remove damage caused by other model's effects unless specified.",
-
+  "Tough Guy": "This model counts as two models for scoring friendly Objective cards.",
 
 
 
@@ -2628,7 +2648,7 @@ const traitDescriptions = {
 	"Vocational": "This model may be included in a crew as if it had the affiliation, as long as all members of the crew have the Cop trait.",
 	"Void Priest": "One use only. This model may spend 2 Faith Points. Enemy models within 2” suffer the Slow 2 effect.",
 	"Volunteer": "This model cannot be removed from play due to the Suicide Mission rule. The Boss of a Suicide Squad Team automatically gains this trait.",
-	"Vulnerability to Fire": "Each Fire marker inflicts Damage 🩸🩸 to this model instead of the normal damage.",
+	"Vulnerability to Fire": "When this model suffers Damage by the Fire Status, inflicts to it 1 🩸 Damage additionally.",
 
   // W
 	"War Goes On": "If you purchase this upgrade, then before deployment you may equip it, or another upgrade available to this model, for free. Discard the unused Upgrade.",
