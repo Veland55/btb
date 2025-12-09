@@ -2735,7 +2735,7 @@ const traitDescriptions = {
    //A
 	"A Challenge for you": "Every time your crew places a Suspect, you must place a Numeric Counter on it. You decide the number on the counter, unless a card or ability specifies the number. These Numeric Counters cannot be reduced below 0.",
 	"Absolute Power": "If this model is your crew’s Boss, you can hire Henchmen with the Cop trait, regardless of their Affiliation. In addition, this model doubles the range of its Inspire rule.",
-	"Acrobat": "This model gains +1” to its basic move distance. It does not suffer Impaired Movement for Jumping, or for Stand Up actions. Models with Acrobat can use the Dodging rule.",
+	"Acrobat": "This model does not suffer Impaired Movement for Jumping, or for Stand Up actions. This model may use the Dodging rule.\nDodging: A model that benefits from this rule may make an Effort to reduce the attack dice from a Ranged Attack that targets this model.",
 	"Adaptable": "At the beginning of the Raise the Plan phase, the player controlling this model must choose between the Attack (+1), Defense (+1) or Movement (+2) basic skills. The model receives the bonus to the chosen skill until the end of the round.",
 	"Addict": "This model suffers -1 to its Attacks and Defense skills unless it uses a Dose. As soon as the model uses a Dose, the penalties cease to apply until the end of the round.",
 	"Affinity (Model)": "This model may be recruited by any crew that also includes the model named in parentheses, even if they would not ordinarily be permitted to join that crew. This model may treat its rank as Free Agent for the purposes of forming the crew (but cannot use the Free Agent rank during the game). Recruiting this model does not allow a further use of the trait (if, for example, another character has an Affinity to this model).",
@@ -2767,7 +2767,12 @@ const traitDescriptions = {
 	"Autorepair X": "At the beginning of the Recount phase, this model rolls 1D6. On a result of X+ remove a Damage marker (any type) from this model.",
 	"Aversion X": "This model cannot be included in the same crew as the specified model.",
   "Affinity (X)": "This model may be recruited by any crew that also includes the model named in parentheses, even if they would not ordinarily be permitted to join that crew. This model may treat its rank as for the purposes of forming the crew (but cannot use the Rank during the game). Recruiting this model does not allow a further use of the trait (if, for example, another character has an Affinity to this model).",
- 
+  "A Real Change": "Once per round, during this model's activation you may look at the opponent's Objective hand, then the opponent may target one of their models and preform an immediate Manipulate action with that model.",
+  "As Blind as a Bat": "When this model Sets a Suspect and you have a ? facedown card in play from a previous activation, you may reveal it and activate its Trap effect using this model as the point of origin/triggering model. Then discard that card.",
+
+
+
+
    //B
 	"Backpack": "This model can perform a Reveal Manipulate action once per activation without spending an Action.",
 	"Bat-Armor Mk I": "Enemy models don’t roll a Strength die when attacking this model.",
@@ -2775,8 +2780,8 @@ const traitDescriptions = {
 	"Bat-Armor Mk III": "Enemy models don’t roll a Strength die when attacking this model. In addition, if this model has moved this activation, it can make Melee Attacks against enemies up to 2” away in line of sight (ignore all traits that improve the model’s line of sight, such as Total Vision, for the purpose of these attacks).",
 	"Bat Family": "Keyword",
   "Bat Cape": "This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling.",
-	"Batclaw": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun! ",
-	"Batclaw/Grapple Gun": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun! ",
+	"Batclaw": "Once per round, this model gains +6\" to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations.\n*Some models list this trait as 'Grapple Gun', and others as 'Batclaw'. The rules are the same in both instances - the distinction is just for fun!",
+	"Batclaw/Grapple Gun": "Once per round, this model gains +6\" to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations.\n*Some models list this trait as 'Grapple Gun', and others as 'Batclaw'. The rules are the same in both instances - the distinction is just for fun!",
   "Batman Lives": "This model may perform an extra Movement action at the start of its activation if no enemy models have LoS to it. When in contact with a KO enemy model that does not have Affiliation: BATMAN, this model may remove it as a Casualty by spending a Special Action. In addition, when this model is included in your crew, you can also include a model with Name: William Cobb (ignoring its Affiliation), but if you do so you may not include any model with the Free Agent rank unless it also has Affiliation: BANE.",
 	"Batman’s Tumbler": "This model can neither Jump nor Climb. When the Upgrade Card becomes disabled, you can immediately exchange this Upgrade Card with the Batman’s Batpod Upgrade card.",
 	"Bat-Signal": "One use only. This model can use this trait to place a friendly model (not KO or Knocked Down) with Alias: Batman in contact with itself. Until the end of that round, this model is considered Illuminated.",
@@ -2786,7 +2791,7 @@ const traitDescriptions = {
 	"Bloodthirsty (Mental Disorder)": "During the Raise the Plan phase, if this model has at least 1 Damage marker of any kind, it gains +1 Attack Marker.",
 	"Boosted Jump": "One use only. During this model activation, place this model within 8” of its start position.",
 	"Bluff": "Choose an enemy model within 6” and line of sight. The target reduces its Attacks skill by 1 until the end of the round. If multiple models with this trait target the same model, the effect is not cumulative.",
-	"Bodyguard": "If a friendly model with the Leader or Sidekick rank within 4” of this model and LoS suffers any number of hits from an Attack (of any kind), this model may make an Effort to take the hits instead, and all the effects of that attack. Only one Effort ★ is required per enemy Attack.",
+	"Bodyguard": "If a friendly model with Crown Markers within 4” of this model and LoS suffers any number of hits from an Attack (of any kind), this model may make an Effort to take the hits instead, and all the effects of that attack. Only one Effort ★ is required per enemy Attack.",
 	"Bonebreaker": "Until the end of the round, this model’s unarmed attacks gain Bleed: 2.",
 	"Boom!": "Each time this model receives any damage, roll a D6 – on the natural score of a 6, this model explodes! Alternatively, during its activation, you may choose to make this model explode. When the model explodes, center an Explosive template on it. Roll a Strength 3+ die against each model affected. On a success, the model suffers 🩸🩸★ Damage. After resolving the explosion, remove this model as a Casualty.",
 	"Born in the Darkness": "When this model is not within the area effect of a Light source, it gains a +1 bonus to its Defense rolls, and enemy models cannot benefit from the Sneak Attack trait when targeting this model.",
@@ -2803,6 +2808,9 @@ const traitDescriptions = {
   "Boosted (X)": "While making an attack with this weapon, roll X additional attack dice.",
   "Brawler": "For each Succesfull hit this model receives, place a Defense Marker on it.",
   "Barrage": "During this round, you can target any model with Ranged Attack ignoring LoS and Cover, but then suffers a -1 Attack die and -1 to hit for that roll.",
+  "Bank Robber": "This model may Reveal Suspects within 3\" instead of in contact.",
+
+
 
   // C
   "Canary Cry": "Place the Spray template in base contact with this model – all models affected receive one automatic hit with the Sonic special rule. Affected models must pass a Willpower roll or take 🩸 Damage and become Stunned.",
@@ -2822,7 +2830,7 @@ const traitDescriptions = {
 	"Climbing Claws": "This model never suffers Impaired Movement when Climbing. In addition, the model may end its movement at any point on a climbable surface, such as on the side of a wall. Make the model’s end position clear to the opposing player if it is not possible to physically place the model there.",
 	"Cloak of Bats": "Enemy models can only see this model if it is in contact with them. This ability works even when the model is within the area of effect of a Light. However, the model is still subject to other rules that aid detection, such as Total Vision or Night Vision, etc. This model can be affected by templates, but cannot be targeted directly. Also, when an enemy model enters contact with this model, or this model enters contact with an enemy model, that model must take a Willpower roll: if the roll is failed, the model suffers the Scared effect.",
 	"Close Combat Master": "When fighting Unarmed, this model may reroll failed attack dice in Melee.",
-	"Combat Flip": "This ability may be used when the model is in contact with an enemy. Move this model up to 3”.",
+	"Combat Flip": "This trait may be used when the model is in contact with an enemy or if a result of using it, this model ends in contact with an enemy model. Move this model 3”.",
 	"Commissioner": "Friendly models with the Arrest trait within 6” of this model can use that trait as an extra action.",
 	"Concealment": "Until the end of the round in which this ability is used, enemy models can only see this model if it is in contact with them. This ability works even when the model is within the area of effect of a Light. However, the model is still subject to other rules that aid detection, such as Total Vision or Superior Sense of Smell, etc. This model can be affected by templates, but cannot be targeted directly.",
 	"Confusion": "Target an enemy model (not a Vehicle) within 8” and line of sight. Perform an opposed Willpower roll against the target. If successful, reduce the target model’s Attack and Defense skills by 1. Also, the target cannot perform Special Actions. Both effects last until the end of the round.",
@@ -2858,6 +2866,8 @@ const traitDescriptions = {
   "Cryo-Charge": "The next Attack action performed this activation gains CRT: Freeze.",
   "Cryo-Reinforcement": "Target a friendly Frozen Suspect and another friendly model with the Cryo-Armor (1) trait within 4\". Remove that Suspect. Until this model is removed from play or uses this trait again, the target model's Cryo Armor (1) trait increases by 1 and its Ranged weapons with S. Range lose it.",
   "Coordination": "Target another friendly model within 8\" of this model that share a keyword with this model, then, immediately perform an action with that model.",
+  "Conundrum Champion": "Target a model within 8\" and line of sight. Perform an opposed Willpower roll against the target. If successful the target suffers the Enervating (2) Status.",
+
 
 
   // D
@@ -2957,6 +2967,9 @@ const traitDescriptions = {
 	"Funny Bomb": "Center the Explosive template over this model. This is resolved as an Explosive Ranged Attack, rolling a Strength 3+ die for each affected model – on a successful roll, the model receives 🩸★ Damage. Once this action is resolved, remove this model as a Casualty.",
   "Freeze Well": "Once per round, when a ranged attack of this model score at least 1 Successful hit, the target makes a Willpower roll. If unsuccessful, that model places a new friendly Suspect in contact ignoring the usual placement rules. That suspect is frozen.",
   "Fight Me!": "If a friendly model within 4\" of this model and LoS suffers any number of hits from an Attack (of any kind), this model may make an Effort to take the hits instead, and all the Statuses of that attack. Only one Effort is required per enemy Attack.",
+  "Feedback Protection": "This model doesn't receives Disruption tokens when a Suspect is removed by the Riddle marker rule.",
+
+
 
   // G
  	"Gas Jumper": "This model adds +6” to its basic move distance, and can move in any direction (including vertically). The model can move over obstacles and Difficult Ground without penalty. All models within 4” and Los of this model at the end of the Movement action suffer Poison and Enervating 1, with the Gas effect. When this trait is activated, this model may perform Melee Attacks against models within 3” instead of only in contact, until the end of the round.",
@@ -2968,7 +2981,7 @@ const traitDescriptions = {
 	"Good Aim": "This model can move and fire (or fire and move) when using a weapon with the Aim weapon special rule. In addition, the model gains +1 to its attack dice rolls with Ranged Attacks until the end of the round.",
 	"Gotham City Siren": "One use only. Target another friendly model with this trait within 4” – the target gains +2 Attack Marker or Defense Marker.",
 	"Grand Strategist": "While this model is in play and not KO, you gain +2 Resource points.",
-	"Grapple Gun": "See Batclaw. (Batclaw - Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun! )",
+	"Grapple Gun": "Once per round, this model gains +6\" to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations.\n*Some models list this trait as 'Grapple Gun', and others as 'Batclaw'. The rules are the same in both instances - the distinction is just for fun!",
 	"Greed": "This model cannot contribute to or fulfil criteria for Objective cards that award VP for inflicting Damage, making models KO, or removing models as Casualties.",
 	"Green Magic": "This model can use Green Spells. In addition, once per game this model can spend 1 MP to remove 2 Damage markers from its character card.",
 	"Green Travel": "One use only. Remove this model and immediately place it up to 20” away. A model may not perform a Movement Action in the same round that it uses Green Travel.",
@@ -3033,6 +3046,7 @@ const traitDescriptions = {
   "Ice Queen": "Friendly models with affiliation gain 1 free Effort while they are within 4\" of a Frozen Suspect and/or this model.\nIn addition, once per round as a free action, you may target a Suspect within 4\". That Suspect becomes a Frozen Suspect.",
 
 
+
   //J
 	"Joker’s Gas": "All other models within 4” and LoS suffer Enervating 1 and the Poison effect, with the Gas rule.",
 	"Joy for the Victory": "Friendly models within 8” gain +1 to their Willpower value while performing Willpower rolls. In addition, friendly models within 8” that score an Objective card during their activation may immediately move up to 2''.",
@@ -3049,6 +3063,9 @@ const traitDescriptions = {
 	"Kobra Armor": "Once per round, this model may make 1 Effort to gain 1 Defense Marker.",
 	"Kryptonian X": "A model with this trait gains a number of rules determined by the trait’s level (X), see below. \n 1: Fast, Invulnerability/1, Natural Immunities. \n 2: Fast, Invulnerability/2, Natural Immunities, Super Jump. \n 3: Fast, Fly, Invulnerability/3, Natural Immunities. \n 4: Fast, Fly, Invulnerability/3, Natural Immunities, Tough Skin. \n 5: Fast, Fly, Hover, Flying High, Invulnerability/4, Natural Immunities, Tough Skin. \n 6: Fast, Fly, Hover, Flying High, Invulnerability/5, Natural Immunities, Tough Skin. \n If the game is affected by the Day rules, the Invulnerability rule is improved by +1 and all the levels gain the Regeneration trait.",
 	"Kryptonite": "While a model with this trait is within 4'' of a model with the Kryptonian trait, the Kryptonian model loses the Invulnerability and Regeneration traits (if they possess them).",
+  "Knowledge is Power": "During this model's activation, it gains a Free Special Action if you have looked at the opponent's deck or hand this Round.",
+
+
 
   // L
   "Lantern": "A model with this trait can activate it at any time during its activation. The model counts as a Light source with a radius of 2” until the end of the round.",
@@ -3124,6 +3141,9 @@ const traitDescriptions = {
 	"Non-Lethal Ammo": "When this model attacks non-Vehicle models with its ranged weapons, all 🩸 damage becomes ★ damage.",
   "Nature's Arm": "Until the end of the round, This model may place or reveal a Suspect marker within 4'' and LoS instead of in contact. An enemy model in contact with that suspect increases the Slow Status value by (2), unless it doesn't have it, then it suffers the Slow (2) Status.",
   "Nightmare": "At the start of a Nightmare's activation, you may place it in contact with a friendly Suspect. A Nightmare can only be Move or being Placed by this rule. \n This model is always considered an active model and is inside the gaming area so, it may receive Audacity even if it is not in play. \n• If a Nightmare gets Knocked Out, immediately remove it as a Casualty. \n• When a Nightmare is removed as a Casualty, it can be returned to play again in a subsequent round, with its usual rules, removing all Damage and Statuses suffered previously by that Nightmare. \n• Nightmares have a 4'' 'action zone' radius. Within that radius, Nightmares are able to attack in Melee (no contact is needed), and may perform the Manipulate action. \n• Nightmares cannot Place/Reveal Suspects more than once during its Activation.",
+  "No More Lies": "During the activation of a friendly model with the Riddler Followers keyword, you may remove a friendly Suspect within 4\" of that model. If you do, during this and the subsequent activation, the opponent cannot play Objectives as Resources.",
+  "Not Him": "When this model suffers Damage that causes it to suffer KO or be removed as a Casualty, you may place it in contact with a friendly model within 8\" that share a Keyword with this model. The friendly model suffers that damage instead.",
+
 
 
   // O
@@ -3149,7 +3169,7 @@ const traitDescriptions = {
 	"Performance": "If this model is in play and not KO, enemy models within 6” that wish to perform an Attack, or use 🦇 traits, must first take a Willpower roll. If they fail the test they suffer -1 to their attack dice rolls until the end of the round.",
 	"Personalities": "At the end of each Take the Lead phase, shuffle all the Personalities cards and draw one at random. Apply the rules on that card to this model until the end of the round. This model cannot use its weapons unless it draws the Personalities card that allows it. In addition, if the opponent has 5 VP more than you, and/or this model has 3 or more Damage markers, you may draw 3 cards and choose one.",
 	"Persuasive": "At the end of this model’s activation, nominate any enemy model in line of sight that is yet to activate this round. That model must be the next to activate. The opponent can’t use a Pass to ignore this rule. A model can use this trait once per round.",
-	"Pickpocket": "This model may perform a Manipulate action to target a KO model in contact. If it does so, immediately follow the rules for the Steal effect.",
+	"Pickpocket": "Once per Round, if this model is in contact with an enemy model suffering KO, you may look at your opponent's Objective card hand and Discard 1 card from it.",
 	"Planning the Move": "All other friendly models with the Gotham City Siren rule in this model’s crew gain the Primary Target trait until the end of the game.",
 	"Plant": "Each Plant recruited to your crew grants you one friendly Suspect marker that may be placed anywhere on the board at the end of the Choose Plot Cards step of the pre-game sequence. Plants are not deployed as usual – instead, during a friendly model’s activation, you may place one of your Plants in contact with a friendly Suspect and then remove that Suspect. Always are considered an activable model and inside the gaming area. \n • If a Plant gets Knocked Out, immediately remove it as a Casualty. \n • A plant may receive an Audacity marker even if it is not in play. \n • A Plant’s basic move distance cannot be increased by any means. \n • Plants have a 4” ‘action zone’ radius. Within that radius, Plants are able to attack in Melee (no line of sight or contact is needed), and may perform the Manipulate action. \n • Plants can only Manipulate to reveal Suspects. \n • Plants are immune to the Poison, Knocked Down, Hypnotize and Blind effects. \n • When a Plant is removed as a Casualty, it can be placed in play again in a subsequent round with its usual rules, removing all damage and effects suffered previously.",
 	"Play Nice!": "All friendly Henchmen in this model’s crew gain the Bluff trait.",
@@ -3174,7 +3194,7 @@ const traitDescriptions = {
 	"Psychologist": "When a model within 4” scores an Objective, that model suffers Enervating 1 or removes 1 ★ from its character card (your choice).",
 	"Psychoanalysis": "Target a model with a Mental Disorder trait, friendly or enemy, within 8” and LoS. The target ignores the effects of their Mental Disorder until the end of the round.",
 	"Public Resources": "If this model is included in your crew, add $300 to the crew’s available Funding. In addition, you may place one additional Streetlamp and Sewer marker before the game starts.",
-	"Puzzle Master": "This model can place 2 Suspect markers when performing a Manipulate action, and can place them within 6” instead of in contact.",
+  "Puzzle Master": "When this model is going to place a Suspect by a Manipulate action, it can place 2 Suspect markers and can place them within 6\" instead of in contact.",
 	"Pyromania (Mental Disorder)": "If, at the beginning of its activation, this model can see any model with a Fire marker, this model gains a Defense Marker.",
   "Pull (X)": "The affected model is moved directly towards to the attacker X''.",
   "Poison Catalyst": "A model within 4'' suffering the Poison Status must make a Poison test.",
@@ -3182,7 +3202,9 @@ const traitDescriptions = {
 
 
    //Q
-	"Quiz Master": "When this model scores an Objective card with multiple copies in the deck, you can search the Objective deck for another copy of the same card and put it in your hand. Then, shuffle your deck.",
+	"Quiz Master": "After playing an Objective card during this model's activation, instead of drawing, you may search your Objective deck for any card, reveal it and place it in to your hand. Then shuffle your deck.",
+
+
 
    //R
 	"Radio": "This model is always treated as though it were within range of the Inspire rule.",
@@ -3207,11 +3229,16 @@ const traitDescriptions = {
 	"Rock": "This model’s attacks gain the Overwhelming weapon special rule.",
 	"Roots": "Target an enemy model within 8” and line of sight. Perform an opposed Endurance roll against that model – if you succeed, the target suffers the Pinned Down effect until the end of the round.",
 	"Runaway": "This model is immune to the Arrest trait.",
+  "Riddler Followers": "Keyword.",
+  "Required (X)": "This model can only be included in a crew that already contains the model with alias (X).",
+  "Reload": "After performing a ranged attack with this weapon, it must Reload. you may not use the weapon untill it is Reloaded. In order to Reload you must spend a whole round not using this weapon.",
+
+
 
   // S
 	"Sad Life": "Enemies within 6” that wish to perform an Action must first make 1 Effort (if the target cannot make an Effort, it can ignore this rule).",
 	"Safe Hands": "This model is immune to the Steal effect.",
-	"Sapper": "One use only. Place a friendly Suspect marker in base contact. That Suspect marker is treated as a small obstacle that provides Cover.",
+	"Sapper": "Place a friendly Suspect in contact. That Suspect marker is treated as a small obstacle that provides Cover to a model that stay in contact with it.",
 	"Savage Fighter": "This model gains +1 to its attack dice rolls and the Push effect when performing a melee attack until the end of the round.",
 	"Scheming (X)": "During the Raise the Plan phase, if this model is in play and not KO, you can move up to X Suspect markers 4”, ignoring the minimum range between Suspect markers.",
 	"Scientific": "This model may roll one additional die when performing a Willpower Skill roll and then then remove 1 of the dice rolled. When this model performs a Special action during its activation, it may perform an additional different Special action as an extra action.",
@@ -3262,6 +3289,9 @@ const traitDescriptions = {
   "Small Nightmare": "This model doesn't follows the Nightmare trait rules to come back to play while removed as a Casualty, instead they can be Set in play in contact with a friendly Suspect when a Fear card is returned to the Fear pile, they can only take an activation if they didn't take it before. In addition, this model gains +1 Defense against enemy Ranged Attacks.",
   "Seasonal Criminal": "At the end of every round, check the total Victory Points scored by all players. For every full 12 VP scored, Calendar Man gains one of the following benefits, advancing one step on the list for each 12 VP scored.<br><br><img src=\"https://veland55.github.io/btb/img/Seasonal_Criminal.png\" style=\"width:100%;max-width:420px;border-radius:12px;margin:20px 0;display:block;\">Example: The players total 24 VPs, so Calendar Man gains +2 Attack skill (12 x 2 = 24). At the end of the next round, the players have scored another VPs between them. The total is now 37- the wheel advances 3 spaces (it started at 2, and now it cycles all the way around to 1). Calendar Man loses the +2 Attack bonus, and gains +4 Movement instead. \n \n•12-23: +4 Movement \n•24-35: +2 Attacks \n•36-47: +2 Defense \n•48-59: Handyman \n•60-71: +4 Movement \n•72-83: +2 Attack \n•84-95:+2 Defense",
   "Snow Storm": "Center the Explosive template on this model. Roll a Strength 3+ die against all other models affected by the template with Damage. Any Suspects affected become Frozen.",
+  "Stalker": "When activating a trait that targets an enemy model, this model may treat its position as that of a friendly Suspect within 8\".",
+  "Showmanship!": "During this model's activation you may play a Resource without paying its cost if this model has 2 enemy models within 4\".",
+  "Support (X)": "Target a friendly model with Alias: X within 8\" and LoS. Immediately perform an action with that model.",
 
 
 
@@ -3270,16 +3300,16 @@ const traitDescriptions = {
 	"Take Cover!": "Choose a friendly Henchmen within 4” of this model (but not the activated model itself). That model gains 2 Defense Marker.",
 	"Takedown": "When this model makes another model KO with an Attack, it may immediately make an Effort to make the target a Casualty.",
 	"Taunt": "Choose one enemy model (not a Vehicle) within 8” and line of sight. Perform an opposed Willpower roll against that model. If it successful, then for the rest of the round increase the target’s Attacks skill by +1, but reduce its Defense skill by -2.",
-	"Teamwork X (All)": "During its activation, this model may roll X additional dice when performing Melee Attacks and defense rolls while another model with the Teamwork trait is within 4”.",
-      "Teamwork": "During its activation, this model may roll X additional dice when performing Melee Attacks and defense rolls while the named model is within 4”.",
-	"Teamwork X (Model)": "During its activation, this model may roll X additional dice when performing Melee Attacks and defense rolls while the named model is within 4”.",
+	"Teamwork X (All)": "This model may roll (X) additional dice when performing Melee Attacks during its activation and when Defending while the (named/keyword) model is within 4\".",
+  "Teamwork X (Model)": "This model may roll (X) additional dice when performing Melee Attacks during its activation and when Defending while the (named/keyword) model is within 4\".",
 	"Technique": "Once this trait is activated, for the rest of the round when this model damages a non-vehicle enemy with a Melee Attack Action, the damaged model suffers the Paralyze effect too.",
 	"Teen Titans": "Keyword",
   "Teen Titans Founder": "This model can be recruited in a Teen Titans Team, ignoring ‘The Sidekick’ trait. When operating as part of a Teen Titans crew, this model gains +1 Willpower, +1 Strength and the Reinforced Gloves trait.",
 	"Telekinesis": "At the start of each of this model’s activations, choose one of the following effects until the end of the round: \n• This model’s weapons can still be used at full RoF if it moves. \n• This model’s Unarmed Melee Attacks inflict ★★★ and its Strength roll always succeeds on a 3+, ignoring any other rule (but it cannot benefit from the Mixed Combat Style trait).",
 	"Tension": "This model gains +1 to its Attacks and Defense values while it has at least one 🩸 Damage marker on its Character Card.",
 	"The Boss": "If this model is the crew’s Boss, friendly Henchmen gain the Expendable trait.(Expendable - When this model is removed from the game as a Casualty, you may draw an Objective card.)",
-	"The Dark Knight Returns": "Keyword.",
+  "The Crew": "All friendly models with this model's Affiliation within 8\" and in LoS with this model gain Marker.",
+  "The Dark Knight Returns": "Keyword.",
 	"The Devil You Know": "When this model casts a Spell, it may apply any Failure result to a friendly model instead of itself.",
 	"The Dynamic Duo": "This model can activate immediately after a friendly Robin (Boy Wonder) model within 8”, interrupting the usual sequence of play.",
 	"The Fear Master": "When this model uses the Inspire Fear trait, it can choose to have it affect all non-vehicle models within 4” and line of sight (friendly and enemy). When using this ability, Inspire Fear also inflicts the Terror 2 effect, Slow 4 instead of 2, and gains the Gas weapon special rule.",
@@ -3320,6 +3350,8 @@ const traitDescriptions = {
   "True Fear": "When scoring any number of successful hits during an Attack, add 1 Fear card to your Objective deck.",
   "Tangible Fear": "Any time a model within 4'' of this model receives a hit, or fails a Willpower roll, you may discard 1 card from the top of the friendly objective deck (not cumulative). \n In addition, while this model attacks, the target's Defense is reduced by 1 if its Willpower is less than 6. \n While this model is attacked, the Attack value of the attacking model is reduced by 1 if its Willpower is less than 6.\n In addition, this model cannot remove damage caused by other model's effects unless specified.",
   "Tough Guy": "This model counts as two models for scoring friendly Objective cards.",
+  "Team Arrow": "Keyword.",
+  "Team Flash": "Keyword.",
 
 
 
@@ -3330,6 +3362,8 @@ const traitDescriptions = {
 	"Unstoppable": "Each successful hit scored by this model this round requires 2 successful defense rolls to block.",
 	"Unstoppable Monster": "At the start of this model’s activation, it must move 2” in a straight line as an extra Action. Enemy models within 4” of this model cannot perform the Manipulate Action.",
 	"Unpredictable": "This model’s Special Action is a ‘wildcard’, which may be spent as another type of Action if you wish (this means the model can perform the same Action twice in its activation if it has sufficient Actions to spend).",
+  "Unmask the Truth": "When this model Reveals an enemy Suspect, enemy models with the Intel Support trait receive an additional Disruption token.",
+
 
 
   // V
@@ -3342,6 +3376,7 @@ const traitDescriptions = {
 	"Void Priest": "One use only. This model may spend 2 Faith Points. Enemy models within 2” suffer the Slow 2 effect.",
 	"Volunteer": "This model cannot be removed from play due to the Suicide Mission rule. The Boss of a Suicide Squad Team automatically gains this trait.",
 	"Vulnerability to Fire": "When this model suffers Damage by the Fire Status, inflicts to it 1 🩸 Damage additionally.",
+  "Vengeance": "At the start of the game, target an enemy model that cannot have the Rank: Henchman (unless no other option is available). Convert all the ★ damage this model inflicts to it to 🩸. In addition, scored Dirty Job Objective cards provide 2 VP each (instead of 1) even if this model is not in the Gaming Area.",
 
   // W
 	"War Goes On": "If you purchase this upgrade, then before deployment you may equip it, or another upgrade available to this model, for free. Discard the unused Upgrade.",
@@ -3398,24 +3433,24 @@ const traitDescriptions = {
 	"Throwing": "This ranged weapon don’t lose dice for moving before attacking.",
 
    //EFFECTS
-	"Blind (FLASH)": "A model suffering from Blind cannot trace Line of Sight, and cannot perform Ranged Attacks. All of the model’s attack, Strength and defense dice rolls will only succeed on a natural result of 6. In addition, the model cannot use its Movement value to increase its basic move distance. This effect lasts until the end of the round.",
+	"Blind (X)": "Status. A model suffering from Blind cannot trace Line of Sight, and cannot perform Ranged Attacks. All of the model’s attack, Strength and defense dice rolls will only succeed on a natural result of 6. In addition, the model cannot use its Movement value to increase its basic move distance. This effect lasts until the end of the round.",
 	"Casualty": "If this effect is triggered (as part of a Critical effect for example), then the target model is removed from play as though it had received its maximum allocation of 🩸 counters.",
 	"Cooled": "Place a Cooled marker on the character card of the affected model. A cooled model reduces its Defense skill by -1, and cannot make Efforts. Affected Speedsters cannot use Speed Force Powers. This effect lasts until the end of the round.",
-	"Enervating (X)": "The target reduces its Effort Limit by -X for the next Effort itwants to make.",
-	"Fire": "If a model is affected by Fire, place a Fire marker on its character card (a model may have more than one Fire marker). During an activation, a model with Fire markers must perform a Movement action if it can. Before moving, a model may choose to suffer -X Movement marker to replace Fire markers, at cost of -2'' penalty suffered for each Fire marker removed (so a model that receives a 6 marker removes 3 Fire markers, for example). During the Recount phase, models with at least one Fire marker receive 🩸 for each Fire marker they have, and add 1 more Fire marker.",
-	"Freeze": "Place a Freeze marker on the character card of the affected model. The model reduces its Defense skill by -1, and cannot perform Actions. At the beginning of the model’s activation, it must pass an Endurance roll to remove the Freeze effect. Speedsters cannot use Speed Force Powers If they are affected by the Freeze effect.",
-	"Hypnotize": "Any non-vehicle model affected by Hypnotize must make a Willpower roll immediately. If it fails, it immediatelly performs up to 2 different actions under the control of the player who hypnotized it counting as one of that player’s crew in all respects. Counts as if you are performing an activation for traits and performing actions. Models that are Hypnotized cannot be moved so they would Fall or otherwise take Damage. Nb: If you move and shoot per example, you lose attack dice as usual, you cannot repeat actions, but you are affected by active traits (special actions) that remains active for the activation of the model (like Inspire, Sewer Worker...). That model may be activated by its owner later, because is not an activation.",
-	"Knocked Down": "Place a Knocked Down marker on the Character Card of the affected model. A Knocked Down model cannot attack, or defend itself. It cannot make Efforts, and cannot use any trait that requires an Action or Effort to activate until it Stands Up. A Knocked Down model suffers -1 to its Defense value.",
-	"Paralyze": "Place a Paralyze marker on the card of the affected model. A paralyzed model reduces its Defense skill by -2, and cannot perform Actions until the end of the round.",
-	"Push": "The affected model is moved directly away from the attacker up to X” (where X is the number of hits inflicted or a fixed value if any). If the affected model cannot be moved the full distance, simply move as far as you can up to the maximum, then end the move.",
-	"Poison 1": "If a non-vehicle model is affected by Poison, place a Poison marker on its character card. A model affected a subsequent time by the Poison effect increases its Poison value by 1 (up to a maximum of 4). During the Recount phase, the poisoned model must make an Endurance roll, with a -X penalty to its Endurance value for the roll (where X is the current Poison value). If the roll fails, the model suffers 1 🩸 Damage if its Poison value is 1-3, or 🩸🩸 if it has a Poison value of 4.",
-	"Scared": "The affected non-vehicle model cannot use the Dodging rule, and suffers -1 to its attack and defense dice rolls. This effect lasts until the end of the round.",
-	"Slow (X)": "A model suffering this effect reduces by its basic movement distance by X” during its next Movement action.",
-	"Smoke": "Place an Explosive template in the location of the Smoke cloud. Models cannot draw line of sight through the template. Models affected (or models that enter/contact the template) suffer the Blind effect. The Smoke template is removed at the end of the Recovery phase. Weapons with the Smoke rule cannot be canceled. Unlike other templates, a Smoke template is considered to be of infinite height.",
-	"Steal": "If you trigger this effect, the opponent must show you their Objective card hand. Choose one of those cards – the opponent must Discard it.",
-	"Stunned": "A Stunned model can only perform Movement actions until the end of the round.",
-	"Terror (X)": "When a non-vehicle model is affected by Terror, it reduces the number of Actions it can perform by X during its next activation. Additionally, until its next activation the target reduces by -X its Effort Limit and its Willpower value when performing a Willpower roll.",
-	"Toxic (X)": "The target receives a number of 🩸 Damage markers equal to X."
+	"Enervating (X)": "Status. When the model affected is going to perform an action/using a trait/being targeted by an attack, before that, the opponent may choose to reduce the Effort Limit of the target by -(X) during that time frame. Then remove this Status.",
+	"Fire": "Status. When a model is affected by the Fire Status, it gains the Fire Status. All friendly models affected by the Fire Status suffer when you score an Objective card with the Burn keyword in its Resource or use the Burn keyword as a Resource. When another friendly model Sets a Suspect in contact with a model affected by the Fire Status, you may remove the Fire Status.",
+	"Freeze": "Status. Place a Freeze marker on the character card of the affected model. The model reduces its Defense skill by -1, and cannot perform Actions. At the beginning of the model's activation, it must pass an Endurance roll to remove the Freeze Status. Speedsters cannot use Speed Force Powers If they are affected by the Freeze Status.",
+	"Hypnotize": "Status. Any non-vehicle model affected by Hypnotize must make a Willpower roll immediately. If it fails, it immediately performs up to 2 different actions under the control of the player who hypnotized it counting as one of that player's crew in all respects. While performing these actions, you may perform up to 2 Free Efforts (you cannot make another Efforts) and you do not expend Ammunition.\nCounts as if you are performing an activation for traits and performing actions. Models that are Hypnotized cannot be moved so they would Fall or otherwise take Damage.\nNb: If you move and shoot per example, you lose attack dice as usual, you cannot repeat actions, but you are affected by active traits (special actions) that remains active for the activation of the model (like Inspire, Sewer Worker...). That model may be activated by its owner later, because is not an activation.",
+	"Knocked Down": "Status. Place a Knocked Down marker on the Character Card of the affected model. A Knocked Down model cannot attack, or defend itself. It cannot make Efforts, and cannot use any trait that requires an Action or Effort to activate until it Stands Up. A Knocked Down model suffers -1 to its Defense value.",
+	"Paralyze": "Status. A paralyzed model reduces its Defense skill by -2, and cannot perform Actions until the end of the round.",
+	"Push": "The affected model is moved directly away from the attacker up to X”.",
+	"Poison (X)": "Status. If a non-vehicle model is affected by Poison, place a Poison marker on its character card. A model affected a subsequent time by the Poison effect increases its Poison value by 1 (up to a maximum of 4). During the Recount phase, the poisoned model must make an Endurance roll, with a -X penalty to its Endurance value for the roll (where X is the current Poison value). If the roll fails, the model suffers 1 🩸 Damage if its Poison value is 1-3, or 🩸🩸 if it has a Poison value of 4.",
+	"Scared": "Status. The affected non-vehicle model cannot use the Dodging rule, and suffers -1 to its attack and defense dice rolls. This Status lasts until the end of the round.",
+	"Slow (X)": "Status. A model suffering this effect reduces by its basic movement distance by X” during its next Movement action.",
+	"Smoke": "Place a Smoke event marker centered at the target point (or as close as possible). Models cannot draw LoS if it pass within 2'' of the Smoke marker. Models while within 2'' of a Smoke marker, suffer the Blind Status. The Smoke marker is removed at the end of the Recovery phase. Weapons with the Smoke rule cannot be canceled.",
+  "Steal": "If you successfully hit a model with a weapon with this rule, the opponent must show you their Objective card hand. Choose one of those cards - the opponent must Discard it.",
+	"Stunned": "Status. A Stunned model can only perform Movement actions until the end of the round.",
+	"Terror (X)": "Status. When an enemy model suffers the Terror Status, you draw 1 Objective card from the top of your opponent's Objective deck and place it facedown in your Terror pile. When an enemy model would make an Attack dice roll, Defense dice roll, or a Willpower roll during its activation, after the action is resolved, the opponent may reveal up to 3 cards from your Terror pile. Apply the Poison Status a number of times equal to the number of cards revealed. If the model already have or reaches Poison (4), it immediately takes a Poison test. After applying the Status, put the cards at the bottom of the original owner's deck. If you can not draw, the enemy model instead suffers ★★.",
+	"Toxic (X)": "With at least 1 Successful hit, the target receives a number of 🩸 Damage markers equal to (X)."
 };
 
 // ==================================================================
