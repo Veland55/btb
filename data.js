@@ -3476,6 +3476,7 @@ const models = [
 
 const traitDescriptions = {
    //A
+  "Aversion (X)": "This model cannot be included in the same crew as the specified model.",
 	"A Challenge for you": "Every time your crew places a Suspect, you must place a Numeric Counter on it. You decide the number on the counter, unless a card or ability specifies the number. These Numeric Counters cannot be reduced below 0.",
 	"Absolute Power": "If this model is your crew’s Boss, you can hire Henchmen with the Cop trait, regardless of their Affiliation. In addition, this model doubles the range of its Inspire rule.",
 	"Acrobat": "This model does not suffer Impaired Movement for Jumping, or for Stand Up actions. This model may use the Dodging rule.\nDodging: A model that benefits from this rule may make an Effort to reduce the attack dice from a Ranged Attack that targets this model.",
@@ -3715,7 +3716,7 @@ const traitDescriptions = {
 
 
   // G
- 	"Gas Jumper": "This model adds +6” to its basic move distance, and can move in any direction (including vertically). The model can move over obstacles and Difficult Ground without penalty. All models within 4” and Los of this model at the end of the Movement action suffer Poison and Enervating 1, with the Gas effect. When this trait is activated, this model may perform Melee Attacks against models within 3” instead of only in contact, until the end of the round.",
+  "Gas Jumper": "This model can move in any direction (including vertically). The model can move over obstacles and Difficult Ground without penalty. All models within 4\" and Los of this model at the end of a Movement action suffer Poison and Enervating (1) Statuses, with the Gas rule.",
 	"Gas Mask": "This model ignores Damage and effects caused by any Attack or trait with the Gas special rule.",
 	"Genius": "Once per round, this model can remove an Audacity marker from one friendly model, and give it to another friendly model that is yet to activate.",
 	"Get ’Em": "One friendly model within 8” and line of sight of this model gains +2 Attack Marker.",
@@ -3933,7 +3934,7 @@ const traitDescriptions = {
 	"Primary Target": "This model can treat enemy Suspect markers as friendly.",
 	"Protect Me!": "If this model is hit by an enemy attack (any type), you may make an Effort to nominate a friendly model within 4” and LoS (not a Vehicle) to take the attack instead. Resolve any Damage and/or effects against the nominated model.",
 	"Psychiatrist": "All friendly Henchmen models with a Mental Disorder trait within 8” and line of sight of this model gain +1 to their Attack and Defense skills. These bonuses last until the end of the next Raise the Plan phase.",
-	"Psycho": "This model’s Willpower skill cannot be reduced under any circumstances.",
+	"Psycho": "When this model takes a Willpower test, if applies a -2 modifier to the roll result.",
 	"Psychologist": "When a model within 4” scores an Objective, that model suffers Enervating 1 or removes 1 ★ from its character card (your choice).",
 	"Psychoanalysis": "Target a model with a Mental Disorder trait, friendly or enemy, within 8” and LoS. The target ignores the effects of their Mental Disorder until the end of the round.",
 	"Public Resources": "If this model is included in your crew, add $300 to the crew’s available Funding. In addition, you may place one additional Streetlamp and Sewer marker before the game starts.",
@@ -4096,7 +4097,8 @@ const traitDescriptions = {
   "Team Arrow": "Keyword.",
   "Team Flash": "Keyword.",
   "True Psychopath": "When an model within 8\" is removed as a Casualty, you may place 2 on top of the Psychopaths Objective card instead of 1.",
-
+  "Truly Immortal": "This model cannot become KO or be removed as Casualty from the game by any means. Instead, remove one Damage marker, then the opponent relocates this model, placing it within 4\".",
+  
 
    //U
 	"Undead": "This model is immune to all effects and CRT, except Knock Down and Smoke.",
