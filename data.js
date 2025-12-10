@@ -303,7 +303,7 @@ const models = [
       "Willpower": 8,
       "Endurance": 8
     },
-    "traits": ["Detonate", "Goad", "Henchman Bomb", "If You're Good At Something", "Kaos Agent", "Never Do It For Free", "One Shot Gun", "Protect Me!", "Trickster", "True Psychopath", "Undercover"],
+    "traits": ["Detonate", "Goad", "Henchman Bomb", "If You're Good at Something", "Kaos Agent", "Never Do It For Free", "Protect Me!", "Trickster", "True Psychopath", "Undercover"],
     "weapons": [
       {
         "name": "Joker's Automatic Gun",
@@ -3787,7 +3787,7 @@ const traitDescriptions = {
   "Ice Flash": "Target a model within 10\" and LoS. That model must pass an Endurance roll, or suffers the Freeze Status. If it passes the Endurance roll, reduce its Defense skill by 1 and gain -2MOV until the end of the round.",
   "Ice Age": "Once per game chose one: Search in your objecive deck for a card with the name Searching for Nora and put it in your hand, or, Move all friendly models with the \"Cold Acclimation\" trait within 4\" of Mr Freeze or a frozen suspect 4\".",
   "Ice Queen": "Friendly models with affiliation gain 1 free Effort while they are within 4\" of a Frozen Suspect and/or this model.\nIn addition, once per round as a free action, you may target a Suspect within 4\". That Suspect becomes a Frozen Suspect.",
-
+  "If You're Good at Something": "The Explosive Teeth markers inflicts an additional ★ marker. In addition, when this model places a Suspect, you may place it within within 6\" instead of in contact.",
 
 
   //J
@@ -3798,8 +3798,8 @@ const traitDescriptions = {
 	"Jump Up": "Whenever this model would suffer the Knocked Down effect, it may first immediately make an Effort to remove the effect.",
 
   //K
-	"Kaos Agent": "All Henchmen in this model’s crew gain the Trickster trait for the duration of the game. You do not have to place all of your Audacity Activation markers during the Raise the Plan phase (or any, if you wish). Instead, whenever a friendly model with the Trickster trait activates, you may give it one of your remaining Audacity Activation markers.",
-	"KaPow!!!": "Until the end of its activation this model’s Melee Attacks gain +1 to attack dice rolls and Blunt 3.",
+	"Kaos Agent": "All friendly models with Rank gain the Trickster trait for the duration of the game. You do not have to place all of your Audacity Activation markers during the Raise the Plan phase (or any, if you wish). Instead, whenever a friendly model with the Trickster trait activates, you may give it one of your remaining Audacity Activation markers.",
+  "KaPow!!!": "Until the end of its activation this model’s Melee Attacks gain +1 to attack dice rolls and Blunt 3.",
 	"Kevlar Vest": "Whenever this model takes Damage from an enemy attack or special rule, reduce the total number of Damage markers it receives by 1, to a minimum of 1. You may choose which marker is ignored.",
 	"Kill them!": "Target a friendly Henchmen within 4” of this model (but not the activated model itself). Target model gains +2 Attack Marker.",
 	"Kite": "While performing a Move action, this model increases the maximum distance it can move by 2'' for each Suspect within 4'' (measured once at any point during the Move). In addition, this model can move in any direction (including vertically) over obstacles and Difficult Ground without extra cost or penalty.",
@@ -3886,7 +3886,7 @@ const traitDescriptions = {
   "Nightmare": "At the start of a Nightmare's activation, you may place it in contact with a friendly Suspect. A Nightmare can only be Move or being Placed by this rule. \n This model is always considered an active model and is inside the gaming area so, it may receive Audacity even if it is not in play. \n• If a Nightmare gets Knocked Out, immediately remove it as a Casualty. \n• When a Nightmare is removed as a Casualty, it can be returned to play again in a subsequent round, with its usual rules, removing all Damage and Statuses suffered previously by that Nightmare. \n• Nightmares have a 4'' 'action zone' radius. Within that radius, Nightmares are able to attack in Melee (no contact is needed), and may perform the Manipulate action. \n• Nightmares cannot Place/Reveal Suspects more than once during its Activation.",
   "No More Lies": "During the activation of a friendly model with the Riddler Followers keyword, you may remove a friendly Suspect within 4\" of that model. If you do, during this and the subsequent activation, the opponent cannot play Objectives as Resources.",
   "Not Him": "When this model suffers Damage that causes it to suffer KO or be removed as a Casualty, you may place it in contact with a friendly model within 8\" that share a Keyword with this model. The friendly model suffers that damage instead.",
-
+  "Never Do It For Free": "This model's crew gains an additional $400 Funding.",
 
 
   // O
@@ -4080,7 +4080,7 @@ const traitDescriptions = {
 	"Tireless": "This model can spend a Special Action (as well as Its Movement Action) to gain +2” to its basic move distance.",
 	"Titan Dose (DOSE)": "A model may use a Titan Dose during its activation. If it does so, the model gains +1 to all of its basic skills until the end of the round. The same model cannot use more than one Titan Dose in the game.",
 	"To Prove a Point": "Enemy models within 6” and LoS suffer -1 to their Willpower value while making a Willpower roll. In addition, as an extra Action, this model can target an enemy model (not a Vehicle) within 8” and line of sight. For the rest of the round, the target cannot perform Special Actions and loses a die when performing Willpower rolls.",
-	"Total Vision": "This model may see at any distance, and its line of sight can cross any obstacle or scenery element. It may not, however, shoot through these elements, unless using a weapon with a special rule that permits it (such as Remote Control).",
+	"Total Vision": "During its activation, this model may see at any distance, and its line of sight can cross any obstacle or scenery element. It may not, however, shoot through these elements, unless using a weapon with a special rule that permits it (such as Remote Control).",
 	"Tough Skin": "Strength die rolls against this model suffer a -1 penalty and can be defended against just like an attack dice.",
 	"Toxicologist": "Before performing an Attack, this model can exchange the Poison effect with one of the following effects during that Attack: \n• Enervating 2. \n• Scared. \n In addition, models suffering damage from the Poison effect within 8” of this model suffer 1 additional 🩸.",
 	"Tracking": "At the start of the Recount phase, this model can move up to 1D6''.",
@@ -4095,7 +4095,7 @@ const traitDescriptions = {
   "Tough Guy": "This model counts as two models for scoring friendly Objective cards.",
   "Team Arrow": "Keyword.",
   "Team Flash": "Keyword.",
-
+  "True Psychopath": "When an model within 8\" is removed as a Casualty, you may place 2 on top of the Psychopaths Objective card instead of 1.",
 
 
    //U
