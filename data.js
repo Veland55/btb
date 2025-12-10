@@ -246,6 +246,749 @@ const models = [
     ]
   },
 
+
+//---------------------------------------------------------------------------------------------------------// 
+//Joker
+//---------------------------------------------------------------------------------------------------------// 
+
+  {
+    "name": "Joker (Arkham Asylum)",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 105,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerArkhamAsylum.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Electric Handshake", "Joker's Gas", "Kaos Agent", "Luck", "One Shot Gun", "Protect Me!", "Total Vision", "Trickster"],
+    "weapons": [
+      {
+        "name": "Explosive Teeth",
+        "damage": "🩸★",
+        "rof": "1",
+        "ammo": "2",
+        "traits": "Explosive / Firearm / M. Range / Remote Controlled"
+      },
+      {
+        "name": "Poisoned Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Crt(Poison)"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Dark Knight Rises)",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 82,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerDarkKnightRises.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Detonate", "Goad", "Henchman Bomb", "If You're Good At Something", "Kaos Agent", "Never Do It For Free", "One Shot Gun", "Protect Me!", "Trickster", "True Psychopath", "Undercover"],
+    "weapons": [
+      {
+        "name": "Joker's Automatic Gun",
+        "damage": "🩸★",
+        "rof": "4",
+        "ammo": "3",
+        "traits": "Firearm / Light / S. Range"
+      },
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Red Hood)",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 92,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerRedHood.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Demotivate", "Detonate", "Intimidate", "Kaos Agent", "Kill Them!", "Psycho", "Scheming (1)", "To Prove A Point", "Trickster"],
+    "weapons": [
+      {
+        "name": "Poisoned Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Joker",
+    "realname": "Unknown",
+    "base": "40mm / 60mm",
+    "rep": 92,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerClassic.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Demotivate", "Intimidate", "Kaos Agent", "Kill Them!", "Psycho", "Scheming (1)", "To Prove A Point", "Trickster"],
+    "weapons": [
+      {
+        "name": "Joker's Gun",
+        "damage": "🩸🩸🩸",
+        "rof": "2",
+        "ammo": "2",
+        "traits": "Firearm / S. Range / Crt (Paralyze)"
+      },
+      {
+        "name": "Poisoned Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Cesar Romero)",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerCesarRomero.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": ["Charm", "Distract", "Electric Handshake", "Kaos Agent", "Psycho", "Scheming (1)", "Trickster"],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Joker (The Criminal)",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 65,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerTheCriminal.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Detonate", "Find The Better Joker", "Good Aim", "Kaos Agent", "Luck", "Psycho", "Three Jokers", "Trickster"],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸🩸★",
+        "rof": "3",
+        "ammo": "3",
+        "traits": "Firearm / M. Range / Reload / High Caliber"
+      },
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Joker (The Clown)",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 65,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerTheClown.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Explosive Teeths", "Kaos Agent", "Luck", "Poisoned Fish", "Psycho", "Three Jokers", "Trickster", "True Psychopath"],
+    "weapons": [
+      {
+        "name": "Acid Flower",
+        "damage": "🩸🩸",
+        "rof": "1",
+        "ammo": "2",
+        "traits": "Acid / Light / Mechanical / S. Range"
+      },
+      {
+        "name": "Sharp Cards",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (3) / Sharp / Handy"
+      }
+    ]
+  },
+  {
+    "name": "Joker (The Comedian)",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 65,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerTheComedian.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Hidden Boss", "I Am Chaos", "Kaos Agent", "Manipulative", "One Shot Gun", "Psycho", "Three Jokers", "To Prove A Point", "Trickster"],
+    "weapons": [
+      {
+        "name": "Camera",
+        "damage": "-",
+        "rof": "1",
+        "ammo": "24",
+        "traits": "Accurate / Light / S. Range / Blind"
+      },
+      {
+        "name": "The Crowbar",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Blunt 2 / Devastating / Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Titan)",
+    "realname": "Unknown",
+    "base": "60mm",
+    "rep": 115,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerTitan.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 10
+    },
+    "traits": ["Bloodlust", "Juggernaut", "Kaos Agent", "Like Flies To Me", "Luck", "Lunatic Laugh", "Mindless Monster", "Really Huget", "Sturdy", "Super Jump", "The One And Only Joker"],
+    "weapons": [
+      {
+        "name": "Massive Claws",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Devastating / Reach (2) / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Christmas)",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 85,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerChristmas.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Bat Cape", "Bloody Christmas", "Explosive Teeths", "Kaos Agent", "Luck", "Psycho", "Trickster", "Undercover"],
+    "weapons": [
+      {
+        "name": "Candy Cane",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Crushing / Devastating / One Use"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Having Fun)",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerHavingFun.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Aware Of What He Did", "Catwoman's Target", "Kaos Agent", "Luck", "Pulling The Strings", "Trickster", "You're Fun"],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸🩸★",
+        "rof": "3",
+        "ammo": "3",
+        "traits": "Firearm / M. Range / Reload / High Caliber"
+      },
+      {
+        "name": "Automatic Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Steal"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Explosive Arrival)",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 77,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerExplosiveArrival.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Explosive Arrival", "Explosive Personality", "Explosive Teeths", "Kaos Agent", "Leading From Shadows", "Luck", "Psycho", "Trickster"],
+    "weapons": [
+      {
+        "name": "Bam!",
+        "damage": "🩸🩸",
+        "rof": "1",
+        "ammo": "2",
+        "traits": "Firearm / S. Range / Assault"
+      },
+      {
+        "name": "Cane",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Bat-Armor)",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 85,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/JokerBatArmor.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": ["Bat Cape", "Bat-Armor MK II", "Batclaw", "I Am Chaos", "Kaos Agent", "Luck", "Psycho", "Reinforced Gloves", "Trickster"],
+    "weapons": [
+      {
+        "name": "Bam!",
+        "damage": "🩸🩸",
+        "rof": "1",
+        "ammo": "2",
+        "traits": "Firearm / S. Range / Assault"
+      },
+      {
+        "name": "Batarang",
+        "damage": "★★",
+        "rof": "2",
+        "ammo": "3",
+        "traits": "M. Range / Remote Controlled / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Gaggy",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 63,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/Gaggy.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": ["360 Strike", "Aversion (Harley Quinn)", "Combat Flip", "Demotivate", "Gas Jumper", "Kapow!!!", "Large", "Psycho", "True Love (Joker)"],
+    "weapons": [
+      {
+        "name": "Gas Dispencer",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Caustic / Reach (4)"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn (Bombshell)",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 65,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnBombshell.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": ["Acrobat", "Charismatic", "Combat Flip", "Confusion", "One Of The Boys", "The Voices (Mental Disorder)", "True Love (Joker)"],
+    "weapons": [
+      {
+        "name": "Hate/Love Gun",
+        "damage": "🩸🩸",
+        "rof": "2",
+        "ammo": "2",
+        "traits": "Bleed (2) / Firearm / Light / S. Range"
+      },
+      {
+        "name": "Good Night Bat",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+
+    {
+    "name": "Archie",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/Archie.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": ["Luck", "Sad Life", "Small", "Trully Immortal"],
+    "weapons": []
+  },
+  {
+    "name": "Harley Quinn (BTG)",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnBTG.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": ["360 Strike", "Acrobat", "Affinity (Poison Ivy)", "Discourage", "Distract", "Fast (2)", "True Love (Joker)"],
+    "weapons": [
+      {
+        "name": "Mallet",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Heavy / Reach (1) / Push (3)"
+      }
+    ]
+  },
+  {
+    "name": "Punchline",
+    "realname": "Alexis Kaye",
+    "base": "40mm",
+    "rep": 66,
+    "funding": 100,
+    "rank": ["Sidekick"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/Punchline.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": ["Acrobat", "Aversion (Harley Quinn)", "Disguised Sneak Attack", "Fast (3)", "Psycho", "Toxicologist", "True Love (Joker)", "True Psychopath"],
+    "weapons": [
+      {
+        "name": "Throwing Poisoned Knives",
+        "damage": "🩸",
+        "rof": "2",
+        "ammo": "2",
+        "traits": "S. Range / Throwing / Sharp / Poison"
+      },
+      {
+        "name": "Poisoned Knives",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn (Arkham Asylum)",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 55,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnArkhamAsylum.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": ["Acrobat", "Brainwash", "Fast (2)", "Follow Me!", "Lieutenant (Joker (Titan))", "Psychiatrist", "True Love (Joker)"],
+    "weapons": [
+      {
+        "name": "Reinforced Bat",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn (& The Boys)",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "40mm",
+    "rep": 80,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnAndTheBoys.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": ["Affinity (Poison Ivy)", "Always On The Move", "Death Pack", "Distract", "Dodge", "Fast (3)", "Release The Boys!", "True Love (Joker)"],
+    "weapons": [
+      {
+        "name": "Stupidly Big Kabum!",
+        "damage": "🩸🩸",
+        "rof": "1",
+        "ammo": "2",
+        "traits": "Assault / Devastating / Firearm / High Caliber / S. Range"
+      },
+      {
+        "name": "Boy's Attack",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Boosted (3) / Handy / Protective"
+      }
+    ]
+  },
+  {
+    "name": "Two-Face (Dark Knight)",
+    "realname": "Harvey Dent",
+    "base": "30mm",
+    "rep": 58,
+    "funding": 250,
+    "rank": ["Free Agent"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/TwoFaceDarkKnight.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": ["Bipolar (Mental Disorder)", "Desensitized", "Dirty Fighter", "Embrace The Chaos", "Hardened", "He Was The Best Of Us", "Hidden", "Judgment", "Rapid Fire"],
+    "weapons": [
+      {
+        "name": "Chance",
+        "damage": "🩸🩸",
+        "rof": "2",
+        "ammo": "3",
+        "traits": "Firearm / High Caliber / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler (Frank Gorshin)",
+    "realname": "Edward Nigma",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/RiddlerFrankGorshin.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 4
+    },
+    "traits": ["Charismatic", "Confusion", "Mastermind", "Puzzle Master", "Required (Joker (Cesar Romero))", "Trap Master", "Trickster"],
+    "weapons": [
+      {
+        "name": "Fake Gun",
+        "damage": "-",
+        "rof": "3",
+        "ammo": "1",
+        "traits": "One Use / Scared / S. Range"
+      },
+      {
+        "name": "Cane",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "The Penguin (Burgess Meredith)",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 100,
+    "rank": ["Free Agent"],
+    "faction": "Joker",
+    "img": "https://veland55.github.io/btb/img/PenguinBurgessMeredith.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 6,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": ["Charismatic", "Handyman", "One Of The Boys", "Radio", "Required (Joker (Cesar Romero))", "Umbrella's Knout Gas", "Wah! Wah! Wah!"],
+    "weapons": [
+      {
+        "name": "Umbrella Cannon",
+        "damage": "🩸🩸🩸",
+        "rof": "1",
+        "ammo": "2",
+        "traits": "Firearm / Protective / S. Range"
+      },
+      {
+        "name": "Umbrella's Boxing Glove",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / One Use / Mechanical"
+      }
+    ]
+  },
+
+
+
 //---------------------------------------------------------------------------------------------------------// 
 //Mr. Freeze
 //---------------------------------------------------------------------------------------------------------// 
