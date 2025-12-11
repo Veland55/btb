@@ -3520,7 +3520,7 @@ const traitDescriptions = {
   "Affinity (X)": "This model may be recruited by any crew that also includes the model named in parentheses, even if they would not ordinarily be permitted to join that crew. This model may treat its rank as for the purposes of forming the crew (but cannot use the Rank during the game). Recruiting this model does not allow a further use of the trait (if, for example, another character has an Affinity to this model).",
   "A Real Change": "Once per round, during this model's activation you may look at the opponent's Objective hand, then the opponent may target one of their models and preform an immediate Manipulate action with that model.",
   "As Blind as a Bat": "When this model Sets a Suspect and you have a ? facedown card in play from a previous activation, you may reveal it and activate its Trap effect using this model as the point of origin/triggering model. Then discard that card.",
-
+  "Aware Of What He Did": "Search your Objective deck and add to your hand an Objective card with Type: GUN. Shuffle your deck.",
 
 
 
@@ -3619,7 +3619,7 @@ const traitDescriptions = {
   "Cryo-Reinforcement": "Target a friendly Frozen Suspect and another friendly model with the Cryo-Armor (1) trait within 4\". Remove that Suspect. Until this model is removed from play or uses this trait again, the target model's Cryo Armor (1) trait increases by 1 and its Ranged weapons with S. Range lose it.",
   "Coordination": "Target another friendly model within 8\" of this model that share a keyword with this model, then, immediately perform an action with that model.",
   "Conundrum Champion": "Target a model within 8\" and line of sight. Perform an opposed Willpower roll against the target. If successful the target suffers the Enervating (2) Status.",
-
+  "Catwoman's Target": "A model with Alias (Catwoman) gains 2 Free Effort while targeting this model with an Attack. While this model has a model with Alias (Catwoman) within 8\", it gains 1 Free Effort when Attacking and Defending against models other than that Catwoman model.",
 
 
   // D
@@ -3700,6 +3700,10 @@ const traitDescriptions = {
   "Exposure": "For each additional successful hit after the first, the target suffers 1 additional damage marker (any type).",
   "Engineer": "While attacking or defending against this model, enemy models with one or more pieces of Equipment suffer -1 to its Attack and Defense for the duration of the attack.",
   "Explosive Teeth": "Move an Explosive Teeth marker up to 4\". Then reduce its number counter by 1",
+  "Explosive Arrival": "This model is not deployed as normal at the start of the game. Instead, during a friendly activation in which you score an Objective card, you may place this model anywhere on the gaming area, then, place a Smoke event marker in contact with this model, all models within 4\" of this Smoke event marker suffers Poison.\nThis model ignores this Smoke Event marker. Remove this marker at the end of the round. This model may receive an Audacity marker even if it is not in play.",
+  "Explosive Personality": "While this model is in play, any friendly model can spend a Special Action during its activation to search into your Objective deck for a copy of the Bite The Dust or Let Them in on the Joke Objective card.\nIn addition, scored Stage Play Objective cards provide 3 VP each (instead of 2) even if this model is not in play.",
+
+
 
 
   // F
@@ -3843,6 +3847,9 @@ const traitDescriptions = {
   "Lieutenant (X)": "If the crew contain a model with Alias (X), this model reduces its funding cost to 0 and all friendly models with Rank that start their activation within 8'' of this model are affected by the Inspire trait of the friendly model with Alias: (X).",
   "Like Flies to Me": "When this model is the target of an Attack action, the attacker must treat this model's Defense value as equal to the attacker's Strength value.",
   "Lunatic Laugh": "Until the end of the round, enemy models within 8\" and LoS roll 1 fewer die when making a Defense roll.",
+  "Leading From Shadows": "If this model is the crew Boss, while this model is not on the gaming area (and not removed as a Casualty), its Inspire rule affects all the gaming area.",
+
+
 
   // M
 	"Magical Power (X)": "All models with this trait can use Elemental Spells. The value 'X' is the number of Magic Points (MP) the model can spend during a round. Each spell costs a number of MPs to cast. At the Beginning of the Raise the Plan phase, the model gains a number of MPs equal to X. At the end Recovery phase, all unspent MPs are lost.",
@@ -3956,6 +3963,8 @@ const traitDescriptions = {
   "Pull (X)": "The affected model is moved directly towards to the attacker X''.",
   "Poison Catalyst": "A model within 4'' suffering the Poison Status must make a Poison test.",
   "Poisoned Fish": "Target a Poisoned Fish marker. Choose a direction and roll 2D6. Move that marker a number of inches equal to the result. Any model the marker comes in contact with that has an Endurance value less than the roll suffers the Poison Status.",
+  "Pulling The Strings": "When this model places a Suspect, target another friendly model and move it 8\".",
+
 
 
    //Q
@@ -4126,6 +4135,8 @@ const traitDescriptions = {
 	"Unpredictable": "This model’s Special Action is a ‘wildcard’, which may be spent as another type of Action if you wish (this means the model can perform the same Action twice in its activation if it has sufficient Actions to spend).",
   "Unmask the Truth": "When this model Reveals an enemy Suspect, enemy models with the Intel Support trait receive an additional Disruption token.",
 
+  //Y
+  "You're Fun": "During the first Raise the Plan phase of the game, target an enemy model. When an Objective card is scored during the activation of the target, this model gains a Free Manipulate action until the end of the round.",
 
 
   // V
