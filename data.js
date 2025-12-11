@@ -464,7 +464,7 @@ const models = [
       "Willpower": 8,
       "Endurance": 8
     },
-    "traits": ["Explosive Teeths", "Kaos Agent", "Luck", "Poisoned Fish", "Psycho", "Three Jokers", "Trickster", "True Psychopath"],
+    "traits": ["Explosive Teeth", "Kaos Agent", "Luck", "Poisoned Fish", "Psycho", "Three Jokers", "Trickster", "True Psychopath"],
     "weapons": [
       {
         "name": "Acid Flower",
@@ -562,9 +562,16 @@ const models = [
       "Willpower": 8,
       "Endurance": 8
     },
-    "traits": ["Bat Cape", "Bloody Christmas", "Explosive Teeths", "Kaos Agent", "Luck", "Psycho", "Trickster", "Undercover"],
+    "traits": ["Bat Cape", "Bloody Christmas", "Explosive Teeth", "Kaos Agent", "Luck", "Psycho", "Trickster", "Undercover"],
     "weapons": [
       {
+        "name": "Candy Cane",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Crushing / Devastating / One Use"
+      },
+            {
         "name": "Candy Cane",
         "damage": "★★",
         "rof": "-",
@@ -3533,7 +3540,8 @@ const traitDescriptions = {
 	"Biting": "Enemies within 6” that wish to perform an Action must first suffer the Enervating 1 effect. If they already have Enervating, they must instead increase their Enervating value by 1.", 
 	"Blood Scent": "When targeting a model with at least 1 🩸 marker with an Attack, this model gains +1 to its attack dice rolls, +1 to the Strength roll, and gains the Bleed 1 effect.",
 	"Bloodthirsty (Mental Disorder)": "During the Raise the Plan phase, if this model has at least 1 Damage marker of any kind, it gains +1 Attack Marker.",
-	"Boosted Jump": "One use only. During this model activation, place this model within 8” of its start position.",
+	"Bloodlust": "When this model causes a KO or Casualty, you may place 2 on top of the Psychopaths Objective card instead of 1.",
+  "Boosted Jump": "One use only. During this model activation, place this model within 8” of its start position.",
 	"Bluff": "Choose an enemy model within 6” and line of sight. The target reduces its Attacks skill by 1 until the end of the round. If multiple models with this trait target the same model, the effect is not cumulative.",
 	"Bodyguard": "If a friendly model with Crown Markers within 4” of this model and LoS suffers any number of hits from an Attack (of any kind), this model may make an Effort to take the hits instead, and all the effects of that attack. Only one Effort ★ is required per enemy Attack.",
 	"Bonebreaker": "Until the end of the round, this model’s unarmed attacks gain Bleed: 2.",
@@ -3553,7 +3561,7 @@ const traitDescriptions = {
   "Brawler": "For each Succesfull hit this model receives, place a Defense Marker on it.",
   "Barrage": "During this round, you can target any model with Ranged Attack ignoring LoS and Cover, but then suffers a -1 Attack die and -1 to hit for that roll.",
   "Bank Robber": "This model may Reveal Suspects within 3\" instead of in contact.",
-
+  "Bloody Christmas": "Before removing an enemy model as a Casualty by this model's actions, place a new friendly Suspect (if able) in contact with that model. That Suspect is also a Blood Present marker.",
 
 
   // C
@@ -3833,7 +3841,8 @@ const traitDescriptions = {
   "Limited Equipment": "This model can only purchase up to 1 Equipment.",
   "Let's Cool It For Now": "Once per round, after this model places a suspect, target another model within 4'' of that suspestc, it gains +1 or -1 Defense Modifiers Markers",
   "Lieutenant (X)": "If the crew contain a model with Alias (X), this model reduces its funding cost to 0 and all friendly models with Rank that start their activation within 8'' of this model are affected by the Inspire trait of the friendly model with Alias: (X).",
-
+  "Like Flies to Me": "When this model is the target of an Attack action, the attacker must treat this model's Defense value as equal to the attacker's Strength value.",
+  "Lunatic Laugh": "Until the end of the round, enemy models within 8\" and LoS roll 1 fewer die when making a Defense roll.",
 
   // M
 	"Magical Power (X)": "All models with this trait can use Elemental Spells. The value 'X' is the number of Magic Points (MP) the model can spend during a round. Each spell costs a number of MPs to cast. At the Beginning of the Raise the Plan phase, the model gains a number of MPs equal to X. At the end Recovery phase, all unspent MPs are lost.",
@@ -3877,6 +3886,7 @@ const traitDescriptions = {
 	"Multiverse Teleportation Device": "This model may not be deployed as normal at the start of the game. Instead, at the start of the Raise the Plan phase of the second round, place this model anywhere on the board (but not inside a building or similar enclosed space).",
 	"My Idol!": "This model can only be recruited if a model with the Alias: Zur-En-Arrh Batman is part of the crew. In addition, while a friendly model with Alias: Zur-En-Arrh Batman is in play and not KO, this model gains +1 Willpower.",
   "Motion (X)": "When using this weapon, if any hits are scored the wielder may immediately Move X''.",
+  "Mindless Monster": "At the start of this model's activation target the closest enemy model. If the first action this model performs is a Movement action and it ends in contact with that enemy model, perform a free Attack action against that model.",
 
   // N
 	"Narcotic Dose (DOSE)": "A model may use a Narcotics Dose at any time during its activation. If it does so, the model gains the Desensitized trait until the end of the round.",
@@ -4102,6 +4112,7 @@ const traitDescriptions = {
   "True Psychopath": "When an model within 8\" is removed as a Casualty, you may place 2 on top of the Psychopaths Objective card instead of 1.",
   "Truly Immortal": "This model cannot become KO or be removed as Casualty from the game by any means. Instead, remove one Damage marker, then the opponent relocates this model, placing it within 4\".",
   "Three Jokers": "When you recruit this model you must also recruit any other models that share this trait. Models with this trait treat their rank as Leader in game.\nIn addition, this model can take Audacity with the Trickster trait from a friendly model with this trait that is already activated this round, counting as taking Audacity from a non-activated model.",
+  "The One and Only Joker": "At the start of this model's activation, if there are no enemy models within 4\" you may search your Objective deck for an Objective card named Let Them In On The Joke. Reveal it and add it to your hand. Shuffle your Objective deck.",
 
 
 
