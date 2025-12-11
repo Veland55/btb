@@ -3636,7 +3636,7 @@ const traitDescriptions = {
 	"Dimensional Portal": "Remove this model and place it up to 12” away. At a cost of a Movement Action (If it has one left to spend), this model may choose one friendly model within 2” before it is removed – the target model is also removed, and placed in contact with this model in its new position. After being placed, this model ends its activation. Any model that was placed with it counts as having moved during its activation, and its Basic Move Distance is 0 for the rest of the round. A model cannot use this trait in two consecutive activations.",
 	"Demon Curse": "At the beginning of the Take the Lead phase, if there are no models in contact, roll 2D6 for this model and add the results together. For each friendly model removed as a Casualty in the game so far, add +2 to the result. On a result of 11+, place a friendly Etrigan model within 4” of this model, then remove this model from play.",
 	"Demoralize": "All enemy Henchmen within 6” suffer the Enervating 1 effect.",
-	"Demotivate": "Target a model within 8” and line of sight. That model must pass a Willpower roll or immediately suffer the Enervating 2 effect.",
+	"Demotivate": "Target a model within 8” and line of sight. That model must pass a Willpower roll or immediately suffer the Enervating (2) Status.",
 	"Desensitized": "This model can never suffer Knocked Out, once this model has ★ equal to its willpower, any subsequent attack that targets it changes all ★ to 🩸.",
   "Detective": "This model may place or reveal a Suspect marker within 3” and LoS instead of in contact.",
 	"Detective Mode": "This model does not suffer the Blind effect and can see through Smoke.",
@@ -3691,6 +3691,7 @@ const traitDescriptions = {
 	"Extremely Mutated": "This model cannot buy more than one item of Equipment.",
   "Exposure": "For each additional successful hit after the first, the target suffers 1 additional damage marker (any type).",
   "Engineer": "While attacking or defending against this model, enemy models with one or more pieces of Equipment suffer -1 to its Attack and Defense for the duration of the attack.",
+  "Explosive Teeth": "Move an Explosive Teeth marker up to 4\". Then reduce its number counter by 1",
 
 
   // F
@@ -3712,7 +3713,7 @@ const traitDescriptions = {
   "Freeze Well": "Once per round, when a ranged attack of this model score at least 1 Successful hit, the target makes a Willpower roll. If unsuccessful, that model places a new friendly Suspect in contact ignoring the usual placement rules. That suspect is frozen.",
   "Fight Me!": "If a friendly model within 4\" of this model and LoS suffers any number of hits from an Attack (of any kind), this model may make an Effort to take the hits instead, and all the Statuses of that attack. Only one Effort is required per enemy Attack.",
   "Feedback Protection": "This model doesn't receives Disruption tokens when a Suspect is removed by the Riddle marker rule.",
-
+  "Find the Better Joker": "When a target enemy model would be removed as a Casualty within 8\" of this model, you may place a new friendly model with the Alias; Joker's Victim X that has been already removed as a Casualty, in contact with the target before removing it.",
 
 
   // G
@@ -3777,7 +3778,7 @@ const traitDescriptions = {
 	"Instinctive Shooting": "In the round in which this trait is activated, this model’s ranged weapons don’t lose dice for moving before attacking.",
 	"Intel Support (X)": "This model cannot be targeted/affected by an attack, and does not suffer Statuses or Damage and cannot perform Unarmed attacks. It is only considered in contact with other models during its activation. When this model performs a Move, it is instead a Place. This model cannot use the Sewers in any way. When an enemy model removes 1 of your Suspects, place 1 Disruption token on this model. When this model has X Disruption tokens remove the tokens and the model from the gaming area. In any subsequent Raise the Plan phase, you may reduce your Audacity markers by 1 during that round to return this model to play, placing it anywhere on the gaming area. This model is considered a Casualty/KO when it is removed from the game for the purpose of scoring a card.",
 	"Interrogation": "When this model scores at least 2 hits with a Melee Attack, this model or another friendly model in play, may immediately make an extra move of 4” or place a Suspect marker.",
-	"Intimidate": "Target an enemy model (not a Vehicle) within 8” and line of sight. For the rest of the round, the target cannot perform Special Actions and loses a die when performing Willpower rolls.",
+	"Intimidate": "Target an enemy model (not a Vehicle) within 8\" and line of sight. For the rest of the round, the target cannot perform Special Actions unless it Efforts 2★, and to Effort during a Willpower roll must take 2★ instead of 1.",
 	"Intimidation": "Target an enemy model (not a Vehicle) within 8” and line of sight. The target must pass a Willpower roll or be unable to perform Melee Attacks this round.",
 	"Invaluable": "When this model becomes a Casualty, the opponent gains 1 Resource point.",
 	"Invulnerability (X)": "This model is immune to the CRT: Casualty effect. In addition, the first 'X' Damage markers received by this model during each round are ignored.",
@@ -3789,6 +3790,8 @@ const traitDescriptions = {
   "Ice Age": "Once per game chose one: Search in your objecive deck for a card with the name Searching for Nora and put it in your hand, or, Move all friendly models with the \"Cold Acclimation\" trait within 4\" of Mr Freeze or a frozen suspect 4\".",
   "Ice Queen": "Friendly models with affiliation gain 1 free Effort while they are within 4\" of a Frozen Suspect and/or this model.\nIn addition, once per round as a free action, you may target a Suspect within 4\". That Suspect becomes a Frozen Suspect.",
   "If You're Good at Something": "The Explosive Teeth markers inflicts an additional ★ marker. In addition, when this model places a Suspect, you may place it within within 6\" instead of in contact.",
+  "I Am Chaos": "Discard an Objective card at random. The opponent must show you their Objective card hand. For each enemy model within 8\" and LoS, choose one of those cards - the opponent must Discard it",
+
 
 
   //J
@@ -3799,7 +3802,7 @@ const traitDescriptions = {
 	"Jump Up": "Whenever this model would suffer the Knocked Down effect, it may first immediately make an Effort to remove the effect.",
 
   //K
-	"Kaos Agent": "All friendly models with Rank gain the Trickster trait for the duration of the game. You do not have to place all of your Audacity Activation markers during the Raise the Plan phase (or any, if you wish). Instead, whenever a friendly model with the Trickster trait activates, you may give it one of your remaining Audacity Activation markers.",
+	"Kaos Agent": "All friendly models with Rank Henchman gain the Trickster trait for the duration of the game. You do not have to place all of your Audacity Activation markers during the Raise the Plan phase (or any, if you wish). Instead, whenever a friendly model with the Trickster trait activates, you may give it one of your remaining Audacity Activation markers.",
   "KaPow!!!": "Until the end of its activation this model’s Melee Attacks gain +1 to attack dice rolls and Blunt 3.",
 	"Kevlar Vest": "Whenever this model takes Damage from an enemy attack or special rule, reduce the total number of Damage markers it receives by 1, to a minimum of 1. You may choose which marker is ignored.",
 	"Kill them!": "Target a friendly Henchmen within 4” of this model (but not the activated model itself). Target model gains +2 Attack Marker.",
@@ -3808,7 +3811,7 @@ const traitDescriptions = {
 	"Kryptonian X": "A model with this trait gains a number of rules determined by the trait’s level (X), see below. \n 1: Fast, Invulnerability/1, Natural Immunities. \n 2: Fast, Invulnerability/2, Natural Immunities, Super Jump. \n 3: Fast, Fly, Invulnerability/3, Natural Immunities. \n 4: Fast, Fly, Invulnerability/3, Natural Immunities, Tough Skin. \n 5: Fast, Fly, Hover, Flying High, Invulnerability/4, Natural Immunities, Tough Skin. \n 6: Fast, Fly, Hover, Flying High, Invulnerability/5, Natural Immunities, Tough Skin. \n If the game is affected by the Day rules, the Invulnerability rule is improved by +1 and all the levels gain the Regeneration trait.",
 	"Kryptonite": "While a model with this trait is within 4'' of a model with the Kryptonian trait, the Kryptonian model loses the Invulnerability and Regeneration traits (if they possess them).",
   "Knowledge is Power": "During this model's activation, it gains a Free Special Action if you have looked at the opponent's deck or hand this Round.",
-
+  "Kill Them!": "Target a friendly model with Rank Henchman within 4\" of this model (but not the activated model itself). Target model gains +2 Attack Marker.",
 
 
   // L
@@ -3942,7 +3945,7 @@ const traitDescriptions = {
 	"Pyromania (Mental Disorder)": "If, at the beginning of its activation, this model can see any model with a Fire marker, this model gains a Defense Marker.",
   "Pull (X)": "The affected model is moved directly towards to the attacker X''.",
   "Poison Catalyst": "A model within 4'' suffering the Poison Status must make a Poison test.",
-
+  "Poisoned Fish": "Target a Poisoned Fish marker. Choose a direction and roll 2D6. Move that marker a number of inches equal to the result. Any model the marker comes in contact with that has an Endurance value less than the roll suffers the Poison Status.",
 
 
    //Q
@@ -4080,7 +4083,7 @@ const traitDescriptions = {
 	"Time Stretch": "One use only. This model may target a friendly model within 4” and line of sight. The target Model gains the Living Legend trait until the end of the round.",
 	"Tireless": "This model can spend a Special Action (as well as Its Movement Action) to gain +2” to its basic move distance.",
 	"Titan Dose (DOSE)": "A model may use a Titan Dose during its activation. If it does so, the model gains +1 to all of its basic skills until the end of the round. The same model cannot use more than one Titan Dose in the game.",
-	"To Prove a Point": "Enemy models within 6” and LoS suffer -1 to their Willpower value while making a Willpower roll. In addition, as an extra Action, this model can target an enemy model (not a Vehicle) within 8” and line of sight. For the rest of the round, the target cannot perform Special Actions and loses a die when performing Willpower rolls.",
+	"To Prove a Point": "Enemy models within 6\" and LoS suffer -2 to their Willpower value while making a Willpower roll. In addition, as an extra Action, this model can target an enemy model (not a Vehicle) within 8\"\nand\nline of sight. For the rest of the round, the target cannot perform Special Actions unless it Efforts 2 ★ and to Effort during a Willpower roll must take\n2★ instead of 1.",
 	"Total Vision": "During its activation, this model may see at any distance, and its line of sight can cross any obstacle or scenery element. It may not, however, shoot through these elements, unless using a weapon with a special rule that permits it (such as Remote Control).",
 	"Tough Skin": "Strength die rolls against this model suffer a -1 penalty and can be defended against just like an attack dice.",
 	"Toxicologist": "Before performing an Attack, this model can exchange the Poison effect with one of the following effects during that Attack: \n• Enervating 2. \n• Scared. \n In addition, models suffering damage from the Poison effect within 8” of this model suffer 1 additional 🩸.",
@@ -4098,7 +4101,10 @@ const traitDescriptions = {
   "Team Flash": "Keyword.",
   "True Psychopath": "When an model within 8\" is removed as a Casualty, you may place 2 on top of the Psychopaths Objective card instead of 1.",
   "Truly Immortal": "This model cannot become KO or be removed as Casualty from the game by any means. Instead, remove one Damage marker, then the opponent relocates this model, placing it within 4\".",
-  
+  "Three Jokers": "When you recruit this model you must also recruit any other models that share this trait. Models with this trait treat their rank as Leader in game.\nIn addition, this model can take Audacity with the Trickster trait from a friendly model with this trait that is already activated this round, counting as taking Audacity from a non-activated model.",
+
+
+
 
    //U
 	"Undead": "This model is immune to all effects and CRT, except Knock Down and Smoke.",
@@ -4179,9 +4185,11 @@ const traitDescriptions = {
 
    //EFFECTS
 	"Blind (X)": "Status. A model suffering from Blind cannot trace Line of Sight, and cannot perform Ranged Attacks. All of the model’s attack, Strength and defense dice rolls will only succeed on a natural result of 6. In addition, the model cannot use its Movement value to increase its basic move distance. This effect lasts until the end of the round.",
+	"Blind": "Status. A model suffering from Blind cannot trace Line of Sight, and cannot perform Ranged Attacks. All of the model’s attack, Strength and defense dice rolls will only succeed on a natural result of 6. In addition, the model cannot use its Movement value to increase its basic move distance. This effect lasts until the end of the round.",
 	"Casualty": "If this effect is triggered (as part of a Critical effect for example), then the target model is removed from play as though it had received its maximum allocation of 🩸 counters.",
 	"Cooled": "Place a Cooled marker on the character card of the affected model. A cooled model reduces its Defense skill by -1, and cannot make Efforts. Affected Speedsters cannot use Speed Force Powers. This effect lasts until the end of the round.",
 	"Enervating (X)": "Status. When the model affected is going to perform an action/using a trait/being targeted by an attack, before that, the opponent may choose to reduce the Effort Limit of the target by -(X) during that time frame. Then remove this Status.",
+	"Enervating": "Status. When the model affected is going to perform an action/using a trait/being targeted by an attack, before that, the opponent may choose to reduce the Effort Limit of the target by -(X) during that time frame. Then remove this Status.",
 	"Fire": "Status. When a model is affected by the Fire Status, it gains the Fire Status. All friendly models affected by the Fire Status suffer when you score an Objective card with the Burn keyword in its Resource or use the Burn keyword as a Resource. When another friendly model Sets a Suspect in contact with a model affected by the Fire Status, you may remove the Fire Status.",
 	"Freeze": "Status. Place a Freeze marker on the character card of the affected model. The model reduces its Defense skill by -1, and cannot perform Actions. At the beginning of the model's activation, it must pass an Endurance roll to remove the Freeze Status. Speedsters cannot use Speed Force Powers If they are affected by the Freeze Status.",
 	"Hypnotize": "Status. Any non-vehicle model affected by Hypnotize must make a Willpower roll immediately. If it fails, it immediately performs up to 2 different actions under the control of the player who hypnotized it counting as one of that player's crew in all respects. While performing these actions, you may perform up to 2 Free Efforts (you cannot make another Efforts) and you do not expend Ammunition.\nCounts as if you are performing an activation for traits and performing actions. Models that are Hypnotized cannot be moved so they would Fall or otherwise take Damage.\nNb: If you move and shoot per example, you lose attack dice as usual, you cannot repeat actions, but you are affected by active traits (special actions) that remains active for the activation of the model (like Inspire, Sewer Worker...). That model may be activated by its owner later, because is not an activation.",
@@ -4189,13 +4197,17 @@ const traitDescriptions = {
 	"Paralyze": "Status. A paralyzed model reduces its Defense skill by -2, and cannot perform Actions until the end of the round.",
 	"Push": "The affected model is moved directly away from the attacker up to X”.",
 	"Poison (X)": "Status. If a non-vehicle model is affected by Poison, place a Poison marker on its character card. A model affected a subsequent time by the Poison effect increases its Poison value by 1 (up to a maximum of 4). During the Recount phase, the poisoned model must make an Endurance roll, with a -X penalty to its Endurance value for the roll (where X is the current Poison value). If the roll fails, the model suffers 1 🩸 Damage if its Poison value is 1-3, or 🩸🩸 if it has a Poison value of 4.",
-	"Scared": "Status. The affected non-vehicle model cannot use the Dodging rule, and suffers -1 to its attack and defense dice rolls. This Status lasts until the end of the round.",
+  "Poison": "Status. If a non-vehicle model is affected by Poison, place a Poison marker on its character card. A model affected a subsequent time by the Poison effect increases its Poison value by 1 (up to a maximum of 4). During the Recount phase, the poisoned model must make an Endurance roll, with a -X penalty to its Endurance value for the roll (where X is the current Poison value). If the roll fails, the model suffers 1 🩸 Damage if its Poison value is 1-3, or 🩸🩸 if it has a Poison value of 4.",
+  "Scared": "Status. The affected non-vehicle model cannot use the Dodging rule, and suffers -1 to its attack and defense dice rolls. This Status lasts until the end of the round.",
 	"Slow (X)": "Status. A model suffering this effect reduces by its basic movement distance by X” during its next Movement action.",
-	"Smoke": "Place a Smoke event marker centered at the target point (or as close as possible). Models cannot draw LoS if it pass within 2'' of the Smoke marker. Models while within 2'' of a Smoke marker, suffer the Blind Status. The Smoke marker is removed at the end of the Recovery phase. Weapons with the Smoke rule cannot be canceled.",
+	"Slow": "Status. A model suffering this effect reduces by its basic movement distance by X” during its next Movement action.",
+  "Smoke": "Place a Smoke event marker centered at the target point (or as close as possible). Models cannot draw LoS if it pass within 2'' of the Smoke marker. Models while within 2'' of a Smoke marker, suffer the Blind Status. The Smoke marker is removed at the end of the Recovery phase. Weapons with the Smoke rule cannot be canceled.",
   "Steal": "If you successfully hit a model with a weapon with this rule, the opponent must show you their Objective card hand. Choose one of those cards - the opponent must Discard it.",
 	"Stunned": "Status. A Stunned model can only perform Movement actions until the end of the round.",
 	"Terror (X)": "Status. When an enemy model suffers the Terror Status, you draw 1 Objective card from the top of your opponent's Objective deck and place it facedown in your Terror pile. When an enemy model would make an Attack dice roll, Defense dice roll, or a Willpower roll during its activation, after the action is resolved, the opponent may reveal up to 3 cards from your Terror pile. Apply the Poison Status a number of times equal to the number of cards revealed. If the model already have or reaches Poison (4), it immediately takes a Poison test. After applying the Status, put the cards at the bottom of the original owner's deck. If you can not draw, the enemy model instead suffers ★★.",
-	"Toxic (X)": "With at least 1 Successful hit, the target receives a number of 🩸 Damage markers equal to (X)."
+	"Terror": "Status. When an enemy model suffers the Terror Status, you draw 1 Objective card from the top of your opponent's Objective deck and place it facedown in your Terror pile. When an enemy model would make an Attack dice roll, Defense dice roll, or a Willpower roll during its activation, after the action is resolved, the opponent may reveal up to 3 cards from your Terror pile. Apply the Poison Status a number of times equal to the number of cards revealed. If the model already have or reaches Poison (4), it immediately takes a Poison test. After applying the Status, put the cards at the bottom of the original owner's deck. If you can not draw, the enemy model instead suffers ★★.",
+	"Toxic (X)": "With at least 1 Successful hit, the target receives a number of 🩸 Damage markers equal to (X).",
+  "Toxic": "With at least 1 Successful hit, the target receives a number of 🩸 Damage markers equal to (X)."
 };
 
 // ==================================================================
