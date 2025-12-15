@@ -2107,6 +2107,989 @@ const models = [
   },
 
 
+//---------------------------------------------------------------------------------------------------------// 
+//Penguin
+//---------------------------------------------------------------------------------------------------------// 
+
+  {
+    "name": "Catwoman Michelle Pfeiffer",
+    "realname": "Selina Kyle",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD", "Penguin"],
+    "rivals": "Bat Family",
+    "img": "",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Fast (2)",
+      "Required (Batman Micha...)",
+      "Survivor",
+      "Vengeance",
+      "Combo (Whip)",
+      "Hear Me Roar",
+      "Sneak Attack",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Whip",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      },
+      {
+        "name": "Catwoman's Claws",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Penguin Thug 1",
+    "realname": "Shane",
+    "base": "30mm",
+    "rep": 16,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Laser Sight",
+      "Repairman",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Machete",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "The Penguin Danny DeVito",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "40mm",
+    "rep": 74,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Amphibious",
+      "Handyman",
+      "Mayor Cobblepot",
+      "Strategist",
+      "Charismatic",
+      "Hidden Penguins",
+      "Small",
+      "Underworld King"
+    ],
+    "weapons": [
+      {
+        "name": "Umbrella Flamethrower",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Fire / Mechanical / Expansive / Protective"
+      },
+      {
+        "name": "Umbrella SMG",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range / Red Dot"
+      }
+    ]
+  },
+  {
+    "name": "The Penguin New 52",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "30mm",
+    "rep": 74,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Charismatic",
+      "Handyman",
+      "Lord of Business",
+      "Penguin Caller",
+      "Underworld King",
+      "Dealer",
+      "Iceberg Lounge",
+      "Mob",
+      "Small"
+    ],
+    "weapons": [
+      {
+        "name": "Umbrella Blade",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Umbrella Cannon",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / Protective / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Lark",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bodyguard",
+      "Reinforced Gloves",
+      "Technique",
+      "Cruel",
+      "Security Chief"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "The Penguin Arkham City",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "30mm",
+    "rep": 74,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Handyman",
+      "Iceberg Lounge",
+      "Mob",
+      "Underworld King",
+      "Charismatic",
+      "I Bought This Place",
+      "Lord of Business"
+    ],
+    "weapons": [
+      {
+        "name": "Umbrella Cannon",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / Protective / S. Range"
+      },
+      {
+        "name": "Cryo-Launcher",
+        "damage": "🩸🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "M. Range / Mechanical / Cold / Cryo-Weapon / Exposure"
+      }
+    ]
+  },
+  {
+    "name": "Rocket Launcher Penguin",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 8,
+    "funding": 50,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 4
+    },
+    "traits": [
+      "Amphibious",
+      "Expendable Penguin 2",
+      "Animal",
+      "Minion (3)"
+    ],
+    "weapons": [
+      {
+        "name": "Custom Rocket Launcher",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Anti-Tank / Explosive / Firearm / Imprecise / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Street Demonz Biker 1",
+    "realname": "Joe \"Viking\" Thompson",
+    "base": "42x75mm",
+    "rep": 33,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Always On The Move",
+      "Cruel",
+      "Greed",
+      "Mobster",
+      "Biker Jacket",
+      "Fast (3)",
+      "Mechanical Mount"
+    ],
+    "weapons": [
+      {
+        "name": "Spikes Bat",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Loose Lips",
+    "realname": "Ricky LeBlanc",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Criminal",
+      "Lieutenant (The Penguin)",
+      "One of The Boys",
+      "Smuggler",
+      "Informer",
+      "Mobster",
+      "Order"
+    ],
+    "weapons": [
+      {
+        "name": "Shotgun",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Assault"
+      },
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Emperor Penguin Unchained",
+    "realname": "Ignatius Ogilvy",
+    "base": "40mm",
+    "rep": 120,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Brawler",
+      "Dirty Money",
+      "Master Fighter",
+      "Regeneration",
+      "Tough Skin",
+      "Claws",
+      "Fight Me!",
+      "Provoke",
+      "Scheming (2)",
+      "Underworld King"
+    ],
+    "weapons": [
+      {
+        "name": "Chain",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (3)"
+      }
+    ]
+  },
+  {
+    "name": "Penguin Elite Thug",
+    "realname": "Mason",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Follow Me!",
+      "Hardened",
+      "Football Gear",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Electric Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric / Handy / Mechanical"
+      }
+    ]
+  },
+  {
+    "name": "Minigun Penguin",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 7,
+    "funding": 50,
+    "rank": [],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Amphibious",
+      "Expendable Penguin 2",
+      "Small",
+      "Animal",
+      "Minion (3)"
+    ],
+    "weapons": [
+      {
+        "name": "Custom Minigun",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": "-",
+        "traits": "Firearm / Imprecise / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Explosive Penguin",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 4,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Amphibious",
+      "Expendable Penguin 1",
+      "Self-Destruction",
+      "Animal",
+      "Minion (3)",
+      "Small"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Penguin Lieutenant",
+    "realname": "Big A",
+    "base": "40mm",
+    "rep": 41,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Biker Jacket",
+      "Mobster",
+      "Take Cover!",
+      "Tough Guy",
+      "Large",
+      "Reinforced Gloves",
+      "Taunt"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Mr. Toxic",
+    "realname": "Hugh Marder",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Criminal",
+      "Electric Storm",
+      "Reinforced Gloves",
+      "Deadly Strike",
+      "Energy Absorption"
+    ],
+    "weapons": [
+      {
+        "name": "Radio Wave",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Beam / Gas / Acid / Caustic"
+      }
+    ]
+  },
+  {
+    "name": "Penguin Thug 2",
+    "realname": "Tanner",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 600,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Brutal",
+      "Street Guy",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Assault Rifle",
+        "damage": "🩸🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm"
+      }
+    ]
+  },
+  {
+    "name": "The Penguin Penguin's Duck",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "60mm",
+    "rep": 74,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Amphibious",
+      "Dealer",
+      "Huge",
+      "Medium Armor",
+      "Penguin Feeder",
+      "Charismatic",
+      "Handyman",
+      "Lord of Business",
+      "Penguin Caller",
+      "Underworld King"
+    ],
+    "weapons": [
+      {
+        "name": "Umbrella Blade",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Umbrella Cannon",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / Protective / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "The Penguin Arkham Knight",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "30mm",
+    "rep": 77,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Criminal Empire",
+      "Lord of Business",
+      "Order",
+      "Primary Target",
+      "Small",
+      "In The End",
+      "Mob",
+      "Pickpocket",
+      "Protect Me!",
+      "Underworld King"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      },
+      {
+        "name": "Lighter and Cigar",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crt (Fire)"
+      }
+    ]
+  },
+
+  {
+    "name": "Street Demonz 4",
+    "realname": "Aaron \"Durum Killer\" Taylor",
+    "base": "40mm",
+    "rep": 29,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Biker Jacket",
+      "Hardened",
+      "Tough Guy",
+      "Bluff",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Shield",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Protective"
+      },
+      {
+        "name": "Axe",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Mr. Combustible",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Always Illuminated",
+      "Explosive Sense",
+      "Criminal",
+      "Take Cover!"
+    ],
+    "weapons": [
+      {
+        "name": "Cane-Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Hypnotic",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Confusion",
+      "Hypnotic Radio Waves",
+      "Criminal",
+      "It's Mine"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Street Demonz 1",
+    "realname": "Grumble",
+    "base": "30mm",
+    "rep": 27,
+    "funding": 150,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Biker Jacket",
+      "Mobster",
+      "Mine"
+    ],
+    "weapons": [
+      {
+        "name": "Shiv",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy"
+      },
+      {
+        "name": "Petrol Bomb",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Mechanical / S. Range / Fire"
+      }
+    ]
+  },
+  {
+    "name": "Street Demonz Biker 2",
+    "realname": "Jackson \"Fat\" Smith",
+    "base": "42x75mm",
+    "rep": 34,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Always On The Move",
+      "Fast (3)",
+      "Handyman",
+      "Mobster",
+      "Biker Jacket",
+      "Greed",
+      "Mechanical Mount"
+    ],
+    "weapons": [
+      {
+        "name": "Short Shotgun",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Firearm"
+      }
+    ]
+  },
+  {
+    "name": "Street Demonz Biker 3",
+    "realname": "Serge \"Darky\" Powers",
+    "base": "42x75mm",
+    "rep": 32,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Always On The Move",
+      "Fast (3)",
+      "Instinctive Shooting",
+      "Mobster",
+      "Biker Jacket",
+      "Greed",
+      "Mechanical Mount"
+    ],
+    "weapons": [
+      {
+        "name": "Custom Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light / Red Dot"
+      }
+    ]
+  },
+  {
+    "name": "Street Demonz 3",
+    "realname": "Reaver",
+    "base": "30mm",
+    "rep": 19,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Biker Jacket",
+      "Tireless",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Maul",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Street Demonz 2",
+    "realname": "Simmons",
+    "base": "30mm",
+    "rep": 21,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Biker Jacket",
+      "Mobster",
+      "Hold 'Em Still",
+      "Shooter"
+    ],
+    "weapons": [
+      {
+        "name": "Crossbow",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Mechanical / Reload"
+      }
+    ]
+  },
+  {
+    "name": "Imperceptible Man",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Penguin",
+    "img": "",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Concealment",
+      "Don't Mind Me",
+      "Thief",
+      "Criminal",
+      "Sneak Attack"
+    ],
+    "weapons": []
+  },
+
 
 //---------------------------------------------------------------------------------------------------------// 
 //Birds of Prey
