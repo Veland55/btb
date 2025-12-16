@@ -2120,7 +2120,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD", "Penguin"],
     "rivals": "Bat Family",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/CatwomanMichellePfeiffer.png",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2165,7 +2165,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/PenguinThug1.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2197,7 +2197,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ThePenguinDannyDeVito.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2241,7 +2241,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ThePenguinNew52.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2286,7 +2286,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/Lark.png",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2320,7 +2320,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ThePenguinArkhamCity.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2364,7 +2364,7 @@ const models = [
     "funding": 50,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/RocketLauncherPenguin.png",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -2397,7 +2397,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/StreetDemonzBiker1.png",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -2433,7 +2433,7 @@ const models = [
     "funding": 200,
     "rank": ["Sidekick"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/LooseLips.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2476,7 +2476,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/EmperorPenguinUnchained.png",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -2515,7 +2515,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/PenguinEliteThug.png",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -2548,7 +2548,7 @@ const models = [
     "funding": 50,
     "rank": [],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/MinigunPenguin.png",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -2582,7 +2582,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ExplosivePenguin.png",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -2609,7 +2609,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/PenguinLieutenant.png",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -2637,7 +2637,7 @@ const models = [
     "funding": 200,
     "rank": ["Free Agent"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/MrToxic.png",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2671,7 +2671,7 @@ const models = [
     "funding": 600,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/PenguinThug2.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2703,7 +2703,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ThePenguinPenguinsDuck.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2749,7 +2749,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ThePenguinArkhamKnight.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2796,7 +2796,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/StreetDemonz4.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2837,7 +2837,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/MrCombustible.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2870,7 +2870,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/Hypnotic.png",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -2895,7 +2895,7 @@ const models = [
     "funding": 150,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/StreetDemonz1.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2934,7 +2934,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/StreetDemonzBiker2.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2970,7 +2970,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/StreetDemonzBiker3.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -3006,7 +3006,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/StreetDemonz3.png",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -3038,7 +3038,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/StreetDemonz2.png",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -3071,7 +3071,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": "Penguin",
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ImperceptibleMan.png",
     "stats": {
       "Attack": 3,
       "Defense": 3,
