@@ -4413,6 +4413,565 @@ const models = [
   ]
 },
 
+//--------------------------------------------------------------------------------------------------------------------
+//Court of Owls
+//--------------------------------------------------------------------------------------------------------------------
+  {
+    "name": "The Court",
+    "realname": "Unknown",
+    "base": "60mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/TheCourt.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 0,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Boss's Orders",
+      "Demotivate",
+      "Goad",
+      "Intel Support (5)",
+      "Court of Owls Crew",
+      "Enemies of the Court",
+      "Hidden",
+      "Shadowed Perch"
+    ],
+    "weapons": [
+      {
+        "name": "Influence",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (6) / Push (4)"
+      }
+    ]
+  },
+  {
+    "name": "1890's Talon",
+    "realname": "Xiao Loong",
+    "base": "30mm",
+    "rep": 42,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/1890sTalon.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Climbing Claws",
+      "Reanimated Owl",
+      "Weakness to Cold",
+      "Martial Artist",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Owl Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      },
+      {
+        "name": "Tanto",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Defensive / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "The Talon",
+    "realname": "William Cobb",
+    "base": "30mm",
+    "rep": 65,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad", "Court of Owls"],
+    "img": "https://veland55.github.io/btb/img/TheTalon.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Combo (Owl Knife)",
+      "Martial Artist",
+      "Reanimated Owl",
+      "Weakness to Cold",
+      "Exhaustive Planner",
+      "Precise Blow",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Owl Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      },
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Sharp / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Gotham Butcher",
+    "realname": "Felix Harmon",
+    "base": "60mm",
+    "rep": 81,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/GothamButcher.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Brutal",
+      "Desensitized",
+      "Reanimated Owl",
+      "Tough Skin",
+      "Claws",
+      "Huge",
+      "The Murderer",
+      "Weakness to Cold"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Lincoln March",
+    "realname": "Lincoln March",
+    "base": "30mm",
+    "rep": 102,
+    "funding": 0,
+    "rank": ["Leader", "Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/LincolnMarch.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Combo (Unarmed)",
+      "Fly",
+      "Martial Artist",
+      "Reanimated Owl",
+      "Strategist",
+      "Court of Owls Crew",
+      "Joy for the Victory",
+      "Power Armor",
+      "Retractable Claws",
+      "Weakness to Cold"
+    ],
+    "weapons": [
+      {
+        "name": "Owl Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "O'Malley's Grandfather",
+    "realname": "James O'Malley",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/OMalleysGrandfather.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bodyguard",
+      "Protect the Shadows",
+      "Weakness to Cold",
+      "Martial Artist",
+      "Reanimated Owl"
+    ],
+    "weapons": [
+      {
+        "name": "Owl Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      },
+      {
+        "name": "Katar",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Talon",
+    "realname": "Calvin Rose",
+    "base": "40mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Court of Owls", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Talon.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Escape Artist",
+      "Reinforced Gloves",
+      "Scout",
+      "Weakness to Cold",
+      "Bat Family",
+      "Reanimated Owl",
+      "Runaway",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Talon Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "O'Malley's Father",
+    "realname": "Brandon O'Malley",
+    "base": "30mm",
+    "rep": 51,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/OMalleysFather.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (2)",
+      "Reanimated Owl",
+      "Weakness to Cold",
+      "Brutal",
+      "Stealth",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Owl Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      },
+      {
+        "name": "Katar",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Dementor",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/Dementor.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Inspire Fear",
+      "Obstinate",
+      "Sneak Attack",
+      "Unstoppable Monster",
+      "Light Armor",
+      "Reanimated Owl",
+      "Stealth",
+      "Weakness to Cold"
+    ],
+    "weapons": [
+      {
+        "name": "Dementor's Sickle",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (1) / Sharp / Poison"
+      },
+      {
+        "name": "Dementor's Claw",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Raptor",
+    "realname": "Richard",
+    "base": "40mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Court of Owls", "Cults"],
+    "img": "https://veland55.github.io/btb/img/Raptor.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Batclaw",
+      "Kobra Cultist",
+      "Street Fighter",
+      "Thief",
+      "Desensitized",
+      "Stealth",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Raptor's Claw",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Enervating (1)"
+      },
+      {
+        "name": "Raptor's Gas",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Beam / Expansive / Gas / Enervating (2)"
+      }
+    ]
+  },
+  {
+    "name": "1880's Talon",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/1880sTalon.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Martial Artist",
+      "Weakness to Cold",
+      "Fast (3)",
+      "Reanimated Owl"
+    ],
+    "weapons": [
+      {
+        "name": "Gladius",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Robin",
+    "realname": "Damian Wayne",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows", "Court of Owls"],
+    "img": "https://veland55.github.io/btb/img/RobinDamian.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Combo (Paired Katanas)",
+      "Martial Artist",
+      "True Love (Talia al Ghul)",
+      "Batclaw",
+      "Detective",
+      "Small"
+    ],
+    "weapons": [
+      {
+        "name": "Batlngs",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      },
+      {
+        "name": "Paired Katanas",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Overwhelming / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "O'Malley's Son",
+    "realname": "Nathaniel O'Malley",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/OMalleysSon.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Distract",
+      "Reanimated Owl",
+      "Martial Artist",
+      "Weakness to Cold"
+    ],
+    "weapons": [
+      {
+        "name": "Owl Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      },
+      {
+        "name": "Katar",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Ephraim Newhouse",
+    "realname": "Ephraim Newhouse",
+    "base": "30mm",
+    "rep": 62,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": "Court of Owls",
+    "img": "https://veland55.github.io/btb/img/EphraimNewhouse.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Primary Target",
+      "Weakness to Cold",
+      "Martial Artist",
+      "Reanimated Owl",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Scimitar",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Sharp"
+      },
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Sharp / S. Range / Throwing"
+      }
+    ]
+  },
 
 
 //--------------------------------------------------------------------------------------------------------------------
