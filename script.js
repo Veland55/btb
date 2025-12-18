@@ -18,23 +18,76 @@ const addToCrew = m => {
   } else {
     // Для Minion/Horde или first non — add
     const ranks = getRanks(m);
-    let chosenRank = ranks.length > 1 ? prompt(`Выберите ранг для ${m.name}: ${ranks.join(', ')}`) : ranks[0];
-    if (ranks.length > 1 && !ranks.includes(chosenRank)) {
-      alert("Неверный ранг!");
-      return;
-    }
-    const cloned = { ...m, rankUsed: chosenRank, uniqueId: Date.now() + Math.random() }; // Unique для multiples
-    if (!bmgCanAddModel(cloned)) return;
-    crew.push(cloned);
-    if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
-      BMG_BOSS = cloned;
-      BMG_AFFILIATIONS = getFactions(cloned);
+
+    if (ranks.length === 1) {
+      // Если ранг только один — сразу добавляем
+      addModelWithRank(m, ranks[0]);
+    } else if (ranks.length > 1) {
+      // Показываем модальный выбор ранга
+      showRankSelectionModal(m, ranks);
+    } else {
+      alert("У модели не указан ранг!");
     }
   }
+
   modifiers = calculateModifiers();
   updateCrewBar();
   renderMiniCards();
 };
+
+// Новая функция — добавление модели с уже выбранным рангом
+function addModelWithRank(model, chosenRank) {
+  const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random() };
+  if (!bmgCanAddModel(cloned)) return;
+
+  crew.push(cloned);
+
+  if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
+    BMG_BOSS = cloned;
+    BMG_AFFILIATIONS = getFactions(cloned);
+  }
+}
+
+// Модальное окно выбора ранга
+function showRankSelectionModal(model, ranks) {
+  // Создаём overlay
+  const overlay = document.createElement("div");
+  overlay.className = "rank-select-modal";
+  overlay.innerHTML = `
+    <div class="rank-select-content">
+      <div class="rank-select-header">
+        Выберите ранг для <strong>${model.name}</strong>
+        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+      </div>
+      <div class="rank-select-buttons">
+        ${ranks.map(rank => `
+          <button class="rank-select-btn" data-rank="${rank}">
+            ${rank}
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+
+  // Обработчик выбора
+  overlay.querySelectorAll(".rank-select-btn").forEach(btn => {
+    btn.onclick = () => {
+      const chosenRank = btn.dataset.rank;
+      addModelWithRank(model, chosenRank);
+      modifiers = calculateModifiers();
+      updateCrewBar();
+      renderMiniCards();
+      overlay.remove();
+    };
+  });
+
+  // Клик вне окна — закрыть
+  overlay.onclick = e => {
+    if (e.target === overlay) overlay.remove();
+  };
+
+  document.body.appendChild(overlay);
+}
 
 const removeFromCrew = m => {
   const index = crew.findLastIndex(x => x.name === m.name);

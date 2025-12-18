@@ -336,3 +336,77 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   font-size: 14px;
   font-weight: bold;
 }
+
+/* Модальное окно выбора ранга */
+.rank-select-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.rank-select-content {
+  background: #111;
+  border: 4px solid #e94560;
+  border-radius: 16px;
+  max-width: 90%;
+  width: 360px;
+  box-shadow: 0 0 40px rgba(233, 69, 96, 0.8);
+  overflow: hidden;
+}
+
+.rank-select-header {
+  background: #e94560;
+  color: #fff;
+  padding: 16px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+}
+
+.rank-select-close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: #000;
+  color: #e94560;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-select-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 20px;
+}
+
+.rank-select-btn {
+  background: #222;
+  color: #fff;
+  border: 2px solid #e94560;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.rank-select-btn:hover {
+  background: #e94560;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(233, 69, 96, 0.5);
+}
