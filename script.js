@@ -130,10 +130,20 @@ const showFullCard = model => {
     </div>${traits.length ? `<div class="official-weapon-traits-line">${traits.map(t => `<span class="weapon-trait-chip" onclick="event.stopPropagation();showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</span>`).join("")}</div>` : ""}</div>`;
   }).join("") : "";
 
-  const traitsHTML = model.traits?.length
-    ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${model.traits.map(t => `<div class="official-trait" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>`).join("")}</div></div>`
-    : "";
-
+const traitsHTML = model.traits?.length
+  ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${model.traits.map(t => {
+      // Нормализуем имя трейта модели (удаляем параметры в скобках, заменяем curly apostrophe на прямой)
+      const baseT = t.replace(/\s*\(.*?\)\s*$/, '').trim().replace(/’/g, "'");
+      // Проверяем, есть ли в compendium ключ с 🦇, чья база совпадает с baseT
+      const hasBatInCompendium = window.compendium && Object.keys(window.compendium).some(key => {
+        if (!key.endsWith('🦇')) return false;
+        const baseKey = key.replace(/\s*🦇$/, '').replace(/\s*\(.*?\)\s*$/, '').trim().replace(/’/g, "'");
+        return baseKey === baseT;
+      });
+      return `<div class="official-trait${hasBatInCompendium ? ' special' : ''}" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>`;
+    }).join("")}</div></div>`
+  : "";
+  
   // --- Финальная сборка карточки ---
   $("fullCardContent").innerHTML = `
     <div class="official-card">
@@ -238,7 +248,7 @@ const renderModelSearch = () => {
 
 $("modelSearchInput").oninput = renderModelSearch;
 
-// ======================== ТРЕЙТЫ — ИСПРАВЛЕННАЯ ВЕРСИЯ БЕЗ ОШИБОК ========================
+// ======================== ТРЕЙТЫ ========================
 const showTraitDesc = (rawKeyword) => {
   const keyword = rawKeyword.trim();
   let title = keyword;
@@ -366,3 +376,88 @@ window.addEventListener("load", () => {
   renderMiniCards();
   updateCrewBar();
 });
+
+/*************************
+ * BMG RULES STATE
+ *************************/
+let BMG_REP_LIMIT = 350;
+let BMG_BOSS = null;
+let BMG_AFFILIATIONS = null;
+
+/*************************
+ * BMG HELPERS
+ *************************/
+function bmgFundingLimit() {
+  return Math.ceil(BMG_REP_LIMIT / 150) * 500;
+}
+
+function bmgExtraSlots() {
+  if (BMG_REP_LIMIT <= 350) return 0;
+  return Math.ceil((BMG_REP_LIMIT - 350) / 150);
+}
+
+function bmgRankCount(rank) {
+  return crew.filter(m => m.rankUsed === rank).length;
+}
+
+function bmgCanAddModel(model) {
+
+  // REP
+  if (totalRep + model.rep > BMG_REP_LIMIT) {
+    alert("Превышен лимит Reputation");
+    return false;
+  }
+
+  // FUNDING
+  if ((totalFundingUsed || 0) + (model.funding || 0) > bmgFundingLimit()) {
+    alert("Недостаточно Funding");
+    return false;
+  }
+
+  // FIRST MODEL = BOSS
+  if (!BMG_BOSS) {
+    if (!model.ranks.includes("Leader") &&
+        !model.ranks.includes("Sidekick")) {
+      alert("Первой моделью должен быть Leader или Sidekick");
+      return false;
+    }
+  }
+
+  // AFFILIATION
+  if (BMG_BOSS) {
+    if (
+      !model.affiliations.includes("Unknown") &&
+      !model.affiliations.some(a => BMG_AFFILIATIONS.includes(a))
+    ) {
+      alert("Модель не совпадает по Affiliation с Боссом");
+      return false;
+    }
+  }
+
+  // RANK LIMITS
+  const extras = bmgExtraSlots();
+
+  if (model.ranks.includes("Leader") && bmgRankCount("Leader") >= 1) {
+    return false;
+  }
+
+  if (model.ranks.includes("Sidekick")) {
+    if (bmgRankCount("Leader") === 0 && bmgRankCount("Sidekick") >= 2) return false;
+    if (bmgRankCount("Leader") === 1 && bmgRankCount("Sidekick") >= 1) return false;
+  }
+
+  if (model.ranks.includes("Free Agent") &&
+      bmgRankCount("Free Agent") >= 1 + extras) return false;
+
+  if (model.ranks.includes("Vehicle") &&
+      bmgRankCount("Vehicle") >= 1 + extras) return false;
+
+  if (model.ranks.includes("Henchman")) {
+    if (crew.some(m => m.name === model.name)) {
+      alert("Нельзя брать двух одинаковых Henchmen");
+      return false;
+    }
+  }
+
+  return true;
+}

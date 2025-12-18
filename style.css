@@ -155,7 +155,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-weapon-traits-line { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed #444; }
 .weapon-trait-chip { background:#ffd700; color:#000; padding:6px 12px; border-radius:20px; font-size:12.5px; font-weight:bold; cursor:pointer; transition:all .25s; }
 .weapon-trait-chip:hover { background:#fff; }
-.official-traits-grid { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:2px; padding:2px 8px; }
+.official-traits-grid { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:2px; padding:6px 6px; }
 .official-trait { background:#ffd700; color:#000; padding:11px 14px; border-radius:30px; font-weight:bold; font-size:12.5px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.3); transition:all .25s; }
 .official-trait:hover { background:#fff; }
 .stat-icon { width:32px; height:32px; vertical-align:middle; }
@@ -236,3 +236,14 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   text-shadow: 0 0 10px rgba(255,215,0,0.6);
 }
 
+.official-trait.special {
+  background: #000000;          /* Яркий фиолетовый фон для отличия */
+  color: #ffffff;               /* Белый текст */
+  border: 2px solid #ffd700;    /* Золотая рамка для акцента */
+  box-shadow: 0 4px 15px rgba(139, 0, 255, 0.6);
+}
+
+.official-trait.special:hover {
+  background: #a020f0;          /* Темнее при наведении */
+  transform: translateY(-2px);
+}

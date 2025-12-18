@@ -105,7 +105,7 @@ const models = [
       "Endurance": 6
     },
     "traits": [
-      "Genius",
+      "Genius.",
       "Leadership",
       "Medic",
       "Mastermind",
@@ -4804,7 +4804,7 @@ const traitDescriptions = {
     "Gangsters": "For every 2 models with this trait in your crew at the start of the game, gain 1 Blood Money counter. During the activation of a friendly model with the Gangsters trait, you may spend 1 Blood Money counter to gain the following rules until the end of that activation:\n• The model may move and make a ranged attack losing only one die, but suffers -1 to hit.\n• The model's ranged weapons gain the Light rule.\n• When this model performs an Attack action, pick another friendly model with the Gangsters trait immediately, and place it up to 4\" from its original position.",
     "Gas Jumper": "This model can move in any direction (including vertically). The model can move over obstacles and Difficult Ground without penalty. All models within 4\" and Los of this model at the end of a Movement action suffer Poison and Enervating (1) Statuses, with the Gas rule.",
     "Gas Mask": "This model ignores Damage and Status caused by any Attack or trait with the Gas special rule.",
-    "Genius": "Once per round, this model can remove an Audacity marker from one friendly model, and give it to another friendly model that is yet to activate.",
+    "Genius.": "Once per round, this model can remove an Audacity marker from one friendly model, and give it to another friendly model that is yet to activate.",
     "Genius 🦇": "Target an enemy Boss within 8\". Make an Opposed Willpower roll against the Boss. If successful, you may look at your opponent's hand and take 1 Objective card by removing a number of friendly Suspects within 8\" of this model equal to the number of VP the card is worth. Until the end of the round you may play this card as a Resource with no cost. At the end of the round, or after this card is played, discard it to the bottom of the card's owner's Objective deck.",
     "Get ’Em 🦇": "One friendly model within 8\" and line of sight of this model gains +2 Attack Marker.",
     "Ghost": "This model has the Invulnerability 1 and Incorporeal traits. Its Incorporeal trait is always active, and never has to be activated by spending an Action.",
