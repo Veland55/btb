@@ -4422,6 +4422,381 @@ const models = [
 
 
 //--------------------------------------------------------------------------------------------------------------------
+//Batman Who Laughs
+//--------------------------------------------------------------------------------------------------------------------
+
+  {
+    "name": "Damian Who Laughs",
+    "realname": "Damian Wayne",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Batman Who Laughs",
+    "rivals": ["GCPD", "Joker"],
+    "img": "https://veland55.github.io/btb/img/DamianWhoLaughs.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Dark Influence",
+      "Duelist",
+      "Master of Stealth",
+      "Sneak Attack",
+      "Cannibal",
+      "Death Pack",
+      "Martial Artist",
+      "Small",
+      "Sneaking"
+    ],
+    "weapons": [
+      {
+        "name": "Infected Claws & Teeth",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Infected"
+      }
+    ]
+  },
+  {
+    "name": "The Commissioner",
+    "realname": "James Gordon",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 350,
+    "rank": "Sidekick",
+    "faction": "Batman Who Laughs",
+    "rivals": ["GCPD", "Joker"],
+    "img": "https://veland55.github.io/btb/img/TheCommissioner.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Arrest",
+      "Commissioner",
+      "Detective",
+      "Goad",
+      "Insider Agent",
+      "Bulletproof Vest",
+      "Dark Influence",
+      "Disposable Minions",
+      "Gunman",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "The Merciless",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Batman Who Laughs",
+    "img": "https://veland55.github.io/btb/img/TheMerciless.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 10
+    },
+    "traits": [
+      "Like Flies to Me",
+      "Mindless Monster",
+      "Weapon Master",
+      "Medium Armor",
+      "Obstinate"
+    ],
+    "weapons": [
+      {
+        "name": "Merciless's Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Anti-Tank / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Infected Who Laughs",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 6,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Batman Who Laughs",
+    "img": "https://veland55.github.io/btb/img/InfectedWhoLaughs.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Death Pack",
+      "Freed",
+      "Minion (6)",
+      "Faint",
+      "Mindless Monster",
+      "Walking Suspects"
+    ],
+    "weapons": [
+      {
+        "name": "Infected Touch",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Infected"
+      }
+    ]
+  },
+  {
+    "name": "The Grim Knight",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 90,
+    "funding": 500,
+    "rank": "Free Agent",
+    "faction": "Batman Who Laughs",
+    "img": "https://veland55.github.io/btb/img/TheGrimKnight.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bat-Armor MK II",
+      "Detective",
+      "Living Arsenal",
+      "Reinforced Gloves",
+      "Vigilante's Work",
+      "BATCLAW",
+      "Instinctive Shooting",
+      "Martial Artist",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Hunting Knife",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Ranged Weapons",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 4,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "The Batman Who Laughs",
+    "realname": "Bruce Wayne",
+    "base": "60mm",
+    "rep": 125,
+    "funding": 0,
+    "rank": ["Leader", "Free Agent"],
+    "faction": "Batman Who Laughs",
+    "rivals": ["GCPD", "Joker"],
+    "img": "https://veland55.github.io/btb/img/TheBatmanWhoLaughs.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Blood Scent",
+      "Detective",
+      "Martial Artist",
+      "Psycho",
+      "Sneaking",
+      "Strategist",
+      "Dark Influence",
+      "Luck",
+      "Protect Me!",
+      "Reinforced Gloves",
+      "Stealth",
+      "Trickster"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      },
+      {
+        "name": "Scythe",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Reach (1) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "The Red Death",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": "Batman Who Laughs",
+    "img": "https://veland55.github.io/btb/img/TheRedDeath.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Always on the Move",
+      "Black Bats Trail",
+      "Dodge",
+      "Metabolize Wounds (2)",
+      "Super Speed (3)",
+      "Bipolar (Mental Disorder)",
+      "Detective",
+      "Fast (4)",
+      "Speedster"
+    ],
+    "weapons": [
+      {
+        "name": "Speed Attack",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / Crushing / Fast Combo (1)"
+      },
+      {
+        "name": "Black Bats",
+        "damage": "",
+        "rof": 1,
+        "ammo": "-",
+        "traits": "Enervating (2) / Speed Attack (1) / Explosive"
+      }
+    ]
+  },
+  {
+    "name": "The Drowned",
+    "realname": "Bryce Wayne",
+    "base": "30mm",
+    "rep": 90,
+    "funding": 300,
+    "rank": "Henchman",
+    "faction": "Batman Who Laughs",
+    "img": "https://veland55.github.io/btb/img/TheDrowned.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Amphibious",
+      "Obstinate",
+      "Sewer’s Assault",
+      "Weapon Master",
+      "Dispersion",
+      "Regeneration",
+      "Tough Skin"
+    ],
+    "weapons": [
+      {
+        "name": "Trident",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Motion (3) / Reach (2)"
+      },
+      {
+        "name": "Dark Water",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Accurate / Cold / Explosive / Motion (2) / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Robin Who Laughs",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 34,
+    "funding": 0,
+    "rank": "Henchman",
+    "faction": ["Batman Who Laughs", "Unknown"],
+    "rivals": ["GCPD", "Joker"],
+    "img": "https://veland55.github.io/btb/img/RobinWhoLaughs.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Cannibal",
+      "He Freed Me",
+      "Martial Artist",
+      "Sneaking",
+      "Death Pack",
+      "Horde",
+      "Small",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Infected Claws & Teeth",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Infected"
+      }
+    ]
+  },
+
+
+//--------------------------------------------------------------------------------------------------------------------
 //Unknown
 //--------------------------------------------------------------------------------------------------------------------
 {
@@ -4760,7 +5135,7 @@ const traitDescriptions = {
 
 
   // F
-    "Faint 🦇": "When this model becomes KO, it is also removed as a Casualty.",
+    "Faint": "When this model becomes KO, it is also removed as a Casualty.",
     "Falconry 🦇": "Until the end of the round, this model can perform ranged attacks against enemy models within 16\", ignoring cover and LoS, as long as the target models are within 6\" of a friendly Suspect. If you remove that marker at the start of the Attack action, you may roll one additional Attack die.",
     "Fast (X)": "Once per round this model may move X\" when a model resolves an action.",
     "Fast Combo (X)": "For every two successful hits in its attack roll while using this weapon (before the enemy rolls to defend), this model gains an additional hit. This attack is a Speed Power and you need to draw X SpeedForce cards to use it.",
