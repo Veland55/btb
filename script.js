@@ -1,24 +1,89 @@
 // ======================== ГЛОБАЛЬНЫЕ ========================
 let crew = [];
+let modifiers = { extraFreeAgents: 0, extraVehicles: 0, extraFunding: 0, extraDuplicates: 0, extraElites: {}, extraVeterans: {}, extraMinions: {} };
 let currentFaction = "Bat Family";
 let allCompendiumHTML = "";
 let compendiumKeys = [];
 
 const $ = id => document.getElementById(id);
-const hasInCrew = m => crew.some(x => x._id === m._id);
+const hasInCrew = m => crew.some(x => x.name === m.name);
+const countInCrew = m => crew.filter(x => x.name === m.name).length;
 
 // ======================== ОТРЯД ========================
 const addToCrew = m => {
-  crew = hasInCrew(m) ? crew.filter(x => x._id !== m._id) : [...crew, m];
+  const isMinionOrHorde = m.traits.some(t => t.startsWith("Minion") || t === "Horde");
+  if (!isMinionOrHorde && hasInCrew(m)) {
+    // Для non-Minion/Horde — toggle: remove if has
+    removeFromCrew(m);
+  } else {
+    // Для Minion/Horde или first non — add
+    const ranks = getRanks(m);
+    let chosenRank = ranks.length > 1 ? prompt(`Выберите ранг для ${m.name}: ${ranks.join(', ')}`) : ranks[0];
+    if (ranks.length > 1 && !ranks.includes(chosenRank)) {
+      alert("Неверный ранг!");
+      return;
+    }
+    const cloned = { ...m, rankUsed: chosenRank, uniqueId: Date.now() + Math.random() }; // Unique для multiples
+    if (!bmgCanAddModel(cloned)) return;
+    crew.push(cloned);
+    if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
+      BMG_BOSS = cloned;
+      BMG_AFFILIATIONS = getFactions(cloned);
+    }
+  }
+  modifiers = calculateModifiers();
   updateCrewBar();
   renderMiniCards();
+};
+
+const removeFromCrew = m => {
+  const index = crew.findLastIndex(x => x.name === m.name);
+  if (index !== -1) {
+    const removed = crew[index];
+    crew.splice(index, 1);
+    if (BMG_BOSS && BMG_BOSS.name === m.name) {
+      BMG_BOSS = null;
+      BMG_AFFILIATIONS = null;
+    }
+    modifiers = calculateModifiers();
+    updateCrewBar();
+    renderMiniCards();
+  }
 };
 
 const updateCrewBar = () => {
   $("crewCount").textContent = crew.length;
   $("totalRep").textContent = crew.reduce((a,m)=>a+(m.rep||0),0);
-  $("totalFunding").textContent = crew.reduce((a,m)=>a+(m.funding||0),0);
+  const usedFunding = crew.reduce((a,m)=>a+(m.funding||0),0);
+  $("totalFunding").textContent = `${usedFunding} / ${bmgFundingLimit()}`;
 };
+
+function calculateModifiers() {
+  const mods = { extraFreeAgents: 0, extraVehicles: 0, extraFunding: 0, extraDuplicates: 0, extraElites: {}, extraVeterans: {}, extraMinions: {} };
+  crew.forEach(m => {
+    m.traits.forEach(t => {
+      if (t === "Business Agent") mods.extraFunding += 100;
+      if (t === "Kaos Agent") mods.extraDuplicates += 1;
+      const eliteBossMatch = t.match(/^Elite Boss \((.+)\)$/);
+      if (eliteBossMatch) {
+        const type = eliteBossMatch[1];
+        mods.extraElites[type] = (mods.extraElites[type] || 0) + 1;
+      }
+      const veteranBossMatch = t.match(/^Veteran Boss \((.+)\)$/);
+      if (veteranBossMatch) {
+        const type = veteranBossMatch[1];
+        mods.extraVeterans[type] = (mods.extraVeterans[type] || 0) + 1;
+      }
+      const minionBossMatch = t.match(/^Minion Boss \((.+)\)$/);
+      if (minionBossMatch) {
+        const type = minionBossMatch[1];
+        mods.extraMinions[type] = (mods.extraMinions[type] || 0) + 1;
+      }
+      // Добавь здесь другие трейты, если в compendium появятся
+    });
+  });
+  return mods;
+}
 
 // ======================== МИНИ-КАРТОЧКИ ========================
 const renderMiniCards = (() => {
@@ -27,30 +92,50 @@ const renderMiniCards = (() => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       const grid = $("modelsGrid");
+      if (!grid) {
+        console.error("Ошибка: элемент #modelsGrid не найден в HTML!");
+        return;
+      }
+
       currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
       const fragment = document.createDocumentFragment();
 
       models.filter(m => {
-        const factions = Array.isArray(m.faction)
-          ? m.faction
-          : typeof m.faction === "string"
-            ? m.faction.replace(/ *& */gi,",").replace(/ *\/ */g,",").split(",").map(s=>s.trim())
-            : [];
+        const factions = getFactions(m);
         return factions.includes(currentFaction);
       }).forEach(model => {
         const inCrew = hasInCrew(model);
+        const count = countInCrew(model);
+        const isMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
+
         const div = document.createElement("div");
         div.className = `mini-card ${inCrew ? "in-crew" : ""}`;
+
+        let buttons = '';
+        if (isMinionOrHorde) {
+          buttons = `<button class="add-btn" onclick="event.stopPropagation();addToCrew(models[${model._id}])">+</button>`;
+          if (count > 0) {
+            buttons += `
+              <button class="remove-btn" onclick="event.stopPropagation();removeFromCrew(models[${model._id}])">−</button>
+              <span class="count">x${count}</span>`;
+          }
+        } else {
+          buttons = `<button class="${inCrew ? "remove-btn" : "add-btn"}" onclick="event.stopPropagation();addToCrew(models[${model._id}])">${inCrew ? "−" : "+"}</button>`;
+        }
+
         div.innerHTML = `
-          <button class="${inCrew?"remove-btn":"add-btn"}" onclick="event.stopPropagation();addToCrew(models[${model._id}])">${inCrew?"−":"+"}</button>
+          ${buttons}
+          ${inCrew && BMG_BOSS && BMG_BOSS.name === model.name ? '<span class="boss-crown">👑</span>' : ''}
           <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
           <div class="mini-info">
             <div class="mini-name">${model.name}</div>
-            <div class="mini-rep">${model.rep} Rep • $${model.funding||0}</div>
+            <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
           </div>`;
+
         div.onclick = () => showFullCard(model);
         fragment.appendChild(div);
       });
+
       grid.innerHTML = "";
       grid.appendChild(fragment);
     }, 10);
@@ -366,13 +451,48 @@ document.querySelectorAll(".tab").forEach(tab => {
 
 // ======================== ИНИЦИАЛИЗАЦИЯ ========================
 window.addEventListener("load", () => {
+  // Инициализация compendium (если он есть)
   if (window.compendium) {
     compendiumKeys = Object.keys(window.compendium).sort();
     allCompendiumHTML = compendiumKeys.map(k => `
-      <div class="comp-entry"><div class="comp-title">${k}</div><div class="comp-text">${(compendium[k]||"").replace(/\n/g,"<br>")}</div></div>`).join("");
+      <div class="comp-entry">
+        <div class="comp-title">${k}</div>
+        <div class="comp-text">${(compendium[k]||"").replace(/\n/g,"<br>")}</div>
+      </div>`).join("");
     $("compendiumList").innerHTML = allCompendiumHTML;
   }
-  models.forEach((m,i) => m._id = i);
+
+  // Присваиваем уникальный _id каждой модели для корректного сравнения в отряде
+  models.forEach((m, i) => m._id = i);
+
+  // Обработчик изменения лимита Reputation
+  const repLimitInput = document.getElementById('repLimit');
+  if (repLimitInput) {
+    repLimitInput.value = BMG_REP_LIMIT; // показываем текущий лимит
+    repLimitInput.onchange = function() {
+      const newLimit = parseInt(this.value) || 350;
+      if (newLimit < 100) {
+        alert("Минимальный лимит — 100 Rep");
+        this.value = BMG_REP_LIMIT;
+        return;
+      }
+      BMG_REP_LIMIT = newLimit;
+      this.value = newLimit;
+
+      // Пересчитываем модификаторы и обновляем интерфейс
+      modifiers = calculateModifiers();
+      updateCrewBar();
+      renderMiniCards();
+
+      // Опционально: предупреждение, если текущий отряд превышает новый лимит
+      const currentRep = crew.reduce((a, m) => a + (m.rep || 0), 0);
+      if (currentRep > BMG_REP_LIMIT) {
+        alert(`Внимание! Текущий отряд (${currentRep} Rep) превышает новый лимит (${BMG_REP_LIMIT} Rep).`);
+      }
+    };
+  }
+
+  // Первичный рендер
   renderMiniCards();
   updateCrewBar();
 });
@@ -388,12 +508,11 @@ let BMG_AFFILIATIONS = null;
  * BMG HELPERS
  *************************/
 function bmgFundingLimit() {
-  return Math.ceil(BMG_REP_LIMIT / 150) * 500;
+  return Math.ceil(BMG_REP_LIMIT / 150) * 500 + (modifiers.extraFunding || 0);
 }
 
 function bmgExtraSlots() {
-  if (BMG_REP_LIMIT <= 350) return 0;
-  return Math.ceil((BMG_REP_LIMIT - 350) / 150);
+  return BMG_REP_LIMIT <= 350 ? 0 : Math.ceil((BMG_REP_LIMIT - 350) / 150);
 }
 
 function bmgRankCount(rank) {
@@ -401,6 +520,21 @@ function bmgRankCount(rank) {
 }
 
 function bmgCanAddModel(model) {
+  const totalRep = crew.reduce((a, m) => a + (m.rep || 0), 0);
+  const usedFunding = crew.reduce((a, m) => a + (m.funding || 0), 0);
+
+  // Define rank early
+  const rank = model.rankUsed;
+  if (!rank) {
+    alert("Ранг модели не выбран!");
+    return false;
+  }
+
+  // Extras: base + specific (no duplicate)
+  const baseExtras = bmgExtraSlots();
+  let extras = baseExtras;
+  if (rank === "Free Agent") extras += (modifiers.extraFreeAgents || 0);
+  if (rank === "Vehicle") extras += (modifiers.extraVehicles || 0);
 
   // REP
   if (totalRep + model.rep > BMG_REP_LIMIT) {
@@ -409,15 +543,14 @@ function bmgCanAddModel(model) {
   }
 
   // FUNDING
-  if ((totalFundingUsed || 0) + (model.funding || 0) > bmgFundingLimit()) {
+  if (usedFunding + (model.funding || 0) > bmgFundingLimit()) {
     alert("Недостаточно Funding");
     return false;
   }
 
   // FIRST MODEL = BOSS
   if (!BMG_BOSS) {
-    if (!model.ranks.includes("Leader") &&
-        !model.ranks.includes("Sidekick")) {
+    if (!getRanks(model).includes("Leader") && !getRanks(model).includes("Sidekick")) {
       alert("Первой моделью должен быть Leader или Sidekick");
       return false;
     }
@@ -425,38 +558,97 @@ function bmgCanAddModel(model) {
 
   // AFFILIATION
   if (BMG_BOSS) {
-    if (
-      !model.affiliations.includes("Unknown") &&
-      !model.affiliations.some(a => BMG_AFFILIATIONS.includes(a))
-    ) {
+    const modelFactions = getFactions(model);
+    if (!modelFactions.includes("Unknown") && !modelFactions.some(a => BMG_AFFILIATIONS.includes(a))) {
       alert("Модель не совпадает по Affiliation с Боссом");
       return false;
     }
   }
 
   // RANK LIMITS
-  const extras = bmgExtraSlots();
-
-  if (model.ranks.includes("Leader") && bmgRankCount("Leader") >= 1) {
+  if (rank === "Leader" && bmgRankCount("Leader") >= 1) {
+    alert("Только один Leader");
     return false;
   }
 
-  if (model.ranks.includes("Sidekick")) {
-    if (bmgRankCount("Leader") === 0 && bmgRankCount("Sidekick") >= 2) return false;
-    if (bmgRankCount("Leader") === 1 && bmgRankCount("Sidekick") >= 1) return false;
-  }
-
-  if (model.ranks.includes("Free Agent") &&
-      bmgRankCount("Free Agent") >= 1 + extras) return false;
-
-  if (model.ranks.includes("Vehicle") &&
-      bmgRankCount("Vehicle") >= 1 + extras) return false;
-
-  if (model.ranks.includes("Henchman")) {
-    if (crew.some(m => m.name === model.name)) {
-      alert("Нельзя брать двух одинаковых Henchmen");
+  if (rank === "Sidekick") {
+    if (bmgRankCount("Leader") === 0 && bmgRankCount("Sidekick") >= 2) {
+      alert("Максимум 2 Sidekick без Leader");
       return false;
     }
+    if (bmgRankCount("Leader") >= 1 && bmgRankCount("Sidekick") >= 1) {
+      alert("Максимум 1 Sidekick с Leader");
+      return false;
+    }
+  }
+
+  if (rank === "Free Agent" && bmgRankCount("Free Agent") >= 1 + extras) {
+    alert("Превышен лимит Free Agents");
+    return false;
+  }
+
+  if (rank === "Vehicle" && bmgRankCount("Vehicle") >= 1 + extras) {
+    alert("Превышен лимит Vehicles");
+    return false;
+  }
+
+if (rank === "Henchman") {
+  // Duplicates (skip if has Minion or Horde)
+  const hasMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
+  if (!hasMinionOrHorde) {
+    const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
+    if (sameNameCount >= 1 + (modifiers.extraDuplicates || 0)) {
+      alert("Нельзя брать больше Henchmen с одинаковым именем (учтены трейты)");
+      return false;
+    }
+  }
+
+  // Elite (X)
+  let eliteExceeded = false;
+  model.traits.forEach(t => {
+    const eliteMatch = t.match(/^Elite \((.+)\)$/);
+    if (eliteMatch) {
+      const type = eliteMatch[1];
+      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
+      if (count >= 1 + (modifiers.extraElites[type] || 0)) {
+        alert(`Превышен лимит Elite (${type})`);
+        eliteExceeded = true;
+      }
+    }
+  });
+  if (eliteExceeded) return false;
+
+  // Veteran (X)
+  let veteranExceeded = false;
+  model.traits.forEach(t => {
+    const veteranMatch = t.match(/^Veteran \((.+)\)$/);
+    if (veteranMatch) {
+      const type = veteranMatch[1];
+      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Veteran \\(${type}\\)$`)))).length;
+      if (count >= 1 + (modifiers.extraVeterans[type] || 0)) {
+        alert(`Превышен лимит Veteran (${type})`);
+        veteranExceeded = true;
+      }
+    }
+  });
+  if (veteranExceeded) return false;
+
+  // Minion (X) — smart limit: if X number, limit = X; else 1 + extra
+  let minionExceeded = false;
+  model.traits.forEach(t => {
+    const minionMatch = t.match(/^Minion \((.+)\)$/);
+    if (minionMatch) {
+      const x = minionMatch[1].trim();
+      const parsedX = parseInt(x, 10);
+      const limit = isNaN(parsedX) ? 1 + (modifiers.extraMinions[x] || 0) : parsedX;
+      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Minion \\(${x}\\)$`)))).length;
+      if (count >= limit) {
+        alert(`Превышен лимит Minion (${x})`);
+        minionExceeded = true;
+      }
+    }
+  });
+  if (minionExceeded) return false;
   }
 
   return true;

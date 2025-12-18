@@ -5,8 +5,8 @@ const models = [
   "base": "40mm",   //Размер базы
   "rep": 111,   //Стоимость в репутации
   "funding": 0,   //Стоимость в деньгах
-  "rank": "Leader",   //Роли в банде
-  "faction": "Bat Family",  //Фракция
+  "rank": ["Leader"],   //Роли в банде
+  "faction": ["Bat Family"],  //Фракция
   "img": "https://veland55.github.io/btb/img/Batwoman.png",  // Картинка модели
   "stats": {   //Статы
     "Attack": 4, 
@@ -39,8 +39,8 @@ const models = [
   "name": "Batman (Multiverse)",
   "rep": 150,
   "funding": 0,
-  "rank": "Leader",
-  "faction": "Bat Family",
+  "rank": ["Leader"],
+  "faction": ["Bat Family"],
   "img": "https://veland55.github.io/btb/img/Batman_Multiverse.png",
   "stats": { 
     "Attack": 5, 
@@ -67,8 +67,8 @@ const models = [
     "name": "Beast Boy - Human (Teen Titans)",
     "rep": 50,
     "funding": 0,
-    "rank": "Sidekick",
-    "faction": "Bat Family",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/BeastBoy_Human.png",
     "stats": {
       "Attack": 3,
@@ -93,7 +93,7 @@ const models = [
     "name": "The Chief",
     "rep": 70,
     "funding": 200,
-    "rank": "Leader",
+    "rank": ["Leader"],
     "faction": ["Doom Patrol", "GCPD"],
     "img": "https://veland55.github.io/btb/img/The_Chief.png",
     "stats": {
@@ -129,7 +129,7 @@ const models = [
     "name": "Elasti-Girl",
     "rep": 61,
     "funding": 0,
-    "rank": "Sidekick",
+    "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
     "img": "https://veland55.github.io/btb/img/ElastiGirl.png",
     "stats": {
@@ -157,7 +157,7 @@ const models = [
     "name": "Crazy Jane",
     "rep": 55,
     "funding": 0,
-    "rank": "Sidekick",
+    "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
     "img": "https://veland55.github.io/btb/img/Crazy_Jane.png",
     "stats": {
@@ -195,7 +195,7 @@ const models = [
     "name": "Negative Man",
     "rep": 79,
     "funding": 0,
-    "rank": "Sidekick",
+    "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
     "img": "https://veland55.github.io/btb/img/Negative_Man.png",
     "stats": {
@@ -221,7 +221,7 @@ const models = [
     "name": "Robotman",
     "rep": 85,
     "funding": 0,
-    "rank": "Sidekick",
+    "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
     "img": "https://veland55.github.io/btb/img/Robotman.png",
     "stats": {
@@ -258,7 +258,7 @@ const models = [
     "rep": 105,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerArkhamAsylum.png",
     "stats": {
       "Attack": 4,
@@ -293,7 +293,7 @@ const models = [
     "rep": 82,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerDarkKnightRises.png",
     "stats": {
       "Attack": 4,
@@ -328,7 +328,7 @@ const models = [
     "rep": 92,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerRedHood.png",
     "stats": {
       "Attack": 4,
@@ -356,7 +356,7 @@ const models = [
     "rep": 92,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerClassic.png",
     "stats": {
       "Attack": 4,
@@ -391,7 +391,7 @@ const models = [
     "rep": 60,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerCesarRomero.png",
     "stats": {
       "Attack": 4,
@@ -419,7 +419,7 @@ const models = [
     "rep": 65,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerTheCriminal.png",
     "stats": {
       "Attack": 4,
@@ -454,7 +454,7 @@ const models = [
     "rep": 65,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerTheClown.png",
     "stats": {
       "Attack": 4,
@@ -489,7 +489,7 @@ const models = [
     "rep": 65,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerTheComedian.png",
     "stats": {
       "Attack": 4,
@@ -524,7 +524,7 @@ const models = [
     "rep": 115,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerTitan.png",
     "stats": {
       "Attack": 4,
@@ -552,7 +552,7 @@ const models = [
     "rep": 85,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerChristmas.png",
     "stats": {
       "Attack": 4,
@@ -587,7 +587,7 @@ const models = [
     "rep": 75,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerHavingFun.png",
     "stats": {
       "Attack": 4,
@@ -622,7 +622,7 @@ const models = [
     "rep": 77,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerExplosiveArrival.png",
     "stats": {
       "Attack": 4,
@@ -657,7 +657,7 @@ const models = [
     "rep": 85,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/JokerBatArmor.png",
     "stats": {
       "Attack": 4,
@@ -692,7 +692,7 @@ const models = [
     "rep": 63,
     "funding": 0,
     "rank": ["Sidekick"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/Gaggy.png",
     "stats": {
       "Attack": 4,
@@ -720,7 +720,7 @@ const models = [
     "rep": 65,
     "funding": 300,
     "rank": ["Sidekick"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/HarleyQuinnBombshell.png",
     "stats": {
       "Attack": 4,
@@ -756,7 +756,7 @@ const models = [
     "rep": 35,
     "funding": 0,
     "rank": ["Sidekick"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/Archie.png",
     "stats": {
       "Attack": 2,
@@ -776,7 +776,7 @@ const models = [
     "rep": 70,
     "funding": 0,
     "rank": ["Sidekick"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/HarleyQuinnBTG.png",
     "stats": {
       "Attack": 4,
@@ -804,7 +804,7 @@ const models = [
     "rep": 66,
     "funding": 100,
     "rank": ["Sidekick"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/Punchline.png",
     "stats": {
       "Attack": 4,
@@ -839,7 +839,7 @@ const models = [
     "rep": 55,
     "funding": 0,
     "rank": ["Sidekick"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/HarleyQuinnArkhamAsylum.png",
     "stats": {
       "Attack": 4,
@@ -867,7 +867,7 @@ const models = [
     "rep": 80,
     "funding": 200,
     "rank": ["Sidekick"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/HarleyQuinnAndTheBoys.png",
     "stats": {
       "Attack": 4,
@@ -902,7 +902,7 @@ const models = [
     "rep": 58,
     "funding": 250,
     "rank": ["Free Agent"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/TwoFaceDarkKnight.png",
     "stats": {
       "Attack": 3,
@@ -930,7 +930,7 @@ const models = [
     "rep": 40,
     "funding": 0,
     "rank": ["Free Agent"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/RiddlerFrankGorshin.png",
     "stats": {
       "Attack": 2,
@@ -965,7 +965,7 @@ const models = [
     "rep": 40,
     "funding": 100,
     "rank": ["Free Agent"],
-    "faction": "Joker",
+    "faction": ["Joker"],
     "img": "https://veland55.github.io/btb/img/PenguinBurgessMeredith.png",
     "stats": {
       "Attack": 2,
@@ -1007,7 +1007,7 @@ const models = [
     "rep": 90,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/MrFreeze1997.png",
     "stats": {
       "Attack": 3,
@@ -1054,7 +1054,7 @@ const models = [
     "rep": 33,
     "funding": 300,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/FreezeThug1.png",
     "stats": {
       "Attack": 3,
@@ -1087,7 +1087,7 @@ const models = [
     "rep": 33,
     "funding": 300,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/FreezeThug2.png",
     "stats": {
       "Attack": 2,
@@ -1120,7 +1120,7 @@ const models = [
     "rep": 33,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/FreezeEngineer.png",
     "stats": {
       "Attack": 2,
@@ -1155,7 +1155,7 @@ const models = [
     "rep": 63,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/FreezeThug5.png",
     "stats": {
       "Attack": 4,
@@ -1194,7 +1194,7 @@ const models = [
     "rep": 63,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/CombatPolarBear.png",
     "stats": {
       "Attack": 4,
@@ -1234,7 +1234,7 @@ const models = [
     "rep": 32,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/FreezeThug4.png",
     "stats": {
       "Attack": 3,
@@ -1268,7 +1268,7 @@ const models = [
     "rep": 32,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/FreezeThug3.png",
     "stats": {
       "Attack": 3,
@@ -1301,7 +1301,7 @@ const models = [
     "rep": 90,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/MrFreezeCryoArmor.png",
     "stats": {
       "Attack": 3,
@@ -1341,7 +1341,7 @@ const models = [
     "rep": 65,
     "funding": 200,
     "rank": ["Sidekick"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/MrsFreeze.png",
     "stats": {
       "Attack": 3,
@@ -1384,7 +1384,7 @@ const models = [
     "rep": 66,
     "funding": 400,
     "rank": ["Henchman"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
     "img": "https://veland55.github.io/btb/img/RangedPolarBear.png",
     "stats": {
       "Attack": 4,
@@ -1423,7 +1423,7 @@ const models = [
     "rep": 90,
     "funding": 0,
     "rank": ["Sidekick"],
-    "faction": "Mr. Freeze",
+    "faction": ["Mr. Freeze"],
 	"img": "https://veland55.github.io/btb/img/KillerFrost_Rebirth.png",
     "stats": {
       "Attack": 3,
@@ -1466,7 +1466,7 @@ const models = [
     "rep": 20,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz5.png",
     "stats": {
       "Attack": 2,
@@ -1499,7 +1499,7 @@ const models = [
     "rep": 29,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz7.png",
     "stats": {
       "Attack": 3,
@@ -1531,7 +1531,7 @@ const models = [
     "rep": 45,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Echo.png",
     "stats": {
       "Attack": 3,
@@ -1559,7 +1559,7 @@ const models = [
     "rep": 47,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz8.png",
     "stats": {
       "Attack": 4,
@@ -1588,7 +1588,7 @@ const models = [
     "rep": 64,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/TheRiddlerPaulDano.png",
     "stats": {
       "Attack": 3,
@@ -1627,7 +1627,7 @@ const models = [
     "rep": 80,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/TheRiddler.png",
     "stats": {
       "Attack": 3,
@@ -1665,7 +1665,7 @@ const models = [
     "rep": 18,
     "funding": 350,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/RiddlerFollower1.png",
     "stats": {
       "Attack": 2,
@@ -1697,7 +1697,7 @@ const models = [
     "rep": 47,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz4.png",
     "stats": {
       "Attack": 4,
@@ -1733,7 +1733,7 @@ const models = [
     "rep": 45,
     "funding": 400,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Query.png",
     "stats": {
       "Attack": 3,
@@ -1767,7 +1767,7 @@ const models = [
     "rep": 15,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz2.png",
     "stats": {
       "Attack": 3,
@@ -1799,7 +1799,7 @@ const models = [
     "rep": 80,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/TheRiddlerModernAge.png",
     "stats": {
       "Attack": 3,
@@ -1836,7 +1836,7 @@ const models = [
     "rep": 28,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz6.png",
     "stats": {
       "Attack": 3,
@@ -1867,7 +1867,7 @@ const models = [
     "rep": 15,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/RiddlerFollower2.png",
     "stats": {
       "Attack": 3,
@@ -1899,7 +1899,7 @@ const models = [
     "rep": 80,
     "funding": 300,
     "rank": ["Free Agent"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/TwoFaceTommyLeeJones.png",
     "stats": {
       "Attack": 4,
@@ -1937,7 +1937,7 @@ const models = [
     "rep": 20,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz3.png",
     "stats": {
       "Attack": 3,
@@ -1968,7 +1968,7 @@ const models = [
     "rep": 60,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/TheRiddlerJimCarrey.png",
     "stats": {
       "Attack": 2,
@@ -2005,7 +2005,7 @@ const models = [
     "rep": 45,
     "funding": 200,
     "rank": ["Sidekick"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quelle.png",
     "stats": {
       "Attack": 3,
@@ -2042,7 +2042,7 @@ const models = [
     "rep": 33,
     "funding": 350,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/Quiz1.png",
     "stats": {
       "Attack": 3,
@@ -2080,7 +2080,7 @@ const models = [
     "rep": 22,
     "funding": 300,
     "rank": ["Henchman"],
-    "faction": "The Riddler",
+    "faction": ["The Riddler"],
     "img": "https://veland55.github.io/btb/img/RiddlerFollower3.png",
     "stats": {
       "Attack": 2,
@@ -2164,7 +2164,7 @@ const models = [
     "rep": 16,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/PenguinThug1.png",
     "stats": {
       "Attack": 3,
@@ -2196,7 +2196,7 @@ const models = [
     "rep": 74,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/ThePenguinDannyDeVito.png",
     "stats": {
       "Attack": 3,
@@ -2240,7 +2240,7 @@ const models = [
     "rep": 74,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/ThePenguinNew52.png",
     "stats": {
       "Attack": 3,
@@ -2285,7 +2285,7 @@ const models = [
     "rep": 40,
     "funding": 300,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/Lark.png",
     "stats": {
       "Attack": 4,
@@ -2319,7 +2319,7 @@ const models = [
     "rep": 74,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/ThePenguinArkhamCity.png",
     "stats": {
       "Attack": 3,
@@ -2363,7 +2363,7 @@ const models = [
     "rep": 8,
     "funding": 50,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/RocketLauncherPenguin.png",
     "stats": {
       "Attack": 2,
@@ -2396,7 +2396,7 @@ const models = [
     "rep": 33,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/StreetDemonzBiker1.png",
     "stats": {
       "Attack": 4,
@@ -2432,7 +2432,7 @@ const models = [
     "rep": 50,
     "funding": 200,
     "rank": ["Sidekick"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/LooseLips.png",
     "stats": {
       "Attack": 3,
@@ -2475,7 +2475,7 @@ const models = [
     "rep": 120,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/EmperorPenguinUnchained.png",
     "stats": {
       "Attack": 5,
@@ -2514,7 +2514,7 @@ const models = [
     "rep": 35,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/PenguinEliteThug.png",
     "stats": {
       "Attack": 3,
@@ -2546,8 +2546,8 @@ const models = [
     "base": "30mm",
     "rep": 7,
     "funding": 50,
-    "rank": [],
-    "faction": "Penguin",
+    "rank": ["Henchman"],
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/MinigunPenguin.png",
     "stats": {
       "Attack": 2,
@@ -2581,7 +2581,7 @@ const models = [
     "rep": 4,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/ExplosivePenguin.png",
     "stats": {
       "Attack": 2,
@@ -2608,7 +2608,7 @@ const models = [
     "rep": 41,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/PenguinLieutenant.png",
     "stats": {
       "Attack": 4,
@@ -2636,7 +2636,7 @@ const models = [
     "rep": 50,
     "funding": 200,
     "rank": ["Free Agent"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/MrToxic.png",
     "stats": {
       "Attack": 4,
@@ -2670,7 +2670,7 @@ const models = [
     "rep": 24,
     "funding": 600,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/PenguinThug2.png",
     "stats": {
       "Attack": 3,
@@ -2702,7 +2702,7 @@ const models = [
     "rep": 74,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/ThePenguinPenguinsDuck.png",
     "stats": {
       "Attack": 3,
@@ -2748,7 +2748,7 @@ const models = [
     "rep": 77,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/ThePenguinArkhamKnight.png",
     "stats": {
       "Attack": 3,
@@ -2795,7 +2795,7 @@ const models = [
     "rep": 29,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/StreetDemonz4.png",
     "stats": {
       "Attack": 3,
@@ -2836,7 +2836,7 @@ const models = [
     "rep": 26,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/MrCombustible.png",
     "stats": {
       "Attack": 3,
@@ -2869,7 +2869,7 @@ const models = [
     "rep": 30,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/Hypnotic.png",
     "stats": {
       "Attack": 2,
@@ -2894,7 +2894,7 @@ const models = [
     "rep": 27,
     "funding": 150,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/StreetDemonz1.png",
     "stats": {
       "Attack": 3,
@@ -2933,7 +2933,7 @@ const models = [
     "rep": 34,
     "funding": 300,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/StreetDemonzBiker2.png",
     "stats": {
       "Attack": 3,
@@ -2969,7 +2969,7 @@ const models = [
     "rep": 32,
     "funding": 300,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/StreetDemonzBiker3.png",
     "stats": {
       "Attack": 3,
@@ -3005,7 +3005,7 @@ const models = [
     "rep": 19,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/StreetDemonz3.png",
     "stats": {
       "Attack": 3,
@@ -3037,7 +3037,7 @@ const models = [
     "rep": 21,
     "funding": 200,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/StreetDemonz2.png",
     "stats": {
       "Attack": 2,
@@ -3070,7 +3070,7 @@ const models = [
     "rep": 30,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Penguin",
+    "faction": ["Penguin"],
     "img": "https://veland55.github.io/btb/img/ImperceptibleMan.png",
     "stats": {
       "Attack": 3,
@@ -3101,8 +3101,8 @@ const models = [
   "base": "40mm",
   "rep": 66,
   "funding": 0,
-  "rank": "Leader",
-  "faction": "Birds of Prey",
+  "rank": ["Leader"],
+  "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/PoisonIvy_1997.png",
   "stats": {
     "Attack": 3,
@@ -3148,7 +3148,7 @@ const models = [
   "rep": 84,
   "funding": 0,
   "rank": ["Sidekick", "Leader"],
-  "faction": "Birds of Prey",
+  "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/HarleyQuinn_RollerDerby.png",
   "stats": {
     "Attack": 4,
@@ -3186,7 +3186,7 @@ const models = [
   "rep": 93,
   "funding": 0,
   "rank": ["Sidekick", "Leader"],
-  "faction": "Birds of Prey",
+  "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/PoisonIvy.png",
   "stats": {
     "Attack": 3,
@@ -3232,7 +3232,7 @@ const models = [
   "base": "40mm",
   "rep": 80,
   "funding": 0,
-  "rank": "Free Agent",
+  "rank": ["Free Agent"],
   "faction": ["GCPD", "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/BlackCanary_Rebirth.png",
   "stats": {
@@ -3271,7 +3271,7 @@ const models = [
   "base": "30mm",
   "rep": 98,
   "funding": 0,
-  "rank": "Free Agent",
+  "rank": ["Free Agent"],
   "faction": ["Birds of Prey", "Suicide Squad"],
   "img": "https://veland55.github.io/btb/img/HarleyQuinn.png",
   "stats": {
@@ -3308,7 +3308,7 @@ const models = [
   "base": "40mm",
   "rep": 75,
   "funding": 100,
-  "rank": "Free Agent",
+  "rank": ["Free Agent"],
   "faction": ["GCPD", "Suicide Squad", "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/Katana_Rebirth.png",
   "stats": {
@@ -3352,8 +3352,8 @@ const models = [
   "base": "30mm",
   "rep": 78,
   "funding": 0,
-  "rank": "Sidekick",
-  "faction": "Birds of Prey",
+  "rank": ["Sidekick"],
+  "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/BlackCanary.png",
   "stats": {
     "Attack": 4,
@@ -3395,7 +3395,7 @@ const models = [
   "base": "40mm",
   "rep": 88,
   "funding": 0,
-  "rank": "Sidekick",
+  "rank": ["Sidekick"],
   "faction": ["League of Shadows", "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/LadyShiva.png",
   "stats": {
@@ -3462,7 +3462,7 @@ const models = [
   "base": "40mm",
   "rep": 65,
   "funding": 0,
-  "rank": "Sidekick",
+  "rank": ["Sidekick"],
   "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/FloronicMan.png",
   "stats": {
@@ -3500,7 +3500,7 @@ const models = [
   "base": "40mm",
   "rep": 60,
   "funding": 100,
-  "rank": "Henchman",
+  "rank": ["Henchman"],
   "faction": ["Suicide Squad", "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/KillerFrost_Rebirth.png",
   "stats": {
@@ -3535,8 +3535,8 @@ const models = [
   "base": "40mm",
   "rep": 24,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Birds of Prey",
+  "rank": ["Henchman"],
+  "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/RabidPlant1.png",
   "stats": {
     "Attack": 3,
@@ -3569,8 +3569,8 @@ const models = [
   "base": "30mm",
   "rep": 24,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Birds of Prey",
+  "rank": ["Henchman"],
+  "faction": ["Birds of Prey"],
   "rivals": "GCPD",
   "img": "https://veland55.github.io/btb/img/RollerDerbyThug4.png",
   "stats": {
@@ -3603,8 +3603,8 @@ const models = [
   "base": "30mm",
   "rep": 26,
   "funding": 150,
-  "rank": "Henchman",
-  "faction": "Birds of Prey",
+  "rank": ["Henchman"],
+  "faction": ["Birds of Prey"],
   "rivals": "GCPD",
   "img": "https://veland55.github.io/btb/img/RollerDerbyThug2.png",
   "stats": {
@@ -3637,8 +3637,8 @@ const models = [
   "base": "40mm",
   "rep": 24,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Birds of Prey",
+  "rank": ["Henchman"],
+  "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/RabidPlant2.png",
   "stats": {
     "Attack": 3,
@@ -3671,8 +3671,8 @@ const models = [
   "base": "30mm",
   "rep": 76,
   "funding": 400,
-  "rank": "Henchman",
-  "faction": "Birds of Prey",
+  "rank": ["Henchman"],
+  "faction": ["Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/Huntress.png",
   "stats": {
     "Attack": 4,
@@ -3706,8 +3706,8 @@ const models = [
   "base": "30mm",
   "rep": 25,
   "funding": 200,
-  "rank": "Henchman",
-  "faction": "Birds of Prey",
+  "rank": ["Henchman"],
+  "faction": ["Birds of Prey"],
   "rivals": "GCPD",
   "img": "https://veland55.github.io/btb/img/RollerDerbyThug3.png",
   "stats": {
@@ -3748,7 +3748,7 @@ const models = [
     "base": "30mm",
     "rep": 30,
     "funding": 0,
-    "rank": "Henchman",
+    "rank": ["Henchman"],
     "faction": ["Bat Family", "Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/Hawk.png",
@@ -3786,7 +3786,7 @@ const models = [
     "base": "30mm",
     "rep": 30,
     "funding": 200,
-    "rank": "Henchman",
+    "rank": ["Henchman"],
     "faction": ["Bat Family", "Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/Dove.png",
@@ -3823,8 +3823,8 @@ const models = [
     "base": "30mm",
     "rep": 28,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Birds of Prey",
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/BruceTheHyena.png",
     "stats": {
@@ -3852,8 +3852,8 @@ const models = [
     "base": "30mm",
     "rep": 16,
     "funding": 250,
-    "rank": "Henchman",
-    "faction": "Birds of Prey",
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/MutatedPlant2.png",
     "stats": {
@@ -3886,8 +3886,8 @@ const models = [
     "base": "30mm",
     "rep": 30,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Birds of Prey",
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/CassandraCain.png",
     "stats": {
@@ -3913,7 +3913,7 @@ const models = [
     "base": "30mm",
     "rep": 45,
     "funding": 100,
-    "rank": "Henchman",
+    "rank": ["Henchman"],
     "faction": ["Bat Family", "GCPD", "Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/BatgirlRebirth.png",
@@ -3951,8 +3951,8 @@ const models = [
     "base": "30mm",
     "rep": 17,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Birds of Prey",
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/MutatedPlant1.png",
     "stats": {
@@ -3985,8 +3985,8 @@ const models = [
     "base": "60mm",
     "rep": 32,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Birds of Prey",
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/FrankThePlant.png",
     "stats": {
@@ -4021,8 +4021,8 @@ const models = [
     "base": "30mm",
     "rep": 40,
     "funding": 300,
-    "rank": "Henchman",
-    "faction": "Birds of Prey",
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/DetectiveMontoya.png",
     "stats": {
@@ -4064,7 +4064,7 @@ const models = [
     "base": "40mm",
     "rep": 71,
     "funding": 0,
-    "rank": "Free Agent",
+    "rank": ["Free Agent"],
     "faction": ["Bat Family", "GCPD", "Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/BatgirlClassic.png",
@@ -4106,7 +4106,7 @@ const models = [
     "base": "30mm",
     "rep": 60,
     "funding": 100,
-    "rank": "Henchman",
+    "rank": ["Henchman"],
     "faction": ["Court of Owls", "Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/Strix.png",
@@ -4150,8 +4150,8 @@ const models = [
     "base": "30mm",
     "rep": 14,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Birds of Prey",
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/MutatedPlant3.png",
     "stats": {
@@ -4187,8 +4187,8 @@ const models = [
   "base": "60mm",
   "rep": 85,
   "funding": 0,
-  "rank": "Leader",
-  "faction": "Scarecrow",
+  "rank": ["Leader"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/ScarecrowTheWorstNightmare.png",
   "stats": {
     "Attack": 3,
@@ -4222,8 +4222,8 @@ const models = [
   "base": "40mm",
   "rep": 60,
   "funding": 0,
-  "rank": "Sidekick",
-  "faction": "Scarecrow",
+  "rank": ["Sidekick"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/DrFriitawa.png",
   "stats": {
     "Attack": 2,
@@ -4250,8 +4250,8 @@ const models = [
   "base": "30mm",
   "rep": 22,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Scarecrow",
+  "rank": ["Henchman"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/NightmareOfFear.png",
   "stats": {
     "Attack": 2,
@@ -4278,8 +4278,8 @@ const models = [
   "base": "30mm",
   "rep": 20,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Scarecrow",
+  "rank": ["Henchman"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/NightmareOfDemotivation.png",
   "stats": {
     "Attack": 2,
@@ -4306,8 +4306,8 @@ const models = [
   "base": "30mm",
   "rep": 21,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Scarecrow",
+  "rank": ["Henchman"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/NightmareOfAnger.png",
   "stats": {
     "Attack": 2,
@@ -4334,8 +4334,8 @@ const models = [
   "base": "30mm",
   "rep": 20,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Scarecrow",
+  "rank": ["Henchman"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/NightmareOfInsignificance.png",
   "stats": {
     "Attack": 2,
@@ -4362,8 +4362,8 @@ const models = [
   "base": "60mm",
   "rep": 54,
   "funding": 0,
-  "rank": "Henchman",
-  "faction": "Scarecrow",
+  "rank": ["Henchman"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/FearbeastNightmare.png",
   "stats": {
     "Attack": 3,
@@ -4390,8 +4390,8 @@ const models = [
   "base": "30mm",
   "rep": 20,
   "funding": 100,
-  "rank": "Henchman",
-  "faction": "Scarecrow",
+  "rank": ["Henchman"],
+  "faction": ["Scarecrow"],
   "img": "https://veland55.github.io/btb/img/LittleNightmare.png",
   "stats": {
     "Attack": 2,
@@ -4423,7 +4423,7 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/TheCourt.png",
     "stats": {
       "Attack": 2,
@@ -4460,7 +4460,7 @@ const models = [
     "rep": 42,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/1890sTalon.png",
     "stats": {
       "Attack": 4,
@@ -4544,7 +4544,7 @@ const models = [
     "rep": 81,
     "funding": 0,
     "rank": ["Free Agent"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/GothamButcher.png",
     "stats": {
       "Attack": 5,
@@ -4573,7 +4573,7 @@ const models = [
     "rep": 102,
     "funding": 0,
     "rank": ["Leader", "Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/LincolnMarch.png",
     "stats": {
       "Attack": 5,
@@ -4612,7 +4612,7 @@ const models = [
     "rep": 33,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/OMalleysGrandfather.png",
     "stats": {
       "Attack": 3,
@@ -4691,7 +4691,7 @@ const models = [
     "rep": 51,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/OMalleysFather.png",
     "stats": {
       "Attack": 4,
@@ -4733,7 +4733,7 @@ const models = [
     "rep": 60,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/Dementor.png",
     "stats": {
       "Attack": 4,
@@ -4820,7 +4820,7 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/1880sTalon.png",
     "stats": {
       "Attack": 4,
@@ -4897,7 +4897,7 @@ const models = [
     "rep": 30,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/OMalleysSon.png",
     "stats": {
       "Attack": 3,
@@ -4937,7 +4937,7 @@ const models = [
     "rep": 62,
     "funding": 100,
     "rank": ["Henchman"],
-    "faction": "Court of Owls",
+    "faction": ["Court of Owls"],
     "img": "https://veland55.github.io/btb/img/EphraimNewhouse.png",
     "stats": {
       "Attack": 4,
@@ -4990,8 +4990,8 @@ const models = [
     "base": "30mm",
     "rep": 60,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Batman Who Laughs",
+    "rank": ["Henchman"],
+    "faction": ["Batman Who Laughs"],
     "rivals": ["GCPD", "Joker"],
     "img": "https://veland55.github.io/btb/img/DamianWhoLaughs.png",
     "stats": {
@@ -5030,8 +5030,8 @@ const models = [
     "base": "30mm",
     "rep": 60,
     "funding": 350,
-    "rank": "Sidekick",
-    "faction": "Batman Who Laughs",
+    "rank": ["Sidekick"],
+    "faction": ["Batman Who Laughs"],
     "rivals": ["GCPD", "Joker"],
     "img": "https://veland55.github.io/btb/img/TheCommissioner.png",
     "stats": {
@@ -5070,8 +5070,8 @@ const models = [
     "base": "30mm",
     "rep": 90,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Batman Who Laughs",
+    "rank": ["Henchman"],
+    "faction": ["Batman Who Laughs"],
     "img": "https://veland55.github.io/btb/img/TheMerciless.png",
     "stats": {
       "Attack": 5,
@@ -5104,8 +5104,8 @@ const models = [
     "base": "30mm",
     "rep": 6,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Batman Who Laughs",
+    "rank": ["Henchman"],
+    "faction": ["Batman Who Laughs"],
     "img": "https://veland55.github.io/btb/img/InfectedWhoLaughs.png",
     "stats": {
       "Attack": 2,
@@ -5139,8 +5139,8 @@ const models = [
     "base": "40mm",
     "rep": 90,
     "funding": 500,
-    "rank": "Free Agent",
-    "faction": "Batman Who Laughs",
+    "rank": ["Free Agent"],
+    "faction": ["Batman Who Laughs"],
     "img": "https://veland55.github.io/btb/img/TheGrimKnight.png",
     "stats": {
       "Attack": 5,
@@ -5185,7 +5185,7 @@ const models = [
     "rep": 125,
     "funding": 0,
     "rank": ["Leader", "Free Agent"],
-    "faction": "Batman Who Laughs",
+    "faction": ["Batman Who Laughs"],
     "rivals": ["GCPD", "Joker"],
     "img": "https://veland55.github.io/btb/img/TheBatmanWhoLaughs.png",
     "stats": {
@@ -5233,8 +5233,8 @@ const models = [
     "base": "30mm",
     "rep": 90,
     "funding": 0,
-    "rank": "Henchman",
-    "faction": "Batman Who Laughs",
+    "rank": ["Henchman"],
+    "faction": ["Batman Who Laughs"],
     "img": "https://veland55.github.io/btb/img/TheRedDeath.png",
     "stats": {
       "Attack": 5,
@@ -5278,8 +5278,8 @@ const models = [
     "base": "30mm",
     "rep": 90,
     "funding": 300,
-    "rank": "Henchman",
-    "faction": "Batman Who Laughs",
+    "rank": ["Henchman"],
+    "faction": ["Batman Who Laughs"],
     "img": "https://veland55.github.io/btb/img/TheDrowned.png",
     "stats": {
       "Attack": 4,
@@ -5321,7 +5321,7 @@ const models = [
     "base": "30mm",
     "rep": 34,
     "funding": 0,
-    "rank": "Henchman",
+    "rank": ["Henchman"],
     "faction": ["Batman Who Laughs", "Unknown"],
     "rivals": ["GCPD", "Joker"],
     "img": "https://veland55.github.io/btb/img/RobinWhoLaughs.png",
@@ -5364,7 +5364,7 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Watchmen",
+    "faction": ["Watchmen"],
     "img": "https://veland55.github.io/btb/img/SilkSpectreII.png",
     "stats": {
       "Attack": 4,
@@ -5391,7 +5391,7 @@ const models = [
     "rep": 75,
     "funding": 0,
     "rank": ["Free Agent"],
-    "faction": "Watchmen",
+    "faction": ["Watchmen"],
     "img": "https://veland55.github.io/btb/img/TheComedian.png",
     "stats": {
       "Attack": 4,
@@ -5435,7 +5435,7 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Watchmen",
+    "faction": ["Watchmen"],
     "img": "https://veland55.github.io/btb/img/NiteOwl.png",
     "stats": {
       "Attack": 4,
@@ -5471,7 +5471,7 @@ const models = [
     "rep": 75,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Watchmen",
+    "faction": ["Watchmen"],
     "img": "https://veland55.github.io/btb/img/Rorschach.png",
     "stats": {
       "Attack": 4,
@@ -5505,7 +5505,7 @@ const models = [
     "rep": 0,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": "Watchmen",
+    "faction": ["Watchmen"],
     "img": "https://veland55.github.io/btb/img/Bubastis.png",
     "stats": {
       "Attack": 4,
@@ -5532,7 +5532,7 @@ const models = [
     "rep": 100,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": "Watchmen",
+    "faction": ["Watchmen"],
     "img": "https://veland55.github.io/btb/img/Ozymandias.png",
     "stats": {
       "Attack": 4,
@@ -5565,7 +5565,7 @@ const models = [
   "rep": 36,
   "funding": 0,
   "rank": ["Henchman"],
-  "faction": "Unknown",
+  "faction": ["Unknown"],
   "rivals": ["Bat Family", "GCPD"],
   "img": "https://veland55.github.io/btb/img/CalendarMan.png",
   "stats": {
@@ -6692,4 +6692,12 @@ window.compendium = { ...traitDescriptions};
 // Универсальная функция для получения описания (трейт или оружие)
 function getDesc(key) {
   return descriptions[key] || "Описание появится позже…";
+}
+
+function getFactions(model) {
+  return Array.isArray(model.faction) ? model.faction : (typeof model.faction === 'string' ? model.faction.replace(/ *& */gi,',').replace(/ *\/ */g,',').split(',').map(s=>s.trim()) : []);
+}
+
+function getRanks(model) {
+  return Array.isArray(model.rank) ? model.rank : (typeof model.rank === 'string' ? [model.rank] : []);
 }

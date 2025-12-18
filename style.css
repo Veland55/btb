@@ -175,33 +175,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 }
 
 .faction-line {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin: 6px 0;
-  font-size: 15px;
-}
-
-.rank-label {
-  background: rgba(0,0,0,0.5);
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 13px;
-  margin-left: 8px;
-}
-
-.faction-icon-small {
-  height: 24px;
-  width: auto;
-  margin: 0 6px;
-  vertical-align: middle;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.7);
-}
-
-.faction-line {
   text-align: center;
   padding: 8px 0;
   background: rgba(0,0,0,0.3);
@@ -246,4 +219,120 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-trait.special:hover {
   background: #a020f0;          /* Темнее при наведении */
   transform: translateY(-2px);
+}
+
+/* === КРАСИВОЕ ПОЛЕ ЛИМИТА REP === */
+#repLimit {
+  width: 64px;
+  height: 32px;
+  background: #111;
+  color: #fff;
+  border: 2px solid #e94560;
+  border-radius: 12px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 6px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(233,69,96,0.2);
+}
+
+#repLimit:focus {
+  border-color: #ff3366;
+  box-shadow: 0 0 20px rgba(233,69,96,0.7);
+  background: #222;
+}
+
+/* Убираем стрелки спиннера у input type=number */
+#repLimit::-webkit-inner-spin-button, 
+#repLimit::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mini-card .count {
+  position: absolute;
+  top: 8px;
+  right: 65px;
+  background: rgba(0, 0, 0, 0.7);        /* Тёмная полупрозрачная подложка */
+  color: #ffffff;                        /* Белый текст */
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 12px;
+  min-width: 24px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.781);
+  text-shadow: 1px 1px 2px #000;         /* Дополнительная читаемость */
+  pointer-events: none;                 /* Чтобы не мешал кликам */
+  z-index: 11;
+}
+
+.models-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.mini-card {
+  position: relative;
+  background: #222;
+  border: 2px solid #444;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.mini-card:hover {
+  border-color: #e94560;
+  box-shadow: 0 0 18px rgba(233,69,96,0.7);
+}
+
+.mini-info {
+  padding: 5px;
+  text-align: center;
+}
+
+.mini-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.mini-rep {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.add-btn, .remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #e94560;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.remove-btn {
+  background: #ff3366;
+  right: 35px;  /* Чтоб не накладывалась на + для Minion */
+}
+
+.mini-card .count {
+  position: absolute;
+  top: 5px;
+  right: 65px;  /* Рядом с кнопками */
+  color: #ffd700;
+  font-size: 14px;
+  font-weight: bold;
 }
