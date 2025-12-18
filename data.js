@@ -4795,6 +4795,206 @@ const models = [
     ]
   },
 
+//--------------------------------------------------------------------------------------------------------------------
+//Watchmen
+//--------------------------------------------------------------------------------------------------------------------
+  {
+    "name": "Silk Spectre II",
+    "realname": "Laurie Juspeczyk",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Watchmen",
+    "img": "https://veland55.github.io/btb/img/SilkSpectreII.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Combo (Unarmed)",
+      "Martial Artist",
+      "Close Combat Master",
+      "Counter Attack",
+      "Troublemaker"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "The Comedian",
+    "realname": "Edward Blake",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": "Watchmen",
+    "img": "https://veland55.github.io/btb/img/TheComedian.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Detonate",
+      "Hardened",
+      "Rapid Fire",
+      "Shooter",
+      "Dirty Fighter",
+      "Psycho",
+      "Reinforced Gloves",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Cal.50 Gun",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      },
+      {
+        "name": "Machine Gun",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Nite Owl",
+    "realname": "Daniel Dreiberg",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Watchmen",
+    "img": "https://veland55.github.io/btb/img/NiteOwl.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Archie",
+      "Bat Cape",
+      "Brutal",
+      "Total Vision",
+      "Arrest",
+      "Bonebreaker",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Shurikens",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Rorschach",
+    "realname": "Walter Joseph Kovacs",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Watchmen",
+    "img": "https://veland55.github.io/btb/img/Rorschach.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bloodthirsty (Mental Disorder)",
+      "Detective",
+      "Hidden",
+      "Brutal",
+      "Devastating Blow"
+    ],
+    "weapons": [
+      {
+        "name": "Improvised Weapon",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Handy"
+      }
+    ]
+  },
+  {
+    "name": "Bubastis",
+    "realname": "Bubastis",
+    "base": "40mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": "Watchmen",
+    "img": "https://veland55.github.io/btb/img/Bubastis.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 14,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Animal",
+      "Large",
+      "Super Jump",
+      "Claws",
+      "Stealth",
+      "True Love (Ozymandias)"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Ozymandias",
+    "realname": "Adrian Alexander Veidt",
+    "base": "60mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": "Watchmen",
+    "img": "https://veland55.github.io/btb/img/Ozymandias.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 13,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Martial Artist",
+      "Reflexes",
+      "Smartest Man Alive",
+      "Grand Strategist",
+      "Mastermind",
+      "Reinforced Gloves"
+    ],
+    "weapons": []
+  },
+
 
 //--------------------------------------------------------------------------------------------------------------------
 //Unknown
