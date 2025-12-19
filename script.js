@@ -1,5 +1,6 @@
 // ======================== ГЛОБАЛЬНЫЕ ========================
 let crew = [];
+let crewEquipmentCounts = {}; // { "Magazine": count } for crew-wide limits
 let modifiers = { extraFreeAgents: 0, extraVehicles: 0, extraFunding: 0, extraDuplicates: 0, extraElites: {}, extraVeterans: {}, extraMinions: {} };
 let currentFaction = "Bat Family";
 let allCompendiumHTML = "";
@@ -37,15 +38,17 @@ const addToCrew = m => {
 
 // Новая функция — добавление модели с уже выбранным рангом
 function addModelWithRank(model, chosenRank) {
-  const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random() };
+  const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
   if (!bmgCanAddModel(cloned)) return;
-
   crew.push(cloned);
-
   if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
     BMG_BOSS = cloned;
     BMG_AFFILIATIONS = getFactions(cloned);
   }
+  updateCrewEquipmentCounts(); // New function, see below
+  modifiers = calculateModifiers();
+  updateCrewBar();
+  renderMiniCards();
 }
 
 // Модальное окно выбора ранга
@@ -98,43 +101,93 @@ const removeFromCrew = m => {
       BMG_BOSS = null;
       BMG_AFFILIATIONS = null;
     }
+    updateCrewEquipmentCounts(); // Reset counts after removal
     modifiers = calculateModifiers();
     updateCrewBar();
     renderMiniCards();
   }
 };
 
+// New: Recalculate crew-wide equipment counts
+function updateCrewEquipmentCounts() {
+  crewEquipmentCounts = {};
+  crew.forEach(m => {
+    m.equipment.forEach(eq => {
+      crewEquipmentCounts[eq.name] = (crewEquipmentCounts[eq.name] || 0) + 1;
+    });
+  });
+}
+
 const updateCrewBar = () => {
   $("crewCount").textContent = crew.length;
-  $("totalRep").textContent = crew.reduce((a,m)=>a+(m.rep||0),0);
-  const usedFunding = crew.reduce((a,m)=>a+(m.funding||0),0);
+  let totalRep = crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0);
+  let usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+  $("totalRep").textContent = totalRep;
   $("totalFunding").textContent = `${usedFunding} / ${bmgFundingLimit()}`;
 };
 
 function calculateModifiers() {
-  const mods = { extraFreeAgents: 0, extraVehicles: 0, extraFunding: 0, extraDuplicates: 0, extraElites: {}, extraVeterans: {}, extraMinions: {} };
+  const mods = { 
+    extraFreeAgents: 0, 
+    extraVehicles: 0, 
+    extraFunding: 0, 
+    extraDuplicates: 0, 
+    extraElites: {}, 
+    extraVeterans: {}, 
+    extraMinions: {} 
+  };
+
   crew.forEach(m => {
     m.traits.forEach(t => {
+      // === Уже были ===
       if (t === "Business Agent") mods.extraFunding += 100;
       if (t === "Kaos Agent") mods.extraDuplicates += 1;
+
       const eliteBossMatch = t.match(/^Elite Boss \((.+)\)$/);
       if (eliteBossMatch) {
         const type = eliteBossMatch[1];
         mods.extraElites[type] = (mods.extraElites[type] || 0) + 1;
       }
+
       const veteranBossMatch = t.match(/^Veteran Boss \((.+)\)$/);
       if (veteranBossMatch) {
         const type = veteranBossMatch[1];
         mods.extraVeterans[type] = (mods.extraVeterans[type] || 0) + 1;
       }
+
       const minionBossMatch = t.match(/^Minion Boss \((.+)\)$/);
       if (minionBossMatch) {
         const type = minionBossMatch[1];
         mods.extraMinions[type] = (mods.extraMinions[type] || 0) + 1;
       }
-      // Добавь здесь другие трейты, если в compendium появятся
+
+      // === НОВЫЕ ТРЕЙТЫ, влияющие на набор банды ===
+
+      // Funding
+      if (t === "Black Market Connections") mods.extraFunding += 200;
+      if (t === "Corporate Resources") mods.extraFunding += 300;
+      if (t === "Politician") mods.extraFunding += 200;
+      if (t === "Rich") mods.extraFunding += 200; // чаще всего 200, иногда 100 — можно уточнить по модели
+      if (t === "Supply Cache") mods.extraFunding += 300;
+
+      // Free Agents
+      if (t === "Undercover Agent") mods.extraFreeAgents += 1;
+      if (t === "Politician") mods.extraFreeAgents += 1; // у большинства версий Politician даёт +1 FA
+
+      // Vehicles
+      if (t === "Vehicle Boss" || t === "Large Vehicle Boss") mods.extraVehicles += 1;
+
+      // Дополнительные Henchmen (дубликаты уникальных)
+      if (t === "Recruiter") mods.extraDuplicates += 1;
+
+      // Редкие/специфические случаи (на будущее, если встретятся модели)
+      if (t === "Tactician") mods.extraFreeAgents += 1; // иногда даёт +1 FA
+      if (t === "Strategist") mods.extraDuplicates += 1; // иногда +1 Henchman
+
+      // Добавь здесь другие трейты, если в compendium появятся новые с бонусами к набору
     });
   });
+
   return mods;
 }
 
@@ -573,10 +626,12 @@ function bmgRankCount(rank) {
 }
 
 function bmgCanAddModel(model) {
-  const totalRep = crew.reduce((a, m) => a + (m.rep || 0), 0);
-  const usedFunding = crew.reduce((a, m) => a + (m.funding || 0), 0);
-
+// Рассчитываем общую Rep с учетом оборудования всех моделей + новой модели
+  let totalRep = crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0) + (model.rep || 0);
+  // Рассчитываем общее Funding аналогично
+  let usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0) + (model.funding || 0);
   // Define rank early
+
   const rank = model.rankUsed;
   if (!rank) {
     alert("Ранг модели не выбран!");
@@ -590,14 +645,14 @@ function bmgCanAddModel(model) {
   if (rank === "Vehicle") extras += (modifiers.extraVehicles || 0);
 
   // REP
-  if (totalRep + model.rep > BMG_REP_LIMIT) {
-    alert("Превышен лимит Reputation");
+if (totalRep > BMG_REP_LIMIT) {
+    alert("Превышен лимит Reputation (учтены equipment)");
     return false;
   }
 
   // FUNDING
-  if (usedFunding + (model.funding || 0) > bmgFundingLimit()) {
-    alert("Недостаточно Funding");
+if (usedFunding > bmgFundingLimit()) {
+    alert("Недостаточно Funding (учтены equipment)");
     return false;
   }
 
@@ -706,3 +761,4 @@ if (rank === "Henchman") {
 
   return true;
 }
+
