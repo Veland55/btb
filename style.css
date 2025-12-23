@@ -99,7 +99,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* ПОЛНАЯ КАРТОЧКА */
 .full-card { position:fixed; inset:0; background:#000; z-index:9999; overflow-y:auto; display:none; padding:10px; }
 .full-card.active { display:block; }
-.full-inner { max-width:460px; margin:0 auto; background:#111; border:3px solid #ffd700; border-radius:20px; overflow:hidden; box-shadow:0 0 50px rgba(69, 85, 0, 0.7); position:relative; }
+.full-inner { max-width:460px; margin:0 auto; background:#111; border:3px solid #444; border-radius:20px; overflow:hidden;  position:relative; }
 .close-full { position:absolute; top:26px; right:30px; font-size:36px; color:#ff4747; cursor:pointer; z-index:10; font-weight:bold; }
 
 /* COMPENDIUM И ПОИСК */
