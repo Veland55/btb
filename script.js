@@ -816,26 +816,53 @@ function openEquipmentMenu(model, cardElement) {
   if (!crewModel) return;
 
   const faction = currentFaction; // текущая фракция
-  const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
-    // Проверка maxPerCrew
-    const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
-    if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
+const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
+  // Проверка maxPerCrew (остаётся без изменений)
+  const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
+  if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
 
-    // Проверка conditions (наличие модели в банде)
-    if (eq.conditions && eq.conditions.length) {
-      const hasRequired = eq.conditions.some(cond => crew.some(m => m.name === cond));
-      if (!hasRequired) return false;
-    }
+  // Улучшенная проверка conditions (все должны выполняться)
+  if (eq.conditions && eq.conditions.length) {
+    const allConditionsMet = eq.conditions.every(cond => {
+      const trimmed = cond.trim();
 
-    // Проверка targetModels (по имени или рангу)
-    if (eq.targetModels) {
-      const allowedByName = eq.targetModels.some(t => t === crewModel.name);
-      const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
-      if (!allowedByName && !allowedByRank) return false;
-    }
+      // "Only Plants" или "Only Animals" — trait у текущей модели
+      if (trimmed.startsWith('Only ')) {
+        const requiredTrait = trimmed.replace('Only ', '').trim();
+        return crewModel.traits && crewModel.traits.some(t => t === requiredTrait);
+      }
 
-    return true;
-  });
+      // "Model has Elite (SWAT) trait"
+      if (trimmed.startsWith('Model has ') && trimmed.endsWith(' trait')) {
+        const trait = trimmed.replace('Model has ', '').replace(' trait', '').trim();
+        return crewModel.traits && crewModel.traits.some(t => t === trait);
+      }
+
+      // "Bruce Wayne in crew" или "Alias: Poison Ivy in crew"
+      if (trimmed.endsWith(' in crew')) {
+        let modelName = trimmed.replace(' in crew', '').trim();
+        if (modelName.startsWith('Alias: ')) {
+          modelName = modelName.replace('Alias: ', '').trim();
+        }
+        return crew.some(m => modelName === m.name);  // Точное совпадение имени
+      }
+
+      // Простое имя модели — наличие в crew
+      return crew.some(m => m.name === trimmed);
+    });
+
+    if (!allConditionsMet) return false;
+  }
+
+  // Проверка targetModels (с защитой на undefined)
+  if (eq.targetModels && eq.targetModels.length) {
+    const allowedByName = eq.targetModels.some(t => t === crewModel.name);
+    const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
+    if (!allowedByName && !allowedByRank) return false;
+  }
+
+  return true;
+});
 
   // Создаём модальное окно
   const overlay = document.createElement("div");

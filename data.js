@@ -15,24 +15,24 @@ const equipmentByFaction = {
     { name: "Riot Gear", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["The models gains the Football Gear rule."] },
     { name: "Medic", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Medic rule."] },
     { name: "SWAT Special Training", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Model has Elite (SWAT) trait"], effects: ["Choose: Tracking or Precise Aim rule."] },
-    { name: "Upgraded Batsuit", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne in crew"], targetModels: ["Bruce Wayne"], effects: ["+1 to Endurance."] },
-    { name: "Kevlar Cowl", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne in crew"], targetModels: ["Bruce Wayne"], effects: ["Immunity to CRT."] },
-    { name: "EMP", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne in crew"], effects: ["Model Gains the EMP rule."] },
-    { name: "Martial Arts Training", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Bruce Wayne in crew"], effects: ["Model gains the Martial Artist rule."], targetModels: ["Sidekick", "Free Agent"] }, // Note: targetModels uses ranks here; adjust if needed
-    { name: "Mentor", fundingCost: 100, repCost: 3, maxPerCrew: 1, conditions: ["Bruce Wayne in crew"], effects: ["Model gains the Hidden Boss rule."], targetModels: ["Sidekick", "Free Agent"] },
-    { name: "Hidden Magazine", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne in crew"], effects: ["+1 to Ammunition for one weapon."], targetModels: ["Leader", "Sidekick"] },
-    { name: "Morality", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne in crew"], targetModels: ["Batman"], effects: ["Model gains Moral Compass and Demotivate rules."] },
-    { name: "Circus Training", fundingCost: 200, repCost: 5, maxPerCrew: 1, conditions: ["Dick Grayson in crew"], effects: ["Model gains the Acrobat rule."] },
-    { name: "Runner", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Dick Grayson in crew"], effects: ["Model gains the Tireless rule."] },
-    { name: "Command Center Support", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Oliver Queen in crew"], effects: ["Model gains the Scheming (2) rule."] },
-    { name: "Tactical Gloves", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Oliver Queen in crew"], targetModels: ["Oliver Queen"], effects: ["Gains Reinforced Gloves rule."] },
-    { name: "Hi-Tech Ammo", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Roy Harper in crew"], effects: ["One ranged weapon gains Bleed (2)."] },
-    { name: "Officer training", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Kathy Kane in crew"], effects: ["Model gains the Follow Me! rule."] },
-    { name: "Inspiring Presence", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Tim Drake in crew"], targetModels: ["Tim Drake"], effects: ["Model gains Leadership rule."] },
-    { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon in crew"], targetModels: ["Batgirl"], effects: ["Model gains Exhaustive Planner rule."] },
-    { name: "Deadly Weapons", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Red Hood (Arkham Knight) in crew"], targetModels: ["Red Hood Arkham Knight"], effects: ["Weapons gain the Silencer rule."] },
-    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon in crew"], targetModels: ["James Gordon"], effects: ["Enhances Air Support (details in desc)."] },
-    { name: "Sergeant Training", fundingCost: 50, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon in crew"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true }
+    { name: "Upgraded Batsuit", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne"], targetModels: ["Bruce Wayne"], effects: ["+1 to Endurance."] },
+    { name: "Kevlar Cowl", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne"], targetModels: ["Bruce Wayne"], effects: ["Immunity to CRT."] },
+    { name: "EMP", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne"], effects: ["Model Gains the EMP rule."] },
+    { name: "Martial Arts Training", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Bruce Wayne"], effects: ["Model gains the Martial Artist rule."], targetModels: ["Sidekick", "Free Agent"] }, // Note: targetModels uses ranks here; adjust if needed
+    { name: "Mentor", fundingCost: 100, repCost: 3, maxPerCrew: 1, conditions: ["Bruce Wayne"], effects: ["Model gains the Hidden Boss rule."], targetModels: ["Sidekick", "Free Agent"] },
+    { name: "Hidden Magazine", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne"], effects: ["+1 to Ammunition for one weapon."], targetModels: ["Leader", "Sidekick"] },
+    { name: "Morality", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Bruce Wayne"], targetModels: ["Batman"], effects: ["Model gains Moral Compass and Demotivate rules."] },
+    { name: "Circus Training", fundingCost: 200, repCost: 5, maxPerCrew: 1, conditions: ["Dick Grayson"], effects: ["Model gains the Acrobat rule."] },
+    { name: "Runner", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Dick Grayson"], effects: ["Model gains the Tireless rule."] },
+    { name: "Command Center Support", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Oliver Queen"], effects: ["Model gains the Scheming (2) rule."] },
+    { name: "Tactical Gloves", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Oliver Queen"], targetModels: ["Oliver Queen"], effects: ["Gains Reinforced Gloves rule."] },
+    { name: "Hi-Tech Ammo", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Roy Harper"], effects: ["One ranged weapon gains Bleed (2)."] },
+    { name: "Officer training", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Kathy Kane"], effects: ["Model gains the Follow Me! rule."] },
+    { name: "Inspiring Presence", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Tim Drake"], targetModels: ["Tim Drake"], effects: ["Model gains Leadership rule."] },
+    { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Batgirl"], effects: ["Model gains Exhaustive Planner rule."] },
+    { name: "Deadly Weapons", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Red Hood (Arkham Knight)"], targetModels: ["Red Hood Arkham Knight"], effects: ["Weapons gain the Silencer rule."] },
+    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["Enhances Air Support (details in desc)."] },
+    { name: "Sergeant Training", fundingCost: 50, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true }
   ],
   "Joker": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -46,12 +46,12 @@ const equipmentByFaction = {
     { name: "Poison Training", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Poison Master trait."] },
     { name: "Mental Torture", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Aggressive Schizophrenia trait."] },
     { name: "Joker's Gas", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Joker's Gas trait."] },
-    { name: "Nerve Gas", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Joker in crew"], effects: ["Model gains the Sturdy rule."] },
-    { name: "Sexy Costume", fundingCost: 300, repCost: 5, maxPerCrew: 1, conditions: ["Harleen Quinzel in crew"], effects: ["Model gains the Disarray rule."] },
-    { name: "Pole Dancer", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Harleen Quinzel in crew"], effects: ["Model gains Escape Artist rule."] },
-    { name: "Enhanced Gas", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Gaggy in crew"], targetModels: ["Leader", "Sidekick"], effects: ["Enhances Nerve effect within 8\"."] },
-    { name: "Rusty Tools", fundingCost: 200, repCost: 2, maxPerCrew: 1, conditions: ["Duela Dent in crew"], effects: ["Model gains the Cruel rule."] },
-    { name: "Brutal Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Mr. Hammer in crew"], effects: ["Model gains the Savage Fighter rule."] }
+    { name: "Nerve Gas", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Joker"], effects: ["Model gains the Sturdy rule."] },
+    { name: "Sexy Costume", fundingCost: 300, repCost: 5, maxPerCrew: 1, conditions: ["Harleen Quinzel"], effects: ["Model gains the Disarray rule."] },
+    { name: "Pole Dancer", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Harleen Quinzel"], effects: ["Model gains Escape Artist rule."] },
+    { name: "Enhanced Gas", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Gaggy"], targetModels: ["Leader", "Sidekick"], effects: ["Enhances Nerve effect within 8\"."] },
+    { name: "Rusty Tools", fundingCost: 200, repCost: 2, maxPerCrew: 1, conditions: ["Duela Dent"], effects: ["Model gains the Cruel rule."] },
+    { name: "Brutal Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Mr. Hammer"], effects: ["Model gains the Savage Fighter rule."] }
   ],
   "Penguin": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -64,8 +64,8 @@ const equipmentByFaction = {
     { name: "Biker Jacket", fundingCost: 100, repCost: 0, maxPerCrew: 3, conditions: [], effects: ["Model gains the Hockey Gear trait."] },
     { name: "Helmet", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Hardened trait."] },
     { name: "Raised on the Streets", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Plead trait."] },
-    { name: "Ostentatious Clothes", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Oswald C. Cobblepot in crew"], effects: ["Model gains the Goad rule."] },
-    { name: "Trained Mobsters", fundingCost: 250, repCost: 2, maxPerCrew: 2, conditions: ["Emperor Penguin in crew"], effects: ["+2 Endurance."] },
+    { name: "Ostentatious Clothes", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Oswald C. Cobblepot"], effects: ["Model gains the Goad rule."] },
+    { name: "Trained Mobsters", fundingCost: 250, repCost: 2, maxPerCrew: 2, conditions: ["Emperor Penguin"], effects: ["+2 Endurance."] },
     { name: "Neurotoxic Drugs", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["+2 Movement and Dodge trait."] },
     { name: "Silencer", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["One ranged weapon gains Silencer trait."] },
     { name: "Weird Ammo", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["Ranged attacks gain Enervating 2 or Anti-tank."] },
@@ -86,21 +86,21 @@ const equipmentByFaction = {
     { name: "Camo Vest", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Model gains the Stealth rule."] },
     { name: "Gas Mask", fundingCost: 150, repCost: 0, maxPerCrew: 3, conditions: [], effects: ["Model gains the Gas Mask rule."] },
     { name: "War Hardened", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Cruel trait."] },
-    { name: "Handcuffs", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bane in crew"], effects: ["Model gains the Arrest rule."] },
-    { name: "Venom Laboratory", fundingCost: 100, repCost: 5, maxPerCrew: 1, conditions: ["Bane in crew"], targetModels: ["Leader", "Sidekick"], effects: ["All models can use >1 Titan Dose; Venom Dose cost $50; model removed from play."] },
-    { name: "Venom Applicator", fundingCost: 0, repCost: 2, maxPerCrew: 2, conditions: ["Bane in crew"], effects: ["Can use Titan/Venom on friendly model in contact."] },
-    { name: "Military Progress", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Bird in crew"], effects: ["Model gains Veteran rule."] },
-    { name: "Dual Handguns", fundingCost: 300, repCost: 7, maxPerCrew: 1, conditions: ["Thomas Wayne in crew"], targetModels: ["Thomas Wayne"], effects: ["Gains Rapid Fire and Dual Handguns weapon."], isUnaffectedByBroken: true },
-    { name: "Surgeon Training", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Thomas Wayne in crew"], effects: ["Model gains the Medic trait."] },
-    { name: "Fear Gas Dispenser", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight) in crew"], effects: ["Model gains the Inspire Fear rule."] },
-    { name: "Secret Laboratory", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight) in crew"], targetModels: ["Scarecrow"], effects: ["Enhances Inspire Fear for 2 henchmen."], isUnaffectedByBroken: true },
-    { name: "Radio", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Jason Todd in crew"], effects: ["Always within Inspire range."] },
-    { name: "Hidden Magazines", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd in crew"], targetModels: ["Jason Todd"], effects: ["+1 Magazines to one weapon."] },
-    { name: "Cybernetic Arms", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd in crew"], targetModels: ["Jason Todd"], effects: ["Gains Reinforced Gloves rule."] },
-    { name: "Arkham Knight Secret Armour", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd in crew"], effects: ["One ranged weapon gains Acid rule."] },
-    { name: "Hook Pistol", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd in crew", "Jason Todd is Boss"], targetModels: ["Jason Todd"], effects: ["Gains Grapple Gun and Electric Hook weapon."] },
-    { name: "Martial Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson in crew"], effects: ["Model gains Martial Artist and Master Fighter rules."] },
-    { name: "Contract", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson in crew"], targetModels: ["Slade Wilson"], effects: ["Gains rank Leader or Sidekick."], isUnaffectedByBroken: true }
+    { name: "Handcuffs", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bane"], effects: ["Model gains the Arrest rule."] },
+    { name: "Venom Laboratory", fundingCost: 100, repCost: 5, maxPerCrew: 1, conditions: ["Bane"], targetModels: ["Leader", "Sidekick"], effects: ["All models can use >1 Titan Dose; Venom Dose cost $50; model removed from play."] },
+    { name: "Venom Applicator", fundingCost: 0, repCost: 2, maxPerCrew: 2, conditions: ["Bane"], effects: ["Can use Titan/Venom on friendly model in contact."] },
+    { name: "Military Progress", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Bird"], effects: ["Model gains Veteran rule."] },
+    { name: "Dual Handguns", fundingCost: 300, repCost: 7, maxPerCrew: 1, conditions: ["Thomas Wayne"], targetModels: ["Thomas Wayne"], effects: ["Gains Rapid Fire and Dual Handguns weapon."], isUnaffectedByBroken: true },
+    { name: "Surgeon Training", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Thomas Wayne"], effects: ["Model gains the Medic trait."] },
+    { name: "Fear Gas Dispenser", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight)"], effects: ["Model gains the Inspire Fear rule."] },
+    { name: "Secret Laboratory", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight)"], targetModels: ["Scarecrow"], effects: ["Enhances Inspire Fear for 2 henchmen."], isUnaffectedByBroken: true },
+    { name: "Radio", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Jason Todd"], effects: ["Always within Inspire range."] },
+    { name: "Hidden Magazines", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], targetModels: ["Jason Todd"], effects: ["+1 Magazines to one weapon."] },
+    { name: "Cybernetic Arms", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], targetModels: ["Jason Todd"], effects: ["Gains Reinforced Gloves rule."] },
+    { name: "Arkham Knight Secret Armour", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], effects: ["One ranged weapon gains Acid rule."] },
+    { name: "Hook Pistol", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd", "Jason Todd is Boss"], targetModels: ["Jason Todd"], effects: ["Gains Grapple Gun and Electric Hook weapon."] },
+    { name: "Martial Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson"], effects: ["Model gains Martial Artist and Master Fighter rules."] },
+    { name: "Contract", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson"], targetModels: ["Slade Wilson"], effects: ["Gains rank Leader or Sidekick."], isUnaffectedByBroken: true }
   ],
   "Court of Owls": [
     { name: "Magazine", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Only Henchman/Free Agents"], effects: ["+1 to Ammunition for one weapon."] },
@@ -115,8 +115,8 @@ const equipmentByFaction = {
     { name: "Hunter Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Only Henchman/Free Agents"], effects: ["Model gains the Sneaking rule."] },
     { name: "Ancient Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Only Henchman/Free Agents"], effects: ["Model gains Master Fighter rule."] },
     { name: "Circus Grooming", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Henchman/Free Agents"], effects: ["Model gains Combat Flip rule."] },
-    { name: "Lords of Gotham", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["The Court in crew"], targetModels: ["The Court"], effects: ["Generates 1 extra Sewer marker."] },
-    { name: "Talon Serum Infusion", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Lincoln March in crew"], targetModels: ["Lincoln March"], effects: ["Enhances Reanimated Owl models (details in desc)."] }
+    { name: "Lords of Gotham", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["The Court"], targetModels: ["The Court"], effects: ["Generates 1 extra Sewer marker."] },
+    { name: "Talon Serum Infusion", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Lincoln March"], targetModels: ["Lincoln March"], effects: ["Enhances Reanimated Owl models (details in desc)."] }
   ],
   "The Riddler": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -126,15 +126,15 @@ const equipmentByFaction = {
     { name: "Broken Equipment Pack", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Disables one enemy equipment pre-game."] },
     { name: "Gas Mask", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Gas Mask rule."] },
     { name: "Another One!", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Model gains the Drop a Riddle trait."] },
-    { name: "Level Up", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler in crew"], targetModels: ["The Riddler"], effects: ["Place up to 2 extra Suspect markers in first 2 turns."] },
-    { name: "It's a Dud", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Quell in crew"], effects: ["Remove 1 Riddle marker at activation start."] },
-    { name: "Inspiration", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Echo in crew"], effects: ["Search Objective deck when playing a card."] },
-    { name: "Weird Ammo", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Query in crew"], effects: ["Ranged weapons gain Enervating (2) or Anti-Tank."] },
+    { name: "Level Up", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler"], targetModels: ["The Riddler"], effects: ["Place up to 2 extra Suspect markers in first 2 turns."] },
+    { name: "It's a Dud", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Quell"], effects: ["Remove 1 Riddle marker at activation start."] },
+    { name: "Inspiration", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Echo"], effects: ["Search Objective deck when playing a card."] },
+    { name: "Weird Ammo", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Query"], effects: ["Ranged weapons gain Enervating (2) or Anti-Tank."] },
     { name: "Battle Bot", fundingCost: 250, repCost: 3, maxPerCrew: 1, conditions: ["Model has Bot trait"], effects: ["Model gains the Claws rule."] },
     { name: "Shock Droid", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Model has Bot trait"], effects: ["Model gains the CRT: Stunned rule."] },
     { name: "Improved Chassis MK", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Model has Bot trait"], effects: ["The model gains Tireless rule."] },
-    { name: "Improved Armor", fundingCost: 250, repCost: 2, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight) in crew"], targetModels: ["The Riddler"], effects: ["Bots gain Light Armor Trait."], isUnaffectedByBroken: true },
-    { name: "Enhanced Servo-engines", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight) in crew"], targetModels: ["Riddler's Mech"], effects: ["+1 Movement and Combo: Mechanic Claw."], isUnaffectedByBroken: true }
+    { name: "Improved Armor", fundingCost: 250, repCost: 2, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight)"], targetModels: ["The Riddler"], effects: ["Bots gain Light Armor Trait."], isUnaffectedByBroken: true },
+    { name: "Enhanced Servo-engines", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight)"], targetModels: ["Riddler's Mech"], effects: ["+1 Movement and Combo: Mechanic Claw."], isUnaffectedByBroken: true }
   ],
   "Mr. Freeze": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -144,10 +144,10 @@ const equipmentByFaction = {
     { name: "Scope", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["One ranged weapon gains the Scope rule."] },
     { name: "Gas Mask", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Gas Mask rule."] },
     { name: "Cool Generator", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Stop! rule."] },
-    { name: "Freeze Generator", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Victor Fries in crew"], effects: ["Model gains Shockwave rule."] },
-    { name: "Engineer Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Victor Fries in crew"], effects: ["Model gains the Handyman rule."] },
-    { name: "Queen's Chosen", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Killer Frost in crew"], effects: ["Model gains the Bodyguard rule."] },
-    { name: "Ivy's Snow Coat", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Poison Ivy (1997) in crew"], targetModels: ["Poison Ivy"], effects: ["Model gains the Cold Acclimation trait."] }
+    { name: "Freeze Generator", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Victor Fries"], effects: ["Model gains Shockwave rule."] },
+    { name: "Engineer Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Victor Fries"], effects: ["Model gains the Handyman rule."] },
+    { name: "Queen's Chosen", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Killer Frost"], effects: ["Model gains the Bodyguard rule."] },
+    { name: "Ivy's Snow Coat", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Poison Ivy (1997)"], targetModels: ["Poison Ivy"], effects: ["Model gains the Cold Acclimation trait."] }
   ],
   "League of Shadows": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -160,12 +160,12 @@ const equipmentByFaction = {
     { name: "Venom Dose", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains one Venom Dose."] },
     { name: "Precise Orders", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains Chain of Command."] },
     { name: "Pure Lazarus", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Leader", "Sidekick"], effects: ["Model gains the Regeneration trait."] },
-    { name: "Ancient Weapon", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Ra's al Ghul in crew"], effects: ["Close combat attacks gain Bleed(1)."] },
-    { name: "Shadow Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Talia al Ghul in crew"], effects: ["Model gains the Undercover trait."] },
-    { name: "Unarmed Combat Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Lady Shiva in crew"], effects: ["Model gains the Close Combat Master trait."] },
-    { name: "Poison Training", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Cheshire in crew"], effects: ["Model gains the Poison Master trait."] },
-    { name: "Military Progress", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Bane in crew"], effects: ["Model gains the Veteran trait."] },
-    { name: "Bow Training", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Nyssa al Ghul in crew"], effects: ["Model gains the Shooter rule."] }
+    { name: "Ancient Weapon", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Ra's al Ghul"], effects: ["Close combat attacks gain Bleed(1)."] },
+    { name: "Shadow Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Talia al Ghul"], effects: ["Model gains the Undercover trait."] },
+    { name: "Unarmed Combat Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Lady Shiva"], effects: ["Model gains the Close Combat Master trait."] },
+    { name: "Poison Training", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Cheshire"], effects: ["Model gains the Poison Master trait."] },
+    { name: "Military Progress", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Bane"], effects: ["Model gains the Veteran trait."] },
+    { name: "Bow Training", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Nyssa al Ghul"], effects: ["Model gains the Shooter rule."] }
   ],
   "Birds of Prey": [
     { name: "Spray Can", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Model gains 1 Spray Can."] },
@@ -178,15 +178,15 @@ const equipmentByFaction = {
     { name: "Spikes Mutation", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Only Plants"], effects: ["Model gains the Claws rule."] },
     { name: "Luminescent Mutation", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Plants"], effects: ["Model gains the Lantern rule."] },
     { name: "Large Roots", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Only Plants"], effects: ["Models within action radius suffer Impaired Movement."] },
-    { name: "Smash 'n Grab", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dr. Harleen Quinzel in crew"], effects: ["Close Combat attacks gain the Steal trait."] },
-    { name: "Corrosive Blood", fundingCost: 50, repCost: 0, maxPerCrew: 3, conditions: ["Dr. Pamela Lilian Isley in crew"], effects: ["On casualty, contact models take 🩸 if fail Endurance."] },
-    { name: "Mutation Serum", fundingCost: 200, repCost: 3, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley in crew"], effects: ["Model gains Tough Skin and Desensitized traits."] },
-    { name: "Modified Pheromones", fundingCost: 150, repCost: 5, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley in crew"], targetModels: ["Leader", "Sidekick", "Free Agent"], effects: ["Control Pheromones targets 2 enemies."] },
-    { name: "Ancient Plants", fundingCost: 200, repCost: 40, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley in crew"], effects: ["Invulnerability (1), Tough Skin, +1 skills (except Endurance), +3 Endurance, 6\" action radius."], isUnaffectedByBroken: true },
-    { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon in crew"], targetModels: ["Barbara Gordon"], effects: ["Model gains Exhaustive Planner rule."] },
-    { name: "Radio", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon in crew"], effects: ["Always within Boss's Inspire range."] },
-    { name: "Pitch Perfect Vocals", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dinah Lance in crew"], targetModels: ["Dinah Lance"], effects: ["Model gains the Mixed Combat Style trait."] },
-    { name: "Passage", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Alec Holland in crew"], effects: ["Model gains the Undercover rule."] }
+    { name: "Smash 'n Grab", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dr. Harleen Quinzel"], effects: ["Close Combat attacks gain the Steal trait."] },
+    { name: "Corrosive Blood", fundingCost: 50, repCost: 0, maxPerCrew: 3, conditions: ["Dr. Pamela Lilian Isley"], effects: ["On casualty, contact models take 🩸 if fail Endurance."] },
+    { name: "Mutation Serum", fundingCost: 200, repCost: 3, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley"], effects: ["Model gains Tough Skin and Desensitized traits."] },
+    { name: "Modified Pheromones", fundingCost: 150, repCost: 5, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley"], targetModels: ["Leader", "Sidekick", "Free Agent"], effects: ["Control Pheromones targets 2 enemies."] },
+    { name: "Ancient Plants", fundingCost: 200, repCost: 40, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley"], effects: ["Invulnerability (1), Tough Skin, +1 skills (except Endurance), +3 Endurance, 6\" action radius."], isUnaffectedByBroken: true },
+    { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Barbara Gordon"], effects: ["Model gains Exhaustive Planner rule."] },
+    { name: "Radio", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], effects: ["Always within Boss's Inspire range."] },
+    { name: "Pitch Perfect Vocals", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dinah Lance"], targetModels: ["Dinah Lance"], effects: ["Model gains the Mixed Combat Style trait."] },
+    { name: "Passage", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Alec Holland"], effects: ["Model gains the Undercover rule."] }
   ],
   "Organized Crime": [
     { name: "Magazine", fundingCost: 150, repCost: 0, maxPerCrew: 3, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -203,16 +203,16 @@ const equipmentByFaction = {
     { name: "Rusty Tools", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Cruel trait."] },
     { name: "Planted Evidence", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Model has Cop trait"], effects: ["Model gains the Evidence Tampering trait."] },
     { name: "Abuse the Badge", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Model has Cop trait"], effects: ["Model gains the Interrogation trait."] },
-    { name: "Psychotic", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Roman Sionis in crew"], targetModels: ["Black Mask"], effects: ["Gain Protect Me! rule."] },
-    { name: "Mob Payroll", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Carmine Falcone in crew"], targetModels: ["Carmine Falcone"], effects: ["Model gains the Corrupt trait."] },
-    { name: "Long Guns", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Salvatore Maroni in crew"], effects: ["Up to 3 Henchmen weapons get Medium Range."] },
-    { name: "Mafia", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Arnold Wesker in crew"], effects: ["Model gains the Criminal trait."] },
-    { name: "Broken Equipment", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch in crew"], effects: ["Disables one enemy equipment pre-game."] },
-    { name: "Weird Device", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Jervis Tetch in crew"], effects: ["Model gains the Goad trait."] },
-    { name: "Trained Mind", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch in crew"], effects: ["Model gains Desensitized rule."] },
-    { name: "Rhyme with Me", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch in crew"], effects: ["Model gains Disarray rule."] },
-    { name: "Masks of Wonderland", fundingCost: 200, repCost: 0, maxPerCrew: 3, conditions: ["Jervis Tetch in crew"], effects: ["Choose one mask: Queen of Hearts (Assassin 1, Order), White Rabbit (Fast, Tireless), Cheshire Cat (Stealth, Climbing Claws)."] },
-    { name: "Advanced Weaponry", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Alexander Joseph Luthor in crew"], effects: ["One ranged weapon gains Accurate trait."] }
+    { name: "Psychotic", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Roman Sionis"], targetModels: ["Black Mask"], effects: ["Gain Protect Me! rule."] },
+    { name: "Mob Payroll", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Carmine Falcone"], targetModels: ["Carmine Falcone"], effects: ["Model gains the Corrupt trait."] },
+    { name: "Long Guns", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Salvatore Maroni"], effects: ["Up to 3 Henchmen weapons get Medium Range."] },
+    { name: "Mafia", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Arnold Wesker"], effects: ["Model gains the Criminal trait."] },
+    { name: "Broken Equipment", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], effects: ["Disables one enemy equipment pre-game."] },
+    { name: "Weird Device", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Jervis Tetch"], effects: ["Model gains the Goad trait."] },
+    { name: "Trained Mind", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], effects: ["Model gains Desensitized rule."] },
+    { name: "Rhyme with Me", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], effects: ["Model gains Disarray rule."] },
+    { name: "Masks of Wonderland", fundingCost: 200, repCost: 0, maxPerCrew: 3, conditions: ["Jervis Tetch"], effects: ["Choose one mask: Queen of Hearts (Assassin 1, Order), White Rabbit (Fast, Tireless), Cheshire Cat (Stealth, Climbing Claws)."] },
+    { name: "Advanced Weaponry", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Alexander Joseph Luthor"], effects: ["One ranged weapon gains Accurate trait."] }
   ],
   "Scarecrow": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -225,8 +225,8 @@ const equipmentByFaction = {
     { name: "Terror Invigoration", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["+X dice to Attack/Defense (X = Defense Pile cards)."] },
     { name: "Terror Pile", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Only Nightmares"], effects: ["Model gains the Fear Dampening trait."] },
     { name: "Terrible Visage", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["Model gains the Terrible Visage trait."] },
-    { name: "Intense Fear", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Scarecrow in crew"], effects: ["Model gains the Intense Fear trait."] },
-    { name: "Working in Advance", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dr. Fritawa in crew"], effects: ["Model gains the Working in Advance trait."] }
+    { name: "Intense Fear", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Scarecrow"], effects: ["Model gains the Intense Fear trait."] },
+    { name: "Working in Advance", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dr. Fritawa"], effects: ["Model gains the Working in Advance trait."] }
   ],
   "Royal Flush": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -240,8 +240,8 @@ const equipmentByFaction = {
     { name: "The Good King", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Leader"], effects: ["Model gains the Leadership trait."] },
     { name: "King's Call", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Leader"], effects: ["Place removed For My Lords! model; opponent gains Pass."] },
     { name: "Last Service", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Sidekick"], effects: ["On friendly casualty within 8\"/LoS, search Objective deck."] },
-    { name: "Punchline's Toys", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Punchline in crew"], effects: ["Model gains the Poison Device trait."] },
-    { name: "Poison Training", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Punchline in crew"], targetModels: ["Punchline"], effects: ["Model gains the Poison Master trait."] }
+    { name: "Punchline's Toys", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Punchline"], effects: ["Model gains the Poison Device trait."] },
+    { name: "Poison Training", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Punchline"], targetModels: ["Punchline"], effects: ["Model gains the Poison Master trait."] }
   ],
   "Suicide Squad": [
     { name: "Airborne Deployment", fundingCost: 300, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Reserve one model; deploy round 2+ on board edge."] },
@@ -249,9 +249,9 @@ const equipmentByFaction = {
     { name: "Magazine", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
     { name: "Back on Track", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Reset Task counter with Cranial Bomb."] },
     { name: "Right Motivation", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Free Manipulate action if no Task counter."] },
-    { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy in crew"], effects: ["Enhances Control Pheromones (details in desc)."] },
-    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team) in crew"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
-    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team) in crew"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
+    { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy"], effects: ["Enhances Control Pheromones (details in desc)."] },
+    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team)"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
+    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team)"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
    ]
 
 };
@@ -3348,6 +3348,1256 @@ const models = [
     "weapons": []
   },
 
+ 
+//---------------------------------------------------------------------------------------------------------// 
+//League of Assassins
+//---------------------------------------------------------------------------------------------------------// 
+
+  {
+    "name": "League Acolyte 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 27,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/LeagueAcolyte1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Sneak Attack",
+      "Martial Expert"
+    ],
+    "weapons": [
+      {
+        "name": "Scimitar",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Mercenary 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows", "Bane"],
+    "img": "https://veland55.github.io/btb/img/Mercenary1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Veteran",
+      "Mercenary"
+    ],
+    "weapons": [
+      {
+        "name": "Axe",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Mercenary 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 250,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows", "Bane"],
+    "img": "https://veland55.github.io/btb/img/Mercenary2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Reinforced Gloves",
+      "Veteran",
+      "Mercenary",
+      "Tough Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸 ★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "League Acolyte 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/LeagueAcolyte2.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Martial Expert",
+      "Combo (Knives)"
+    ],
+    "weapons": [
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Sharp / S. Range / Throwing"
+      },
+      {
+        "name": "Knives",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Ubu",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 66,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/Ubu.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bodyguard",
+      "Large",
+      "Martial Artist",
+      "Inspire Fear",
+      "Lieutenant (Ra's al Ghul)",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Huge Scimitar",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Reach (1) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Hassassin 4",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/Hassassin4.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Assassin (1)",
+      "Scout",
+      "Martial Expert"
+    ],
+    "weapons": [
+      {
+        "name": "Bhuj",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (2) / Sharp"
+      },
+      {
+        "name": "Hidden Blade",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Miranda Tate",
+    "realname": "Talia al Ghul",
+    "base": "30mm",
+    "rep": 53,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/MirandaTate.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Charm",
+      "Millionaire",
+      "True Love (Bane)",
+      "Disguised Sneak Attack",
+      "Scheming (3)",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Goliath",
+    "realname": "Goliath",
+    "base": "60mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family", "GCPD", "League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/Goliath.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 2,
+      "Strength": "2+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 10
+    },
+    "traits": [
+      "Animal",
+      "Bodyguard",
+      "Fly",
+      "Meet Goliath!",
+      "Tough Skin",
+      "Bat Family",
+      "Carry",
+      "Huge",
+      "Teen Titans",
+      "True Love (Damian Wayne)"
+    ],
+    "weapons": [
+      {
+        "name": "Claws & Teeth",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Hassassin 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/Hassassin1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Martial Expert"
+    ],
+    "weapons": [
+      {
+        "name": "Poisoned Scimitar",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Sharp / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Talia Rebirth",
+    "realname": "Talia al Ghul",
+    "base": "40mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Leader", "Sidekick"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/TaliaRebirth.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 11,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Manipulative",
+      "Mind Control Substance",
+      "Scheming (3)",
+      "True Love (Damian Wayne)",
+      "Business Agent",
+      "Martial Artist",
+      "Order",
+      "Strategist",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Twin Scimitars",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Overwhelming / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "The Heretic",
+    "realname": "Damian Wayne Clone",
+    "base": "40mm",
+    "rep": 89,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/TheHeretic.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Desensitized",
+      "Juggernaut",
+      "Light Armor",
+      "Reinforced Gloves",
+      "Devastating Blow",
+      "Large",
+      "Master Fighter",
+      "Unstoppable"
+    ],
+    "weapons": [
+      {
+        "name": "Great Sword",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (1) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "League Acolyte 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/LeagueAcolyte3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Martial Expert",
+      "Falconry"
+    ],
+    "weapons": [
+      {
+        "name": "Bow",
+        "damage": "🩸 🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Poisoned Arrow",
+        "damage": "🩸 🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Aim / Caustic / Mechanical / Poison / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "League Acolyte 4",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 25,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/LeagueAcolyte4.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Martial Expert",
+      "Good Aim"
+    ],
+    "weapons": [
+      {
+        "name": "Bow",
+        "damage": "🩸 🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Enervating Arrow",
+        "damage": "🩸 🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Aim / Explosive / Gas / Mechanical / Enervating (2) / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Hassassin 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/Hassassin3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Martial Expert"
+    ],
+    "weapons": [
+      {
+        "name": "Scimitar",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Sharp"
+      },
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Sharp / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Cheshire",
+    "realname": "Jade Nguyen",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/Cheshire.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Combo (Poisoned Sai)",
+      "Poison Master",
+      "Toxicologist",
+      "Agile",
+      "Poison Catalyst",
+      "Reflexes"
+    ],
+    "weapons": [
+      {
+        "name": "Poisoned Sword",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Poison"
+      },
+      {
+        "name": "Poisoned Sai",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Defensive / Handy / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Hassassin 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/Hassassin2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Tension",
+      "Martial Expert"
+    ],
+    "weapons": [
+      {
+        "name": "Scimitar",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Bane Dark Knight Rises",
+    "realname": "Bane",
+    "base": "30mm",
+    "rep": 97,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["League of Shadows", "Bane"],
+    "img": "https://veland55.github.io/btb/img/BaneDKR.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Born in the Darkness",
+      "Combo (Unarmed)",
+      "Kill Them!",
+      "Runaway",
+      "True Love (Talia)",
+      "Close Combat Master",
+      "Desensitized",
+      "Reinforced Gloves",
+      "Strategist"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Ra's al Ghul",
+    "realname": "Ra's al Ghul",
+    "base": "40mm / 60mm",
+    "rep": 120,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/RasAlGhul.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Arrogant",
+      "Elite Boss (Ninja)",
+      "Immortal",
+      "Martial Artist",
+      "Shadows Command",
+      "Veteran",
+      "Deadly Strike",
+      "Exhaustive Planner",
+      "Lazarus Pit Owner",
+      "Mastermind",
+      "Strategist",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Ancient Sword",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Barsad",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 38,
+    "funding": 600,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows", "Bane"],
+    "img": "https://veland55.github.io/btb/img/Barsad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Precise Aim",
+      "Mercenary",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Assault Rifle",
+        "damage": "🩸 🩸 🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm"
+      }
+    ]
+  },
+
+//---------------------------------------------------------------------------------------------------------// 
+//Two-Face
+//---------------------------------------------------------------------------------------------------------// 
+
+  {
+    "name": "Gangster 1",
+    "realname": "Tommy",
+    "base": "30mm",
+    "rep": 39,
+    "funding": 450,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Gangster1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Gangsters",
+      "Shooter",
+      "Criminal",
+      "Hardened"
+    ],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸 🩸 ★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Reload / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Gangster 3",
+    "realname": "Wallace",
+    "base": "30mm",
+    "rep": 36,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Gangster3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Follow Me!",
+      "Hardened",
+      "Criminal",
+      "Gangsters",
+      "Precise Aim"
+    ],
+    "weapons": [
+      {
+        "name": "Winchester",
+        "damage": "🩸 🩸 🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / Reload / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Sugar",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 51,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Sugar.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bluff",
+      "Distract",
+      "One of the Boys",
+      "Protect Me!",
+      "True Love (Harvey Dent)",
+      "Charm",
+      "Duo (Spice)",
+      "Order",
+      "Teamwork (2) (Spice)"
+    ],
+    "weapons": [
+      {
+        "name": "Derringer",
+        "damage": "🩸 🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / Reload / S. Range / Small Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Two-Face Tommy Lee Jones",
+    "realname": "Harvey Dent",
+    "base": "40mm",
+    "rep": 82,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/TwoFaceTommyLeeJones.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bank Robber",
+      "Coin Flip",
+      "Judgment",
+      "Sturdy",
+      "Vengeance",
+      "Bipolar Mental Disorder",
+      "Expert Marksman",
+      "Reinforced Gloves",
+      "Teamwork (1) (Sugar & Spice)"
+    ],
+    "weapons": [
+      {
+        "name": "Twin-Revolvers",
+        "damage": "🩸 🩸",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "M. Range / Firearm / High Caliber / Reload"
+      }
+    ]
+  },
+  {
+    "name": "Gangster 5",
+    "realname": "Stone",
+    "base": "30mm",
+    "rep": 29,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Gangster5.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Gangsters",
+      "Hardened",
+      "Criminal",
+      "Goad",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Steal"
+      }
+    ]
+  },
+  {
+    "name": "Two-Face",
+    "realname": "Harvey Dent",
+    "base": "40mm / 60mm",
+    "rep": 101,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/TwoFace.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Attorney's Allegation",
+      "Counter Argument",
+      "Expert Marksman",
+      "Gangsters",
+      "Rapid Reload",
+      "Runaway",
+      "Bipolar (Mental Disorder)",
+      "Evidence Tampering",
+      "Gang Lord",
+      "Judgment",
+      "Reinforced Gloves",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Reload / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Spice",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 51,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Spice.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "360° Strike",
+      "Cruel",
+      "One of the Boys",
+      "Protect Me!",
+      "True Love (Harvey Dent)",
+      "Charm",
+      "Duo (Sugar)",
+      "Order",
+      "Teamwork (2) (Sugar)"
+    ],
+    "weapons": [
+      {
+        "name": "Whip",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      },
+      {
+        "name": "Derringer",
+        "damage": "🩸 🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / Reload / S. Range / Small Caliber"
+      }
+    ]
+  },
+  {
+    "name": "The Hitman",
+    "realname": "Maguire",
+    "base": "30mm",
+    "rep": 34,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/TheHitman.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Assassin (2)",
+      "Concealment",
+      "Frightening Reputation",
+      "Cleaning the Scene",
+      "Criminal",
+      "Gangsters"
+    ],
+    "weapons": [
+      {
+        "name": "Torture Tools",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Steal"
+      },
+      {
+        "name": "Concealed Revolver",
+        "damage": "🩸 🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Short Range / Firearm / High Caliber / Reload / Concealed"
+      }
+    ]
+  },
+  {
+    "name": "Gangster 7",
+    "realname": "Sergio",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Gangster7.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Gangsters",
+      "Hardened",
+      "Criminal",
+      "Good Aim"
+    ],
+    "weapons": [
+      {
+        "name": "Bolt Action Rifle",
+        "damage": "🩸 🩸 🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Accurate / Aim / Firearm / Reload / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Gangster 6",
+    "realname": "Luigi",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 450,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Gangster6.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Gangsters",
+      "Rapid Reload",
+      "Criminal",
+      "Hardened"
+    ],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸 🩸 ★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Reload / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Gangster 2",
+    "realname": "Malone",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Gangster2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Gangsters",
+      "Instinctive Shooting",
+      "Criminal",
+      "Hardened"
+    ],
+    "weapons": [
+      {
+        "name": "Manual Shotgun",
+        "damage": "🩸 🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Firearm / Reload"
+      }
+    ]
+  },
+  {
+    "name": "Gangster 4",
+    "realname": "Giuseppe",
+    "base": "30mm",
+    "rep": 29,
+    "funding": 150,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/Gangster4.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (1)",
+      "Gangsters",
+      "Rapid Reload",
+      "Criminal",
+      "Hardened"
+    ],
+    "weapons": [
+      {
+        "name": "Revolver",
+        "damage": "🩸 🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / Reload / S. Range / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Two-Face Arkham City",
+    "realname": "Harvey Dent",
+    "base": "30mm",
+    "rep": 99,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/TwoFaceArkhamCity.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Attorney's Allegation",
+      "Coin Flip",
+      "Judgment",
+      "Order in the Court",
+      "Sturdy",
+      "Bipolar (Mental Disorder)",
+      "Expert Marksman",
+      "Listen to the Coin",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Reload / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Killer Croc Thug",
+    "realname": "Waylon Jones",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/KillerCrocThug.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Amphibious",
+      "Gambling Time",
+      "Large",
+      "Tough Skin",
+      "Criminal",
+      "Gangsters",
+      "Raised in the Sewers"
+    ],
+    "weapons": [
+      {
+        "name": "Expeditious Fighter",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Big John",
+    "realname": "Jonathan Miers",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Two-Face"],
+    "img": "https://veland55.github.io/btb/img/BigJohn.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Assassin (1)",
+      "Gangsters",
+      "Large",
+      "Criminal",
+      "Hardened",
+      "Unstoppable"
+    ],
+    "weapons": [
+      {
+        "name": "Mining Pick",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Overwhelming"
+      }
+    ]
+  },
 
 //---------------------------------------------------------------------------------------------------------// 
 //Birds of Prey
@@ -5233,9 +6483,847 @@ const models = [
 
 
 //--------------------------------------------------------------------------------------------------------------------
-//CULTS
+//Cults
 //--------------------------------------------------------------------------------------------------------------------
 
+  {
+    "name": "Ratface",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 35,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Ratface.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Lord of the Sewers",
+      "Served Well",
+      "Death Pack",
+      "Fervent Follower",
+      "Punishment",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Kobra",
+    "realname": "Jeffrey Franklin Burr",
+    "base": "60mm",
+    "rep": 110,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Kobra.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 8
+    },
+    "traits": [
+      "Deadliest Man on Earth",
+      "Kobra Cultist",
+      "Order",
+      "Scheming (2)",
+      "Kobra Armor",
+      "Martial Artist",
+      "Poisoned Signs",
+      "Void Priest"
+    ],
+    "weapons": [
+      {
+        "name": "Hidden Sword",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Kobra's Attack",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Accurate"
+      }
+    ]
+  },
+  {
+    "name": "Naga Hazard Trooper 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/NagaHazardTrooper2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 6,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Discharge",
+      "Kobra Cultist",
+      "Hazard Armor",
+      "Raised in the Sewers"
+    ],
+    "weapons": [
+      {
+        "name": "Kobra Flamethrower",
+        "damage": "🩸 ★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Caustic / Expansive / Mechanical / Fire"
+      }
+    ]
+  },
+  {
+    "name": "The Nagas",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 34,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/TheNagas.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Hidden",
+      "Radio",
+      "Veteran",
+      "Kobra Cultist",
+      "Shady Dealings"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸 ★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Poisoned Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Crt (Paralyze) / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Jake",
+    "realname": "Jake Baker",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Jake.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Lieutenant (Deacon Blackfire)",
+      "Served Well",
+      "Undercity Knowledge",
+      "Death Pack",
+      "Fervent Follower",
+      "Protect Me!",
+      "Undercity Command"
+    ],
+    "weapons": [
+      {
+        "name": "SMG",
+        "damage": "🩸 🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      },
+      {
+        "name": "Drugs",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Enervating (3) / Hypnotize"
+      }
+    ]
+  },
+  {
+    "name": "Underworlder 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 14,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Underworlder1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Death Pack",
+      "Go My Little Birds"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Kobra Hybrid",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/KobraHybrid.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Desensitized",
+      "Large",
+      "Super Jump",
+      "Kobra Cultist",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Hybrid Strike",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crt (Paralyzed) / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Deacon Blackfire",
+    "realname": "Joseph Blackfire",
+    "base": "40mm / 60mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/DeaconBlackfire.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 8
+    },
+    "traits": [
+      "Aggressive Preach",
+      "Blackfire Totem",
+      "Don't Mind Me",
+      "Goad",
+      "Martyrdom",
+      "The Good Command",
+      "Blackfire Cultist",
+      "Death Pack",
+      "Exalt",
+      "Immortal",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Combat Machete",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Drugs",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Enervating (3) / Hypnotize"
+      }
+    ]
+  },
+  {
+    "name": "Underworlder Vagon 1",
+    "realname": "Unknown",
+    "base": "42x75mm",
+    "rep": 22,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/UnderworlderVagon1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Inertia",
+      "Charge",
+      "Don't Mind Me",
+      "Junk Hoarder"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Underworlder 2",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 16,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Underworlder2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Death Pack",
+      "Meow"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Cobra Swarm",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/CobraSwarm.png",
+    "stats": {
+      "Attack": 1,
+      "Defense": 1,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 1
+    },
+    "traits": [
+      "Animal",
+      "Poison Master",
+      "Kobra Swarm",
+      "Simple Mind"
+    ],
+    "weapons": [
+      {
+        "name": "Poisoned Fangs",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Caustic / Poison / Slow (1)"
+      }
+    ]
+  },
+  {
+    "name": "Young Woman",
+    "realname": "Sally",
+    "base": "40mm",
+    "rep": 45,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/YoungWoman.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Protect Me!",
+      "Terrible Revelation",
+      "Charm",
+      "Don't Mind Me",
+      "Righteous Vengeance"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Lancehead 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 12,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Lancehead1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Minion (3)",
+      "Kobra Cultist"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Lady Eve",
+    "realname": "Eve",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/LadyEve.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Fervent Follower",
+      "Kobra Cultist",
+      "Poison Catalyst",
+      "Weapon Master",
+      "Kobra Armor",
+      "Leadership",
+      "Void Priest"
+    ],
+    "weapons": [
+      {
+        "name": "Kobra Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Enervating (1)"
+      },
+      {
+        "name": "Kobra Gas",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Gas / Slow (4)"
+      }
+    ]
+  },
+  {
+    "name": "Underworlder 6",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 10,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Underworlder6.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Death Pack",
+      "Horde"
+    ],
+    "weapons": [
+      {
+        "name": "Grab",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Enervating (1)"
+      }
+    ]
+  },
+  {
+    "name": "Underworlder 4",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 10,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Underworlder4.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Death Pack",
+      "Horde"
+    ],
+    "weapons": [
+      {
+        "name": "Broken Glass",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "One Use / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Batman The Cult",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/BatmanTheCult.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bat Cape",
+      "Controlled by Drugs",
+      "Hidden",
+      "Master of Stealth",
+      "Sneak Attack",
+      "Vigilante's Work",
+      "Blackfire Cultist",
+      "Detective",
+      "I See the Light",
+      "Reinforced Gloves",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Batarangs",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Kobra Bestowed",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/KobraBestowed.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Kobra Cultist",
+      "Poisoned Signs",
+      "Void Priest",
+      "Poison Catalyst",
+      "Protect Me!"
+    ],
+    "weapons": [
+      {
+        "name": "Cobras",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Caustic / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Underworlder Vagon 2",
+    "realname": "Unknown",
+    "base": "42x75mm",
+    "rep": 26,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/UnderworlderVagon2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Death Pack",
+      "Inertia",
+      "Charge",
+      "Don't Mind Me",
+      "Light Armor"
+    ],
+    "weapons": [
+      {
+        "name": "Slap and Slash",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp / Blunt (2) / Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Underworlder 5",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 11,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Underworlder5.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Death Pack",
+      "Horde"
+    ],
+    "weapons": [
+      {
+        "name": "Tube",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Naga Hazard Trooper 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 38,
+    "funding": 500,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/NagaHazardTrooper1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 6,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Follow Me!",
+      "Kobra Cultist",
+      "Hazard Armor",
+      "Raised in the Sewers"
+    ],
+    "weapons": [
+      {
+        "name": "Custom SMG",
+        "damage": "🩸 🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range / Red Dot"
+      },
+      {
+        "name": "Attached Grenade Launcher",
+        "damage": "🩸 ★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Explosive / Firearm / Grenade / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Lancehead Captain",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/LanceheadCaptain.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Take Cover!",
+      "Kobra Cultist"
+    ],
+    "weapons": [
+      {
+        "name": "Custom SMG",
+        "damage": "🩸 🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Lancehead 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/Lancehead2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Minion (3)",
+      "Kobra Cultist"
+    ],
+    "weapons": [
+      {
+        "name": "Carbine",
+        "damage": "🩸",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Lancehead Soldier",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "https://veland55.github.io/btb/img/LanceheadSoldier.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Kobra Armor",
+      "Minion (3)",
+      "Kobra Cultist"
+    ],
+    "weapons": [
+      {
+        "name": "Sword",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
 
 
 //--------------------------------------------------------------------------------------------------------------------
