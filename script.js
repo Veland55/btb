@@ -90,7 +90,7 @@ function showRankSelectionModal(model, ranks) {
   };
 
   document.body.appendChild(overlay);
-}
+};
 
 const removeFromCrew = m => {
   const index = crew.findLastIndex(x => x.name === m.name);
@@ -230,13 +230,15 @@ const renderMiniCards = (() => {
         }
 
         div.innerHTML = `
-          ${buttons}
-          ${inCrew && BMG_BOSS && BMG_BOSS.name === model.name ? '<span class="boss-crown">👑</span>' : ''}
-          <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
-          <div class="mini-info">
-            <div class="mini-name">${model.name}</div>
-            <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
-          </div>`;
+  ${buttons}
+  ${inCrew && BMG_BOSS && BMG_BOSS.name === model.name ? '<span class="boss-crown">👑</span>' : ''}
+  <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+  <div class="mini-info">
+    <div class="mini-name">${model.name}</div>
+    <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
+  </div>
+  ${inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[' + model._id + '], this.closest(\'.mini-card\'))">⚙️</div>' : ''}
+`;
 
         div.onclick = () => showFullCard(model);
         fragment.appendChild(div);
@@ -334,6 +336,32 @@ const traitsHTML = model.traits?.length
       return `<div class="official-trait${hasBatInCompendium ? ' special' : ''}" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>`;
     }).join("")}</div></div>`
   : "";
+
+// Новый блок: equipment (только если есть в crewModel)
+const crewModel = crew.find(m => m.name === model.name); // Находим экземпляр в crew
+let equipmentHTML = '';
+if (crewModel && crewModel.equipment && crewModel.equipment.length > 0) {
+  equipmentHTML = `
+    <div class="official-section-title">EQUIPMENT</div>
+    <div class="official-traits-grid">
+      ${crewModel.equipment.map(eq => `
+        <div style="position: relative;">
+          <button 
+            class="official-trait equipment-chip" 
+            onclick="showTraitPopup('${eq.name}', '${eq.effects.join('<br>')}')">
+            ${eq.name} 
+            <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>
+          </button>
+          <span 
+            class="remove-eq" 
+            onclick="event.stopPropagation(); removeEquipmentFromModel('${model.name}', '${eq.name}')">
+            ×
+          </span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
   
   // --- Финальная сборка карточки ---
   $("fullCardContent").innerHTML = `
@@ -369,6 +397,7 @@ const traitsHTML = model.traits?.length
 
       ${model.weapons?.length ? `<div class="official-section"><div class="official-section-title">WEAPONS</div>${weaponsHTML}</div>` : ""}
       ${traitsHTML}
+      ${equipmentHTML}
     </div>`;
 
   $("fullCard").classList.add("active");
@@ -539,6 +568,22 @@ const showPopup = (title, desc) => {
   popup.onclick = e => e.target === popup && popup.remove();
   document.body.appendChild(popup);
 };
+
+// Новая функция для показа effects equipment
+function removeEquipmentFromModel(modelName, eqName) {
+  const crewModel = crew.find(m => m.name === modelName);
+  if (crewModel && crewModel.equipment) {
+    const index = crewModel.equipment.findIndex(eq => eq.name === eqName);
+    if (index !== -1) {
+      crewModel.equipment.splice(index, 1);
+      updateCrewEquipmentCounts();
+      modifiers = calculateModifiers();
+      updateCrewBar();
+      renderMiniCards();
+      showFullCard(models.find(m => m.name === modelName)); // Перерендерим полную карточку
+    }
+  }
+}
 
 // ======================== ВКЛАДКИ ========================
 document.querySelectorAll(".tab").forEach(tab => {
@@ -762,3 +807,106 @@ if (rank === "Henchman") {
   return true;
 }
 
+
+function openEquipmentMenu(model, cardElement) {
+  event.stopPropagation();
+
+  // Находим экземпляр модели в банде по uniqueId (но так как у нас может быть несколько одинаковых имён — ищем первый в банде с этим именем)
+  const crewModel = crew.find(m => m.name === model.name && m.rankUsed);
+  if (!crewModel) return;
+
+  const faction = currentFaction; // текущая фракция
+  const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
+    // Проверка maxPerCrew
+    const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
+    if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
+
+    // Проверка conditions (наличие модели в банде)
+    if (eq.conditions && eq.conditions.length) {
+      const hasRequired = eq.conditions.some(cond => crew.some(m => m.name === cond));
+      if (!hasRequired) return false;
+    }
+
+    // Проверка targetModels (по имени или рангу)
+    if (eq.targetModels) {
+      const allowedByName = eq.targetModels.some(t => t === crewModel.name);
+      const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
+      if (!allowedByName && !allowedByRank) return false;
+    }
+
+    return true;
+  });
+
+  // Создаём модальное окно
+  const overlay = document.createElement("div");
+  overlay.className = "rank-select-modal"; // используем тот же стиль, что и для рангов
+  overlay.innerHTML = `
+    <div class="rank-select-content">
+      <div class="rank-select-header">
+        Equipment для <strong>${model.name}</strong>
+        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+      </div>
+      <div class="rank-select-buttons" style="max-height: 60vh; overflow-y: auto;">
+        ${availableEq.length ? availableEq.map(eq => `
+          <button class="rank-select-btn" data-eq-name="${eq.name}">
+            ${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})
+            <small style="display:block; opacity:0.8; font-size:12px;">${eq.effects.join(" • ")}</small>
+          </button>
+        `).join("") : "<p style='text-align:center; color:#aaa;'>Нет доступного equipment</p>"}
+      </div>
+    </div>
+  `;
+
+  overlay.querySelectorAll(".rank-select-btn").forEach(btn => {
+    btn.onclick = () => {
+  const eqName = btn.dataset.eqName;
+  const eq = availableEq.find(e => e.name === eqName);
+  if (!eq) return;
+
+  // Добавляем equipment к модели
+  if (!crewModel.equipment) crewModel.equipment = [];
+  crewModel.equipment.push(eq);
+
+  // Обновляем счётчики и интерфейс
+  updateCrewEquipmentCounts();
+  modifiers = calculateModifiers();
+  updateCrewBar();
+  renderMiniCards();
+  
+  // Удалите эту строку: overlay.remove();
+  
+  // Добавьте это для обновления списка (переоткрываем меню с новыми availableEq)
+  overlay.remove(); // Сначала закрываем старое
+  openEquipmentMenu(model, cardElement); // Открываем заново с обновлённым списком
+};
+  });
+
+  overlay.onclick = e => e.target === overlay && overlay.remove();
+  document.body.appendChild(overlay);
+}
+
+
+// Функция для показа попапа с описанием (для трейтов и equipment)
+function showTraitPopup(name, desc) {
+  // Создаём overlay (как в showRankSelectionModal)
+  const overlay = document.createElement("div");
+  overlay.className = "rank-select-modal"; // Используем существующий класс для стиля
+  overlay.innerHTML = `
+    <div class="rank-select-content">
+      <div class="rank-select-header">
+        ${name}
+        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+      </div>
+      <div class="rank-select-buttons" style="padding: 20px; font-size: 16px; line-height: 1.5; color: #ccc;">
+        ${desc}  <!-- Здесь effects с <br> станут переносами строк -->
+      </div>
+    </div>
+  `;
+
+  // Клик вне окна — закрыть
+  overlay.onclick = e => {
+    if (e.target === overlay) overlay.remove();
+  };
+
+  document.body.appendChild(overlay);
+}
