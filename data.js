@@ -472,7 +472,13 @@ const models = [
       "Radioactive Soul-Self"
     ],
     "weapons": [
-      "Minor Explosion (Beam / Explosive / S. Range)"
+    {
+      "name": "Minor Explosions",
+      "damage": "🩸★", 
+      "rof": 2,
+      "ammo": 3,
+      "traits": "Beam / S. Range / Explosive"
+    }
     ]
   },
   {
@@ -499,9 +505,7 @@ const models = [
       "True Love (Crazy Jane)",
       "Unstoppable"
     ],
-    "weapons": [
-      "Unarmed"
-    ]
+    "weapons": []
   },
 
 
