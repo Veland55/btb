@@ -257,68 +257,605 @@ const equipmentByFaction = {
 };
 
 const models = [
-    {
-  "name": "Batwoman",   //Имя 
-  "realname": "Kate Kane",   //Настоящее имя
-  "base": "40mm",   //Размер базы
-  "rep": 111,   //Стоимость в репутации
-  "funding": 0,   //Стоимость в деньгах
-  "rank": ["Leader"],   //Роли в банде
-  "faction": ["Bat Family"],  //Фракция
-  "img": "https://veland55.github.io/btb/img/Batwoman.png",  // Картинка модели
-  "stats": {   //Статы
-    "Attack": 4, 
-    "Defense": 4, 
-    "Strength": "4+", 
-    "Movement": 10, 
-    "Willpower": 8, 
-    "Endurance": 7 
-  },
-  "traits": ["Air Combat", "Arrest", "Bat Cape", "Bat Family", "Bat-Armor Mk I", "Batclaw/Grapple Gun", "Criminology", "Interrogation", "Military Teamwork", "Night Vision", "Searcher", "Stealth"],  //Трейты модели
-  "weapons": [ 
-    {
-      "name": "BATARANG",
-      "damage": "★★",  // Два stun (★=stun, 🩸=blood)
-      "rof": 2,        // Rate of Fire (кубы атаки)
-      "ammo": 2,       // Патроны
-      "traits": "M. Range / Remote Controlled / Throwing"  // Трейты оружия
+  
+  {
+    "name": "Batman Multiverse",
+    "realname": "Bruce Wayne",
+    "base": "60mm",
+    "rep": 150,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanMultiverse.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
     },
-    {
-      "name": "SHOCK GLOVES",
-      "damage": "★★",
-      "rof": "-",      // Нет RoF для melee
-      "ammo": "-",     // Нет ammo
-      "traits": "CRT (Stunned)"
-    }
-  ]
-},
-
-{
-  "name": "Batman (Multiverse)",
-  "rep": 150,
-  "funding": 0,
-  "rank": ["Leader"],
-  "faction": ["Bat Family"],
-  "img": "https://veland55.github.io/btb/img/Batman_Multiverse.png",
-  "stats": { 
-    "Attack": 5, 
-    "Defense": 5, 
-    "Strength": "3+", 
-    "Movement": 10, 
-    "Willpower": 8, 
-    "Endurance": 8 
+    "traits": [
+      "Bat Cape",
+      "Bat-Armor MK I",
+      "Close Combat Master",
+      "Martial Artist",
+      "Sneak Attack",
+      "Bat Family",
+      "Batclaw/Grapple Gun",
+      "Detective",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
   },
-  "traits": ["Bat Cape", "Bat-Armor Mk I", "Close Combat Master", "Martial Artist", "Sneak Attack", "Bat Family", "Batclaw", "Detective", "Reinforced Gloves"],
-  "weapons": [
-    {
-      "name": "Batlings",
-      "damage": "★★", 
-      "rof": 2,
-      "ammo": 2,
-      "traits": "Light / S. Range / Throwing"
-    }
-  ]
-},
+  {
+    "name": "Batman Viking",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BatmanViking.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bat Cape",
+      "Detective",
+      "Provoke",
+      "Savage Fighter",
+      "War Scream",
+      "Bat Family",
+      "Medium Armor",
+      "Reinforced Gloves",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Bat-Axes",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy / Enervating (1) / Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Batman Frank Miller on Power Armor",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 109,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanFrankMillerOnPowerArmor.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 2,
+      "Strength": "2+",
+      "Movement": 6,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bat Family",
+      "Obstinate",
+      "Power Supply",
+      "Street Fighter",
+      "Veteran",
+      "Welcome to Hell",
+      "Detective",
+      "Power Armor",
+      "Reinforced Gloves",
+      "The Dark Knight Returns",
+      "War Goes On"
+    ],
+    "weapons": [
+      {
+        "name": "Sonic Blaster",
+        "damage": "★ ★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Expansive / Mechanical / Sonic / CRT (Stunned)"
+      }
+    ]
+  },
+  {
+    "name": "Batman The Animated Series",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 80,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BatmanTheAnimatedSeries.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bat Cape",
+      "Batclaw",
+      "Detective",
+      "Frightening Reputation",
+      "Bat Family",
+      "Combat Flip",
+      "Dodge",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Fast Throw",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "S. Range / Throwing / Motion (2) / Light"
+      },
+      {
+        "name": "Bat-Gloves",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Red Dot / Motion (4)"
+      }
+    ]
+  },
+  {
+    "name": "Batman",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 146,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Batman.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bat Cape",
+      "Bat-Armor MK I",
+      "Detective",
+      "Martial Artist",
+      "Reinforced Gloves",
+      "Sneaking",
+      "Bat Family",
+      "Batclaw",
+      "Informer",
+      "Master of Stealth",
+      "Sneak Attack",
+      "The World's Greatest Det..."
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Robin Teen Titans",
+    "realname": "Dick Grayson",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Sidekick", "Free Agent"],
+    "faction": ["Bat Family", "Free Agent"],
+    "img": "https://veland55.github.io/btb/img/RobinTeenTitans.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Charismatic",
+      "Detective",
+      "Stay in Formation",
+      "True Love (Starfire)",
+      "Batclaw",
+      "Coordination",
+      "Leadership",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Light / S. Range / Throwing"
+      },
+      {
+        "name": "Robin's Bo",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Handy / Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Batman The Gotham City Knight",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 130,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanTheGothamCityKnight.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bat Cape",
+      "Bat-Armor MK III",
+      "Detective",
+      "I'm Batman",
+      "Reinforced Gloves",
+      "Bat Family",
+      "Batclaw",
+      "Flying Kick",
+      "Master of Stealth",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batman Death Metal",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 150,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BatmanDeathMetal.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bat Family",
+      "Changing the Tempo",
+      "Detective",
+      "Legendary Solo",
+      "Power Supply",
+      "Shockwave",
+      "Bat-Armor MK I",
+      "Charismatic",
+      "Dirty Fighter",
+      "One of the Boys",
+      "Reinforced Gloves",
+      "Undead"
+    ],
+    "weapons": [
+      {
+        "name": "Electric Guitar",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Overwhelming"
+      },
+      {
+        "name": "Devastating Riff",
+        "damage": "★ ★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Mechanical / Sonic / Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Batman Frank Miller on Horse",
+    "realname": "Bruce Wayne",
+    "base": "60mm",
+    "rep": 109,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanFrankMillerOnHorse.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 14,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Always on the Move",
+      "Bat Family",
+      "Detective",
+      "Obstinate",
+      "The Dark Knight Returns",
+      "War Goes On",
+      "Animal",
+      "Bat-Armor MK I",
+      "Let's Ride",
+      "Reinforced Gloves",
+      "Veteran",
+      "Welcome to Hell"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batman Beyond",
+    "realname": "Terry McGinnis",
+    "base": "40mm",
+    "rep": 140,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanBeyond.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Detective",
+      "Feint",
+      "Night Vision",
+      "The Tomorrow Knight",
+      "Bat Cape",
+      "Bat-Armor MK III",
+      "Fast (3)",
+      "Fly",
+      "Street Fighter"
+    ],
+    "weapons": [
+      {
+        "name": "Batarang",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "M. Range / Remote Controlled / Throwing"
+      },
+      {
+        "name": "Batsuit's Strength",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Batman Classic",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 125,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanClassic.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bat Cape",
+      "Bat-Armor MK II",
+      "Detective",
+      "Master Fighter",
+      "Reinforced Gloves",
+      "Stealth",
+      "Bat Family",
+      "Batclaw",
+      "Groundwork",
+      "Obstinate",
+      "Sneak Attack",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Green Arrow DKR",
+    "realname": "Oliver Queen",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/GreenArrowDKR.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 9,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Expert Marksman",
+      "Grapple Gun",
+      "The Dark Knight Returns",
+      "Affinity (Batman)",
+      "Desensitized",
+      "Good Aim",
+      "One-Armed",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Bow (Standard Arrow)",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Bow (Kryptonite Arrow)",
+        "damage": "🩸🩸🩸🩸",
+        "rof": 4,
+        "ammo": 1,
+        "traits": "Aim / Kryptonite / Mechanical / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Batman Frank Miller",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 109,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanFrankMiller.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bat Cape",
+      "Bat-Armor MK I",
+      "Combo (Unarmed)",
+      "Obstinate",
+      "Sneak Attack",
+      "Veteran",
+      "Bat Family",
+      "Batclaw",
+      "Detective",
+      "Reinforced Gloves",
+      "The Dark Knight Returns",
+      "Welcome to Hell"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batwoman",
+    "realname": "Kathy Kane",
+    "base": "40mm",
+    "rep": 111,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Batwoman.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Air Combat",
+      "Bat Cape",
+      "Bat-Armor MK I",
+      "Criminology",
+      "Military Teamwork",
+      "Searcher",
+      "Arrest",
+      "Bat Family",
+      "Batclaw/Grapple Gun",
+      "Interrogation",
+      "Night Vision",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Batarang",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "M. Range / Remote Controlled / Throwing"
+      },
+      {
+        "name": "Shock Gloves",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "CRT (Stunned)"
+      }
+    ]
+  },
+
 
 //DOOM PATROL
 {
