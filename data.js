@@ -4821,7 +4821,7 @@ const models = [
   "rep": 75,
   "funding": 100,
   "rank": ["Free Agent"],
-  "faction": ["GCPD", "Suicide Squad", "Birds of Prey"],
+  "faction": ["GCPD", ["Suicide Squad"], "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/Katana_Rebirth.png",
   "stats": {
     "Attack": 4,
@@ -5013,7 +5013,7 @@ const models = [
   "rep": 60,
   "funding": 100,
   "rank": ["Henchman"],
-  "faction": ["Suicide Squad", "Birds of Prey"],
+  "faction": [["Suicide Squad"], "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/KillerFrost_Rebirth.png",
   "stats": {
     "Attack": 3,
@@ -6013,7 +6013,7 @@ const models = [
     "rep": 65,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": ["Suicide Squad", "Court of Owls"],
+    "faction": [["Suicide Squad"], "Court of Owls"],
     "img": "https://veland55.github.io/btb/img/TheTalon.png",
     "stats": {
       "Attack": 4,
@@ -6719,6 +6719,1379 @@ const models = [
       }
     ]
   },
+
+//--------------------------------------------------------------------------------------------------------------------
+//Suicide Squad
+//--------------------------------------------------------------------------------------------------------------------
+
+  {
+    "name": "Slipknot Suicide Squad",
+    "realname": "Christopher Weiss",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "rivals": ["Bat Family", "GCPD", "League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/SlipknotSuicideSquad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Bulletproof Vest",
+      "First to Fall",
+      "Batclaw/Grapple Gun",
+      "Expendable"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Polka-Dot Man The Suicide Squad",
+    "realname": "Abner Krill",
+    "base": "30mm",
+    "rep": 38,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/PolkaDotManTheSuicideSquad.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Autorepair (3)",
+      "Interdimensional Virus",
+      "Releasing the Dots",
+      "Criminal",
+      "Obstinate"
+    ],
+    "weapons": [
+      {
+        "name": "Emptying Dots",
+        "damage": "🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "S. Range / Mechanical / Throwing / Bleed (2) / Exposure"
+      }
+    ]
+  },
+  {
+    "name": "Weasel The Suicide Squad",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/WeaselTheSuicideSquad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Animal",
+      "Claws",
+      "Really Tenacious",
+      "Sneak Attack",
+      "Cannibal",
+      "Feral",
+      "Small",
+      "Stealth"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Killer Moth",
+    "realname": "Drury Walker",
+    "base": "40mm",
+    "rep": 44,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/KillerMoth.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bat Cape",
+      "Criminal",
+      "Radio",
+      "Batclaw",
+      "Echolocation"
+    ],
+    "weapons": [
+      {
+        "name": "Cacoon Gun",
+        "damage": "★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Beam / S. Range / Slow (6)"
+      },
+      {
+        "name": "Cacoon Gun (Solid)",
+        "damage": "🩸 ★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "John Economos",
+    "realname": "John Economos",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/JohnEconomos.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Hacking",
+      "Volunteer",
+      "Intel Support (3)"
+    ],
+    "weapons": [
+      {
+        "name": "Informatic Assault",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Limited Attack"
+      }
+    ]
+  },
+  {
+    "name": "Emilia Harcourt",
+    "realname": "Emilia Harcourt",
+    "base": "30mm",
+    "rep": 27,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/EmiliaHarcourt.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Radio",
+      "Volunteer",
+      "Tracking Device"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸 ★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Martial Prowess",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / CRT (Paralyze)"
+      }
+    ]
+  },
+  {
+    "name": "Killer Croc Suicide Squad",
+    "realname": "Waylon Jones",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/KillerCrocSuicideSquad.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Amphibious",
+      "Ferocious",
+      "Tough Skin",
+      "Claws",
+      "Raised in the Sewers"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Polka-Dot Man",
+    "realname": "Abner Krill",
+    "base": "40mm",
+    "rep": 44,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/PolkaDotMan.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Autorepair (3)",
+      "Dots Suit",
+      "Power Armor",
+      "Criminal",
+      "Obstinate"
+    ],
+    "weapons": [
+      {
+        "name": "Throwing Discs",
+        "damage": "🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Mechanical / Sharp / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Thinker The Suicide Squad",
+    "realname": "Gaius Grieves",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/ThinkerTheSuicideSquad.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "Brain Enhancers",
+      "Persuasive",
+      "Scientific",
+      "Computer Intrusion",
+      "Protect Me!"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Ravager Vanguard Team",
+    "realname": "Rose Wilson",
+    "base": "30mm",
+    "rep": 36,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family", "Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/RavagerVanguardTeam.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Martial Artist",
+      "Precognition",
+      "Teen Titans",
+      "Power Dampening",
+      "Self-Discipline"
+    ],
+    "weapons": [
+      {
+        "name": "Ravager's Swords",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Overwhelming / Accurate"
+      }
+    ]
+  },
+  {
+    "name": "Diablo Suicide Squad",
+    "realname": "Chato Santana",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/DiabloSuicideSquad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Criminal",
+      "Flaming Wave",
+      "Magic Tattoos",
+      "Self-Discipline",
+      "Dirty Fighter",
+      "Lantern",
+      "Regrets",
+      "Supernatural"
+    ],
+    "weapons": [
+      {
+        "name": "Flaming Hands",
+        "damage": "🩸 ★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Beam / Expansive / One Use / Fire"
+      },
+      {
+        "name": "Flaming Tattoos",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": "-",
+        "traits": "Mechanical / S. Range / Throwing / Fire"
+      }
+    ]
+  },
+  {
+    "name": "Katana Suicide Squad",
+    "realname": "Tatsu Yamashiro",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/KatanaSuicideSquad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 11,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Martial Artist",
+      "Volunteer",
+      "Bodyguard Mission",
+      "Security Chief",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Tanto",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Defensive / Sharp"
+      },
+      {
+        "name": "Soultaker Katana",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp / Enervating (1)"
+      }
+    ]
+  },
+  {
+    "name": "Sebastian the Rat The Suicide Squad",
+    "realname": "Sebastian",
+    "base": "30mm",
+    "rep": 10,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/SebastianTheRatTheSuicideSquad.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 3
+    },
+    "traits": [
+      "Amphibious",
+      "Charismatic Rat",
+      "Required (Ratcatcher 2)",
+      "Stealth",
+      "Animal",
+      "Poison Immunity",
+      "Small",
+      "Street Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Poisoned Touch",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Poison"
+      }
+    ]
+  },
+  {
+    "name": "Eagly",
+    "realname": "Eagly",
+    "base": "40mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/Eagly.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Always on the Move",
+      "Fly",
+      "Required (Peacemaker John Cena)",
+      "Teamwork (2) (Peacemaker John Cena)",
+      "Animal",
+      "Inspiring Presence (Peacemaker John Cena)",
+      "Retractable Claws",
+      "True Love (Peacemaker John Cena)"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "King Shark The Suicide Squad",
+    "realname": "Nanaue",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/KingSharkTheSuicideSquad.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Amphibious",
+      "Bloodthirsty (Mental Disorder)",
+      "Cannibal",
+      "Handi!",
+      "Huge",
+      "Blood Scent",
+      "Brutal",
+      "Fully Equipped",
+      "Hardened",
+      "Superior Sense of Smell"
+    ],
+    "weapons": [
+      {
+        "name": "Claws & Teeth",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Poison Ivy",
+    "realname": "Dr. Pamela Lillian Isley",
+    "base": "40mm / 60mm",
+    "rep": 60,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/PoisonIvy.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Adaptable",
+      "Insidious",
+      "Poison Immunity",
+      "Scientific",
+      "Control Pheromones",
+      "Nature's Arm",
+      "Protect Me!"
+    ],
+    "weapons": [
+      {
+        "name": "Plants",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Protective / Reach (2)"
+      },
+      {
+        "name": "Spores",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Acid / Explosive / Mechanical / S. Range / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Killer Croc Arkham Asylum",
+    "realname": "Waylon Jones",
+    "base": "60mm",
+    "rep": 110,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD", "Bane"],
+    "img": "https://veland55.github.io/btb/img/KillerCrocArkhamAsylum.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 13
+    },
+    "traits": [
+      "Amphibious",
+      "Huge",
+      "Regeneration",
+      "Sewer's Retreat",
+      "Sturdy",
+      "Tough Skin",
+      "Cannibal",
+      "Lord of the Sewers",
+      "Sewer's Assault",
+      "Sewer's Nightmare",
+      "Superior Sense of Smell"
+    ],
+    "weapons": [
+      {
+        "name": "Massive Claws",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Devastating / Reach (2) / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "T.D.K. The Suicide Squad",
+    "realname": "Cory Pitzner",
+    "base": "30mm",
+    "rep": 36,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/TDKTheSuicideSquad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Distract",
+      "Detachable Arms",
+      "Light Armor"
+    ],
+    "weapons": [
+      {
+        "name": "Detachable Attack",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (8) / Enervating (3)"
+      }
+    ]
+  },
+  {
+    "name": "Deathstroke Vanguard Team",
+    "realname": "Slade Wilson",
+    "base": "30mm",
+    "rep": 74,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/DeathstrokeVanguardTeam.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Assassin (2)",
+      "Martial Artist",
+      "Undercover",
+      "Veteran",
+      "Frightening Reputation",
+      "Soul Armor",
+      "Vanguard Team",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸 ★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Deathstroke's Swords",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Overwhelming / Boosted (1)"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler Modern Age",
+    "realname": "Edward Nigma",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/TheRiddlerModernAge.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Confusion",
+      "Puzzle Master",
+      "Exhaustive Planner",
+      "Showmanship!"
+    ],
+    "weapons": [
+      {
+        "name": "Cane-Sword",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Ratcatcher 2 The Suicide Squad",
+    "realname": "Cleo Cazo",
+    "base": "40mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/Ratcatcher2TheSuicideSquad.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Charm",
+      "Protector (Robert Dubois)",
+      "Stealth",
+      "Gas Mask",
+      "Sewer Swarm (3)",
+      "Tamer Device"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Captain Boomerang Vanguard Team",
+    "realname": "George \"Digger\" Harkness",
+    "base": "30mm",
+    "rep": 46,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/CaptainBoomerangVanguardTeam.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Boomerang's Arsenal",
+      "Master Marksman",
+      "Thief",
+      "Designated",
+      "Ricochet"
+    ],
+    "weapons": [
+      {
+        "name": "Melee Boomerang",
+        "damage": "🩸 ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Throwing Boomerang",
+        "damage": "🩸 ★",
+        "rof": 1,
+        "ammo": 4,
+        "traits": "Accurate / Sharp / S. Range / Throwing"
+      }
+    ]
+  },
+
+  {
+    "name": "Rick Flag Infiltration",
+    "realname": "Rick Flag",
+    "base": "30mm",
+    "rep": 46,
+    "funding": 350,
+    "rank": ["Sidekick"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/RickFlagInfiltration.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Hardened",
+      "One of the Boys",
+      "Radio",
+      "Veteran",
+      "Lieutenant (Amanda Waller)",
+      "Order",
+      "Scout",
+      "Volunteer"
+    ],
+    "weapons": [
+      {
+        "name": "Bat",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      },
+      {
+        "name": "Shotgun",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Assault"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler",
+    "realname": "Edward Nigma",
+    "base": "60mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Sidekick", "Free Agent"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/TheRiddler.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 5
+    },
+    "traits": [
+      "AFK",
+      "Intel Support (5)",
+      "Puzzle Master",
+      "Wizard of Quiz",
+      "Hacking",
+      "Mastermind",
+      "Quiz Master"
+    ],
+    "weapons": [
+      {
+        "name": "Informatic Assault",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Limited Attack"
+      }
+    ]
+  },
+  {
+    "name": "Vigilante",
+    "realname": "Adrian Chase",
+    "base": "40mm",
+    "rep": 45,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/Vigilante.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Duo (Peacemaker)",
+      "Psycho",
+      "Vigilante's Work",
+      "Weapon Master",
+      "Grapple Gun",
+      "Reinforced Gloves",
+      "Volunteer"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸 ★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Nunchakus",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Defensive / Devastating / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Captain Boomerang Suicide Squad",
+    "realname": "George \"Digger\" Harkness",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/CaptainBoomerangSuicideSquad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Elusive",
+      "Master Marksman",
+      "Monitoring Device",
+      "Ricochet",
+      "Greed",
+      "Melee Boomerang",
+      "Primary Target"
+    ],
+    "weapons": [
+      {
+        "name": "Bladed Boomerang",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Accurate / Sharp / S. Range / Throwing"
+      },
+      {
+        "name": "Le Boomerang",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 1,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "KGBeast",
+    "realname": "Anatoliy Knyazev",
+    "base": "40mm",
+    "rep": 95,
+    "funding": 500,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/KGBeast.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Assassin (2)",
+      "Good Aim",
+      "Master Fighter",
+      "Retractable Claws",
+      "Sturdy",
+      "Veteran",
+      "Configurable Weapon",
+      "Martial Artist",
+      "One-Armed",
+      "Runaway",
+      "Thief"
+    ],
+    "weapons": [
+      {
+        "name": "Machine Gun",
+        "damage": "🩸 ★",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Firearm / M. Range / Red Dot"
+      },
+      {
+        "name": "Cybernetic Gun",
+        "damage": "🩸 🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Beam / Devastating / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Deadshot",
+    "realname": "Floyd Lawton",
+    "base": "40mm",
+    "rep": 71,
+    "funding": 600,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/Deadshot.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Dodge",
+      "Night Vision",
+      "Shooter",
+      "Expert Marksman",
+      "Rapid Fire"
+    ],
+    "weapons": [
+      {
+        "name": "Modified Assault Gun",
+        "damage": "🩸🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / M. Range"
+      },
+      {
+        "name": "Handguns",
+        "damage": "🩸★",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn Bombshell",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 65,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["Joker", "Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnBombshell.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Combat Flip",
+      "One of the Boys",
+      "True Love (Joker)",
+      "Charismatic",
+      "Confusion",
+      "The Voices (Mental Disorder)",
+      "True Love (Joker)"
+    ],
+    "weapons": [
+      {
+        "name": "Good Night Bat",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      },
+      {
+        "name": "Hate/Love Gun",
+        "damage": "🩸 🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Bleed (2) / Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Deadshot Suicide Squad",
+    "realname": "Floyd Lawton",
+    "base": "30mm",
+    "rep": 80,
+    "funding": 400,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/DeadshotSuicideSquad.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bullet Time",
+      "Leadership",
+      "Order",
+      "Total Vision",
+      "Honor Among Thieves",
+      "Master Marksman",
+      "Stay in Formation"
+    ],
+    "weapons": [
+      {
+        "name": "Custom MG",
+        "damage": "🩸 🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / M. Range / Scope"
+      },
+      {
+        "name": "Wrist Cannons",
+        "damage": "🩸 🩸",
+        "rof": 2,
+        "ammo": 4,
+        "traits": "S. Range / Firearm / Assault / Remote Controlled"
+      }
+    ]
+  },
+  {
+    "name": "Deathstroke The Terminator",
+    "realname": "Slade Wilson",
+    "base": "40mm/60mm",
+    "rep": 150,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/DeathstrokeTheTerminator.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 11,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Acrobat",
+      "Assassin (3)",
+      "Exploit the Weakness",
+      "Martial Artist",
+      "Scout",
+      "Veteran",
+      "Arsenal",
+      "Contractor",
+      "Kevlar Vest",
+      "Reinforced Gloves",
+      "Stealth",
+      "Weapon Master"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Amanda Waller Viola Davis",
+    "realname": "Amanda Waller",
+    "base": "40mm",
+    "rep": 44,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/AmandaWallerViolaDavis.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "A.R.G.U.S. Commander",
+      "Henchman Bomb",
+      "Mastermind",
+      "Pulling the Strings",
+      "Volunteer",
+      "Detonate",
+      "Intel Support (4)",
+      "Order",
+      "Reckless Leader"
+    ],
+    "weapons": [
+      {
+        "name": "Informatic Assault",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Limited Attack"
+      }
+    ]
+  },
+  {
+    "name": "Killer Croc",
+    "realname": "Waylon Jones",
+    "base": "60mm",
+    "rep": 125,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD", "Bane"],
+    "img": "https://veland55.github.io/btb/img/KillerCroc.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 13
+    },
+    "traits": [
+      "Amphibious",
+      "Claws",
+      "Huge",
+      "Power Strike",
+      "Sturdy",
+      "Tough Skin",
+      "Cannibal",
+      "Coward's Reward",
+      "Lord of the Sewers",
+      "Runaway",
+      "Superior Sense of Smell"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Harley Quinn The Suicide Squad",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 81,
+    "funding": 150,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnTheSuicideSquad.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Charismatic",
+      "Goad",
+      "Moment of Glory",
+      "The Voices (Mental Disorder)",
+      "Always on the Move",
+      "Confusion",
+      "Hidden",
+      "Red Flags"
+    ],
+    "weapons": [
+      {
+        "name": "Javelin",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      },
+      {
+        "name": "Javelin Throw",
+        "damage": "🩸 🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "M. Range / One Use / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Peacemaker John Cena",
+    "realname": "Christopher Smith",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 350,
+    "rank": ["Free Agent", "Sidekick"],
+    "faction": ["Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/PeacemakerJohnCena.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Duo (Vigilante)",
+      "Justice",
+      "Rapid Fire",
+      "Savage Fighter",
+      "Survivor",
+      "Good Aim",
+      "Punishment",
+      "Reinforced Gloves",
+      "Sturdy",
+      "True Love (Eagly)"
+    ],
+    "weapons": [
+      {
+        "name": "Peacemaker's Gun",
+        "damage": "🩸 🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "S. Range / Firearm / Devastating / High Caliber"
+      }
+    ]
+  },
+  {
+    "name": "Bloodsport The Suicide Squad",
+    "realname": "Robert DuBois",
+    "base": "40mm",
+    "rep": 78,
+    "funding": 400,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad", "Unknown"],
+    "rivals": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/BloodsportTheSuicideSquad.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Kevlar Vest",
+      "Outlaw Field Commander",
+      "Ranged Master",
+      "Living Arsenal",
+      "Protector (Cleo Cazo)",
+      "Sharpshooter"
+    ],
+    "weapons": [
+      {
+        "name": "Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Bloodsport's Guns",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 4,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+
 
 //--------------------------------------------------------------------------------------------------------------------
 //Cults
