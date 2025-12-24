@@ -6485,6 +6485,240 @@ const models = [
     ]
   },
 
+//--------------------------------------------------------------------------------------------------------------------
+//Royal Flush
+//--------------------------------------------------------------------------------------------------------------------
+  
+  {
+    "name": "King of Spades",
+    "realname": "Joe Carny",
+    "base": "40mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Royal Flush"],
+    "img": "https://veland55.github.io/btb/img/KingOfSpades.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Card Fly",
+      "King of Spades",
+      "Protect Me!",
+      "Cheat",
+      "Leadership",
+      "Spades"
+    ],
+    "weapons": [
+      {
+        "name": "King of Spades's Sword",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Fire / Boosted (1)"
+      }
+    ]
+  },
+  {
+    "name": "10 of Spades",
+    "realname": "Wanda Wayland",
+    "base": "40mm",
+    "rep": 44,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["Royal Flush"],
+    "img": "https://veland55.github.io/btb/img/10OfSpades.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Scout",
+      "Fast (3)",
+      "Spades"
+    ],
+    "weapons": [
+      {
+        "name": "Sharp Cards",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (3) / Sharp / Handy"
+      },
+      {
+        "name": "Spades Throw",
+        "damage": "🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "S. Range / Throwing / Mechanical / Fire"
+      }
+    ]
+  },
+  {
+    "name": "Jack of Spades",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 60,
+    "funding": 400,
+    "rank": ["SFree Agent"],
+    "faction": ["Royal Flush"],
+    "img": "https://veland55.github.io/btb/img/JackOfSpades.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Herald of Spades",
+      "Jack of Spades",
+      "Spades",
+      "Instinctive Shooting",
+      "One of the Boys"
+    ],
+    "weapons": [
+      {
+        "name": "Spades Laser Beam",
+        "damage": "🩸 ★",
+        "rof": 4,
+        "ammo": 4,
+        "traits": "S. Range / Beam / Fire"
+      },
+      {
+        "name": "Spades Sword",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Boosted (1)"
+      }
+    ]
+  },
+  {
+    "name": "Ace of Spades",
+    "realname": "Derek Reston",
+    "base": "40mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Royal Flush"],
+    "img": "https://veland55.github.io/btb/img/AceOfSpades.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 12
+    },
+    "traits": [
+      "Desensitized",
+      "Spades",
+      "Tough Guy",
+      "Savage Throw",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Spades Punches",
+        "damage": "★ ★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / Boosted (2)"
+      }
+    ]
+  },
+  {
+    "name": "Queen of Spades",
+    "realname": "Mona Taylor",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": ["Royal Flush"],
+    "img": "https://veland55.github.io/btb/img/QueenOfSpades.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Cheat",
+      "Queen of Spades",
+      "Spades",
+      "Protect Me!",
+      "Realistic Illusions"
+    ],
+    "weapons": [
+      {
+        "name": "Spades Spear",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2) / Sharp / Fire / Boosted (1)"
+      },
+      {
+        "name": "Spades Beam",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "S. Range / Beam / Fire"
+      }
+    ]
+  },
+  {
+    "name": "5 of Spades",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Royal Flush"],
+    "img": "https://veland55.github.io/btb/img/5OfSpades.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "For My Lords!",
+      "Spades",
+      "Minion (3)"
+    ],
+    "weapons": [
+      {
+        "name": "Shield",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Protective"
+      },
+      {
+        "name": "Spades Pike",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (3) / Sharp / Boosted (1)"
+      }
+    ]
+  },
 
 //--------------------------------------------------------------------------------------------------------------------
 //Cults
@@ -8201,6 +8435,7 @@ const traitDescriptions = {
     "Drop It!": "Target an enemy model within 8\" and LoS and make an opposed Willpower roll against it. If successful, that model places a new friendly Suspect in contact ignoring the usual placement rules.",
     "Duelist": "While in contact with only one enemy model, this model may reroll failed attack dice rolls in Melee.",
     "Duke of Duality": "When this model scores an Objective card, flip a coin or roll a D6: if the result is 'heads' (or an even number) draw an additional card. If the result is 'tails' (or an odd number), Discard an Objective card at random before drawing a new card.",
+    "Don't Mind Me": "This model receives the same free Efforts when defending as its Effort Limit until it makes an Attack action.",
 
 
   // E
