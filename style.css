@@ -497,3 +497,41 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   background: #ff3333; /* Ещё ярче при hover */
   transform: scale(1.2); /* Увеличение для лёгкого нажатия */
 }
+
+
+
+
+/* Контейнер для рангов в мини-карточках */
+.mini-ranks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;          /* Расстояние между иконками */
+  margin: 4px 0;     /* Отступ от имени и стоимости */
+  flex-wrap: wrap;
+  min-height: 22px;
+}
+
+/* Иконка ранга с белым круглым фоном */
+.rank-icon {
+  height: 24px !important;           /* Размер самой картинки */
+  width: auto !important;
+  max-width: 60px;
+  object-fit: contain;
+  
+  /* Круглый белый фон */
+  background: #ffffff;               /* Белый фон */
+  padding: 2px;                      /* Внутренний отступ — делает круг больше картинки */
+  border-radius: 50%;                /* Полностью круглый */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6); /* Тень для объёма */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Для полной карточки (rank-badge) — чуть крупнее */
+.rank-badge .rank-icon {
+  height: 22px !important;
+  padding: 2px;                      /* Больший круг */
+  box-shadow: 0 3px 8px rgba(0,0,0,0.7);
+}

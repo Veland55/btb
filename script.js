@@ -213,6 +213,7 @@ const renderMiniCards = (() => {
         const inCrew = hasInCrew(model);
         const count = countInCrew(model);
         const isMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
+        const ranks = getRanks(model); // Получаем ранги как массив
 
         const div = document.createElement("div");
         div.className = `mini-card ${inCrew ? "in-crew" : ""}`;
@@ -235,6 +236,9 @@ const renderMiniCards = (() => {
   <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
   <div class="mini-info">
     <div class="mini-name">${model.name}</div>
+    <div class="mini-ranks">
+      ${ranks.map(rank => `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`).join('')}
+    </div>
     <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
   </div>
   ${inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[' + model._id + '], this.closest(\'.mini-card\'))">⚙️</div>' : ''}
