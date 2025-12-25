@@ -89,7 +89,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .mini-card img { width:100%; height:115px; object-fit:cover; }
 .mini-info { padding:10px 8px; text-align:center; }
 .mini-name { font-weight:bold; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
-.mini-rep { color:#e94560; font-weight:bold; font-size:14px; }
+.mini-rep { color:#e94560; font-weight:bold; font-size:14px;  }
 .add-btn, .remove-btn { position:absolute; top:8px; right:8px; width:40px; height:40px; border-radius:50%; font-size:24px; font-weight:bold; border:none; z-index:10; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; }
 .add-btn { background:#e94560; color:#fff; }
 .add-btn:hover { background:#ff3366; }
@@ -534,4 +534,19 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   height: 22px !important;
   padding: 2px;                      /* Больший круг */
   box-shadow: 0 3px 8px rgba(0,0,0,0.7);
+}
+
+
+#factionRulesTooltip {
+  cursor: help;
+  background: #e94560;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-left: 10px;
 }

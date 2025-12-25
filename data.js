@@ -1,3 +1,25 @@
+const factionCrewRules = {
+  "Batman Who Laughs": {
+    ignoreStandardRankRequirements: true, // Игнорирует стандартные требования к рангам
+    allowSameNameDifferentAlias: true, // Разрешает одинаковые имена с разными псевдонимами
+    mustHaveLeaderAsBoss: true, // Должен быть Leader как Босс
+    onlyAffiliationMembers: true // Только персонажи из аффилиации
+  },
+  "Bat Family": {
+    onlyBossAffiliationOrNoAffiliation: true, // Только персонажи с аффилиацией Босса или без аффилиации
+    onlyBossAffiliationObjectives: true // Только объективы с аффилиацией Босса или без аффилиации
+  },
+  "Cults": {
+    onlyBossAffiliationOrNoAffiliation: true, // Только персонажи с аффилиацией Босса или без аффилиации
+    onlyBossAffiliationObjectives: true, // Только объективы с аффилиацией Босса или без аффилиации
+    mustHaveLeaderAsBoss: true // Должен быть Leader как Босс
+  }
+  // Другие фракции могут иметь стандартные правила (пустой объект или null)
+};
+
+// Экспортируем для использования в script.js
+window.factionCrewRules = factionCrewRules;
+
 const equipmentByFaction = {
   "GCPD": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },

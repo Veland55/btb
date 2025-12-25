@@ -13,18 +13,21 @@ const countInCrew = m => crew.filter(x => x.name === m.name).length;
 // ======================== ОТРЯД ========================
 const addToCrew = m => {
   const isMinionOrHorde = m.traits.some(t => t.startsWith("Minion") || t === "Horde");
+  const factionRules = factionCrewRules[currentFaction] || {};
+
   if (!isMinionOrHorde && hasInCrew(m)) {
-    // Для non-Minion/Horde — toggle: remove if has
     removeFromCrew(m);
   } else {
-    // Для Minion/Horde или first non — add
     const ranks = getRanks(m);
 
+    if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && !ranks.includes("Leader")) {
+      alert("Первой моделью должен быть Leader для этой фракции!");
+      return;
+    }
+
     if (ranks.length === 1) {
-      // Если ранг только один — сразу добавляем
       addModelWithRank(m, ranks[0]);
     } else if (ranks.length > 1) {
-      // Показываем модальный выбор ранга
       showRankSelectionModal(m, ranks);
     } else {
       alert("У модели не указан ранг!");
@@ -35,6 +38,26 @@ const addToCrew = m => {
   updateCrewBar();
   renderMiniCards();
 };
+
+function addModelWithRank(model, chosenRank) {
+  const factionRules = factionCrewRules[currentFaction] || {};
+  if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && chosenRank !== "Leader") {
+    alert("Первой моделью должен быть Leader для этой фракции!");
+    return;
+  }
+
+  const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
+  if (!bmgCanAddModel(cloned)) return;
+  crew.push(cloned);
+  if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
+    BMG_BOSS = cloned;
+    BMG_AFFILIATIONS = getFactions(cloned);
+  }
+  updateCrewEquipmentCounts();
+  modifiers = calculateModifiers();
+  updateCrewBar();
+  renderMiniCards();
+}
 
 // Новая функция — добавление модели с уже выбранным рангом
 function addModelWithRank(model, chosenRank) {
@@ -95,13 +118,13 @@ function showRankSelectionModal(model, ranks) {
 const removeFromCrew = m => {
   const index = crew.findLastIndex(x => x.name === m.name);
   if (index !== -1) {
-    const removed = crew[index];
     crew.splice(index, 1);
     if (BMG_BOSS && BMG_BOSS.name === m.name) {
       BMG_BOSS = null;
       BMG_AFFILIATIONS = null;
+      crew = [];  // Полностью очищаем отряд при удалении босса
     }
-    updateCrewEquipmentCounts(); // Reset counts after removal
+    updateCrewEquipmentCounts();
     modifiers = calculateModifiers();
     updateCrewBar();
     renderMiniCards();
@@ -591,17 +614,25 @@ function removeEquipmentFromModel(modelName, eqName) {
 
 // ======================== ВКЛАДКИ ========================
 document.querySelectorAll(".tab").forEach(tab => {
-  tab.onclick = () => {
-    if (crew.length && !confirm("Смена фракции очистит отряд. Продолжить?")) return;
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-    crew = [];
-    currentFaction = tab.dataset.faction;
-    updateCrewBar();
-    renderMiniCards();
-    closeCompendium();
-    closeModelSearch();
-  };
+  tab.addEventListener("click", () => {
+    const newFaction = tab.dataset.faction;
+    if (newFaction !== currentFaction) {
+      if (crew.length > 0) {
+        if (confirm("При смене фракции текущий отряд будет очищен. Продолжить?")) {
+          currentFaction = newFaction;
+          resetCrew();           // ← Полный сброс: crew, BMG_BOSS, BMG_AFFILIATIONS
+          renderMiniCards();
+          document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+        }
+      } else {
+        currentFaction = newFaction;
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        renderMiniCards(); // На всякий случай
+      }
+    }
+  });
 });
 
 // ======================== ИНИЦИАЛИЗАЦИЯ ========================
@@ -675,11 +706,9 @@ function bmgRankCount(rank) {
 }
 
 function bmgCanAddModel(model) {
-// Рассчитываем общую Rep с учетом оборудования всех моделей + новой модели
+  // Рассчитываем общую Rep и Funding с учетом оборудования
   let totalRep = crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0) + (model.rep || 0);
-  // Рассчитываем общее Funding аналогично
   let usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0) + (model.funding || 0);
-  // Define rank early
 
   const rank = model.rankUsed;
   if (!rank) {
@@ -687,133 +716,143 @@ function bmgCanAddModel(model) {
     return false;
   }
 
-  // Extras: base + specific (no duplicate)
+  const factionRules = factionCrewRules[currentFaction] || {}; // Правила текущей фракции
   const baseExtras = bmgExtraSlots();
   let extras = baseExtras;
-  if (rank === "Free Agent") extras += (modifiers.extraFreeAgents || 0);
-  if (rank === "Vehicle") extras += (modifiers.extraVehicles || 0);
 
-  // REP
-if (totalRep > BMG_REP_LIMIT) {
+  // Проверка лимитов Rep и Funding
+  if (totalRep > BMG_REP_LIMIT) {
     alert("Превышен лимит Reputation (учтены equipment)");
     return false;
   }
-
-  // FUNDING
-if (usedFunding > bmgFundingLimit()) {
+  if (usedFunding > bmgFundingLimit()) {
     alert("Недостаточно Funding (учтены equipment)");
     return false;
   }
 
-  // FIRST MODEL = BOSS
+  // Проверка первого Босса
   if (!BMG_BOSS) {
-    if (!getRanks(model).includes("Leader") && !getRanks(model).includes("Sidekick")) {
-      alert("Первой моделью должен быть Leader или Sidekick");
+    const validBossRanks = factionRules.mustHaveLeaderAsBoss ? ["Leader"] : ["Leader", "Sidekick"];
+    if (!getRanks(model).some(r => validBossRanks.includes(r))) {
+      alert(`Первой моделью должен быть ${factionRules.mustHaveLeaderAsBoss ? "Leader" : "Leader или Sidekick"}`);
       return false;
     }
   }
 
-  // AFFILIATION
+  // Проверка аффилиации
   if (BMG_BOSS) {
     const modelFactions = getFactions(model);
-    if (!modelFactions.includes("Unknown") && !modelFactions.some(a => BMG_AFFILIATIONS.includes(a))) {
-      alert("Модель не совпадает по Affiliation с Боссом");
-      return false;
-    }
-  }
+    const bossFactions = BMG_AFFILIATIONS || [];
 
-  // RANK LIMITS
-  if (rank === "Leader" && bmgRankCount("Leader") >= 1) {
-    alert("Только один Leader");
-    return false;
-  }
-
-  if (rank === "Sidekick") {
-    if (bmgRankCount("Leader") === 0 && bmgRankCount("Sidekick") >= 2) {
-      alert("Максимум 2 Sidekick без Leader");
-      return false;
-    }
-    if (bmgRankCount("Leader") >= 1 && bmgRankCount("Sidekick") >= 1) {
-      alert("Максимум 1 Sidekick с Leader");
-      return false;
-    }
-  }
-
-  if (rank === "Free Agent" && bmgRankCount("Free Agent") >= 1 + extras) {
-    alert("Превышен лимит Free Agents");
-    return false;
-  }
-
-  if (rank === "Vehicle" && bmgRankCount("Vehicle") >= 1 + extras) {
-    alert("Превышен лимит Vehicles");
-    return false;
-  }
-
-if (rank === "Henchman") {
-  // Duplicates (skip if has Minion or Horde)
-  const hasMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
-  if (!hasMinionOrHorde) {
-    const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
-    if (sameNameCount >= 1 + (modifiers.extraDuplicates || 0)) {
-      alert("Нельзя брать больше Henchmen с одинаковым именем (учтены трейты)");
-      return false;
-    }
-  }
-
-  // Elite (X)
-  let eliteExceeded = false;
-  model.traits.forEach(t => {
-    const eliteMatch = t.match(/^Elite \((.+)\)$/);
-    if (eliteMatch) {
-      const type = eliteMatch[1];
-      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
-      if (count >= 1 + (modifiers.extraElites[type] || 0)) {
-        alert(`Превышен лимит Elite (${type})`);
-        eliteExceeded = true;
+    if (factionRules.onlyAffiliationMembers) {
+      // Для Batman Who Laughs: только члены аффилиации
+      if (!modelFactions.some(a => bossFactions.includes(a))) {
+        alert("Модель не входит в аффилиацию Босса");
+        return false;
+      }
+    } else if (factionRules.onlyBossAffiliationOrNoAffiliation) {
+      // Для Bat Family и Cults: только аффилиация Босса или без аффилиации
+      if (!modelFactions.includes("Unknown") && !modelFactions.some(a => bossFactions.includes(a))) {
+        alert("Модель не совпадает по Affiliation с Боссом или не имеет аффилиации Unknown");
+        return false;
+      }
+    } else {
+      // Стандартная проверка
+      if (!modelFactions.includes("Unknown") && !modelFactions.some(a => bossFactions.includes(a))) {
+        alert("Модель не совпадает по Affiliation с Боссом");
+        return false;
       }
     }
-  });
-  if (eliteExceeded) return false;
-
-  // Veteran (X)
-  let veteranExceeded = false;
-  model.traits.forEach(t => {
-    const veteranMatch = t.match(/^Veteran \((.+)\)$/);
-    if (veteranMatch) {
-      const type = veteranMatch[1];
-      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Veteran \\(${type}\\)$`)))).length;
-      if (count >= 1 + (modifiers.extraVeterans[type] || 0)) {
-        alert(`Превышен лимит Veteran (${type})`);
-        veteranExceeded = true;
-      }
-    }
-  });
-  if (veteranExceeded) return false;
-
-  // Minion (X) — smart limit: if X number, limit = X; else 1 + extra
-  let minionExceeded = false;
-  model.traits.forEach(t => {
-    const minionMatch = t.match(/^Minion \((.+)\)$/);
-    if (minionMatch) {
-      const x = minionMatch[1].trim();
-      const parsedX = parseInt(x, 10);
-      const limit = isNaN(parsedX) ? 1 + (modifiers.extraMinions[x] || 0) : parsedX;
-      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Minion \\(${x}\\)$`)))).length;
-      if (count >= limit) {
-        alert(`Превышен лимит Minion (${x})`);
-        minionExceeded = true;
-      }
-    }
-  });
-  if (minionExceeded) return false;
   }
-    // NEW: Realname uniqueness check (except for "Unknown" or no realname)
-  const realname = model.realname || "—";  // "—" — это значение по умолчанию в твоём коде для пустого realname
-  if (realname !== "Unknown" && realname !== "—") {
+
+  // Проверка уникальности имени (realname)
+  const realname = model.realname || "—";
+  if (!factionRules.allowSameNameDifferentAlias && realname !== "Unknown" && realname !== "—") {
     const existingWithSameRealname = crew.find(m => (m.realname || "—") === realname);
     if (existingWithSameRealname) {
-      alert("Вы уже добавили модель с именем («" + realname + "»)");
+      alert(`Вы уже добавили модель с именем («${realname}»)`);
       return false;
+    }
+  }
+
+  // Проверка лимитов рангов
+  if (!factionRules.ignoreStandardRankRequirements) {
+    // Стандартные проверки рангов
+    if (rank === "Leader" && bmgRankCount("Leader") >= 1) {
+      alert("Только один Leader");
+      return false;
+    }
+    if (rank === "Sidekick") {
+      if (bmgRankCount("Leader") === 0 && bmgRankCount("Sidekick") >= 2) {
+        alert("Максимум 2 Sidekick без Leader");
+        return false;
+      }
+      if (bmgRankCount("Leader") >= 1 && bmgRankCount("Sidekick") >= 1) {
+        alert("Максимум 1 Sidekick с Leader");
+        return false;
+      }
+    }
+    if (rank === "Free Agent" && bmgRankCount("Free Agent") >= 1 + extras + (modifiers.extraFreeAgents || 0)) {
+      alert("Превышен лимит Free Agents");
+      return false;
+    }
+    if (rank === "Vehicle" && bmgRankCount("Vehicle") >= 1 + extras + (modifiers.extraVehicles || 0)) {
+      alert("Превышен лимит Vehicles");
+      return false;
+    }
+    if (rank === "Henchman") {
+      const hasMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
+      if (!hasMinionOrHorde) {
+        const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
+        if (sameNameCount >= 1 + (modifiers.extraDuplicates || 0)) {
+          alert("Нельзя брать больше Henchmen с одинаковым именем (учтены трейты)");
+          return false;
+        }
+      }
+      // Проверка Elite, Veteran, Minion (без изменений)
+      let eliteExceeded = false;
+      model.traits.forEach(t => {
+        const eliteMatch = t.match(/^Elite \((.+)\)$/);
+        if (eliteMatch) {
+          const type = eliteMatch[1];
+          const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
+          if (count >= 1 + (modifiers.extraElites[type] || 0)) {
+            alert(`Превышен лимит Elite (${type})`);
+            eliteExceeded = true;
+          }
+        }
+      });
+      if (eliteExceeded) return false;
+
+      let veteranExceeded = false;
+      model.traits.forEach(t => {
+        const veteranMatch = t.match(/^Veteran \((.+)\)$/);
+        if (veteranMatch) {
+          const type = veteranMatch[1];
+          const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Veteran \\(${type}\\)$`)))).length;
+          if (count >= 1 + (modifiers.extraVeterans[type] || 0)) {
+            alert(`Превышен лимит Veteran (${type})`);
+            veteranExceeded = true;
+          }
+        }
+      });
+      if (veteranExceeded) return false;
+
+      let minionExceeded = false;
+      model.traits.forEach(t => {
+        const minionMatch = t.match(/^Minion \((.+)\)$/);
+        if (minionMatch) {
+          const x = minionMatch[1].trim();
+          const parsedX = parseInt(x, 10);
+          const limit = isNaN(parsedX) ? 1 + (modifiers.extraMinions[x] || 0) : parsedX;
+          const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Minion \\(${x}\\)$`)))).length;
+          if (count >= limit) {
+            alert(`Превышен лимит Minion (${x})`);
+            minionExceeded = true;
+          }
+        }
+      });
+      if (minionExceeded) return false;
     }
   }
 
@@ -949,4 +988,49 @@ function showTraitPopup(name, desc) {
   };
 
   document.body.appendChild(overlay);
+}
+
+// script.js
+function renderObjectiveSelection() {
+  const factionRules = factionCrewRules[currentFaction] || {};
+  if (!BMG_BOSS) {
+    alert("Сначала выберите Босса!");
+    return;
+  }
+
+  const allowedAffiliations = factionRules.onlyBossAffiliationObjectives ? [...BMG_AFFILIATIONS, ""] : null;
+  const availableObjectives = allowedAffiliations
+    ? objectives.filter(obj => obj.affiliation.length === 0 || obj.affiliation.some(a => allowedAffiliations.includes(a)))
+    : objectives;
+
+  // Пример рендеринга в модальном окне
+  const modal = document.createElement("div");
+  modal.className = "rank-select-modal";
+  modal.innerHTML = `
+    <div class="rank-select-content">
+      <div class="rank-select-header">
+        Выберите объективы
+        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+      </div>
+      <div class="rank-select-buttons">
+        ${availableObjectives.map(obj => `
+          <button class="rank-select-btn" data-objective="${obj.name}">
+            ${obj.name}
+            <small style="display:block; opacity:0.8; font-size:12px;">${obj.description}</small>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function resetCrew() {
+  crew = [];
+  BMG_BOSS = null;
+  BMG_AFFILIATIONS = null;
+  crewEquipmentCounts = {};
+  modifiers = { extraFreeAgents: 0, extraVehicles: 0, extraFunding: 0, extraDuplicates: 0, extraElites: {}, extraVeterans: {}, extraMinions: {} };
+  updateCrewBar();
+  renderMiniCards();
 }
