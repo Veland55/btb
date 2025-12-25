@@ -807,6 +807,15 @@ if (rank === "Henchman") {
   });
   if (minionExceeded) return false;
   }
+    // NEW: Realname uniqueness check (except for "Unknown" or no realname)
+  const realname = model.realname || "—";  // "—" — это значение по умолчанию в твоём коде для пустого realname
+  if (realname !== "Unknown" && realname !== "—") {
+    const existingWithSameRealname = crew.find(m => (m.realname || "—") === realname);
+    if (existingWithSameRealname) {
+      alert("Вы уже добавили модель с именем («" + realname + "»)");
+      return false;
+    }
+  }
 
   return true;
 }
