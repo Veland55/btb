@@ -41,6 +41,13 @@ const addToCrew = m => {
 
 function addModelWithRank(model, chosenRank) {
   const factionRules = factionCrewRules[currentFaction] || {};
+    // Специальное правило для Cults: первым (Leader) может быть только Deacon Blackfire или Kobra
+  if (currentFaction === "Cults" && !BMG_BOSS && chosenRank === "Leader") {
+    if (!["Deacon Blackfire", "Kobra"].includes(model.name)) {
+      alert("Для фракции Cults лидером может быть только Deacon Blackfire или Kobra");
+      return;
+    }
+  }
   if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && chosenRank !== "Leader") {
     alert("Первой моделью должен быть Leader для этой фракции!");
     return;
@@ -764,6 +771,21 @@ function bmgCanAddModel(model) {
       }
     }
   }
+    // Специальное правило для Cults: остальные модели должны иметь нужный культист-трейт
+  if (currentFaction === "Cults" && BMG_BOSS && BMG_BOSS.name !== model.name) {
+    let requiredTrait = null;
+    if (BMG_BOSS.name === "Deacon Blackfire") {
+      requiredTrait = "Blackfire Cultist";
+    } else if (BMG_BOSS.name === "Kobra") {
+      requiredTrait = "Kobra Cultist";
+    }
+
+    if (requiredTrait && !model.traits.includes(requiredTrait)) {
+      alert(`Для лидера ${BMG_BOSS.name} разрешены только модели с трейтом "${requiredTrait}"`);
+      return false;
+    }
+  }
+
 
   // Проверка уникальности имени (realname)
   const realname = model.realname || "—";
