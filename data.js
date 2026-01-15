@@ -878,16 +878,15 @@ const models = [
     ]
   },
   
-
-  
   {
     "name": "Catwoman",
     "realname": "Selina Kyle",
     "base": "40mm",
     "rep": 72,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Unknown",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family", "Unknown"],
+    "rivals": ["GCPD", "Joker"],
     "img": "https://veland55.github.io/btb/img/Catwoman.png",
     "stats": {
       "Attack": 4,
@@ -923,8 +922,8 @@ const models = [
     "base": "40mm",
     "rep": 80,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/RedHoodRebirth.png",
     "stats": {
       "Attack": 4,
@@ -954,7 +953,7 @@ const models = [
       },
       {
         "name": "The Crowbar",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": "-",
         "ammo": "-",
         "traits": "Blunt 2 / Devastating / Handy / Heavy"
@@ -967,8 +966,8 @@ const models = [
     "base": "40mm",
     "rep": 50,
     "funding": 100,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/RobinClassic.png",
     "stats": {
       "Attack": 3,
@@ -993,7 +992,7 @@ const models = [
     "weapons": [
       {
         "name": "Batlings",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": 2,
         "ammo": 2,
         "traits": "Light / S. Range / Throwing"
@@ -1006,8 +1005,8 @@ const models = [
     "base": "30mm",
     "rep": 40,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/RobinJasonTodd.png",
     "stats": {
       "Attack": 4,
@@ -1028,7 +1027,7 @@ const models = [
     "weapons": [
       {
         "name": "Batlings",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": 2,
         "ammo": 2,
         "traits": "Light / S. Range / Throwing"
@@ -1048,8 +1047,8 @@ const models = [
     "base": "30mm",
     "rep": 120,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/WonderGirl.png",
     "stats": {
       "Attack": 4,
@@ -1074,7 +1073,7 @@ const models = [
     "weapons": [
       {
         "name": "Shield",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": "-",
         "ammo": "-",
         "traits": "Devastating / Protective"
@@ -1094,8 +1093,8 @@ const models = [
     "base": "40mm",
     "rep": 50,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/MrWayneBeyond.png",
     "stats": {
       "Attack": 3,
@@ -1130,8 +1129,9 @@ const models = [
     "base": "60mm",
     "rep": 100,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family", "Unknown"],
+    "rivals": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/Clayface.png",
     "stats": {
       "Attack": 3,
@@ -1162,7 +1162,7 @@ const models = [
         "traits": "Handy / Reach (2) / Devastating"
       },
       {
-        "name": "Metamorphic Weapon (Fluid)",
+        "name": "Metamorphic Weapon (Mud)",
         "damage": "🩸★",
         "rof": "-",
         "ammo": "-",
@@ -1176,8 +1176,8 @@ const models = [
     "base": "30mm",
     "rep": 54,
     "funding": 100,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/RobinCarrieKelley.png",
     "stats": {
       "Attack": 3,
@@ -1212,8 +1212,8 @@ const models = [
     "base": "40mm",
     "rep": 80,
     "funding": 400,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/RedHoodTheOutlaw.png",
     "stats": {
       "Attack": 4,
@@ -1230,6 +1230,7 @@ const models = [
       "Instinctive Shooting",
       "Martial Artist",
       "Red Hood Armor",
+      "Reinforced Gloves",
       "Shooter",
       "Teen Titans",
       "Troublemaker",
@@ -1258,8 +1259,8 @@ const models = [
     "base": "30mm",
     "rep": 70,
     "funding": 300,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/StarfireTeenTitans.png",
     "stats": {
       "Attack": 4,
@@ -1288,7 +1289,7 @@ const models = [
       },
       {
         "name": "Starfire's Hands",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": "-",
         "ammo": "-",
         "traits": "Motion (3) / Push (4) / Devastating / Fire"
@@ -1301,8 +1302,8 @@ const models = [
     "base": "40mm",
     "rep": 94,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/NightwingRebirth.png",
     "stats": {
       "Attack": 4,
@@ -1315,6 +1316,7 @@ const models = [
     "traits": [
       "Acrobat",
       "Always on the Move",
+      "Bat Family",
       "Batclaw",
       "Charismatic",
       "Combo: Sticks",
@@ -1327,14 +1329,14 @@ const models = [
     "weapons": [
       {
         "name": "Sticks",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": "-",
         "ammo": "-",
         "traits": "Electric / Handy / Mechanical"
       },
       {
         "name": "Batlings",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": 2,
         "ammo": 1,
         "traits": "Light / S. Range / Throwing"
@@ -1347,8 +1349,8 @@ const models = [
     "base": "30mm",
     "rep": 55,
     "funding": 300,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Sidekick"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/GreenArrowAnimated.png",
     "stats": {
       "Attack": 3,
@@ -1369,14 +1371,14 @@ const models = [
     "weapons": [
       {
         "name": "Bow (Punch Arrow)",
-        "damage": "★★★★",
+        "damage": "★★★",
         "rof": 1,
         "ammo": 1,
         "traits": "Aim / Mechanical / Acceleration"
       },
       {
         "name": "Bow (Trick Arrow)",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": 1,
         "ammo": 5,
         "traits": "Mechanical / Aim / Acceleration"
@@ -1389,8 +1391,8 @@ const models = [
     "base": "30mm",
     "rep": 39,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/SonOfBatman3.png",
     "stats": {
       "Attack": 3,
@@ -1417,8 +1419,8 @@ const models = [
     "base": "30mm",
     "rep": 28,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/Ace.png",
     "stats": {
       "Attack": 3,
@@ -1445,7 +1447,7 @@ const models = [
       },
       {
         "name": "Bat-Bark",
-        "damage": "🩸",
+        "damage": "-",
         "rof": 1,
         "ammo": "-",
         "traits": "Expansive / Enervating (2)"
@@ -1458,8 +1460,8 @@ const models = [
     "base": "40mm",
     "rep": 40,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/AlfredPennyworth.png",
     "stats": {
       "Attack": 3,
@@ -1495,8 +1497,8 @@ const models = [
     "base": "40mm",
     "rep": 70,
     "funding": 300,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/HuntressClassic.png",
     "stats": {
       "Attack": 4,
@@ -1539,8 +1541,8 @@ const models = [
     "base": "30mm",
     "rep": 70,
     "funding": 200,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/Raven.png",
     "stats": {
       "Attack": 3,
@@ -1583,8 +1585,8 @@ const models = [
     "base": "30mm",
     "rep": 22,
     "funding": 300,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/SonOfBatman2.png",
     "stats": {
       "Attack": 3,
@@ -1625,8 +1627,8 @@ const models = [
     "base": "40mm",
     "rep": 23,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/Clownhunter.png",
     "stats": {
       "Attack": 3,
@@ -1660,8 +1662,8 @@ const models = [
     "base": "40mm",
     "rep": 70,
     "funding": 200,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/RedRobin.png",
     "stats": {
       "Attack": 4,
@@ -1673,6 +1675,7 @@ const models = [
     },
     "traits": [
       "360° Strike",
+      "Bat Family",
       "Batclaw",
       "Detective",
       "Hacking",
@@ -1705,8 +1708,8 @@ const models = [
     "base": "30mm",
     "rep": 14,
     "funding": 100,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/SonOfBatman1.png",
     "stats": {
       "Attack": 3,
@@ -1726,7 +1729,7 @@ const models = [
     "weapons": [
       {
         "name": "Batlings",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": 2,
         "ammo": 2,
         "traits": "Light / S. Range / Throwing"
@@ -1746,8 +1749,8 @@ const models = [
     "base": "40mm",
     "rep": 85,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/AzraelGodsPunishment.png",
     "stats": {
       "Attack": 4,
@@ -1760,7 +1763,7 @@ const models = [
     "traits": [
       "Acrobat",
       "Always on the Move",
-      "Anger Management (Ment...)",
+      "Anger Management (Mental Disorder)",
       "Bat Family",
       "Flaming Wave",
       "God's Banner",
@@ -1772,7 +1775,7 @@ const models = [
     "weapons": [
       {
         "name": "Sword of Sin",
-        "damage": "★★★",
+        "damage": "★★",
         "rof": "-",
         "ammo": "-",
         "traits": "Sharp / Enervating (3) / Blind"
@@ -1792,8 +1795,8 @@ const models = [
     "base": "40mm",
     "rep": 50,
     "funding": 200,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Teen Titans",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/RobinTimDrake.png",
     "stats": {
       "Attack": 3,
@@ -1814,7 +1817,7 @@ const models = [
     "weapons": [
       {
         "name": "Smoke Pellets",
-        "damage": "🩸",
+        "damage": "-",
         "rof": 1,
         "ammo": 1,
         "traits": "S. Range / Grenade / Smoke"
@@ -1834,8 +1837,8 @@ const models = [
     "base": "40mm",
     "rep": 60,
     "funding": 0,
-    "rank": ["Sidekick", "Leader"],
-    "faction": "Bat Family",
+    "rank": ["Free Agent"],
+    "faction": ["Bat Family", "GCPD"],
     "img": "https://veland55.github.io/btb/img/LuciusFox.png",
     "stats": {
       "Attack": 2,
