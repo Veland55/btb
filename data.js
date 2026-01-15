@@ -877,9 +877,987 @@ const models = [
       }
     ]
   },
+  
 
+  
+  {
+    "name": "Catwoman",
+    "realname": "Selina Kyle",
+    "base": "40mm",
+    "rep": 72,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Unknown",
+    "img": "https://veland55.github.io/btb/img/Catwoman.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Backpack",
+      "Bat Family",
+      "Bluff",
+      "Climbing Claws",
+      "Meow",
+      "Sneaking",
+      "Stealthy Cats"
+    ],
+    "weapons": [
+      {
+        "name": "Whip",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Red Hood Rebirth",
+    "realname": "Jason Todd",
+    "base": "40mm",
+    "rep": 80,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/RedHoodRebirth.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Brutal",
+      "Hardened",
+      "Kevlar Vest",
+      "Martial Artist",
+      "One Shot Gun",
+      "Searcher"
+    ],
+    "weapons": [
+      {
+        "name": "Katana",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      },
+      {
+        "name": "The Crowbar",
+        "damage": "★★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Blunt 2 / Devastating / Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Robin Classic",
+    "realname": "Dick Grayson",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 100,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/RobinClassic.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "Acrobat",
+      "Agile",
+      "Bat Family",
+      "Boy Wonder",
+      "Fast (3)",
+      "One of the Boys",
+      "Radio",
+      "Small",
+      "Support (Batman)",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Robin",
+    "realname": "Jason Todd",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/RobinJasonTodd.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Batclaw",
+      "Brutal",
+      "Goad",
+      "Handyman",
+      "Impetuous",
+      "Street Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      },
+      {
+        "name": "Robin's Bo",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Handy / Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Wonder Girl",
+    "realname": "Donna Troy",
+    "base": "30mm",
+    "rep": 120,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/WonderGirl.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Amazon",
+      "Bracelets of Submission",
+      "Lasso of Persuasion",
+      "Martial Artist",
+      "Regeneration",
+      "Reinforced Gloves",
+      "Super Jump",
+      "Teen Titans",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Shield",
+        "damage": "★★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Protective"
+      },
+      {
+        "name": "Amazon's Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Shield Breaker / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Mr. Wayne Beyond",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/MrWayneBeyond.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bat Family",
+      "Block It Out",
+      "Detective",
+      "Intel Support (5)",
+      "Pulling the Strings",
+      "Required (Terry McGinnis)",
+      "Resourceful Vigilante"
+    ],
+    "weapons": [
+      {
+        "name": "Informatic Assault",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Limited Attack"
+      }
+    ]
+  },
+  {
+    "name": "Clayface",
+    "realname": "Basil Karlo",
+    "base": "60mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/Clayface.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Adaptable",
+      "Bat Family",
+      "Bodyguard",
+      "Clay Body",
+      "Clay Slide",
+      "Huge",
+      "Reform",
+      "Regeneration",
+      "Sturdy",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Metamorphic Weapon (Solid)",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (2) / Devastating"
+      },
+      {
+        "name": "Metamorphic Weapon (Fluid)",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (6) / Slow (6)"
+      }
+    ]
+  },
+  {
+    "name": "Robin",
+    "realname": "Carrie Kelley",
+    "base": "30mm",
+    "rep": 54,
+    "funding": 100,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/RobinCarrieKelley.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Agile",
+      "Bat Family",
+      "Boy Wonder",
+      "Concealment",
+      "Handyman",
+      "The Dark Knight Returns"
+    ],
+    "weapons": [
+      {
+        "name": "Slingshot",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Handy / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Red Hood The Outlaw",
+    "realname": "Jason Todd",
+    "base": "40mm",
+    "rep": 80,
+    "funding": 400,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/RedHoodTheOutlaw.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Handyman",
+      "Instinctive Shooting",
+      "Martial Artist",
+      "Red Hood Armor",
+      "Shooter",
+      "Teen Titans",
+      "Troublemaker",
+      "Vengeance"
+    ],
+    "weapons": [
+      {
+        "name": "Red Hood's Guns",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 4,
+        "traits": "S. Range / Firearm / Accurate / Light"
+      },
+      {
+        "name": "Anti-Tank Rounds",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Anti-Tank / Light"
+      }
+    ]
+  },
+  {
+    "name": "Starfire Teen Titans",
+    "realname": "Koriand'r",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 300,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/StarfireTeenTitans.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Berserker Fury",
+      "Desensitized",
+      "Fly",
+      "Invulnerability (1)",
+      "Princess of Tamaran",
+      "Teen Titans",
+      "True Love (Dick Grayson)"
+    ],
+    "weapons": [
+      {
+        "name": "Starbolts",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 10,
+        "traits": "Beam / S. Range / Fire / Throwing / Motion (4)"
+      },
+      {
+        "name": "Starfire's Hands",
+        "damage": "★★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Motion (3) / Push (4) / Devastating / Fire"
+      }
+    ]
+  },
+  {
+    "name": "Nightwing Rebirth",
+    "realname": "Dick Grayson",
+    "base": "40mm",
+    "rep": 94,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/NightwingRebirth.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Always on the Move",
+      "Batclaw",
+      "Charismatic",
+      "Combo: Sticks",
+      "Martial Artist",
+      "Searcher",
+      "Shadowed Nightmare",
+      "Teen Titans",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Sticks",
+        "damage": "★★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric / Handy / Mechanical"
+      },
+      {
+        "name": "Batlings",
+        "damage": "★★★",
+        "rof": 2,
+        "ammo": 1,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Green Arrow The Animated Series",
+    "realname": "Oliver Queen",
+    "base": "30mm",
+    "rep": 55,
+    "funding": 300,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/GreenArrowAnimated.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Instinctive Shooting",
+      "Put More Effort",
+      "Sharpshooter",
+      "Teamwork (2) (Black Canary)"
+    ],
+    "weapons": [
+      {
+        "name": "Bow (Punch Arrow)",
+        "damage": "★★★★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Bow (Trick Arrow)",
+        "damage": "★★★",
+        "rof": 1,
+        "ammo": 5,
+        "traits": "Mechanical / Aim / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Son of Batman 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 39,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/SonOfBatman3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bat Family",
+      "Bluff",
+      "Counter Attack",
+      "Hardened",
+      "Minion (3)",
+      "Reinforced Gloves",
+      "The Dark Knight Returns"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Ace",
+    "realname": "Ace",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/Ace.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Animal",
+      "Bat Cape",
+      "Bat Family",
+      "Detective Best Friend",
+      "True Love (Robin)"
+    ],
+    "weapons": [
+      {
+        "name": "Ace's Teeth",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Slow (4)"
+      },
+      {
+        "name": "Bat-Bark",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": "-",
+        "traits": "Expansive / Enervating (2)"
+      }
+    ]
+  },
+  {
+    "name": "Alfred Pennyworth",
+    "realname": "Alfred Pennyworth",
+    "base": "40mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/AlfredPennyworth.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Bat Family",
+      "Batcave Support",
+      "Business Agent",
+      "Informer",
+      "Intel Support (4)",
+      "Radio",
+      "The Dark Knight Returns",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Informatic Assault",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Limited Attack"
+      }
+    ]
+  },
+  {
+    "name": "Huntress Classic",
+    "realname": "Helena Bertinelli",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 300,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/HuntressClassic.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "360° Strike",
+      "Acrobat",
+      "Bat Family",
+      "Good Aim",
+      "Martial Artist",
+      "Stealth",
+      "Undercover",
+      "Vendetta"
+    ],
+    "weapons": [
+      {
+        "name": "Bo",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (2)"
+      },
+      {
+        "name": "Huntress's Crossbow",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "M. Range / Mechanical / Assault"
+      }
+    ]
+  },
+  {
+    "name": "Raven",
+    "realname": "Rachel Roth",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 200,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/Raven.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Dark Intimidation (Spell)",
+      "Demon",
+      "Magical Power (3)",
+      "Natural Immunities",
+      "Painful Empathy",
+      "Regeneration",
+      "Soul-Self (Spell)",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Dark Blast",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Magic / S. Range / Throwing / Terror / Devastating"
+      },
+      {
+        "name": "Soul's Touch",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Magic / Suggest / Terror"
+      }
+    ]
+  },
+  {
+    "name": "Son of Batman 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 300,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/SonOfBatman2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bat Family",
+      "Dirty Fighter",
+      "Hardened",
+      "Minion (3)",
+      "Street Guy",
+      "The Dark Knight Returns"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / Light / S. Range"
+      },
+      {
+        "name": "Sawed Off Shotgun",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Firearm"
+      }
+    ]
+  },
+  {
+    "name": "Clownhunter",
+    "realname": "Bao Pham",
+    "base": "40mm",
+    "rep": 23,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/Clownhunter.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Antagonist (2-Trickster)",
+      "Bat Family",
+      "Devastating Blow",
+      "Goad",
+      "Hunter",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Bat-Bat",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "Red Robin",
+    "realname": "Tim Drake",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 200,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/RedRobin.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "360° Strike",
+      "Batclaw",
+      "Detective",
+      "Hacking",
+      "Martial Artist",
+      "Order",
+      "Scientific",
+      "Searcher",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Bo",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (2)"
+      },
+      {
+        "name": "EM Chain Bolas",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Electric / S. Range / Throwing / Slow (6)"
+      }
+    ]
+  },
+  {
+    "name": "Son of Batman 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 14,
+    "funding": 100,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/SonOfBatman1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bat Family",
+      "Brutal",
+      "Hardened",
+      "Minion (3)",
+      "The Dark Knight Returns"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      },
+      {
+        "name": "Shiv",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy"
+      }
+    ]
+  },
+  {
+    "name": "Azrael God's Punishment",
+    "realname": "Michael Washington's Lane",
+    "base": "40mm",
+    "rep": 85,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/AzraelGodsPunishment.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Always on the Move",
+      "Anger Management (Ment...)",
+      "Bat Family",
+      "Flaming Wave",
+      "God's Banner",
+      "God's Work",
+      "Night Vision",
+      "Saint Dumas Zealot",
+      "Suit of Sorrows"
+    ],
+    "weapons": [
+      {
+        "name": "Sword of Sin",
+        "damage": "★★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Enervating (3) / Blind"
+      },
+      {
+        "name": "Sword of Salvation",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Fire"
+      }
+    ]
+  },
+  {
+    "name": "Robin Tim Drake",
+    "realname": "Tim Drake",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 200,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Teen Titans",
+    "img": "https://veland55.github.io/btb/img/RobinTimDrake.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bat Family",
+      "Batclaw",
+      "Detective",
+      "Hacking",
+      "Tactical Approach",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Smoke Pellets",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "S. Range / Grenade / Smoke"
+      },
+      {
+        "name": "Bo (Defensive Style)",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Defensive / Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Lucius Fox",
+    "realname": "Lucius Fox",
+    "base": "40mm",
+    "rep": 60,
+    "funding": 0,
+    "rank": ["Sidekick", "Leader"],
+    "faction": "Bat Family",
+    "img": "https://veland55.github.io/btb/img/LuciusFox.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 4
+    },
+    "traits": [
+      "Bat Family",
+      "Countermeasures",
+      "Development",
+      "Intel Support (3)",
+      "Upgrades"
+    ],
+    "weapons": []
+  },
 
+//----------------------------------------------------------------------------------------------------------------------------------
 //DOOM PATROL
+//----------------------------------------------------------------------------------------------------------------------------------
 {
     "name": "Beast Boy - Human (Teen Titans)",
     "rep": 50,
@@ -1070,6 +2048,87 @@ const models = [
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //Bane 
 //---------------------------------------------------------------------------------------------------------------------------------------------
+
+  {
+    "name": "Bane Unleashed",
+    "realname": "Unknown",
+    "base": "60mm",
+    "rep": 161,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/BaneUnleashed.png",
+    "stats": {
+      "Attack": 6,
+      "Defense": 2,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 14
+    },
+    "traits": [
+      "Accelerated Venom",
+      "Breaking the Bat",
+      "Desensitized",
+      "Elite Boss (Soldier of Fortune)",
+      "Grudge Match",
+      "Huge",
+      "Like Flies to Me",
+      "Tough Guy",
+      "Venom Dose (4)",
+      "Venom Enrage",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Unleashed Strength",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "Batman",
+    "realname": "Thomas Wayne",
+    "base": "40mm",
+    "rep": 133,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/BatmanSword.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 10
+    },
+    "traits": [
+      "Bat Cape",
+      "Bat-Armor MK II",
+      "Batclaw",
+      "Detective",
+      "Grand Strategist",
+      "Mastermind",
+      "Medic",
+      "Paramedic",
+      "Precise Blow",
+      "Reinforced Gloves",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Amazon's Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Shield Breaker / Sharp"
+      }
+    ]
+  },
 
   {
     "name": "Bane Titan",
@@ -1821,6 +2880,7 @@ const models = [
       }
     ]
   },
+ 
   {
     "name": "Schoolboy",
     "realname": "Ike",
