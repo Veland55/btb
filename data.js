@@ -1067,6 +1067,868 @@ const models = [
     "weapons": []
   },
 
+//---------------------------------------------------------------------------------------------------------------------------------------------
+//Bane 
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+  {
+    "name": "Bane Titan",
+    "realname": "Unknown",
+    "base": "60mm",
+    "rep": 140,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/BaneTitan.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 2,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 14
+    },
+    "traits": [
+      "Charge",
+      "Huge",
+      "Recover the Titan",
+      "Titan Addict",
+      "Tough Guy",
+      "Veteran",
+      "Desensitized",
+      "Like Flies to Me",
+      "Savage Throw",
+      "Unstoppable"
+    ],
+    "weapons": [
+      {
+        "name": "Unleashed Strength",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "Medic OP",
+    "realname": "Dillon",
+    "base": "30mm",
+    "rep": 21,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/MedicOP.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Medic",
+      "Paramedic",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Surgical Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Bird Classic",
+    "realname": "Angel Vallelunga",
+    "base": "40mm",
+    "rep": 58,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/BirdClassic.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Elite Boss (Soldier of Fortune)",
+      "Falconry",
+      "Go My Little Birds",
+      "Lieutenant (Bane)",
+      "Self-Discipline",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Talon's Ranged Attack",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 4,
+        "traits": "M. Range / Mechanical / Sharp"
+      },
+      {
+        "name": "Combined Attack",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Reach (6)"
+      }
+    ]
+  },
+  {
+    "name": "Bird",
+    "realname": "Angel Vallelunga",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 100,
+    "rank": ["Sidekick"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Bird.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bat Cape",
+      "Bulletproof Vest",
+      "Elite Boss (Soldier of Fortune)",
+      "Military Tradition",
+      "One of the Boys",
+      "Self-Discipline",
+      "Veteran",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Combat Machete",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Smoke Grenades",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Grenade / S. Range / Smoke"
+      }
+    ]
+  },
+  {
+    "name": "Bane Rebirth",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 161,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/BaneRebirth.png",
+    "stats": {
+      "Attack": 6,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 9,
+      "Endurance": 10
+    },
+    "traits": [
+      "Cool Under Fire",
+      "Desensitized",
+      "I Will Break You",
+      "Mastermind",
+      "Tough Guy",
+      "Veteran",
+      "Coordination",
+      "Elite Boss (Soldier of Fortune)",
+      "Large",
+      "Reinforced Gloves",
+      "Venom Dose (2)",
+      "Venom Enrage"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Vengeance",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 105,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Vengeance.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 10
+    },
+    "traits": [
+      "Close Combat Master",
+      "Desensitized",
+      "Large",
+      "Mastermind",
+      "Raised with Venom",
+      "Reinforced Gloves",
+      "Unstoppable",
+      "Vengeance",
+      "Venom Dose (4)",
+      "Venom Enrage",
+      "Veteran"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Bane The Bat",
+    "realname": "Unknown",
+    "base": "60mm",
+    "rep": 170,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/BaneTheBat.png",
+    "stats": {
+      "Attack": 6,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 9,
+      "Endurance": 10
+    },
+    "traits": [
+      "Bat Cape",
+      "Desensitized",
+      "Large",
+      "Master Fighter",
+      "Mastermind",
+      "Reinforced Gloves",
+      "Venom Dose (1)",
+      "Venom Enrage",
+      "Veteran",
+      "Batman Lives",
+      "I Will Break You",
+      "Light Armor"
+    ],
+    "weapons": [
+      {
+        "name": "Bat-Signal",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "One Use / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Dreadnought OP",
+    "realname": "Billy",
+    "base": "30mm",
+    "rep": 44,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/DreadnoughtOP.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Devastating Blow",
+      "Elite (Soldier of Fortune)",
+      "Light Armor",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Tomahawk",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Handy"
+      }
+    ]
+  },
+  {
+    "name": "Elite OP",
+    "realname": "Duke",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 600,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/EliteOP.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Elite (Soldier of Fortune)",
+      "Light Armor",
+      "Rain of Bullets",
+      "Shooter",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Assault Rifle",
+        "damage": "🩸🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm"
+      }
+    ]
+  },
+  {
+    "name": "Bane Commander",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 95,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/BaneCommander.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 10
+    },
+    "traits": [
+      "Desensitized",
+      "Elite Boss (Soldier of Fortune)",
+      "Large",
+      "Master Fighter",
+      "Order",
+      "Reinforced Gloves",
+      "Savage Fighter",
+      "Scheming (2)",
+      "Sturdy",
+      "Tough Guy",
+      "Venom Dose (2)",
+      "Veteran"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Lieutenant OP",
+    "realname": "Ross",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/LieutenantOP.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Follow Me!",
+      "Lantern",
+      "Radio",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Frag Grenade",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Explosive / Firearm / Grenade / S. Range / Bleed (1)"
+      },
+      {
+        "name": "Electric Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric / Handy / Mechanical"
+      }
+    ]
+  },
+  {
+    "name": "Cuchillo",
+    "realname": "Diaz",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Cuchillo.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Sneak Attack",
+      "Stealth",
+      "Tough Guy",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Stealth OP",
+    "realname": "Kabuto",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/StealthOP.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Elite (Soldier of Fortune)",
+      "Stealth",
+      "Tough Guy",
+      "Undercover",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Katana",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Infiltrate OP",
+    "realname": "Claire",
+    "base": "30mm",
+    "rep": 46,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/InfiltrateOP.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Hacking",
+      "Hidden",
+      "Master of Stealth",
+      "Radio",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Light Assault Carbine",
+        "damage": "🩸",
+        "rof": 4,
+        "ammo": 3,
+        "traits": "Assault / Firearm / M. Range / Red Dot"
+      }
+    ]
+  },
+  {
+    "name": "Macgregor",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Macgregor.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Coordination",
+      "Veteran",
+      "Weapon Master"
+    ],
+    "weapons": [
+      {
+        "name": "Combat Machete",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Clover",
+    "realname": "Sullivan",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Clover.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Rain of Bullets",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Sharp Shooter",
+    "realname": "Kyle Kurt",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/SharpShooter.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Elite (Soldier of Fortune)",
+      "Hold Breath",
+      "Undercover",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Sniper Rifle",
+        "damage": "🩸🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Aim / Anti-Tank / Bleed (3) / Firearm / Reload / Scope"
+      }
+    ]
+  },
+  {
+    "name": "Malicia",
+    "realname": "Malicia",
+    "base": "30mm",
+    "rep": 54,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Malicia.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Medium Armor",
+      "Reinforced Armor",
+      "Reinforced Gloves",
+      "Tough Guy",
+      "Veteran",
+      "Raised with Venom",
+      "Super Jump",
+      "Venom Dose (2)"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "The Builder",
+    "realname": "Adam Schnauzer",
+    "base": "40mm",
+    "rep": 35,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/TheBuilder.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 10
+    },
+    "traits": [
+      "Grudge Match",
+      "Large",
+      "Moment of Glory",
+      "Protein's Shaker (Dose)",
+      "Teamwork (1) (Wrestler)",
+      "Wrestler"
+    ],
+    "weapons": [
+      {
+        "name": "Elbow Smash",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Smash",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 42,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Smash.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Grudge Match",
+      "Large",
+      "Tough Guy",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Wrecking Hammer",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": "-",
+        "traits": "Heavy / Handy / Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Ted Hunter",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 250,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/TedHunter.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Good Aim",
+      "Hunter",
+      "Tracking",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Shotgun",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Assault"
+      },
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Schoolboy",
+    "realname": "Ike",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/Schoolboy.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Elite (Soldier of Fortune)",
+      "Gas Mask",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Rocket Launcher",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / M. Range / Explosive / Aim / Anti-Tank"
+      }
+    ]
+  },
+  {
+    "name": "Support OP",
+    "realname": "Dolph Wolf",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/SupportOP.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Elite (Soldier of Fortune)",
+      "Hardened",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Grenade Launcher",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Explosive / Firearm / Grenade / M. Range"
+      },
+      {
+        "name": "Grenade Launcher (Smoke)",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Grenade / M. Range / Smoke"
+      }
+    ]
+  },
+  
+  {
+    "name": "Red Bastard",
+    "realname": "Ernesto Machado",
+    "base": "40mm",
+    "rep": 35,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "img": "https://veland55.github.io/btb/img/RedBastard.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 10
+    },
+    "traits": [
+      "Bonebreaker",
+      "Large",
+      "Moment of Glory",
+      "Teamwork (1) (Wrestler)",
+      "The Dude",
+      "Wrestler"
+    ],
+    "weapons": [
+      {
+        "name": "Elbow Smash",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming"
+      }
+    ]
+  },
 
 //---------------------------------------------------------------------------------------------------------// 
 //Joker
