@@ -234,12 +234,34 @@ const renderMiniCards = (() => {
       }
 
       currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
-      const fragment = document.createDocumentFragment();
-
-      models.filter(m => {
+      
+      let filteredModels = models.filter(m => {
         const factions = getFactions(m);
         return factions.includes(currentFaction);
-      }).forEach(model => {
+      });
+      
+      // Определение порядка рангов
+      const rankOrder = {
+        "Leader": 1,
+        "Sidekick": 2,
+        "Henchman": 3,
+        "Free Agent": 4,
+        "Vehicle": 5
+      };
+
+      // Сортировка: сначала по наивысшему (минимальному по номеру) рангу, затем по имени алфавитно
+      filteredModels.sort((a, b) => {
+        const ranksA = getRanks(a);
+        const ranksB = getRanks(b);
+        const minA = ranksA.length > 0 ? Math.min(...ranksA.map(r => rankOrder[r] || 999)) : 999;
+        const minB = ranksB.length > 0 ? Math.min(...ranksB.map(r => rankOrder[r] || 999)) : 999;
+        if (minA !== minB) return minA - minB;
+        return a.name.localeCompare(b.name);
+      });
+
+      const fragment = document.createDocumentFragment();
+
+      filteredModels.forEach(model => {
         const inCrew = hasInCrew(model);
         const count = countInCrew(model);
         const isMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
