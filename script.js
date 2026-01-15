@@ -1078,3 +1078,48 @@ function resetCrew() {
   updateCrewBar();
   renderMiniCards();
 }
+
+let isDesktop = window.innerWidth > 768 && !/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+if (isDesktop) {
+  const tabs = document.querySelector('.tabs');
+  if (tabs) {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    // Зажали мышку
+    tabs.addEventListener('mousedown', (e) => {
+      isDown = true;
+      tabs.classList.add('grabbing');
+      startX = e.pageX - tabs.offsetLeft;
+      scrollLeft = tabs.scrollLeft;
+      e.preventDefault(); // чтобы не выделялся текст
+    });
+
+    // Отпустили мышку (где угодно)
+    tabs.addEventListener('mouseleave', () => {
+      isDown = false;
+      tabs.classList.remove('grabbing');
+    });
+    tabs.addEventListener('mouseup', () => {
+      isDown = false;
+      tabs.classList.remove('grabbing');
+    });
+
+    // Тянем
+    tabs.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - tabs.offsetLeft;
+      const walk = (x - startX) * 2; // скорость прокрутки (можно поменять 2 на 1.5 или 3)
+      tabs.scrollLeft = scrollLeft - walk;
+    });
+
+    // Колёсико мыши → горизонтальная прокрутка
+    tabs.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      tabs.scrollLeft += e.deltaY * 1.5; // скорость можно настроить
+    });
+  }
+}

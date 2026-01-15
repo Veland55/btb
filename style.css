@@ -550,3 +550,13 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   font-size: 14px;
   margin-left: 10px;
 }
+
+/* Делаем красивое перетаскивание мышкой на ПК */
+.tabs {
+  cursor: grab;
+  user-select: none;
+}
+
+.tabs.grabbing {
+  cursor: grabbing;
+}
