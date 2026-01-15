@@ -1858,6 +1858,231 @@ const models = [
     "weapons": []
   },
 
+  {
+    "name": "Catwoman The Animated Series",
+    "realname": "Selina Kyle",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/CatwomanAnimated.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Climbing Claws",
+      "Pickpocket",
+      "Pleasant Surprise"
+    ],
+    "weapons": [
+      {
+        "name": "Whip",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Batgirl The Animated Series",
+    "realname": "Barbara Gordon",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BatgirlAnimated.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Affinity (Commissioner Gordon)",
+      "Bat Cape",
+      "Bat Family",
+      "Batclaw",
+      "Combo (Unarmed)",
+      "I've Caught You",
+      "Street Fighter"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      },
+      {
+        "name": "Smoke Grenades",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Grenade / S. Range / Smoke"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn The Animated Series",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnAnimated.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Distract",
+      "Harlequinade",
+      "No More Joker",
+      "Required (Batman The Animated Series)"
+    ],
+    "weapons": [
+      {
+        "name": "Harley's Little Helper",
+        "damage": "★★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Enervating (3)"
+      }
+    ]
+  },
+  {
+    "name": "Robin Beyond",
+    "realname": "Matt McGinnis",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/RobinBeyond.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bat Cape",
+      "Bat Family",
+      "Bat-Armor MK III",
+      "Fly",
+      "Multi-Purpose Pills",
+      "Night Vision",
+      "Required (Terry McGinnis)"
+    ],
+    "weapons": [
+      {
+        "name": "Batarang",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "M. Range / Remote Controlled / Throwing"
+      },
+      {
+        "name": "Batsuit's Strength",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Ravager Vanguard Team",
+    "realname": "Rose Wilson",
+    "base": "30mm",
+    "rep": 36,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family", "Suicide Squad"],
+    "img": "https://veland55.github.io/btb/img/RavagerVanguardTeam.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Martial Artist",
+      "Power Dampening",
+      "Precognition",
+      "Self-Discipline",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Ravager's Swords",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Overwhelming / Accurate"
+      }
+    ]
+  },
+  {
+    "name": "Black Canary The Animated Series",
+    "realname": "Dinah Lance",
+    "base": "30mm",
+    "rep": 45,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BlackCanaryAnimated.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Canary Cry",
+      "Martial Artist",
+      "Team Player",
+      "Teamwork (2) (Green Arrow)"
+    ],
+    "weapons": [
+      {
+        "name": "Martial Prowess",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / CRT (Paralyze)"
+      }
+    ]
+  },
+
 //----------------------------------------------------------------------------------------------------------------------------------
 //DOOM PATROL
 //----------------------------------------------------------------------------------------------------------------------------------
