@@ -4903,42 +4903,6 @@ const models = [
     ]
   },
   {
-    "name": "Harley Quinn (Bombshell)",
-    "realname": "Dr. Harleen Frances Quinzel",
-    "base": "30mm",
-    "rep": 65,
-    "funding": 300,
-    "rank": ["Sidekick"],
-    "faction": ["Joker"],
-    "img": "https://veland55.github.io/btb/img/HarleyQuinnBombshell.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "5+",
-      "Movement": 10,
-      "Willpower": 7,
-      "Endurance": 7
-    },
-    "traits": ["Acrobat", "Charismatic", "Combat Flip", "Confusion", "One Of The Boys", "The Voices (Mental Disorder)", "True Love (Joker)"],
-    "weapons": [
-      {
-        "name": "Hate/Love Gun",
-        "damage": "🩸🩸",
-        "rof": "2",
-        "ammo": "2",
-        "traits": "Bleed (2) / Firearm / Light / S. Range"
-      },
-      {
-        "name": "Good Night Bat",
-        "damage": "★★",
-        "rof": "-",
-        "ammo": "-",
-        "traits": "Handy / Heavy"
-      }
-    ]
-  },
-
-    {
     "name": "Archie",
     "realname": "Unknown",
     "base": "30mm",
