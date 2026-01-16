@@ -2086,11 +2086,111 @@ const models = [
 //----------------------------------------------------------------------------------------------------------------------------------
 //DOOM PATROL
 //----------------------------------------------------------------------------------------------------------------------------------
+  {
+    "name": "Beast Boy - Tiger Teen Titans",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BeastBoyBeast.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Always on the Move",
+      "Master of Stealth",
+      "Shapeshifting Tiger Progress",
+      "Shapeshifting",
+      "Sneak Attack",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Tiger Claws",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Terror"
+      }
+    ]
+  },
+  {
+    "name": "Beast Boy - Gorilla Teen Titans",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BeastBoyBeast.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Large",
+      "Obstinate",
+      "Shapeshifting Gorilla Progress",
+      "Shapeshifting",
+      "Teen Titans",
+      "Tough Skin"
+    ],
+    "weapons": [
+      {
+        "name": "Gorilla Fists",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Protective"
+      }
+    ]
+  },
+  {
+    "name": "Beast Boy - Hawk Teen Titans",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/BeastBoyBeast.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 15,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Claws",
+      "Dodge",
+      "Elusive",
+      "Fly",
+      "Shapeshifting Hawk Progress",
+      "Shapeshifting",
+      "Teen Titans"
+    ],
+    "weapons": []
+  },
+
 {
     "name": "Beast Boy - Human (Teen Titans)",
     "rep": 50,
     "funding": 0,
-    "rank": ["Sidekick"],
+    "rank": ["Henchman"],
     "faction": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/BeastBoy_Human.png",
     "stats": {
