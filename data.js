@@ -279,7 +279,808 @@ const equipmentByFaction = {
 };
 
 const models = [
-  
+  {
+    "name": "Batman Bushi",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 105,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanBushi.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Always on the Move",
+      "Battle Meditation",
+      "Bushido Bat-Armor",
+      "Challenge",
+      "Detective",
+      "Feint",
+      "Honor",
+      "Reinforced Gloves",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Katana",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "The Drifter Robert Pattinson",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 112,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/TheDrifterRobertPattinson.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Detective",
+      "Disguised Sneak Attack",
+      "Investigator",
+      "Observation",
+      "Reveal the Bat",
+      "Shadows Agent",
+      "Shady Dealings",
+      "Sneaking",
+      "Undercover",
+      "Vigilante's Work"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Batman Year One",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 121,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanYearOne.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bat Beacon",
+      "Bat Cape",
+      "Detective",
+      "Hidden",
+      "Master of Stealth",
+      "Reinforced Gloves",
+      "Shadows Agent",
+      "Sneak Attack",
+      "Sturdy",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★ ★",
+        "rof": 2,
+        "ammo": 1,
+        "traits": "Short Range / Light / Throwing"
+      },
+      {
+        "name": "Blowgun",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Short Range / Mechanical / Paralyze / Silencer"
+      }
+    ]
+  },
+  {
+    "name": "Batman Robert Pattinson",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 112,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanRobertPattinson.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Ballistic Bat-Armor",
+      "Batclaw",
+      "Brutal",
+      "Detective",
+      "I'm Vengeance",
+      "Investigator",
+      "Reinforced Gloves",
+      "Serum Injection (2)",
+      "Shadows Agent",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Drag Shot",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Short Range / Mechanical / Pull (4)"
+      },
+      {
+        "name": "Shock Gauntlet",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "CRT (Stunned) / One Use"
+      }
+    ]
+  },
+  {
+    "name": "Batman on Bike Robert Pattinson",
+    "realname": "Bruce Wayne / 42x75mm",
+    "base": "42x75mm",
+    "rep": 112,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanOnBikeRobertPattinson.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Always on the Move",
+      "Ballistic Bat-Armor",
+      "Detective",
+      "Drop It!",
+      "Fast (3)",
+      "Investigator",
+      "Mechanical Mount",
+      "Reinforced Gloves",
+      "Reveal the Bat",
+      "Shadows Agent",
+      "Vigilante's Work"
+    ],
+    "weapons": [
+      {
+        "name": "Shock Gauntlet",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "CRT (Stunned) / One Use"
+      }
+    ]
+  },
+  {
+    "name": "Batman 1997",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 105,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Batman1997.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Arrest",
+      "Bat Cape",
+      "Bat Credit Card",
+      "Bat-Armor MK II",
+      "Batclaw/Grapple Gun",
+      "Detective",
+      "Flying Kick",
+      "Sneak Attack",
+      "Teamwork (1) (Robin 1997)"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / Short Range / Throwing"
+      },
+      {
+        "name": "Reinforced Attack",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Boosted (1)"
+      }
+    ]
+  },
+  {
+    "name": "Batman Michael Keaton",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 125,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanMichaelKeaton.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "360° Strike",
+      "Bat Cape",
+      "Bat-Armor MK I",
+      "Batclaw",
+      "Detective",
+      "Enhanced Batlings",
+      "Hidden",
+      "I'm Batman",
+      "Martial Artist",
+      "Shadows Agent"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Light / Short Range / Throwing"
+      },
+      {
+        "name": "Expeditious Fighter",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Batman Red Rain",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 150,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanRedRain.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "2+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bat Cape",
+      "Bat-Armor MK I",
+      "Claws",
+      "Detective",
+      "Fly",
+      "Leading From The Shadows",
+      "Master of Stealth",
+      "Shadowed Nightmare",
+      "Sneak Attack",
+      "Vampire",
+      "Vampire Reign"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / Short Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batman Adam West",
+    "realname": "Bruce Wayne / 30mm",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanAdamWest.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Arrest",
+      "Batclaw",
+      "Detective",
+      "Kapow!!!",
+      "Millionaire",
+      "Reinforced Gloves",
+      "Teamwork (2) (Robin Burt Ward)",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Short Range / Throwing"
+      },
+      {
+        "name": "Shark Repellant Bat-Spray",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Expansive / Enervating (1)"
+      }
+    ]
+  },
+  {
+    "name": "The White Knight",
+    "realname": "Harvey Dent / 30mm",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/TheWhiteKnight.png",
+    "stats": {
+      "attack": 3,
+      "defense": 3,
+      "strength": "4+",
+      "movement": 8,
+      "willpower": 6,
+      "endurance": 7
+    },
+    "traits": [
+      "Charismatic",
+      "Disarray",
+      "Disturb",
+      "Inspire",
+      "Public Resources",
+      "Scheming (2)"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Aaron Cash",
+    "realname": "Aaron Cash / 30mm",
+    "base": "30mm",
+    "rep": 58,
+    "funding": 150,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/AaronCash.png",
+    "stats": {
+      "attack": 4,
+      "defense": 3,
+      "strength": "4+",
+      "movement": 8,
+      "willpower": 6,
+      "endurance": 6
+    },
+    "traits": [
+      "Aversion (Killer Croc)",
+      "Bulletproof Vest",
+      "Coordination",
+      "Cop",
+      "Elite Boss (SWAT)",
+      "Hardened",
+      "Lantern",
+      "Unstoppable"
+    ],
+    "weapons": [
+      {
+        "name": "Shotgun",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Firearm / Medium Range / Assault"
+      },
+      {
+        "name": "Hook",
+        "stars": 1,
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (1) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Green Arrow Rebirth",
+    "realname": "Oliver Queen / 40mm",
+    "base": "40mm",
+    "rep": 95,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GreenArrowRebirth.png",
+    "stats": {
+      "attack": 4,
+      "defense": 4,
+      "strength": "4+",
+      "movement": 13,
+      "willpower": 7,
+      "endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Good Aim",
+      "Hardened",
+      "Hunter",
+      "Master Marksman",
+      "Rapid Fire",
+      "Teamwork (1) (Black Canary)",
+      "The Quiver"
+    ],
+    "weapons": [
+      {
+        "name": "Bow (Standard Arrow)",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 4,
+        "traits": "Mechanical / Aim / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Batman Gaslight",
+    "realname": "Bruce Wayne / 40mm",
+    "base": "40mm",
+    "rep": 92,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanGaslight.png",
+    "stats": {
+      "attack": 4,
+      "defense": 4,
+      "strength": "3+",
+      "movement": 10,
+      "willpower": 8,
+      "endurance": 8
+    },
+    "traits": [
+      "Bat Cape",
+      "Batclaw/Grapple Gun",
+      "Bonebreaker",
+      "Brutal",
+      "Detective",
+      "Master Fighter",
+      "Reinforced Gloves",
+      "Scheming (2)",
+      "Stealth",
+      "Strategist",
+      "Truth-Seeker"
+    ],
+    "weapons": [
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Light / Sharp / Short Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batman Dark Knight Rises",
+    "realname": "Bruce Wayne / 30mm",
+    "base": "30mm",
+    "rep": 120,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanDarkKnightRises.png",
+    "stats": {
+      "attack": 4,
+      "defense": 5,
+      "strength": "3+",
+      "movement": 12,
+      "willpower": 8,
+      "endurance": 8
+    },
+    "traits": [
+      "Arrest",
+      "Bat Cape",
+      "Bat-Armor MK II",
+      "Batclaw/Grapple Gun",
+      "Combo (Unarmed)",
+      "Detective",
+      "Master of Stealth",
+      "Reinforced Gloves",
+      "Sneak Attack"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / Short Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Commissioner Gordon",
+    "realname": "James W. Gordon / 40mm / 60mm",
+    "base": "40mm / 60mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/CommissionerGordon.png",
+    "stats": {
+      "attack": 3,
+      "defense": 3,
+      "strength": "5+",
+      "movement": 8,
+      "willpower": 6,
+      "endurance": 6
+    },
+    "traits": [
+      "Affinity (Batman)",
+      "Air Support",
+      "Arrest",
+      "Bat-Signal",
+      "Bulletproof Vest",
+      "Commissioner",
+      "Cop",
+      "Detective",
+      "Elite Boss (SWAT)",
+      "Take Cover!",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Short Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Robin Burt Ward",
+    "realname": "Dick Grayson / 30mm",
+    "base": "30mm",
+    "rep": 38,
+    "funding": 100,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/RobinBurtWard.png",
+    "stats": {
+      "attack": 3,
+      "defense": 4,
+      "strength": "5+",
+      "movement": 10,
+      "willpower": 5,
+      "endurance": 4
+    },
+    "traits": [
+      "Batclaw",
+      "Boy Wonder",
+      "Detective",
+      "It's Mine",
+      "One of the Boys",
+      "Radio",
+      "Required (Batman Adam West)",
+      "Teamwork (2) (Batman Adam West)"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Short Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Catwoman Dark Knight Rises",
+    "realname": "Selina Kyle / 30mm",
+    "base": "30mm",
+    "rep": 64,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD", "Unknown"],
+    "rivals": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/CatwomanDarkKnightRises.png",
+    "stats": {
+      "attack": 4,
+      "defense": 5,
+      "strength": "5+",
+      "movement": 13,
+      "willpower": 6,
+      "endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Climbing Claws",
+      "Night Vision",
+      "Pickpocket",
+      "Required (Batman Dark Knight Rises)",
+      "Sneak Attack",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Short Range / Firearm / Light"
+      },
+      {
+        "name": "Heels",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Batman Dark Knight Rises Batpod",
+    "realname": "Bruce Wayne / 42x75mm",
+    "base": "42x75mm",
+    "rep": 120,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BatmanDarkKnightRisesBatpod.png",
+    "stats": {
+      "attack": 3,
+      "defense": 5,
+      "strength": "3+",
+      "movement": 12,
+      "willpower": 8,
+      "endurance": 8
+    },
+    "traits": [
+      "Bat-Armor MK II",
+      "Batman's Batpod",
+      "Detective",
+      "Disruptor",
+      "ECM",
+      "Fast (4)",
+      "Master of Stealth",
+      "Mechanical Mount",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Machine Guns",
+        "damage": "★★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Anti-Tank / Firearm / Medium Range / Assault"
+      },
+      {
+        "name": "Rocket Launcher",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Explosive / Firearm / Medium Range / Reload"
+      }
+    ]
+  },
+  {
+    "name": "Chief Mackenzie",
+    "realname": "Mackenzie Bock / 30mm",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/ChiefMackenzie.png",
+    "stats": {
+      "attack": 3,
+      "defense": 3,
+      "strength": "5+",
+      "movement": 8,
+      "willpower": 6,
+      "endurance": 6
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Crucial Information",
+      "Detective",
+      "Public Resources"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Short Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Robin 1997",
+    "realname": "Dick Grayson / 40mm",
+    "base": "40mm",
+    "rep": 45,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Robin1997.png",
+    "stats": {
+      "attack": 3,
+      "defense": 4,
+      "strength": "4+",
+      "movement": 12,
+      "willpower": 6,
+      "endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Batclaw/Grapple Gun",
+      "Kowabunga!",
+      "Light Armor",
+      "One of the Boys",
+      "Protected Lips",
+      "Radio",
+      "Reinforced Gloves",
+      "Stay in Formation",
+      "Teamwork (2) (Batman 1997)"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / Short Range / Throwing"
+      }
+    ]
+  },
+ 
   {
     "name": "Batman Multiverse",
     "realname": "Bruce Wayne",
@@ -4902,7 +5703,8 @@ const models = [
       }
     ]
   },
-  {
+  
+    {
     "name": "Archie",
     "realname": "Unknown",
     "base": "30mm",
