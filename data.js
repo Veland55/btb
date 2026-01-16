@@ -3323,6 +3323,1124 @@ const models = [
 //---------------------------------------------------------------------------------------------------------// 
 
   {
+    "name": "Grumpy",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/Grumpy.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Backpack",
+      "Bank Robber",
+      "Drop It!",
+      "Expendable",
+      "Paranoid (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Happy",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/Happy.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Anger Management (Mental)",
+      "Bank Robber",
+      "Expendable",
+      "Grapple Gun"
+    ],
+    "weapons": [
+      {
+        "name": "Grapple Gun",
+        "damage": "🩸★★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Mechanical / S. Range / Pull (4)"
+      }
+    ]
+  },
+  {
+    "name": "Gaggy Rebirth",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 16,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/GaggyRebirth.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Aggressive Schizophrenia",
+      "Aversion (Harley Quinn)",
+      "Demotivate",
+      "Provoke",
+      "Psycho",
+      "Small",
+      "True Love (Joker The Clown)"
+    ],
+    "weapons": [
+      {
+        "name": "Electric Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric / Handy / Mechanical"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Biker 2",
+    "realname": "Unknown",
+    "base": "42x75mm",
+    "rep": 28,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersBiker2.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Always on the Move",
+      "Anxiety (Mental Disorder)",
+      "Death Pack",
+      "Fast (3)",
+      "Mechanical Mount"
+    ],
+    "weapons": [
+      {
+        "name": "Spiked-Hockey Stick",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Bus Driver",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 25,
+    "funding": 150,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersBusDriver.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bank Robber",
+      "Bodyguard",
+      "Expendable",
+      "Pyromania (Mental Disorder)",
+      "Timely Arrival"
+    ],
+    "weapons": [
+      {
+        "name": "Shotgun",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Assault"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Para-Military 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 500,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersParaMilitary2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Anger Management (Mental Disorder)",
+      "Bloodlust",
+      "Bulletproof Vest",
+      "Street Guy",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Custom Assault Gun",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "M. Range / Firearm / Assault / Red Dot"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Para-Military 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 400,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersParaMilitary3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bloodlust",
+      "Bulletproof Vest",
+      "Paranoid (Mental Disorder)",
+      "Street Guy",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Rocket Launcher",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / M. Range / Explosive / Aim / Anti-Tank"
+      },
+      {
+        "name": "Gas Rocket",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "M. Range / Explosive / Poison / Enervating (2) / Gas"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Para-Military 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersParaMilitary1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bloodlust",
+      "Bloodthirsty (Mental Disorder)",
+      "Hardened",
+      "Street Guy",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Kukri",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Chuckcles",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/Chuckcles.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Backpack",
+      "Bank Robber",
+      "Bipolar (Mental Disorder)",
+      "Expendable"
+    ],
+    "weapons": [
+      {
+        "name": "SMG",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 1,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Blunderbuss Clown",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 16,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/BlunderbussClown.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Explosive Teeth",
+      "Paranoid (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Explosive Teeth Blunderbuss",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "S. Range / Mechanical / Explosive / Handy"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Victim 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 5,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersVictim1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Death Pack",
+      "Faint",
+      "Horde",
+      "Mindless Monster",
+      "Stupid"
+    ],
+    "weapons": [
+      {
+        "name": "Grab",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Enervating (1)"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Victim 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 5,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersVictim2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Death Pack",
+      "Faint",
+      "Horde",
+      "Mindless Monster",
+      "Stupid"
+    ],
+    "weapons": [
+      {
+        "name": "Tube",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Street Jester 2",
+    "realname": "Unknown Jester",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/StreetJester2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Feint",
+      "OCD (Mental Disorder)",
+      "Street Fighter"
+    ],
+    "weapons": [
+      {
+        "name": "Paired Katanas",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Overwhelming / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Street Jester 3",
+    "realname": "Unknown Jester",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/StreetJester3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Joker's Gas",
+      "Luck",
+      "Paranoid (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Expansive Gas",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 4,
+        "traits": "Expansive / Mechanical / Throwing / Poison / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "Axe Clown",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 17,
+    "funding": 100,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/AxeClown.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Aggressive Schizophrenia",
+      "Electric Storm"
+    ],
+    "weapons": [
+      {
+        "name": "Electrified Axe",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy / CRT (Stunned)"
+      }
+    ]
+  },
+  {
+    "name": "Barrel Clown",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 100,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/BarrelClown.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Anger Management (Mental Disorder)",
+      "Bio-Chemical Barrel",
+      "Bio-Chemical Recharge"
+    ],
+    "weapons": [
+      {
+        "name": "Ace Chemical Barrel",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "S. Range / Mechanical / Explosive / Poison / Enervating (1)"
+      }
+    ]
+  },
+  {
+    "name": "Street Jester 4",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/StreetJester4.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "360° Strike",
+      "Impetuous",
+      "Sneaking",
+      "The Voices (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Funny-Hammer",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Blunt (3) / Motion (2) / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Chainsaw Clown",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 350,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/ChainsawClown.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Bipolar (Mental Disorder)",
+      "Street Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Tri-Chainsaw",
+        "damage": "🩸🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Imprecise / Sharp / Bleed (3)"
+      }
+    ]
+  },
+  {
+    "name": "Street Jester 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/StreetJester1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 7
+    },
+    "traits": [
+      "Boom!",
+      "Desensitized",
+      "Dispersion",
+      "Flare",
+      "Hardened",
+      "Pyromania (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Fireworks",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "M. Range / Explosive / Mechanical / Fire / Imprecise"
+      }
+    ]
+  },
+  {
+    "name": "Thorgon",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 45,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/Thorgon.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bio-Chemical Barrel",
+      "Bio-Chemical Recharge",
+      "Charge",
+      "Desensitized",
+      "Large",
+      "OCD (Mental Disorder)",
+      "Sturdy",
+      "Teamwork (1) (Borgon)"
+    ],
+    "weapons": [
+      {
+        "name": "Unworthy",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Heavy / Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Victim 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 5,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersVictim3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Death Pack",
+      "Faint",
+      "Horde",
+      "Mindless Monster",
+      "Stupid"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Dynamite",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/Dynamite.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bloodthirsty (Mental Disorder)",
+      "Boom!",
+      "Taunt"
+    ],
+    "weapons": [
+      {
+        "name": "Axe",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Gas Puppet 3",
+    "realname": "Unknown Puppet",
+    "base": "30mm",
+    "rep": 5,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/GasPuppet3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Anxiety (Mental Disorder)",
+      "Death Pack",
+      "Faint",
+      "Mindless Gas Attack",
+      "Minion (3)",
+      "Stupid"
+    ],
+    "weapons": [
+      {
+        "name": "Scare Gas",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Gas / Scared / Reach (4)"
+      }
+    ]
+  },
+  {
+    "name": "Gas Puppet 1",
+    "realname": "Unknown Puppet",
+    "base": "30mm",
+    "rep": 5,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/GasPuppet1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Anxiety (Mental Disorder)",
+      "Death Pack",
+      "Faint",
+      "Mindless Gas Attack",
+      "Minion (3)",
+      "Stupid"
+    ],
+    "weapons": [
+      {
+        "name": "Enervating Gas",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Gas / Enervating (2) / Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Biker 1",
+    "realname": "Unknown",
+    "base": "42x75mm",
+    "rep": 33,
+    "funding": 350,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/JokersBiker1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Always on the Move",
+      "Bipolar (Mental Disorder)",
+      "Death Marks",
+      "Fast (3)",
+      "Mechanical Mount"
+    ],
+    "weapons": [
+      {
+        "name": "Custom SMG",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Assault / Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Bouffon",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/Bouffon.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "OCD (Mental Disorder)",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Nail Gun",
+        "damage": "🩸",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Assault / Mechanical / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "White-Face",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/WhiteFace.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Cruel",
+      "Paranoid (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Blunderbuss",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / Imprecise / Expansive / Reload / Assault"
+      },
+      {
+        "name": "Bayonet",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Gas Puppet 2",
+    "realname": "Unknown Puppet",
+    "base": "30mm",
+    "rep": 5,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/GasPuppet2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 3
+    },
+    "traits": [
+      "Anxiety (Mental Disorder)",
+      "Death Pack",
+      "Faint",
+      "Mindless Gas Attack",
+      "Minion (3)",
+      "Stupid"
+    ],
+    "weapons": [
+      {
+        "name": "Poisonous Gas",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Gas / Poison / Reach (3)"
+      }
+    ]
+  },
+  {
+    "name": "Rastaclow",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 21,
+    "funding": 600,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/Rastaclow.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Bloodthirsty (Mental Disorder)",
+      "Handyman"
+    ],
+    "weapons": [
+      {
+        "name": "Custom Rifle",
+        "damage": "🩸🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Accurate / Firearm"
+      }
+    ]
+  },
+  {
+    "name": "Borgon the Cursed",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 53,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/BorgonTheCursed.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 10
+    },
+    "traits": [
+      "Bloodlust",
+      "Desensitized",
+      "Large",
+      "Mindless Monster",
+      "Obsessive (Mental Disorder)",
+      "Stupid",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Borgon's Axe",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy / Reach (2) / Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Hobo Clown",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 14,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/HoboClown.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Aggressive Schizophrenia",
+      "Criminal"
+    ],
+    "weapons": [
+      {
+        "name": "Meat Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Ace of Spades",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 0,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/AceOfSpades.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Joker's Gas",
+      "Paranoid (Mental Disorder)",
+      "Resilient"
+    ],
+    "weapons": [
+      {
+        "name": "Joker's Gas Grenades",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Explosive / Gas / Grenade / S. Range / Enervating (1) / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Slingy Clown",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 16,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "https://veland55.github.io/btb/img/SlingyClown.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Anxiety (Mental Disorder)",
+      "Tracking"
+    ],
+    "weapons": [
+      {
+        "name": "Poisoned Sling",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "S. Range / Throwing / Poison / Handy"
+      }
+    ]
+  },
+
+  {
     "name": "Joker (Arkham Asylum)",
     "realname": "Unknown",
     "base": "30mm",
