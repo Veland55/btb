@@ -9733,40 +9733,6 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Ravager Vanguard Team",
-    "realname": "Rose Wilson",
-    "base": "30mm",
-    "rep": 36,
-    "funding": 0,
-    "rank": ["Henchman"],
-    "faction": ["Bat Family", "Suicide Squad"],
-    "img": "https://veland55.github.io/btb/img/RavagerVanguardTeam.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "4+",
-      "Movement": 10,
-      "Willpower": 5,
-      "Endurance": 5
-    },
-    "traits": [
-      "Martial Artist",
-      "Precognition",
-      "Teen Titans",
-      "Power Dampening",
-      "Self-Discipline"
-    ],
-    "weapons": [
-      {
-        "name": "Ravager's Swords",
-        "damage": "🩸 🩸",
-        "rof": "-",
-        "ammo": "-",
-        "traits": "Sharp / Overwhelming / Accurate"
-      }
-    ]
-  },
-  {
     "name": "Diablo Suicide Squad",
     "realname": "Chato Santana",
     "base": "30mm",
