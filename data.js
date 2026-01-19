@@ -2884,6 +2884,964 @@ const models = [
     ]
   },
 
+//---------------------------------------------------------------------------------------------------------------------------------
+//GCPD
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+  {
+    "name": "Renée Montoya",
+    "realname": "Renée Maria Montoya",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/ReneeMontoya.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Cop",
+      "Crucial Information",
+      "Detective",
+      "Enough Evidence",
+      "Incorruptible"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Martial Prowess",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / CRT (Paralyze)"
+      }
+    ]
+  },
+  {
+    "name": "Homicide Detective",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/HomicideDetective.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Cop",
+      "Detective",
+      "Groundwork",
+      "Investigator"
+    ],
+    "weapons": [
+      {
+        "name": "Concealed Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light / Concealed"
+      }
+    ]
+  },
+  {
+    "name": "GCPD Mounted Cop",
+    "realname": "Unknown",
+    "base": "42x75mm",
+    "rep": 38,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GCPDMountedCop.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 14,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Always On The Move",
+      "Animal",
+      "Arrest",
+      "Cop",
+      "Savage Fighter"
+    ],
+    "weapons": [
+      {
+        "name": "Extendable Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "SWAT QRT 3",
+    "realname": "QRT 3",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/SWATQRT3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Cop",
+      "Elite (SWAT)",
+      "Radio",
+      "Sapper"
+    ],
+    "weapons": [
+      {
+        "name": "Extendable Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1)"
+      },
+      {
+        "name": "Special Sniper Rifle",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / Devastating / Scope / Aim / Reload"
+      }
+    ]
+  },
+  {
+    "name": "Officer Martinez",
+    "realname": "Martinez",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/OfficerMartinez.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Detective",
+      "Lantern"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "SWAT QRT 2",
+    "realname": "QRT 2",
+    "base": "30mm",
+    "rep": 33,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/SWATQRT2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Cop",
+      "Elite (SWAT)",
+      "Radio",
+      "Tracking"
+    ],
+    "weapons": [
+      {
+        "name": "Extendable Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1)"
+      },
+      {
+        "name": "Carbine",
+        "damage": "🩸",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Reinforcement Cop",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 150,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/ReinforcementCop.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Cop",
+      "Radio",
+      "Sealed Off"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "GCPD Officer 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GCPDOfficer1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Lantern",
+      "Scout"
+    ],
+    "weapons": [
+      {
+        "name": "Baton",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Gilda Dent",
+    "realname": "Gilda Dent",
+    "base": "40mm",
+    "rep": 25,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GildaDent.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Artist",
+      "Holiday",
+      "Intel Support (5)",
+      "Required (Harvey Dent)"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "SWAT QRT 1",
+    "realname": "QRT 1",
+    "base": "30mm",
+    "rep": 27,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/SWATQRT1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Bulletproof Vest",
+      "Cop",
+      "Elite (SWAT)"
+    ],
+    "weapons": [
+      {
+        "name": "Extendable Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1)"
+      },
+      {
+        "name": "Riot Gun",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Blunt (2) / Mechanical / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "GCPD Officer 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GCPDOfficer2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Stop!"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Beat Cop",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/BeatCop.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Cop",
+      "Desensitized",
+      "Large",
+      "Obstinate",
+      "Unstoppable"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "Sgt. Harvey Bullock",
+    "realname": "Harvey Bullock",
+    "base": "30mm",
+    "rep": 41,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/SgtHarveyBullock.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Detective",
+      "Evidence Tampering",
+      "Hidden",
+      "Order"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "GCPD Detective",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GCPDDetective.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Detective",
+      "Hidden"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Sierra",
+    "realname": "Sierra",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Sierra.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Cop",
+      "Elite (SWAT)",
+      "Hardened",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Taser",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Reach (3) / CRT (Stunned)"
+      }
+    ]
+  },
+  {
+    "name": "GCPD Cop 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 16,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GCPDCop1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Lantern"
+    ],
+    "weapons": [
+      {
+        "name": "Tonfa",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Defensive / Handy"
+      }
+    ]
+  },
+  {
+    "name": "Lieutenant Gordon Year One",
+    "realname": "James W. Gordon",
+    "base": "30mm",
+    "rep": 46,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/LtGordonYearOne.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Arrest",
+      "Bulletproof Vest",
+      "Coordination",
+      "Cop",
+      "Detective",
+      "Incorruptible",
+      "Observation"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      },
+      {
+        "name": "Martial Prowess",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / CRT (Paralyze)"
+      }
+    ]
+  },
+  {
+    "name": "GCPD Cop 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/GCPDCop2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Arrest",
+      "Cop"
+    ],
+    "weapons": [
+      {
+        "name": "Taser",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Reach (3) / CRT (Stunned)"
+      }
+    ]
+  },
+  {
+    "name": "Lt. Gordon Jeffrey Wright",
+    "realname": "James W. Gordon",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/LtGordonJeffreyWright.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Detective",
+      "Incorruptible",
+      "Lantern",
+      "Lieutenant (Chief Mackenzie)",
+      "Order",
+      "Support (Batman Robert Pattinson)"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Agent 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Agent1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Cop",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Baton",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      },
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Officer Merkel",
+    "realname": "Stanley Merkel",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/OfficerMerkel.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Bodyguard",
+      "Cop"
+    ],
+    "weapons": [
+      {
+        "name": "Riot Gun",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Blunt (2) / Mechanical / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Agent 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Agent2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Arrest",
+      "Cop"
+    ],
+    "weapons": [
+      {
+        "name": "Baton",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      },
+      {
+        "name": "Pepper Spray",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Beam / Reload / S. Range / Blind"
+      }
+    ]
+  },
+  {
+    "name": "Agent 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 25,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Agent3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Bulletproof Vest",
+      "Cop"
+    ],
+    "weapons": [
+      {
+        "name": "Extendable Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Detective Flass Year One",
+    "realname": "Arnold Flass",
+    "base": "30mm",
+    "rep": 41,
+    "funding": 200,
+	  "rank": ["Henchman"],
+    "faction": ["GCPD", "Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/DetectiveFlassYearOne.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Arrest",
+      "Bulletproof Vest",
+      "Cop",
+      "Corrupt",
+      "Detective",
+      "Evidence Tampering"
+    ],
+    "weapons": [
+      {
+        "name": "Bat",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      },
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Lerida",
+    "realname": "Lerida",
+    "base": "30mm",
+    "rep": 36,
+    "funding": 450,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Lerida.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Cop",
+      "Elite (SWAT)",
+      "Expert Marksman"
+    ],
+    "weapons": [
+      {
+        "name": "Custom SMG",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range / Red Dot"
+      }
+    ]
+  },
+  {
+    "name": "Foxtrot",
+    "realname": "Foxtrot",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/Foxtrot.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Charge",
+      "Cop",
+      "Elite (SWAT)",
+      "Street Guy",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Shield",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Protective"
+      },
+      {
+        "name": "Flash Grenades",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Explosive / Grenade / Mechanical / S. Range / Blind"
+      }
+    ]
+  },
+  {
+    "name": "Attorney Harvey Dent",
+    "realname": "Harvey Dent",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "img": "https://veland55.github.io/btb/img/AttorneyHarveyDent.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 6,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Charismatic",
+      "Crucial Information",
+      "Intel Support (5)",
+      "Law Interpretation",
+      "Objection!",
+      "Scheming (2)",
+      "Trial"
+    ],
+    "weapons": [
+      {
+        "name": "Influence",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (6) / Push (4)"
+      }
+    ]
+  },
+
 //----------------------------------------------------------------------------------------------------------------------------------
 //DOOM PATROL
 //----------------------------------------------------------------------------------------------------------------------------------
