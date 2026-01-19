@@ -16294,6 +16294,1253 @@ const models = [
 //--------------------------------------------------------------------------------------------------------------------
 //Unknown
 //--------------------------------------------------------------------------------------------------------------------
+
+  {
+    "name": "Psycho-Pirate",
+    "realname": "Roger Hayden",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/PsychoPirate.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Charm",
+      "Emotion Control",
+      "Plead"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Ratcatcher",
+    "realname": "Otis Flannegan",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Ratcatcher.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Lord of the Sewers",
+      "Poison Immunity",
+      "Poison Master",
+      "Rat Tamer",
+      "Sewer Swarm (3)",
+      "Sewer Worker",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Poisoned Baton",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Solomon Grundy",
+    "realname": "Cyrus Gold",
+    "base": "60mm",
+    "rep": 115,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/SolomonGrundy.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 2,
+      "Strength": "2+",
+      "Movement": 6,
+      "Willpower": 7,
+      "Endurance": 14
+    },
+    "traits": [
+      "Brutal",
+      "Desensitized",
+      "Huge",
+      "Immortal",
+      "Reinforced Gloves",
+      "Stupid",
+      "Supernatural",
+      "Undead",
+      "Unstoppable Monster"
+    ],
+    "weapons": [
+      {
+        "name": "Improvised Weapon",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Handy / Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Scarecrow",
+    "realname": "Jonathan Crane",
+    "base": "40mm",
+    "rep": 73,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Scarecrow.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Charm",
+      "Inspire Fear",
+      "Persuasive",
+      "Psychologist",
+      "Scientific",
+      "The Fear Master",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Scythe",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Reach (1) / Sharp"
+      },
+      {
+        "name": "Fear Spray",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Expansive / Gas / Mechanical / Terror"
+      }
+    ]
+  },
+  {
+    "name": "Hush",
+    "realname": "Thomas Elliot",
+    "base": "40mm",
+    "rep": 85,
+    "funding": 350,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Hush.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Exhaustive Planner",
+      "Gunman",
+      "Hidden Boss",
+      "Martial Artist",
+      "Master Marksman",
+      "Mastermind",
+      "Reinforced Gloves",
+      "Scheming (2)"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Clock King",
+    "realname": "William Tockman",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/ClockKing.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Confusion",
+      "Mastermind",
+      "Paranoid (Mental Disorder)",
+      "Time Bomb",
+      "Time Control",
+      "Time Manipulation"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Gentleman Ghost",
+    "realname": "Jim Craddock",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/GentlemanGhost.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Chill Touch",
+      "Concealment",
+      "Elusive",
+      "Ghost",
+      "Ice Flash"
+    ],
+    "weapons": [
+      {
+        "name": "Phantasmal Cane",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Cold / Handy"
+      },
+      {
+        "name": "Phantasmal Flintlock",
+        "damage": "🩸🩸🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Cold / Firearm / Reload / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Mad Hatter",
+    "realname": "Jervis Tetch",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/MadHatter.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Charm",
+      "Dodge",
+      "Handyman",
+      "Mastermind",
+      "Mind Control Device",
+      "Small",
+      "Weak"
+    ],
+    "weapons": [
+      {
+        "name": "Cal 0.60 Gun",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / S. Range / Push (3)"
+      }
+    ]
+  },
+  {
+    "name": "Man-Bat",
+    "realname": "Dr. Kirk Langstrom",
+    "base": "60mm",
+    "rep": 82,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/ManBat.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Drag",
+      "Echolocation",
+      "Fly",
+      "Hover",
+      "Huge",
+      "Sneak Attack",
+      "Sneaking",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Man-Bat's Claws",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Motion (4) / Terror"
+      },
+      {
+        "name": "Sonic Scream",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 4,
+        "traits": "Expansive / Beam / Sonic"
+      }
+    ]
+  },
+  {
+    "name": "Ten-Eyed Man",
+    "realname": "Philip Reardon",
+    "base": "40mm",
+    "rep": 46,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/TenEyedMan.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Criminal",
+      "Good Aim",
+      "Rapid Fire",
+      "Reinforced Gloves",
+      "Super-Sight"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Lobo Paramilitary",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 140,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "img": "https://veland55.github.io/btb/img/LoboParamilitary.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 11
+    },
+    "traits": [
+      "Bloody Christmas",
+      "Bounty Hunter",
+      "Brutal",
+      "Close Combat Master",
+      "Immortal",
+      "One Shot Gun",
+      "Power Strike",
+      "Regeneration",
+      "Reinforced Gloves",
+      "Sturdy",
+      "The Main Man"
+    ],
+    "weapons": [
+      {
+        "name": "Chained Hook",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (3) / Sharp"
+      },
+      {
+        "name": "Kukri",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Calculator Classic",
+    "realname": "Noah Kuttler",
+    "base": "40mm",
+    "rep": 33,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/CalculatorClassic.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Computer Console",
+      "Computer Intrusion",
+      "Criminal",
+      "Visor Projections"
+    ],
+    "weapons": [
+      {
+        "name": "Calculator's Visor",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Catman The Hunter",
+    "realname": "Thomas Reese Blake",
+    "base": "40mm",
+    "rep": 115,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family", "Joker"],
+    "img": "https://veland55.github.io/btb/img/CatmanTheHunter.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 11,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Alpha",
+      "Claws",
+      "Close Combat Master",
+      "Combat Flip",
+      "Coward's Reward",
+      "Goad",
+      "Hunter",
+      "Precise Blow",
+      "Superior Sense of Smell",
+      "Survivor",
+      "Tracking"
+    ],
+    "weapons": [
+      {
+        "name": "Catarangs",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "M. Range / Sharp / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Thug 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 19,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Thug1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  
+  {
+    "name": "Harley Quinn Bewitched",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "40mm",
+    "rep": 77,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "img": "https://veland55.github.io/btb/img/HarleyQuinnBewitched.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "A Bit of Magic",
+      "Acrobat",
+      "Charismatic",
+      "Combat Flip",
+      "Confusion",
+      "Fast (2)",
+      "True Love (Joker)"
+    ],
+    "weapons": [
+      {
+        "name": "Your Face Here",
+        "damage": "★★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1) / Push (3)"
+      }
+    ]
+  },
+  {
+    "name": "Dr. Hugo Strange",
+    "realname": "Hugo Strange",
+    "base": "40mm",
+    "rep": 85,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/DrHugoStrange.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Arkham Asylum Dr.",
+      "Mastermind",
+      "Mind Control",
+      "Psychiatrist",
+      "Psycho",
+      "Psychologist",
+      "Scientific",
+      "Subliminal Suggestion"
+    ],
+    "weapons": [
+      {
+        "name": "Drugs",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Enervating (3) / Hypnotize"
+      },
+      {
+        "name": "Facility Drugs",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Mechanical / Poison / Terror"
+      }
+    ]
+  },
+  {
+    "name": "Thug 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 17,
+    "funding": 250,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Thug2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal"
+    ],
+    "weapons": [
+      {
+        "name": "Sawed Off Shotgun",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Firearm"
+      }
+    ]
+  },
+  {
+    "name": "Scarecrow Arkham Asylum",
+    "realname": "Jonathan Crane",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/ScarecrowArkhamAsylum.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Back to the Nightmare",
+      "Fear of the Dark",
+      "Gas Mask",
+      "Inspire Fear",
+      "Psychologist",
+      "Shadowed Nightmare",
+      "Stalker",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Drug Spray",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Gas / Enervating (2) / Poison"
+      },
+      {
+        "name": "Syringe Claw",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Poison / Terror"
+      }
+    ]
+  },
+  {
+    "name": "Victor Zsasz",
+    "realname": "Victor Zsasz",
+    "base": "40mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/VictorZsasz.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Combo (Machete)",
+      "Death Marks",
+      "Frightening Reputation",
+      "Master of Stealth",
+      "Psycho",
+      "Shadowed Nightmare",
+      "Sneak Attack",
+      "The Murderer"
+    ],
+    "weapons": [
+      {
+        "name": "Machete",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Catwoman Julie Newmar",
+    "realname": "Selina Kyle",
+    "base": "30mm",
+    "rep": 44,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/CatwomanJulieNewmar.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Business Agent",
+      "Criminal",
+      "Don't Mind Me",
+      "Escape Artist",
+      "Night Vision",
+      "Thief"
+    ],
+    "weapons": [
+      {
+        "name": "Claws with Catapudenia",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Hypnotize"
+      },
+      {
+        "name": "Sneeze Bombs",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "M. Range / Scared / Slow (2)"
+      }
+    ]
+  },
+  {
+    "name": "Mr. Camera",
+    "realname": "Harry Simms",
+    "base": "40mm",
+    "rep": 33,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/MrCamera.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Escape Artist",
+      "Hypnotic Radio Waves",
+      "Hypnotic",
+      "Lantern",
+      "Stalker"
+    ],
+    "weapons": [
+      {
+        "name": "Mr. Camera's Shoot",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Reach (4) / CRT (Blind) / Limited Attack"
+      }
+    ]
+  },
+  {
+    "name": "Condiment King",
+    "realname": "Mitchell Mayo",
+    "base": "40mm",
+    "rep": 35,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/CondimentKing.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Anaphylactic Shock",
+      "Criminal",
+      "Gunman",
+      "Underestimated"
+    ],
+    "weapons": [
+      {
+        "name": "Ketchup Gun",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Assault / Beam / S. Range / Slow (4)"
+      },
+      {
+        "name": "Mustard Gun",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Assault / Beam / S. Range / Poison"
+      }
+    ]
+  },
+  {
+    "name": "Arkham Assistant 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 34,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/ArkhamAssistant1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "Arkham Asylum Dr.",
+      "Drop It!",
+      "Protect Me!",
+      "Psychiatrist",
+      "Required (Dr. Hugo Strange)",
+      "Subliminal Suggestion"
+    ],
+    "weapons": [
+      {
+        "name": "Facility Drugs",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Mechanical / Poison / Terror"
+      },
+      {
+        "name": "Electro-Shock",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Devastating / Sharp / Blunt (2)"
+      }
+    ]
+  },
+  {
+    "name": "Thug 5",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Thug5.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Gunman"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Thug 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Thug3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal"
+    ],
+    "weapons": [
+      {
+        "name": "Chainsaw",
+        "damage": "🩸🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Crazy Quilt",
+    "realname": "Paul Dekker",
+    "base": "40mm",
+    "rep": 44,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/CrazyQuilt.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Lantern",
+      "Quilt's Helmet"
+    ],
+    "weapons": [
+      {
+        "name": "Blinding Blast",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Beam / Expansive / CRT (Blind) / Enervating (2)"
+      },
+      {
+        "name": "Lethal Blast",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "S. Range / Beam / Assault"
+      }
+    ]
+  },
+  {
+    "name": "Sewer Swarm",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": [],
+    "faction": ["Unknown"],
+    "img": "https://veland55.github.io/btb/img/SewerSwarm.png",
+    "stats": {
+      "Attack": 1,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 3,
+      "Endurance": 2
+    },
+    "traits": [
+      "Amphibious",
+      "Mindless Monster",
+      "Poison Immunity",
+      "Stealth",
+      "Street Guy",
+      "Swarm"
+    ],
+    "weapons": [
+      {
+        "name": "Poisoned Touch",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Poison"
+      }
+    ]
+  },
+  {
+    "name": "Arkham Assistant 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 34,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/ArkhamAssistant2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "Arkham Asylum Dr.",
+      "Crucial Information",
+      "Protect Me!",
+      "Psychiatrist",
+      "Required (Dr. Hugo Strange)",
+      "Subliminal Suggestion"
+    ],
+    "weapons": [
+      {
+        "name": "Facility Drugs",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Steal / Mechanical / Poison / Terror"
+      },
+      {
+        "name": "Clinical Hook",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (3) / Handy / Pull (3) / Mechanical / Slow (6)"
+      }
+    ]
+  },
+  {
+    "name": "Thug 6",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Thug6.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Bodyguard",
+      "Criminal"
+    ],
+    "weapons": [
+      {
+        "name": "Bat",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Thug 4",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Thug4.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal"
+    ],
+    "weapons": [
+      {
+        "name": "Axe",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Eraser",
+    "realname": "Leonard Fiasco",
+    "base": "40mm",
+    "rep": 45,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Eraser.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Don't Mind Me",
+      "Escape Artist",
+      "Evidence Tampering",
+      "Only 20% of Taxes!"
+    ],
+    "weapons": [
+      {
+        "name": "Eraser's Attack",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Steal"
+      }
+    ]
+  },
+  {
+    "name": "Kite-Man",
+    "realname": "Charles Brown",
+    "base": "40mm",
+    "rep": 34,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/KiteMan.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 6,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "Charismatic",
+      "Charm",
+      "Criminal",
+      "Kite",
+      "Pickpocket",
+      "True Love (Poison Ivy)"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Signalman",
+    "realname": "Phillip Cobb",
+    "base": "40mm",
+    "rep": 44,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD", "Bat Family"],
+    "img": "https://veland55.github.io/btb/img/Signalman.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Criminal",
+      "Electromagnetic Control Device",
+      "Fully Equipped",
+      "Goad",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Knockout-Gas",
+        "damage": "★★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Expansive / Mechanical / Gas / Blunt (3)"
+      },
+      {
+        "name": "Miniature Flares",
+        "damage": "🩸",
+        "rof": 3,
+        "ammo": 1,
+        "traits": "S. Range / Mechanical / Fire"
+      }
+    ]
+  },
 {
   "name": "Calendar Man",
   "realname": "Julian Gregory Day",
