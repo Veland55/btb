@@ -3842,6 +3842,1168 @@ const models = [
     ]
   },
 
+//-------------------------------------------------------------------------------------------------------------------------------------
+//Organized Crime
+//-------------------------------------------------------------------------------------------------------------------------------------
+  {
+    "name": "Bouncer 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 19,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Bouncer1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Inside Man",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "Bouncer 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 19,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Bouncer2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Mobster",
+      "Tough Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Reinforced Bat",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Bouncer 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Bouncer3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Mobster",
+      "Rapid Fire"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Black Mask Thug 6",
+    "realname": "Vladimir Sokolov",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMaskThug6.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "360° Strike",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Chained Fists",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Heavy / Overwhelming"
+      },
+      {
+        "name": "Unleashed Chains",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (3)"
+      }
+    ]
+  },
+  {
+    "name": "The Twin 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheTwin1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Competitive",
+      "Criminal",
+      "It's Mine",
+      "Mobster",
+      "Widespread Corruption"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "The Twin 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheTwin2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Competitive",
+      "Criminal",
+      "It's Mine",
+      "Mobster",
+      "Showing The Ropes"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "Killer Croc Thug",
+    "realname": "Waylon Jones",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/KillerCrocThug.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Amphibious",
+      "Criminal",
+      "Large",
+      "Made Man",
+      "Mobster",
+      "Raised In The Sewers",
+      "Tough Skin"
+    ],
+    "weapons": [
+      {
+        "name": "Expeditious Fighter",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Detective Kenzie",
+    "realname": "William Kenzie",
+    "base": "30mm",
+    "rep": 45,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/DetectiveKenzie.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Detective",
+      "Evidence Tampering",
+      "Hidden",
+      "Protect The Shadows",
+      "Shady Dealings"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "The Fixer",
+    "realname": "Yelena Vólkov",
+    "base": "30mm",
+    "rep": 38,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheFixer.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Demotivate",
+      "Evidence Tampering",
+      "Interrogation",
+      "Master Torturer",
+      "Protect Me!"
+    ],
+    "weapons": [
+      {
+        "name": "Bones Cutter",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Bleed (3)"
+      },
+      {
+        "name": "Siringe",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Enervating (3) / Poison / Steal"
+      }
+    ]
+  },
+  {
+    "name": "Black Mask Thug 7",
+    "realname": "Yuri Ivanov",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMaskThug7.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Mobster",
+      "Shooter"
+    ],
+    "weapons": [
+      {
+        "name": "Custom Assault Gun",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "M. Range / Firearm / Assault / Red Dot"
+      }
+    ]
+  },
+  {
+    "name": "Mafia Thug",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/MafiaThug.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Backpack",
+      "Criminal",
+      "Hardened",
+      "Hitman",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Shotgun",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Assault"
+      },
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "Black Mask Thug 2",
+    "realname": "Vassili Danilov",
+    "base": "30mm",
+    "rep": 21,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMaskThug2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Hold Breath",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Long Rifle",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / Scope / Reload / Bleed (2)"
+      }
+    ]
+  },
+  {
+    "name": "The Tailor",
+    "realname": "Alan Il'Gordo",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheTailor.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bodyguard",
+      "Bulletproof Vest",
+      "Criminal",
+      "Desensitized",
+      "Reinforced Gloves"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Black Mask Thug 1",
+    "realname": "Vigo Stoniskov",
+    "base": "30mm",
+    "rep": 25,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMaskThug1.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Mobster",
+      "Street Fighter",
+      "Swift"
+    ],
+    "weapons": [
+      {
+        "name": "Fighter Claw",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Accurate / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Malatesta",
+    "realname": "Hugo Testa",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Malatesta.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Fast (2)",
+      "Ferocious"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      },
+      {
+        "name": "Broken Glass",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "One Use / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Troy Sins",
+    "realname": "Troy Santino",
+    "base": "30mm",
+    "rep": 16,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TroySins.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Tireless"
+    ],
+    "weapons": [
+      {
+        "name": "Baseball Bat",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Black Mask Thug 5",
+    "realname": "Volodya Smirnov",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMaskThug5.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Computer Intrusion",
+      "Criminal",
+      "Handyman",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Bolt Cutter",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Black Mask Thug 3",
+    "realname": "Nikita Filipov",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMaskThug3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Discharge",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "The Bull",
+    "realname": "Luigi Lombardo",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheBull.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Close Combat Master",
+      "Criminal",
+      "Reinforced Gloves"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Showtime",
+    "realname": "Tony Gianni",
+    "base": "30mm",
+    "rep": 27,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Showtime.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Elite (Gangster)",
+      "Multifire"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Vipera",
+    "realname": "Samuel Hill",
+    "base": "30mm",
+    "rep": 27,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Vipera.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Elite (Gangster)",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Modified Gun (Silenced)",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / S. Range / Silencer"
+      }
+    ]
+  },
+  {
+    "name": "Black Mask",
+    "realname": "Roman Sionis",
+    "base": "40mm/60mm",
+    "rep": 80,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMask.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Brutal",
+      "Cruel",
+      "Criminal",
+      "Interrogation",
+      "Mob",
+      "No Mercy!!!",
+      "Order",
+      "Strategist"
+    ],
+    "weapons": [
+      {
+        "name": "Black Mask's Gun",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "M. Range / Firearm / Accurate"
+      },
+      {
+        "name": "Torture Tools",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Steal"
+      }
+    ]
+  },
+  {
+    "name": "Lex Luthor",
+    "realname": "Alexander Joseph Luthor",
+    "base": "30mm",
+    "rep": 120,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/LexLuthor.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Absolute Power",
+      "Exhaustive Planner",
+      "Goad",
+      "Grand Strategist",
+      "Intel Support (8)",
+      "Leadership",
+      "Lord of Business",
+      "Mastermind",
+      "Persuasive",
+      "Scientific"
+    ],
+    "weapons": [
+      {
+        "name": "Influence",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (6) / Push (4)"
+      }
+    ]
+  },
+  {
+    "name": "Alexandra Kosov",
+    "realname": "Alexandra Kosov",
+    "base": "40mm",
+    "rep": 74,
+    "funding": 400,
+    "rank": ["Sidekick"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/AlexandraKosov.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bionic Eye",
+      "Criminal",
+      "Dirty Money",
+      "Expert Marksman",
+      "Leadership",
+      "Lieutenant (Black Mask)",
+      "Smuggler"
+    ],
+    "weapons": [
+      {
+        "name": "Rocket Launcher",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / M. Range / Explosive / Aim / Anti-Tank"
+      },
+      {
+        "name": "Submachine Gun",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Assault"
+      }
+    ]
+  },
+  {
+    "name": "Sal Maroni",
+    "realname": "Salvatore Maroni",
+    "base": "30mm",
+    "rep": 73,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/SalMaroni.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Dirty Money",
+      "Elite Boss (Gangster)",
+      "Hidden Sniper",
+      "Intimidate",
+      "Long Guns",
+      "Menace",
+      "The Boss"
+    ],
+    "weapons": [
+      {
+        "name": "Acid Bottle",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Acid / Caustic / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Fat Johnny",
+    "realname": "John D'Amico",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 150,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/FatJohnny.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Repairman",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      },
+      {
+        "name": "Crowbar",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Battista",
+    "realname": "Andrea D'Amico",
+    "base": "30mm",
+    "rep": 29,
+    "funding": 250,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Battista.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Elite (Gangster)",
+      "Take Cover!"
+    ],
+    "weapons": [
+      {
+        "name": "Shotgun",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Firearm / M. Range / Assault"
+      }
+    ]
+  },
+  {
+    "name": "The Roman",
+    "realname": "Carmine Falcone",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheRoman.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Aversion (Catwoman)",
+      "Bluff",
+      "Demotivate",
+      "Elite Boss (Gangster)",
+      "Grand Strategist",
+      "Invaluable",
+      "Lord of Business",
+      "Revenge",
+      "Runaway",
+      "Taunt",
+      "The Untouchable"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "The Ventriloquist",
+    "realname": "Arnold Wesker",
+    "base": "30mm",
+    "rep": 73,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheVentriloquist.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 6
+    },
+    "traits": [
+      "Elite Boss (Gangster)",
+      "Elusive",
+      "Goad",
+      "Hard Guys",
+      "Leadership",
+      "Master Criminal",
+      "Tough Skin",
+      "Weak"
+    ],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "The Holiday Killer",
+    "realname": "Alberto Falcone",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 350,
+    "rank": ["Sidekick"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/TheHolidayKiller.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Assassin (3)",
+      "Aversion (Maroni)",
+      "Cruel",
+      "Hidden",
+      "Stealth",
+      "Strategist",
+      "The Holiday Killer"
+    ],
+    "weapons": [
+      {
+        "name": "Hidden Weapon",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Assault / Firearm / S. Range / Silencer"
+      }
+    ]
+  },
+  {
+    "name": "Carmine Falcone (John Turturro)",
+    "realname": "Carmine Falcone",
+    "base": "60mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/CarmineFalconeTurturro.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 6
+    },
+    "traits": [
+      "Coordination",
+      "Corrupt",
+      "Criminal",
+      "Intel Support (6)",
+      "Lord of Business",
+      "Pulling the Strings",
+      "Strategist",
+      "This is My City"
+    ],
+    "weapons": [
+      {
+        "name": "Influence",
+        "damage": "-",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (6) / Push (4)"
+      }
+    ]
+  },
+  {
+    "name": "Fright",
+    "realname": "Linda Friitawa",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/Fright.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Discourage",
+      "Inspire Fear",
+      "Lieutenant (Black Mask)",
+      "Psycho",
+      "Reflexes",
+      "Reinforced Gloves",
+      "Scientific",
+      "Superior Sense of Smell",
+      "True Love (Black Mask)"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "The Penguin (Colin Farrell)",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/ThePenguinFarrell.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Business Agent",
+      "Drop It!",
+      "Handyman",
+      "Lieutenant (Carmine Falcone)",
+      "Order",
+      "Protect Me!"
+    ],
+    "weapons": [
+      {
+        "name": "SMG",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+
 //----------------------------------------------------------------------------------------------------------------------------------
 //DOOM PATROL
 //----------------------------------------------------------------------------------------------------------------------------------
