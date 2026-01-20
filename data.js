@@ -7644,7 +7644,7 @@ const models = [
       "Willpower": 8,
       "Endurance": 10
     },
-    "traits": ["Bloodlust", "Juggernaut", "Kaos Agent", "Like Flies To Me", "Luck", "Lunatic Laugh", "Mindless Monster", "Really Huget", "Sturdy", "Super Jump", "The One And Only Joker"],
+    "traits": ["Bloodlust", "Juggernaut", "Kaos Agent", "Like Flies To Me", "Luck", "Lunatic Laugh", "Mindless Monster", "Really Huge", "Sturdy", "Super Jump", "The One And Only Joker"],
     "weapons": [
       {
         "name": "Massive Claws",
@@ -18095,7 +18095,7 @@ const traitDescriptions = {
     "Lord of the Sewers": "This model may deploy in contact with any Sewer marker. In addition, this model's crew generates 1 extra Sewer marker. Once per game, this model can continue (or start) its Movement action when using a Sewer.",
     "Losing Control": "If a friendly model named below scores a natural double-2 any time during the round, immediately apply the listed effects:\n• Beast Boy: Any Active upgrade card this model has becomes Disabled.\n• Crazy Jane: Immediately draw a new Personalities card. This card replaces the existing one.\n• Elasti-Girl: Lose the Stretching trait until her next activation.\n• Negative Man: Cannot use the Minor Explosions Weapon and the Radioactive Soul-Self trait for the remainder of the round (if it is active, its effect ends immediately).\n• Robotman: This model cannot take more actions this round unless it first spends an Action.",
     "Luck": "Once per round, this model may reroll any single die that it has rolled, for whatever reason.",
-    "Lunatic Laugh": "Until the end of the round, enemy models within 8\" and LoS roll 1 fewer die when making a Defense roll.",
+    "Lunatic Laugh 🦇": "Until the end of the round, enemy models within 8\" and LoS roll 1 fewer die when making a Defense roll.",
     "Lights Out 🦇": "Turn Off a Lamppost within 4\" or Turn On it (it is no longer considered Turn Off and Illuminates as usual).",
 
 
