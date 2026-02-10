@@ -17577,9 +17577,9 @@ const models = [
     }
   ]
 }
-
-
 ];
+
+window.models = models;
 
 const traitDescriptions = {
    //A
@@ -18700,3 +18700,4 @@ function getFactions(model) {
 function getRanks(model) {
   return Array.isArray(model.rank) ? model.rank : (typeof model.rank === 'string' ? [model.rank] : []);
 }
+
