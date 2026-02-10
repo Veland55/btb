@@ -1,17 +1,107 @@
 // ======================== ГЛОБАЛЬНЫЕ ========================
 let crew = [];
 let crewEquipmentCounts = {}; // { "Magazine": count } for crew-wide limits
-let modifiers = { extraFreeAgents: 0, extraVehicles: 0, extraFunding: 0, extraDuplicates: 0, extraElites: {}, extraVeterans: {}, extraMinions: {} };
+let modifiers = { 
+  extraFreeAgents: 0, 
+  extraVehicles: 0, 
+  extraFunding: 0, 
+  extraDuplicates: 0, 
+  extraElites: {}, 
+  extraVeterans: {}, 
+  extraMinions: {},
+  extraTalons: 0,
+  allowBetray: false
+};
 let currentFaction = "Bat Family";
 let allCompendiumHTML = "";
 let compendiumKeys = [];
+
+// Режимы просмотра
+let currentMode = 'menu'; // menu, cards, builder, rules
 
 const $ = id => document.getElementById(id);
 const hasInCrew = m => crew.some(x => x.name === m.name);
 const countInCrew = m => crew.filter(x => x.name === m.name).length;
 
-// ======================== ОТРЯД ========================
+// ======================== ФУНКЦИИ МЕНЮ ========================
+function showCards() {
+  currentMode = 'cards';
+  $('mainMenu').style.display = 'none';
+  $('cardsSection').style.display = 'block';
+  $('builderSection').style.display = 'none';
+  $('compendiumModal').classList.remove('active');
+  initTabs(); // Инициализация табов для карточек
+  renderMiniCardsView(); // Рендер без кнопок +/-
+}
+
+function showBuilder() {
+  currentMode = 'builder';
+  $('mainMenu').style.display = 'none';
+  $('cardsSection').style.display = 'none';
+  $('builderSection').style.display = 'block';
+  $('factionSelect').style.display = 'block';
+  $('builderMain').style.display = 'none';
+  $('compendiumModal').classList.remove('active');
+  initTabs(); // Инициализация табов для выбора фракции
+}
+
+function showRules() {
+  currentMode = 'rules';
+  $('mainMenu').style.display = 'none';
+  $('cardsSection').style.display = 'none';
+  $('builderSection').style.display = 'none';
+  openCompendium();
+}
+
+function backToMenu() {
+  currentMode = 'menu';
+  $('mainMenu').style.display = 'flex';
+  $('cardsSection').style.display = 'none';
+  $('builderSection').style.display = 'none';
+  $('compendiumModal').classList.remove('active');
+  $('modelSearchModal').classList.remove('active'); // ПРАВКА: Закрываем все модалы
+  resetCrew();
+}
+
+function backToFactionSelect() {
+  $('factionSelect').style.display = 'block';
+  $('builderMain').style.display = 'none';
+  resetCrew();
+}
+
+// ПРАВКА: Добавляем недостающие функции закрытия модалов
+function closeCompendium() {
+  $('compendiumModal').classList.remove('active');
+  if (currentMode === 'rules') backToMenu(); // ПРАВКА: Возврат в меню для "Правила"
+}
+
+function closeModelSearch() {
+  $('modelSearchModal').classList.remove('active');
+}
+
+// ======================== ВЫБОР ФРАКЦИИ В БИЛДЕРЕ ========================
+function selectFaction(faction) {
+  currentFaction = faction;
+  $('factionSelect').style.display = 'none';
+  $('builderMain').style.display = 'block';
+  // Установить таб фракции в builderTabs
+  $('builderTabs').innerHTML = `
+    <div class="tabs">
+      <button class="tab active" data-faction="${faction}"><img src="https://veland55.github.io/btb/img/${faction.toUpperCase().replace(/\s/g, '_')}.png" alt="${faction}"></button> <!-- ПРАВКА: toUpperCase() для совпадения с именами файлов (e.g., BIRDS_OF_PREY) -->
+    </div>
+  `;
+  initTabs(); // Переинициализация табов
+  renderMiniCardsBuilder();
+  updateCrewBar();
+}
+
+// ======================== ОТРЯД (ТОЛЬКО ДЛЯ БИЛДЕРА) ========================
 const addToCrew = m => {
+  // Проверка на Mercenary - автоматически считаем как Free Agent
+  if (m.traits.includes("Mercenary")) {
+    m.rankUsed = "Free Agent";
+  }
+  
   const isMinionOrHorde = m.traits.some(t => t.startsWith("Minion") || t === "Horde");
   const factionRules = factionCrewRules[currentFaction] || {};
 
@@ -36,12 +126,17 @@ const addToCrew = m => {
 
   modifiers = calculateModifiers();
   updateCrewBar();
-  renderMiniCards();
+  renderMiniCardsBuilder();
 };
 
 function addModelWithRank(model, chosenRank) {
+  // Проверка на Treacherous - предупреждение
+  if (model.traits.includes("Treacherous")) {
+    alert("Предупреждение: Treacherous модель может betray отряд!");
+  }
+  
   const factionRules = factionCrewRules[currentFaction] || {};
-    // Специальное правило для Cults: первым (Leader) может быть только Deacon Blackfire или Kobra
+  // Специальное правило для Cults: первым (Leader) может быть только Deacon Blackfire или Kobra
   if (currentFaction === "Cults" && !BMG_BOSS && chosenRank === "Leader") {
     if (!["Deacon Blackfire", "Kobra"].includes(model.name)) {
       alert("Для фракции Cults лидером может быть только Deacon Blackfire или Kobra");
@@ -55,7 +150,8 @@ function addModelWithRank(model, chosenRank) {
 
   const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
   if (!bmgCanAddModel(cloned)) return;
-  crew.push(cloned);
+  // ИЗМЕНЕНИЕ: используем unshift вместо push для добавления в начало массива
+  crew.unshift(cloned);
   if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
     BMG_BOSS = cloned;
     BMG_AFFILIATIONS = getFactions(cloned);
@@ -63,22 +159,7 @@ function addModelWithRank(model, chosenRank) {
   updateCrewEquipmentCounts();
   modifiers = calculateModifiers();
   updateCrewBar();
-  renderMiniCards();
-}
-
-// Новая функция — добавление модели с уже выбранным рангом
-function addModelWithRank(model, chosenRank) {
-  const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
-  if (!bmgCanAddModel(cloned)) return;
-  crew.push(cloned);
-  if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
-    BMG_BOSS = cloned;
-    BMG_AFFILIATIONS = getFactions(cloned);
-  }
-  updateCrewEquipmentCounts(); // New function, see below
-  modifiers = calculateModifiers();
-  updateCrewBar();
-  renderMiniCards();
+  renderMiniCardsBuilder();
 }
 
 // Модальное окно выбора ранга
@@ -109,7 +190,7 @@ function showRankSelectionModal(model, ranks) {
       addModelWithRank(model, chosenRank);
       modifiers = calculateModifiers();
       updateCrewBar();
-      renderMiniCards();
+      renderMiniCardsBuilder();
       overlay.remove();
     };
   });
@@ -134,7 +215,7 @@ const removeFromCrew = m => {
     updateCrewEquipmentCounts();
     modifiers = calculateModifiers();
     updateCrewBar();
-    renderMiniCards();
+    renderMiniCardsBuilder();
   }
 };
 
@@ -164,7 +245,9 @@ function calculateModifiers() {
     extraDuplicates: 0, 
     extraElites: {}, 
     extraVeterans: {}, 
-    extraMinions: {} 
+    extraMinions: {},
+    extraTalons: 0,
+    allowBetray: false
   };
 
   crew.forEach(m => {
@@ -199,16 +282,33 @@ function calculateModifiers() {
       if (t === "Politician") mods.extraFunding += 200;
       if (t === "Rich") mods.extraFunding += 200; // чаще всего 200, иногда 100 — можно уточнить по модели
       if (t === "Supply Cache") mods.extraFunding += 300;
+      
+      // Новые трейты для Funding
+      if (t === "Charismatic") mods.extraFunding += 100; // +100 Funding
+      if (t === "Corrupt") mods.extraFunding += 50; // +Funding для corrupt моделей
+      if (t === "Vocational") mods.extraFunding += 200; // +Funding для vocational jobs
 
       // Free Agents
       if (t === "Undercover Agent") mods.extraFreeAgents += 1;
       if (t === "Politician") mods.extraFreeAgents += 1; // у большинства версий Politician даёт +1 FA
+      if (t === "Mercenary") mods.extraFreeAgents += 1; // +1 Free Agent слот
+      if (t === "Heir to the Cowl" && currentFaction === "Bat Family") mods.extraFreeAgents += 1; // +1 FA в Bat Family
+      if (t === "Watchmen") mods.extraFreeAgents += 1; // +1 FA для Watchmen
 
       // Vehicles
       if (t === "Vehicle Boss" || t === "Large Vehicle Boss") mods.extraVehicles += 1;
 
       // Дополнительные Henchmen (дубликаты уникальных)
       if (t === "Recruiter") mods.extraDuplicates += 1;
+
+      // Horde
+      if (t === "Horde") mods.extraMinions["All"] = (mods.extraMinions["All"] || 0) + 3; // +3 миньона любого типа
+      
+      // Court of Owls
+      if (t === "Court of Owls Crew") mods.extraTalons += 2; // +2 Talons для resurrection
+      
+      // Treacherous
+      if (t === "Treacherous") mods.allowBetray = true; // Разрешает betray
 
       // Редкие/специфические случаи (на будущее, если встретятся модели)
       if (t === "Tactician") mods.extraFreeAgents += 1; // иногда даёт +1 FA
@@ -221,90 +321,162 @@ function calculateModifiers() {
   return mods;
 }
 
+// ПРАВКА: Добавляем debounce для render функций, чтобы избежать частых вызовов (мобильная оптимизация)
+const debounce = (func, delay) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+};
+
 // ======================== МИНИ-КАРТОЧКИ ========================
-const renderMiniCards = (() => {
-  let timer;
-  return () => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      const grid = $("modelsGrid");
-      if (!grid) {
-        console.error("Ошибка: элемент #modelsGrid не найден в HTML!");
-        return;
-      }
+// Версия для просмотра (без +/-)
+const renderMiniCardsView = debounce(() => {
+  const grid = $("modelsGridCards");
+  currentFaction = document.querySelector("#cardsSection .tab.active")?.dataset.faction || currentFaction;
+  
+  let filteredModels = models.filter(m => {
+    const factions = getFactions(m);
+    return factions.includes(currentFaction);
+  });
+  
+  const rankOrder = {
+    "Leader": 1,
+    "Sidekick": 2,
+    "Henchman": 3,
+    "Free Agent": 4,
+    "Vehicle": 5
+  };
 
-      currentFaction = document.querySelector(".tab.active")?.dataset.faction || currentFaction;
-      
-      let filteredModels = models.filter(m => {
-        const factions = getFactions(m);
-        return factions.includes(currentFaction);
-      });
-      
-      // Определение порядка рангов
-      const rankOrder = {
-        "Leader": 1,
-        "Sidekick": 2,
-        "Henchman": 3,
-        "Free Agent": 4,
-        "Vehicle": 5
-      };
+  filteredModels.sort((a, b) => {
+    const ranksA = getRanks(a);
+    const ranksB = getRanks(b);
+    const minA = ranksA.length > 0 ? Math.min(...ranksA.map(r => rankOrder[r] || 999)) : 999;
+    const minB = ranksB.length > 0 ? Math.min(...ranksB.map(r => rankOrder[r] || 999)) : 999;
+    if (minA !== minB) return minA - minB;
+    return a.name.localeCompare(b.name);
+  });
 
-      // Сортировка: сначала по наивысшему (минимальному по номеру) рангу, затем по имени алфавитно
-      filteredModels.sort((a, b) => {
-        const ranksA = getRanks(a);
-        const ranksB = getRanks(b);
-        const minA = ranksA.length > 0 ? Math.min(...ranksA.map(r => rankOrder[r] || 999)) : 999;
-        const minB = ranksB.length > 0 ? Math.min(...ranksB.map(r => rankOrder[r] || 999)) : 999;
-        if (minA !== minB) return minA - minB;
-        return a.name.localeCompare(b.name);
-      });
+  const fragment = document.createDocumentFragment();
 
-      const fragment = document.createDocumentFragment();
+  filteredModels.forEach(model => {
+    const ranks = getRanks(model);
 
-      filteredModels.forEach(model => {
-        const inCrew = hasInCrew(model);
-        const count = countInCrew(model);
-        const isMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
-        const ranks = getRanks(model); // Получаем ранги как массив
+    const div = document.createElement("div");
+    div.className = `mini-card`;
 
-        const div = document.createElement("div");
-        div.className = `mini-card ${inCrew ? "in-crew" : ""}`;
-
-        let buttons = '';
-        if (isMinionOrHorde) {
-          buttons = `<button class="add-btn" onclick="event.stopPropagation();addToCrew(models[${model._id}])">+</button>`;
-          if (count > 0) {
-            buttons += `
-              <button class="remove-btn" onclick="event.stopPropagation();removeFromCrew(models[${model._id}])">−</button>
-              <span class="count">x${count}</span>`;
-          }
-        } else {
-          buttons = `<button class="${inCrew ? "remove-btn" : "add-btn"}" onclick="event.stopPropagation();addToCrew(models[${model._id}])">${inCrew ? "−" : "+"}</button>`;
-        }
-
-        div.innerHTML = `
-  ${buttons}
-  ${inCrew && BMG_BOSS && BMG_BOSS.name === model.name ? '<span class="boss-crown">👑</span>' : ''}
-  <img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
-  <div class="mini-info">
-    <div class="mini-name">${model.name}</div>
-    <div class="mini-ranks">
-      ${ranks.map(rank => `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`).join('')}
-    </div>
-    <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
+    div.innerHTML = `
+<img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+<div class="mini-info">
+  <div class="mini-name">${model.name}</div>
+  <div class="mini-ranks">
+    ${ranks.map(rank => `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`).join('')}
   </div>
-  ${inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[' + model._id + '], this.closest(\'.mini-card\'))">⚙️</div>' : ''}
+  <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
+</div>
 `;
 
-        div.onclick = () => showFullCard(model);
-        fragment.appendChild(div);
-      });
+    div.onclick = () => showFullCard(model);
+    fragment.appendChild(div);
+  });
 
-      grid.innerHTML = "";
-      grid.appendChild(fragment);
-    }, 10);
+  grid.innerHTML = "";
+  grid.appendChild(fragment);
+}, 100);
+
+// Версия для билдера (с +/-)
+const renderMiniCardsBuilder = debounce(() => {
+  const grid = $("modelsGridBuilder");
+  
+  // ИЗМЕНЕНИЕ: Создаем массив для рендеринга - сначала отряд, затем все остальные модели
+  let renderArray = [];
+  
+  // Сначала добавляем все модели из отряда (в порядке как они есть в crew)
+  renderArray.push(...crew.map(m => {
+    const originalModel = models.find(model => model.name === m.name);
+    return { 
+      ...originalModel, 
+      inCrew: true, 
+      count: countInCrew(originalModel),
+      instance: m // ссылка на экземпляр в отряде
+    };
+  }));
+  
+  // Затем добавляем все остальные модели текущей фракции, которых нет в отряде
+  let filteredModels = models.filter(m => {
+    const factions = getFactions(m);
+    return factions.includes(currentFaction) && !hasInCrew(m);
+  });
+  
+  // Определение порядка рангов
+  const rankOrder = {
+    "Leader": 1,
+    "Sidekick": 2,
+    "Henchman": 3,
+    "Free Agent": 4,
+    "Vehicle": 5
   };
-})();
+
+  // Сортировка: сначала по наивысшему (минимальному по номеру) рангу, затем по имени алфавитно
+  filteredModels.sort((a, b) => {
+    const ranksA = getRanks(a);
+    const ranksB = getRanks(b);
+    const minA = ranksA.length > 0 ? Math.min(...ranksA.map(r => rankOrder[r] || 999)) : 999;
+    const minB = ranksB.length > 0 ? Math.min(...ranksB.map(r => rankOrder[r] || 999)) : 999;
+    if (minA !== minB) return minA - minB;
+    return a.name.localeCompare(b.name);
+  });
+
+  // Добавляем отфильтрованные модели в renderArray
+  renderArray.push(...filteredModels.map(m => ({
+    ...m,
+    inCrew: false,
+    count: 0
+  })));
+
+  const fragment = document.createDocumentFragment();
+
+  renderArray.forEach(item => {
+    const isMinionOrHorde = item.traits && item.traits.some(t => t.startsWith("Minion") || t === "Horde");
+    const ranks = getRanks(item);
+
+    const div = document.createElement("div");
+    div.className = `mini-card ${item.inCrew ? "in-crew" : ""}`;
+
+    let buttons = '';
+    if (isMinionOrHorde) {
+      buttons = `<button class="add-btn" onclick="event.stopPropagation();addToCrew(models[${item._id}])">+</button>`;
+      if (item.count > 0) {
+        buttons += `
+          <button class="remove-btn" onclick="event.stopPropagation();removeFromCrew(models[${item._id}])">−</button>
+          <span class="count">x${item.count}</span>`;
+      }
+    } else {
+      buttons = `<button class="${item.inCrew ? "remove-btn" : "add-btn"}" onclick="event.stopPropagation();addToCrew(models[${item._id}])">${item.inCrew ? "−" : "+"}</button>`;
+    }
+
+    div.innerHTML = `
+${buttons}
+${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
+<img src="${item.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+<div class="mini-info">
+  <div class="mini-name">${item.name}</div>
+  <div class="mini-ranks">
+    ${ranks.map(rank => `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`).join('')}
+  </div>
+  <div class="mini-rep">${item.rep} Rep • $${item.funding || 0}</div>
+</div>
+${item.inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[' + item._id + '], this.closest(\'.mini-card\'))">⚙️</div>' : ''}
+`;
+
+    div.onclick = () => showFullCard(item);
+    fragment.appendChild(div);
+  });
+
+  grid.innerHTML = "";
+  grid.appendChild(fragment);
+}, 100);
 
 // ======================== ПОЛНАЯ КАРТОЧКА ========================
 const showFullCard = model => {
@@ -468,7 +640,6 @@ const openCompendium = () => {
   $("compendiumList").innerHTML = allCompendiumHTML;
   setTimeout(() => $("compendiumSearch").focus(), 300);
 };
-const closeCompendium = () => $("compendiumModal").classList.remove("active");
 
 const clearCompendiumSearch = () => {
   $("compendiumSearch").value = "";
@@ -491,8 +662,6 @@ const openModelSearch = () => {
   setTimeout(() => $("modelSearchInput").focus(), 300);
   renderModelSearch();
 };
-
-const closeModelSearch = () => $("modelSearchModal").classList.remove("active");
 
 const renderModelSearch = () => {
   const query = $("modelSearchInput").value.toLowerCase().trim();
@@ -635,7 +804,7 @@ function removeEquipmentFromModel(modelName, eqName) {
       updateCrewEquipmentCounts();
       modifiers = calculateModifiers();
       updateCrewBar();
-      renderMiniCards();
+      renderMiniCardsBuilder();
       showFullCard(models.find(m => m.name === modelName)); // Перерендерим полную карточку
     }
   }
@@ -650,7 +819,11 @@ document.querySelectorAll(".tab").forEach(tab => {
         if (confirm("При смене фракции текущий отряд будет очищен. Продолжить?")) {
           currentFaction = newFaction;
           resetCrew();           // ← Полный сброс: crew, BMG_BOSS, BMG_AFFILIATIONS
-          renderMiniCards();
+          if (currentMode === 'cards') {
+            renderMiniCardsView();
+          } else if (currentMode === 'builder') {
+            renderMiniCardsBuilder();
+          }
           document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
           tab.classList.add("active");
         }
@@ -658,7 +831,11 @@ document.querySelectorAll(".tab").forEach(tab => {
         currentFaction = newFaction;
         document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
-        renderMiniCards(); // На всякий случай
+        if (currentMode === 'cards') {
+          renderMiniCardsView();
+        } else if (currentMode === 'builder') {
+          renderMiniCardsBuilder();
+        }
       }
     }
   });
@@ -697,7 +874,9 @@ window.addEventListener("load", () => {
       // Пересчитываем модификаторы и обновляем интерфейс
       modifiers = calculateModifiers();
       updateCrewBar();
-      renderMiniCards();
+      if (currentMode === 'builder') {
+        renderMiniCardsBuilder();
+      }
 
       // Опционально: предупреждение, если текущий отряд превышает новый лимит
       const currentRep = crew.reduce((a, m) => a + (m.rep || 0), 0);
@@ -708,7 +887,11 @@ window.addEventListener("load", () => {
   }
 
   // Первичный рендер
-  renderMiniCards();
+  if (currentMode === 'cards') {
+    renderMiniCardsView();
+  } else if (currentMode === 'builder') {
+    renderMiniCardsBuilder();
+  }
   updateCrewBar();
 });
 
@@ -808,7 +991,6 @@ function bmgCanAddModel(model) {
     }
   }
 
-
   // Проверка уникальности имени (realname)
   const realname = model.realname || "—";
   if (!factionRules.allowSameNameDifferentAlias && realname !== "Unknown" && realname !== "—") {
@@ -899,6 +1081,111 @@ function bmgCanAddModel(model) {
       if (minionExceeded) return false;
     }
   }
+
+  // НОВЫЕ ПРОВЕРКИ НА ТРЕЙТЫ
+  let exceeded = false;
+  model.traits.forEach(t => {
+    // Elite (X): Уже частично есть, но уточним
+    const eliteMatch = t.match(/^Elite \((.+)\)$/);
+    if (eliteMatch) {
+      const type = eliteMatch[1];
+      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
+      if (count >= 1 + (modifiers.extraElites[type] || 0)) {
+        alert(`Превышен лимит Elite (${type})`);
+        exceeded = true;
+      }
+    }
+
+    // Horde: Если модель имеет Horde, игнор лимита миньонов на +3
+    if (t === "Horde" && bmgRankCount("Henchman") >= 5 + (modifiers.extraMinions["All"] || 0)) {
+      alert("Превышен лимит для Horde");
+      exceeded = true;
+    }
+
+    // Hates (X): Нельзя добавлять если X в отряде
+    const hatesMatch = t.match(/^Hates \((.+)\)$/);
+    if (hatesMatch) {
+      const hated = hatesMatch[1];
+      if (crew.some(m => m.name === hated || getFactions(m).includes(hated))) {
+        alert(`Нельзя добавить: Hates (${hated})`);
+        exceeded = true;
+      }
+    }
+    
+    // Aversion (X): Нельзя добавлять если X в отряде
+    const aversionMatch = t.match(/^Aversion \((.+)\)$/);
+    if (aversionMatch) {
+      const averted = aversionMatch[1];
+      if (crew.some(m => m.name === averted || getFactions(m).includes(averted))) {
+        alert(`Нельзя добавить: Aversion (${averted})`);
+        exceeded = true;
+      }
+    }
+
+    // Required (X): Требует X в отряде
+    const requiredMatch = t.match(/^Required \((.+)\)$/);
+    if (requiredMatch) {
+      const required = requiredMatch[1];
+      if (!crew.some(m => m.name === required || m.traits.includes(required))) {
+        alert(`Требуется: Required (${required})`);
+        exceeded = true;
+      }
+    }
+
+    // Incorruptible: Нельзя в злые фракции (если фракция villain)
+    if (t === "Incorruptible" && ["Joker", "Bane", "Penguin", "Mr. Freeze", "Scarecrow", "Two-Face", "The Riddler", "Organized Crime", "Suicide Squad", "Batman Who Laughs", "Cults"].includes(currentFaction)) {
+      alert("Incorruptible: Нельзя в эту фракцию");
+      exceeded = true;
+    }
+
+    // Freed / He Freed Me: Требует liberator (например, Bane)
+    if (t === "Freed" || t === "He Freed Me") {
+      if (!crew.some(m => m.name === "Bane" || m.traits.includes("Liberator"))) {
+        alert("Требует liberator (He Freed Me)");
+        exceeded = true;
+      }
+    }
+
+    // My Idol!: Требует idol в отряде
+    if (t === "My Idol!") {
+      if (!BMG_BOSS || BMG_BOSS.name !== "Joker") {
+        alert("Требует idol (My Idol!)");
+        exceeded = true;
+      }
+    }
+
+    // Possessed: Только в supernatural фракциях
+    if (t === "Possessed" && !["Cults", "Batman Who Laughs"].includes(currentFaction)) {
+      alert("Possessed: Только в supernatural фракциях");
+      exceeded = true;
+    }
+
+    // Meet Goliath!: Требует Goliath
+    if (t === "Meet Goliath!") {
+      if (!crew.some(m => m.name === "Goliath")) {
+        alert("Требует Goliath");
+        exceeded = true;
+      }
+    }
+
+    // The Sidekick: Лимит 1, требует Leader
+    if (t === "The Sidekick" && bmgRankCount("Sidekick") >= 1) {
+      alert("Превышен лимит Sidekick");
+      exceeded = true;
+    }
+    if (t === "The Sidekick" && !BMG_BOSS) {
+      alert("Требует Leader для Sidekick");
+      exceeded = true;
+    }
+
+    // Amazon Lineage: Только в amazon фракциях
+    if (t === "Amazon Lineage" && currentFaction !== "Birds of Prey") {
+      alert("Amazon Lineage: Только в amazon фракциях");
+      exceeded = true;
+    }
+  });
+
+  if (exceeded) return false;
 
   return true;
 }
@@ -994,7 +1281,7 @@ const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
   updateCrewEquipmentCounts();
   modifiers = calculateModifiers();
   updateCrewBar();
-  renderMiniCards();
+  renderMiniCardsBuilder();
   
   // Удалите эту строку: overlay.remove();
   
@@ -1074,9 +1361,21 @@ function resetCrew() {
   BMG_BOSS = null;
   BMG_AFFILIATIONS = null;
   crewEquipmentCounts = {};
-  modifiers = { extraFreeAgents: 0, extraVehicles: 0, extraFunding: 0, extraDuplicates: 0, extraElites: {}, extraVeterans: {}, extraMinions: {} };
+  modifiers = { 
+    extraFreeAgents: 0, 
+    extraVehicles: 0, 
+    extraFunding: 0, 
+    extraDuplicates: 0, 
+    extraElites: {}, 
+    extraVeterans: {}, 
+    extraMinions: {},
+    extraTalons: 0,
+    allowBetray: false
+  };
   updateCrewBar();
-  renderMiniCards();
+  if (currentMode === 'builder') {
+    renderMiniCardsBuilder();
+  }
 }
 
 let isDesktop = window.innerWidth > 768 && !/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1123,3 +1422,24 @@ if (isDesktop) {
     });
   }
 }
+
+// Инициализация табов (для всех режимов)
+function initTabs() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      if (currentMode === 'cards') {
+        renderMiniCardsView();
+      } else if (currentMode === 'builder') {
+        renderMiniCardsBuilder();
+      }
+    });
+  });
+}
+
+// Начальная инициализация
+document.addEventListener('DOMContentLoaded', () => {
+  initTabs();
+  // ... другие инициализации ...
+});

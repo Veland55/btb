@@ -9,54 +9,126 @@
 </head>
 <body>
 
-  <!-- ТОП-БАР -->
-  <div class="top-bar">
-    <div class="top-bar-content">
-      <h1>BMG</h1>
-      <div class="header-buttons">
-        <button class="compendium-small-btn" onclick="openModelSearch()">
-          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        </button>
-        <button class="compendium-small-btn" onclick="openCompendium()">
-          <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h12v16zm-4-8H10v-1h4v1zm0-3H10V8h4v1zm0-3H10V6h4v1z"/></svg>
-        </button>
+  <!-- ГЛАВНОЕ МЕНЮ ВЫБОРА -->
+  <div id="mainMenu" class="main-menu">
+    <h1>BMG</h1>
+    <button class="menu-btn" onclick="showCards()">КАРТОЧКИ</button>
+    <button class="menu-btn" onclick="showBuilder()">БИЛДЕР (Альфа)</button>
+    <button class="menu-btn" onclick="showRules()">ПРАВИЛА</button>
+  </div>
+
+  <!-- РАЗДЕЛ КАРТОЧКИ (ПРОСМОТР) -->
+  <div id="cardsSection" style="display:none;">
+    <!-- ТОП-БАР (УПРОЩЁННЫЙ, БЕЗ ОТРЯДА) -->
+    <div class="top-bar">
+      <div class="top-bar-content">
+        <h1>BMG</h1>
+        <div class="header-buttons">
+          <button class="compendium-small-btn" onclick="backToMenu()">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> <!-- Иконка назад -->
+          </button>
+        </div>
       </div>
     </div>
-    <div class="funds">
-        ОТРЯД: <span id="crewCount">0</span> | REP: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350" style="width:50px; background:#222; color:#fff; border:1px solid #e94560;"> | $<span id="totalFunding">0 / 1500</span>
+
+    <!-- ВКЛАДКИ ФРАКЦИЙ -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <button class="tab active" data-faction="Bat Family"><img src="https://veland55.github.io/btb/img/BATMAN.png" alt="Bat Family"></button>
+        <button class="tab" data-faction="GCPD"><img src="https://veland55.github.io/btb/img/GCPD.png" alt="GCPD"></button>
+        <button class="tab" data-faction="Birds of Prey"><img src="https://veland55.github.io/btb/img/BIRDS_OF_PREY.png" alt="Birds of Prey"></button>
+        <button class="tab" data-faction="Joker"><img src="https://veland55.github.io/btb/img/JOKER.png" alt="JOKER"></button>
+        <button class="tab" data-faction="Bane"><img src="https://veland55.github.io/btb/img/SOLDIERS.png" alt="Bane"></button>
+        <button class="tab" data-faction="League of Shadows"><img src="https://veland55.github.io/btb/img/LEAGUE.png" alt="League of Shadows"></button>
+        <button class="tab" data-faction="Royal Flush"><img src="https://veland55.github.io/btb/img/RoyalFlush.png" alt="Royal Flush"></button>
+        <button class="tab" data-faction="Penguin"><img src="https://veland55.github.io/btb/img/PENGUIN.png" alt="Penguin"></button>
+        <button class="tab" data-faction="Mr. Freeze"><img src="https://veland55.github.io/btb/img/MR_FREEZE.png" alt="Mr. Freeze"></button>
+        <button class="tab" data-faction="Scarecrow"><img src="https://veland55.github.io/btb/img/SCARECROW.png" alt="Scarecrow"></button>
+        <button class="tab" data-faction="Two-Face"><img src="https://veland55.github.io/btb/img/TWO-FACE.png" alt="Two-Face"></button>
+        <button class="tab" data-faction="The Riddler"><img src="https://veland55.github.io/btb/img/RIDDLER.png" alt="The Riddler"></button>
+        <button class="tab" data-faction="Organized Crime"><img src="https://veland55.github.io/btb/img/OrganizedCrime.png" alt="Organized Crime"></button>
+        <button class="tab" data-faction="Suicide Squad"><img src="https://veland55.github.io/btb/img/Suicide_Squad.png" alt="Suicide Squad"></button>
+        <button class="tab" data-faction="Court of Owls"><img src="https://veland55.github.io/btb/img/OWLS.png" alt="Court of Owls"></button>
+        <button class="tab" data-faction="Watchmen"><img src="https://veland55.github.io/btb/img/Watchmen.png" alt="Watchmen"></button>
+        <button class="tab" data-faction="Batman Who Laughs"><img src="https://veland55.github.io/btb/img/BatmanWhoLaughs.png" alt="Batman Who Laughs"></button>
+        <button class="tab" data-faction="Cults"><img src="https://veland55.github.io/btb/img/CULTS.png" alt="Cults"></button>
+        <button class="tab" data-faction="Doom Patrol"><img src="https://veland55.github.io/btb/img/Doom_Patrol.png" alt="Doom Patrol"></button>
+        <button class="tab" data-faction="Unknown"><img src="https://veland55.github.io/btb/img/UNKNOWN.png" alt="Unknown"></button>
+      </div>
+    </div>
+
+    <div id="modelsGridCards" class="models-grid"></div>  
+  </div>
+
+  <!-- РАЗДЕЛ БИЛДЕР -->
+  <div id="builderSection" style="display:none;">
+    <!-- ШАГ 1: ВЫБОР ФРАКЦИИ -->
+    <div id="factionSelect" class="faction-select">
+      <div class="top-bar">
+        <div class="top-bar-content">
+          <h1>ВЫБОР ФРАКЦИИ</h1>
+          <button class="compendium-small-btn" onclick="backToMenu()">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="tabs-container">
+        <div class="tabs">
+          <button class="tab" data-faction="Bat Family" onclick="selectFaction('Bat Family')"><img src="https://veland55.github.io/btb/img/BATMAN.png" alt="Bat Family"></button>
+          <button class="tab" data-faction="GCPD" onclick="selectFaction('GCPD')"><img src="https://veland55.github.io/btb/img/GCPD.png" alt="GCPD"></button>
+          <button class="tab" data-faction="Birds of Prey" onclick="selectFaction('Birds of Prey')"><img src="https://veland55.github.io/btb/img/BIRDS_OF_PREY.png" alt="Birds of Prey"></button>
+          <button class="tab" data-faction="Joker" onclick="selectFaction('Joker')"><img src="https://veland55.github.io/btb/img/JOKER.png" alt="Joker"></button>
+          <button class="tab" data-faction="Bane" onclick="selectFaction('Bane')"><img src="https://veland55.github.io/btb/img/SOLDIERS.png" alt="Bane"></button>
+          <button class="tab" data-faction="League of Shadows" onclick="selectFaction('League of Shadows')"><img src="https://veland55.github.io/btb/img/LEAGUE.png" alt="League of Shadows"></button>
+          <button class="tab" data-faction="Royal Flush" onclick="selectFaction('Royal Flush')"><img src="https://veland55.github.io/btb/img/RoyalFlush.png" alt="Royal Flush"></button>
+          <button class="tab" data-faction="Penguin" onclick="selectFaction('Penguin')"><img src="https://veland55.github.io/btb/img/PENGUIN.png" alt="Penguin"></button>
+          <button class="tab" data-faction="Mr. Freeze" onclick="selectFaction('Mr. Freeze')"><img src="https://veland55.github.io/btb/img/MR_FREEZE.png" alt="Mr. Freeze"></button>
+          <button class="tab" data-faction="Scarecrow" onclick="selectFaction('Scarecrow')"><img src="https://veland55.github.io/btb/img/SCARECROW.png" alt="Scarecrow"></button>
+          <button class="tab" data-faction="Two-Face" onclick="selectFaction('Two-Face')"><img src="https://veland55.github.io/btb/img/TWO-FACE.png" alt="Two-Face"></button>
+          <button class="tab" data-faction="The Riddler" onclick="selectFaction('The Riddler')"><img src="https://veland55.github.io/btb/img/RIDDLER.png" alt="The Riddler"></button>
+          <button class="tab" data-faction="Organized Crime" onclick="selectFaction('Organized Crime')"><img src="https://veland55.github.io/btb/img/OrganizedCrime.png" alt="Organized Crime"></button>
+          <button class="tab" data-faction="Suicide Squad" onclick="selectFaction('Suicide Squad')"><img src="https://veland55.github.io/btb/img/Suicide_Squad.png" alt="Suicide Squad"></button>
+          <button class="tab" data-faction="Court of Owls" onclick="selectFaction('Court of Owls')"><img src="https://veland55.github.io/btb/img/OWLS.png" alt="Court of Owls"></button>
+          <button class="tab" data-faction="Watchmen" onclick="selectFaction('Watchmen')"><img src="https://veland55.github.io/btb/img/Watchmen.png" alt="Watchmen"></button>
+          <button class="tab" data-faction="Batman Who Laughs" onclick="selectFaction('Batman Who Laughs')"><img src="https://veland55.github.io/btb/img/BatmanWhoLaughs.png" alt="Batman Who Laughs"></button>
+          <button class="tab" data-faction="Cults" onclick="selectFaction('Cults')"><img src="https://veland55.github.io/btb/img/CULTS.png" alt="Cults"></button>
+          <button class="tab" data-faction="Doom Patrol" onclick="selectFaction('Doom Patrol')"><img src="https://veland55.github.io/btb/img/Doom_Patrol.png" alt="Doom Patrol"></button>
+          <button class="tab" data-faction="Unknown" onclick="selectFaction('Unknown')"><img src="https://veland55.github.io/btb/img/UNKNOWN.png" alt="Unknown"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ШАГ 2: БИЛДЕР БАНДЫ (СКРЫТ ПО УМОЛЧАНИЮ) -->
+    <div id="builderMain" style="display:none;">
+      <!-- ТОП-БАР С ОТРЯДОМ -->
+      <div class="top-bar">
+        <div class="top-bar-content">
+          <h1>BMG</h1>
+          <div class="header-buttons">
+            <button class="compendium-small-btn" onclick="openModelSearch()">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </button>
+            <button class="compendium-small-btn" onclick="openCompendium()">
+              <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h12v16zm-4-8H10v-1h4v1zm0-3H10V8h4v1zm0-3H10V6h4v1z"/></svg>
+            </button>
+            <button class="compendium-small-btn" onclick="resetCrew(); backToFactionSelect()">
+              <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> <!-- ПРАВКА: Изменена иконка на reset (крестик) -->
+            </button>
+          </div>
+        </div>
+        <div class="funds">
+          ОТРЯД: <span id="crewCount">0</span> | REP: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350" style="width:50px; background:#222; color:#fff; border:1px solid #e94560;"> | $<span id="totalFunding">0 / 1500</span>
+        </div>
+      </div>
+
+      <!-- ВКЛАДКИ ФРАКЦИЙ (БУДЕТ ОТОБРАЖАТЬ ТОЛЬКО ВЫБРАННУЮ) -->
+      <div class="tabs-container" id="builderTabs"></div>
+
+      <div id="modelsGridBuilder" class="models-list"></div>  <!-- Изменено: class="models-list" вместо "models-grid" -->
     </div>
   </div>
 
-  <!-- ВКЛАДКИ ФРАКЦИЙ -->
-  <div class="tabs-container">
-    <div class="tabs">
-      <button class="tab active" data-faction="Bat Family"><img src="https://veland55.github.io/btb/img/BATMAN.png" alt="Bat Family"></button>
-      <button class="tab" data-faction="GCPD"><img src="https://veland55.github.io/btb/img/GCPD.png" alt="GCPD"></button>
-      <button class="tab" data-faction="Birds of Prey"><img src="https://veland55.github.io/btb/img/BIRDS_OF_PREY.png" alt="Birds of Prey"></button>
-      <button class="tab" data-faction="Joker"><img src="https://veland55.github.io/btb/img/JOKER.png" alt="JOKER"></button>
-      <button class="tab" data-faction="Bane"><img src="https://veland55.github.io/btb/img/SOLDIERS.png" alt="Bane"></button>
-      <button class="tab" data-faction="League of Shadows"><img src="https://veland55.github.io/btb/img/LEAGUE.png" alt="League of Shadows"></button>
-      <button class="tab" data-faction="Royal Flush"><img src="https://veland55.github.io/btb/img/RoyalFlush.png" alt="Royal Flush"></button>
-      <button class="tab" data-faction="Penguin"><img src="https://veland55.github.io/btb/img/PENGUIN.png" alt="Penguin"></button>
-      <button class="tab" data-faction="Mr. Freeze"><img src="https://veland55.github.io/btb/img/MR_FREEZE.png" alt="Mr. Freeze"></button>
-      <button class="tab" data-faction="Scarecrow"><img src="https://veland55.github.io/btb/img/SCARECROW.png" alt="Scarecrow"></button>
-      <button class="tab" data-faction="Two-Face"><img src="https://veland55.github.io/btb/img/TWO-FACE.png" alt="Two-Face"></button>
-      <button class="tab" data-faction="The Riddler"><img src="https://veland55.github.io/btb/img/RIDDLER.png" alt="The Riddler"></button>
-      <button class="tab" data-faction="Organized Crime"><img src="https://veland55.github.io/btb/img/OrganizedCrime.png" alt="Organized Crime"></button>
-      <button class="tab" data-faction="Suicide Squad"><img src="https://veland55.github.io/btb/img/Suicide_Squad.png" alt="Suicide Squad"></button>
-      <button class="tab" data-faction="Court of Owls"><img src="https://veland55.github.io/btb/img/OWLS.png" alt="Court of Owls"></button>
-      <button class="tab" data-faction="Watchmen"><img src="https://veland55.github.io/btb/img/Watchmen.png" alt="Watchmen"></button>
-      <button class="tab" data-faction="Batman Who Laughs"><img src="https://veland55.github.io/btb/img/BatmanWhoLaughs.png" alt="Batman Who Laughs"></button>
-      <button class="tab" data-faction="Cults"><img src="https://veland55.github.io/btb/img/CULTS.png" alt="Cults"></button>
-      <button class="tab" data-faction="Doom Patrol"><img src="https://veland55.github.io/btb/img/Doom_Patrol.png" alt="Doom Patrol"></button>
-      <button class="tab" data-faction="Unknown"><img src="https://veland55.github.io/btb/img/UNKNOWN.png" alt="Unknown"></button>
-    </div>
-  </div>
-
-
-  <div id="modelsGrid" class="models-grid"></div>  
-
-  <!-- COMPENDIUM -->
+  <!-- COMPENDIUM (ПРАВИЛА) -->
   <div id="compendiumModal" class="compendium-modal">
     <div class="compendium-header">
       <button onclick="closeCompendium()" class="back-btn">НАЗАД</button>
@@ -72,7 +144,7 @@
     <div id="compendiumList" class="compendium-content"></div>
   </div>
 
-  <!-- ПОИСК МОДЕЛЕЙ -->
+  <!-- ПОИСК МОДЕЛЕЙ (ДЛЯ БИЛДЕРА) -->
   <div id="modelSearchModal" class="compendium-modal">
     <div class="compendium-header">
       <button onclick="closeModelSearch()" class="back-btn">НАЗАД</button>
