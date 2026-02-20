@@ -5015,7 +5015,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "https://veland55.github.io/btb/img/BeastBoyBeast.png",
+    "img": "https://veland55.github.io/btb/img/BeastBoyTiger.png",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -5050,7 +5050,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "https://veland55.github.io/btb/img/BeastBoyBeast.png",
+    "img": "https://veland55.github.io/btb/img/BeastBoyGorrila.png",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -5086,7 +5086,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "https://veland55.github.io/btb/img/BeastBoyBeast.png",
+    "img": "https://veland55.github.io/btb/img/BeastBoyHawk.png",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -18688,9 +18688,28 @@ const descriptions = {
 // Делаем всю базу доступной глобально для COMPENDIUM
 window.compendium = { ...traitDescriptions};
 
-// Универсальная функция для получения описания (трейт или оружие)
+// В data.js, замените существующую getDesc на это:
 function getDesc(key) {
-  return descriptions[key] || "Описание появится позже…";
+  // Нормализация для параметризованных трейтов: заменяем (Specific) на (X)
+  const parametrizedTraits = [
+    "Elite Boss", "Veteran Boss", "Minion Boss", 
+    "Elite", "Veteran", "Minion",
+    "Business Agent", "Kaos Agent", "Black Market Connections",
+    "Hates", "Aversion", "Required", "Teamwork", "Enervating", "True Love" // Добавил ваши из script.js
+    // Добавьте другие по мере необходимости
+  ];
+
+  const match = key.match(/^(.+?) \((.+)\)$/); // Исправленный regex: убрал $$ и пробелы
+  if (match) {
+    const baseName = match[1].trim();
+    if (parametrizedTraits.includes(baseName)) {
+      const normalizedKey = `${baseName} (X)`; // Шаблон с (X)
+      return descriptions[normalizedKey] || "Описание появится позже…";
+    }
+  }
+
+  // Если не параметризован, ищем как есть (с fallback на compendium)
+  return descriptions[key] || window.compendium[key] || "Описание появится позже…";
 }
 
 function getFactions(model) {
