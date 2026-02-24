@@ -12,7 +12,7 @@ let modifiers = {
   extraTalons: 0,
   allowBetray: false
 };
-let currentFaction = "Bat Family";
+let currentFaction = null; // Изменено: null по умолчанию (нет фракции)
 let allCompendiumHTML = "";
 let compendiumKeys = [];
 
@@ -30,8 +30,13 @@ function showCards() {
   $('cardsSection').style.display = 'block';
   $('builderSection').style.display = 'none';
   $('compendiumModal').classList.remove('active');
+  
+  // Скрываем модели, показываем placeholder и tabs
+  currentFaction = null; // Сбрасываем фракцию
+  $('modelsGridCards').innerHTML = ''; // Очищаем модели
+  $('factionPlaceholder').style.display = 'block'; // Показываем placeholder
+  $('cardsTabsContainer').style.display = 'block'; // Показываем вкладки фракций
   initTabs(); // Инициализация табов для карточек
-  renderMiniCardsView(); // Рендер без кнопок +/-
 }
 
 function showBuilder() {
@@ -61,6 +66,14 @@ function backToMenu() {
   $('compendiumModal').classList.remove('active');
   $('modelSearchModal').classList.remove('active'); // ПРАВКА: Закрываем все модалы
   resetCrew();
+
+  // Восстанавливаем состояние для cardsSection при повторном входе
+  currentFaction = null;
+  if ($('cardsTabsContainer')) {
+    $('cardsTabsContainer').style.display = 'block';
+    $('factionPlaceholder').style.display = 'block';
+    $('modelsGridCards').innerHTML = '';
+  }
 }
 
 function backToFactionSelect() {
@@ -333,8 +346,13 @@ const debounce = (func, delay) => {
 // ======================== МИНИ-КАРТОЧКИ ========================
 // Версия для просмотра (без +/-)
 const renderMiniCardsView = debounce(() => {
+  if (!currentFaction) {
+    // Если фракция не выбрана, не рендерим ничего
+    $('modelsGridCards').innerHTML = '';
+    return;
+  }
+  
   const grid = $("modelsGridCards");
-  currentFaction = document.querySelector("#cardsSection .tab.active")?.dataset.faction || currentFaction;
   
   let filteredModels = models.filter(m => {
     const factions = getFactions(m);
@@ -811,35 +829,32 @@ function removeEquipmentFromModel(modelName, eqName) {
 }
 
 // ======================== ВКЛАДКИ ========================
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    const newFaction = tab.dataset.faction;
-    if (newFaction !== currentFaction) {
-      if (crew.length > 0) {
-        if (confirm("При смене фракции текущий отряд будет очищен. Продолжить?")) {
-          currentFaction = newFaction;
-          resetCrew();           // ← Полный сброс: crew, BMG_BOSS, BMG_AFFILIATIONS
-          if (currentMode === 'cards') {
-            renderMiniCardsView();
-          } else if (currentMode === 'builder') {
-            renderMiniCardsBuilder();
-          }
-          document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-          tab.classList.add("active");
-        }
+// Инициализация табов (для всех режимов)
+function initTabs() {
+  document.querySelectorAll('.faction-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.faction-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      currentFaction = card.dataset.faction; // Устанавливаем фракцию
+
+      if (card.closest('#cardsSection')) { // Для cardsSection
+        // Скрываем вкладки фракций после выбора
+        $('cardsTabsContainer').style.display = 'none';
+        $('factionPlaceholder').style.display = 'none';
+        renderMiniCardsView(); // Рендерим модели только после выбора
+      } else if (card.closest('#factionSelect')) {
+        const faction = card.dataset.faction;
+        selectFaction(faction);
       } else {
-        currentFaction = newFaction;
-        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
         if (currentMode === 'cards') {
           renderMiniCardsView();
         } else if (currentMode === 'builder') {
           renderMiniCardsBuilder();
         }
       }
-    }
+    });
   });
-});
+}
 
 // ======================== ИНИЦИАЛИЗАЦИЯ ========================
 window.addEventListener("load", () => {
@@ -893,6 +908,9 @@ window.addEventListener("load", () => {
     renderMiniCardsBuilder();
   }
   updateCrewBar();
+  
+  // Инициализация табов
+  initTabs();
 });
 
 /*************************
@@ -1422,24 +1440,3 @@ if (isDesktop) {
     });
   }
 }
-
-// Инициализация табов (для всех режимов)
-function initTabs() {
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      if (currentMode === 'cards') {
-        renderMiniCardsView();
-      } else if (currentMode === 'builder') {
-        renderMiniCardsBuilder();
-      }
-    });
-  });
-}
-
-// Начальная инициализация
-document.addEventListener('DOMContentLoaded', () => {
-  initTabs();
-  // ... другие инициализации ...
-});
