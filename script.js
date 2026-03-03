@@ -354,10 +354,8 @@ const renderMiniCardsView = debounce(() => {
   
   const grid = $("modelsGridCards");
   
-  let filteredModels = models.filter(m => {
-    const factions = getFactions(m);
-    return factions.includes(currentFaction);
-  });
+  // === ИСПРАВЛЕНО: используем canViewInFaction для режима просмотра ===
+  let filteredModels = models.filter(m => canViewInFaction(m, currentFaction));
   
   const rankOrder = {
     "Leader": 1,
@@ -421,11 +419,8 @@ const renderMiniCardsBuilder = debounce(() => {
     };
   }));
   
-  // Затем добавляем все остальные модели текущей фракции, которых нет в отряде
-  let filteredModels = models.filter(m => {
-    const factions = getFactions(m);
-    return factions.includes(currentFaction) && !hasInCrew(m);
-  });
+  // === ИСПРАВЛЕНО: используем canHireInFaction для режима билдера ===
+  let filteredModels = models.filter(m => canHireInFaction(m, currentFaction) && !hasInCrew(m));
   
   // Определение порядка рангов
   const rankOrder = {

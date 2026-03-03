@@ -18720,3 +18720,41 @@ function getRanks(model) {
   return Array.isArray(model.rank) ? model.rank : (typeof model.rank === 'string' ? [model.rank] : []);
 }
 
+function getRivals(model) {
+  if (!model.rivals) return [];
+  return Array.isArray(model.rivals)
+    ? model.rivals
+    : (typeof model.rivals === "string" && model.rivals.trim()
+        ? model.rivals.replace(/ *& */gi, ",").replace(/ *\/ */g, ",").split(",").map(s => s.trim())
+        : []);
+}
+
+// Экспортируем (чтобы была доступна в script.js)
+window.getRivals = getRivals;
+
+// Простая проверка — используется в режиме просмотра карточек (CARDS)
+function canViewInFaction(model, faction) {
+  const factions = getFactions(model);
+  return factions.includes(faction);
+}
+
+// Расширенная проверка — используется ТОЛЬКО в билдере (CREWS)
+// ======================== ПРАВИЛЬНАЯ ПРОВЕРКА НАЙМА В БИЛДЕРЕ ========================
+function canHireInFaction(model, faction) {
+  const factions = getFactions(model);   // массив фракций модели
+  const rivals   = getRivals(model);     // массив rivals модели
+
+  const hasUnknown = factions.includes("Unknown");
+
+  if (hasUnknown) {
+    // Модель с Unknown — можно везде, КРОМЕ rivals
+    return !rivals.includes(faction);
+  } else {
+    // Обычная модель — только если фракция явно указана
+    return factions.includes(faction);
+  }
+}
+
+// Экспорт (если нужно)
+window.canViewInFaction = canViewInFaction;
+window.canHireInFaction = canHireInFaction;
