@@ -1,10 +1,10 @@
 /* ============================================= */
-/* BMG Crew Builder Mobile — style.css (2025)   */
-/* Полностью очищенная и оптимизированная версия */
+/* BMG Crew Builder Mobile — style.css          */
+/* Очищенная версия                              */
 /* ============================================= */
 
 * { margin:0; padding:0; box-sizing:border-box; touch-action:manipulation; }
-body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:100vh; padding-bottom:100px; -webkit-tap-highlight-color:transparent; }
+body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:100vh; -webkit-tap-highlight-color:transparent; }
 
 /* ТОП-БАР */
 .top-bar { background:linear-gradient(#111,#000); padding:10px 12px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100; box-shadow:0 4px 15px rgba(0,0,0,.6); }
@@ -17,67 +17,18 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .funds { font-size:14px; font-weight:bold; margin-top:8px; }
 .funds span { color:#e94560; margin:0 10px; }
 
-/* ВКЛАДКИ ФРАКЦИЙ (теперь карточки) */
-.tabs-container { background:#111; padding:10px 0 8px; border-bottom:3px solid #222; overflow-y: auto; max-height: calc(100vh - 200px); } /* Вертикальный скролл, если много */
-
-.faction-cards { display: flex; flex-direction: column; gap: 12px; padding: 0 12px; }
-
-.faction-card { 
-  height: 160px; /* Высота карточки */
-  background-size: cover; 
-  background-position: center; 
-  position: relative; 
-  border-radius: 20px; 
-  box-shadow: 0 3px 8px rgba(0,0,0,.4); 
-  cursor: pointer; 
-  transition: all .25s ease; 
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-end; /* Выравниваем содержимое справа */
-  padding-right: 80px; /* Отступ справа для иконки и текста */
+/* ВКЛАДКИ ФРАКЦИЙ */
+.tabs-container { background:#111; padding:10px 0 8px; border-bottom:3px solid #222; overflow-y:auto; max-height:calc(100vh - 200px); display:none; }
+.tabs-container:not(.hidden) { display:block; }
+.faction-cards { display:flex; flex-direction:column; gap:12px; padding:0 12px; }
+.faction-card {
+  height:160px; background-size:cover; background-position:center; position:relative;
+  border-radius:20px; box-shadow:0 3px 8px rgba(0,0,0,.4); cursor:pointer;
+  transition:all .25s ease; display:flex; align-items:center; justify-content:flex-end; padding-right:80px;
 }
-
-.faction-card:hover { 
-  transform: translateY(-4px); 
-  box-shadow: 0 0 18px rgba(233,69,96,.7); 
-}
-
-.faction-card.active { 
-  border: 4px solid #e94560; 
-  box-shadow: 0 0 18px rgba(233,69,96,.7); 
-}
-
-.faction-icon { 
-  position: absolute; 
-  right: 12px; /* Теперь справа */
-  top: 50%; 
-  transform: translateY(-50%); 
-  height: 80px; /* Размер иконки */
-  width: auto; 
-  filter: drop-shadow(0 0 5px rgba(0,0,0,0.8)); /* Тень для выделения */
-}
-
-.faction-name { 
-  font-size: 18px; 
-  font-weight: bold; 
-  color: #fff; 
-  text-shadow: 0 0 5px #000; /* Тень для читаемости на фоне */
-  text-align: right; /* Опционально: выравниваем текст справа */
-}
-
-/* Placeholder для фракций в cardsSection */
-#factionPlaceholder {
-  display: none; /* По умолчанию скрыт, показывается в JS */
-  text-align: center;
-  padding: 40px 20px;
-  color: #aaa;
-  font-size: 18px;
-  font-weight: bold;
-  background: #111;
-  border-radius: 12px;
-  margin: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.5);
-}
+.faction-card:hover { transform:translateY(-4px); box-shadow:0 0 18px rgba(233,69,96,.7); }
+.faction-card.active { border:4px solid #e94560; box-shadow:0 0 18px rgba(233,69,96,.7); }
+.faction-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); height:80px; width:auto; filter:drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
 
 /* СЕТКА МОДЕЛЕЙ */
 .models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:14px; padding:14px; }
@@ -87,12 +38,18 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .mini-card img { width:100%; height:115px; object-fit:cover; }
 .mini-info { padding:10px 8px; text-align:center; }
 .mini-name { font-weight:bold; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
-.mini-rep { color:#e94560; font-weight:bold; font-size:14px;  }
+.mini-rep { color:#e94560; font-weight:bold; font-size:14px; }
 .add-btn, .remove-btn { position:absolute; top:8px; right:8px; width:40px; height:40px; border-radius:50%; font-size:24px; font-weight:bold; border:none; z-index:10; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; }
 .add-btn { background:#e94560; color:#fff; }
 .add-btn:hover { background:#ff3366; }
 .remove-btn { background:#c00; color:#fff; }
 .remove-btn:hover { background:#f00; }
+.mini-card .count { position:absolute; top:8px; right:65px; background:rgba(0,0,0,0.7); color:#fff; font-size:14px; font-weight:bold; padding:4px 8px; border-radius:12px; min-width:24px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.78); text-shadow:1px 1px 2px #000; pointer-events:none; z-index:11; }
+.mini-card .equipment-icon { position:absolute; top:8px; left:8px; width:32px; height:32px; background:rgba(0,0,0,0.7); color:#ffd700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; z-index:11; box-shadow:0 2px 8px rgba(0,0,0,0.8); transition:all 0.3s; }
+.mini-card .equipment-icon:hover { background:#e94560; transform:scale(1.1); }
+.mini-card.in-crew .equipment-icon { display:flex; }
+.mini-ranks { display:flex; justify-content:center; align-items:center; gap:6px; margin:4px 0; flex-wrap:wrap; min-height:22px; }
+.rank-icon { height:24px !important; width:auto !important; max-width:60px; object-fit:contain; background:#ffffff; padding:2px; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; }
 
 /* ПОЛНАЯ КАРТОЧКА */
 .full-card { position:fixed; inset:0; background:#000; z-index:9999; overflow-y:auto; display:none; }
@@ -106,6 +63,37 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .compendium-header { background:#111; padding:15px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:10; }
 .compendium-header h2 { color:#e94560; font-size:24px; margin:0; }
 .back-btn { position:absolute; left:15px; top:50%; transform:translateY(-50%); background:#e94560; color:#fff; border:none; padding:10px 18px; border-radius:30px; font-weight:bold; font-size:14px; cursor:pointer; }
+
+/* КНОПКИ ДОКУМЕНТОВ (RULEBOOK, FAQS, BATMATCH) */
+.rules-docs-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.rules-doc-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.rules-doc-btn:hover {
+  background: linear-gradient(135deg, #ffaa00 0%, #ffd700 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+.rules-doc-btn:active {
+  transform: translateY(0);
+}
 .compendium-search-wrapper { padding:16px; background:#111; }
 .compendium-search { display:flex; align-items:center; background:#222; border:2px solid #e94560; border-radius:50px; overflow:hidden; transition:all .3s ease; box-shadow:0 4px 15px rgba(0,0,0,.4); }
 .compendium-search:focus-within { border-color:#ff3366; box-shadow:0 0 25px rgba(233,69,96,.8); }
@@ -116,15 +104,8 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .compendium-search .clear-search:hover { background:#ff3366; }
 .compendium-content { flex:1; padding-bottom:100px; }
 .comp-entry { margin:28px 15px 10px; background:#111; border-radius:16px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,.4); border:1px solid #333; }
-.comp-title { background:#e94560; color:#fff; padding:8px 8px; font-weight:bold; font-size:22px; text-align:center; letter-spacing:1px; }
-.comp-text { background:#1a1a1a; padding:8px 8px; line-height:1.75; color:#eee; font-size:15.5px; }
-
-/* ТРЕЙТЫ ПОПАП */
-.trait-popup { position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
-.trait-popup-content { background:#111; border:2px solid #e94560; border-radius:16px; max-height:90vh; overflow-y:auto; }
-.trait-popup-header { background:#e94560; color:#000; padding:8px 20px; display:flex; justify-content:space-between; align-items:center; font-size:24px; font-weight:bold; }
-.trait-popup-close { width:48px; height:48px; background:#000; color:#e94560; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; cursor:pointer; }
-.trait-popup-text { padding:24px 20px; line-height:1.8; color:#eee; font-size:16px; background:#0a0a0a; }
+.comp-title { background:#e94560; color:#fff; padding:12px 8px; font-weight:bold; font-size:22px; text-align:center; letter-spacing:1px; }
+.comp-text { background:#f8f9fa; padding:12px 10px; line-height:1.75; color:#000000; font-size:15.5px; border-top:1px solid #ddd; }
 
 /* ОФИЦИАЛЬНЫЕ КАРТОЧКИ */
 .official-card { background:#ffd700; color:#000; border-radius:20px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6); margin:10px; font-family:'Oswald',sans-serif; }
@@ -156,665 +137,320 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-traits-grid { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:2px; padding:2px 18px; }
 .official-trait { background:#ffd700; color:#000; padding:11px 14px; border-radius:30px; font-weight:bold; font-size:12.5px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.3); transition:all .25s; }
 .official-trait:hover { background:#fff; }
-.stat-icon { width:32px; height:32px; vertical-align:middle; }
+.official-trait.special { background:#000; color:#fff; border:2px solid #ffd700; box-shadow:0 4px 15px rgba(139,0,255,0.6); }
+.official-trait.special:hover { background:#a020f0; transform:translateY(-2px); }
+.official-trait.special-trait-highlight { background:#000 !important; color:#fff !important; border:2px solid #ffd700 !important; box-shadow:0 0 10px rgba(233,69,96,0.8) !important; font-weight:bold !important; text-shadow:1px 1px 2px rgba(0,0,0,0.5); display:inline-flex; align-items:center; }
+.official-trait.special-trait-highlight .inline-icon { filter:brightness(0) invert(1); margin-right:5px; }
+.stat-icon { width:20px; height:20px; vertical-align:middle; }
+
+/* ВСПОМОГАТЕЛЬНЫЕ ЭЛЕМЕНТЫ */
+.faction-icon-small { height:22px; width:auto; margin:0 4px; vertical-align:middle; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,0.6); }
+.faction-line { text-align:center; padding:8px 0; background:rgba(0,0,0,0.3); border-radius:8px; margin:6px 0; }
+.rank-rep-line { display:flex; justify-content:center; align-items:center; gap:16px; font-size:12px; margin-top:8px; flex-wrap:wrap; }
+.rank-badge { background:#e94560; color:white; padding:6px 6px; border-radius:20px; font-weight:bold; font-size:12px; letter-spacing:1px; box-shadow:0 2px 8px rgba(233,69,96,0.6); }
+.rank-badge .rank-icon { height:22px !important; padding:2px; box-shadow:0 3px 8px rgba(0,0,0,0.7); }
+.rep-funding { color:#ffd700; font-weight:bold; text-shadow:0 0 10px rgba(255,215,0,0.6); }
+
+/* ЛИМИТ REP */
+#repLimit { width:64px; height:32px; background:#111; color:#fff; border:2px solid #e94560; border-radius:12px; font-family:'Oswald',sans-serif; font-size:16px; font-weight:bold; text-align:center; margin:0 6px; outline:none; transition:all 0.3s ease; box-shadow:0 4px 12px rgba(233,69,96,0.2); }
+#repLimit:focus { border-color:#ff3366; box-shadow:0 0 20px rgba(233,69,96,0.7); background:#222; }
+#repLimit::-webkit-inner-spin-button, #repLimit::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+
+/* МОДАЛЬНОЕ ОКНО ВЫБОРА РАНГА */
+.rank-select-modal { position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; }
+.rank-select-content { background:#111; border:4px solid #e94560; border-radius:16px; max-width:90%; width:360px; box-shadow:0 0 40px rgba(233,69,96,0.8); overflow:hidden; }
+.rank-select-header { background:#e94560; color:#fff; padding:16px 20px; font-size:18px; font-weight:bold; text-align:center; position:relative; }
+.rank-select-close { position:absolute; right:16px; top:50%; transform:translateY(-50%); width:36px; height:36px; background:#000; color:#e94560; border-radius:50%; font-size:28px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.rank-select-buttons { display:flex; flex-direction:column; gap:12px; padding:24px 20px; }
+.rank-select-btn { background:#222; color:#fff; border:2px solid #e94560; border-radius:12px; padding:14px; font-size:18px; font-weight:bold; cursor:pointer; transition:all 0.3s; }
+.rank-select-btn:hover { background:#e94560; transform:translateY(-2px); box-shadow:0 6px 15px rgba(233,69,96,0.5); }
+
+/* УДАЛЕНИЕ EQUIPMENT */
+.remove-eq { position:absolute; top:-10px; right:-10px; background:#ff0000; color:#fff; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold; cursor:pointer; box-shadow:0 3px 8px rgba(255,0,0,0.8); z-index:12; transition:all 0.3s; }
+.remove-eq:hover { background:#ff3333; transform:scale(1.2); }
+
+/* СПИСОК ДЛЯ БИЛДЕРА */
+.models-list { display:flex; flex-direction:column; gap:10px; padding:10px; }
+.models-list .mini-card { display:flex; flex-direction:row; align-items:center; gap:10px; height:auto; padding:10px; }
+.models-list .mini-card img { width:80px; height:80px; border-radius:8px; }
+.models-list .mini-info { flex:1; text-align:left; padding:0; }
+.models-list .mini-name { font-size:14px; }
+.models-list .mini-rep { font-size:13px; }
+.models-list .add-btn, .models-list .remove-btn { position:static; width:34px; height:34px; font-size:16px; margin-left:auto; }
+.models-list .remove-btn { margin-left:5px; }
+.models-list .mini-card .count { position:static; margin-left:10px; }
+.models-list .mini-card .equipment-icon { position:static; margin-left:10px; }
+.models-list .mini-ranks { display:flex; gap:6px; margin-top:4px; }
+
+/* ИКОНКИ В ТЕКСТЕ */
+.inline-icon { display:inline-block; height:1.1em; width:auto; vertical-align:middle; margin:0 2px; }
+
+/* ПОПАП ТРЕЙТОВ */
+.trait-popup { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); z-index:10000; display:flex; align-items:center; justify-content:center; padding:20px; }
+.trait-popup-content { background:#fff; width:100%; max-width:450px; border-radius:15px; border:2px solid #e94560; overflow:hidden; box-shadow:0 0 25px rgba(233,69,96,0.4); }
+.trait-popup-header { background:#ffd700; padding:15px; color:#000; display:flex; justify-content:space-between; align-items:center; font-family:'Oswald',sans-serif; }
+.trait-popup-body { padding:20px; color:#000; line-height:1.6; max-height:70vh; overflow-y:auto; }
+.trait-popup-close { font-size:48px; cursor:pointer; }
 
 /* АДАПТИВ */
 @media (max-width:380px) {
   .tab { min-width:100px; font-size:13px; }
 }
 
-.faction-icon-small {
-  height: 22px;
-  width: auto;
-  margin: 0 4px;
-  vertical-align: middle;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+/* МОБИЛЬНАЯ ОПТИМИЗАЦИЯ COMPENDIUM */
+@media (max-width: 480px) {
+  .compendium-header { padding: 12px 10px; }
+  .compendium-header h2 { font-size: 18px; }
+  .back-btn { padding: 8px 14px; font-size: 12px; left: 10px; }
+  
+  .rules-docs-buttons {
+    gap: 6px;
+    margin-top: 10px;
+  }
+  
+  .rules-doc-btn {
+    padding: 6px 12px;
+    font-size: 10px;
+    border-radius: 16px;
+  }
+  
+  .compendium-search-wrapper { padding: 12px; }
+  .compendium-search input { font-size: 14px; padding: 12px 10px 12px 0; }
+  
+  .comp-entry { margin: 20px 10px 8px; border-radius: 12px; }
+  .comp-title { font-size: 18px; padding: 10px 8px; }
+  .comp-text { font-size: 14px; padding: 10px 8px; line-height: 1.6; background: #f8f9fa; border-top: 1px solid #ddd; }
 }
 
-.faction-line {
-  text-align: center;
-  padding: 8px 0;
-  background: rgba(0,0,0,0.3);
-  border-radius: 8px;
-  margin: 6px 0;
+@media (max-width: 360px) {
+  .rules-doc-btn {
+    padding: 5px 10px;
+    font-size: 9px;
+  }
+  
+  .compendium-header h2 { font-size: 16px; }
+  
+  .lang-switch { gap: 8px; margin-bottom: 20px; }
+  .lang-btn { padding: 6px 16px; font-size: 12px; }
 }
 
-.rank-rep-line {
+/* ======================== ГЛАВНОЕ МЕНЮ ======================== */
+/* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
+.lang-switch {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  font-size: 12px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-}
-
-.rank-badge {
-  background: #e94560;
-  color: white;
-  padding: 6px 6px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 12px;
-  letter-spacing: 1px;
-  box-shadow: 0 2px 8px rgba(233,69,96,0.6);
-}
-
-.rep-funding {
-  color: #ffd700;
-  font-weight: bold;
-  text-shadow: 0 0 10px rgba(255,215,0,0.6);
-}
-
-.official-trait.special {
-  background: #000000;          /* Яркий фиолетовый фон для отличия */
-  color: #ffffff;               /* Белый текст */
-  border: 2px solid #ffd700;    /* Золотая рамка для акцента */
-  box-shadow: 0 4px 15px rgba(139, 0, 255, 0.6);
-}
-
-.official-trait.special:hover {
-  background: #a020f0;          /* Темнее при наведении */
-  transform: translateY(-2px);
-}
-
-/* === КРАСИВОЕ ПОЛЕ ЛИМИТА REP === */
-#repLimit {
-  width: 64px;
-  height: 32px;
-  background: #111;
-  color: #fff;
-  border: 2px solid #e94560;
-  border-radius: 12px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  margin: 0 6px;
-  outline: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(233,69,96,0.2);
-}
-
-#repLimit:focus {
-  border-color: #ff3366;
-  box-shadow: 0 0 20px rgba(233,69,96,0.7);
-  background: #222;
-}
-
-/* Убираем стрелки спиннера у input type=number */
-#repLimit::-webkit-inner-spin-button, 
-#repLimit::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.mini-card .count {
-  position: absolute;
-  top: 8px;
-  right: 65px;
-  background: rgba(0, 0, 0, 0.7);        /* Тёмная полупрозрачная подложка */
-  color: #ffffff;                        /* Белый текст */
-  font-size: 14px;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 12px;
-  min-width: 24px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.781);
-  text-shadow: 1px 1px 2px #000;         /* Дополнительная читаемость */
-  pointer-events: none;                 /* Чтобы не мешал кликам */
-  z-index: 11;
-}
-
-.models-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 10px;
-  padding: 10px;
+  margin-bottom: 30px;
 }
 
-.mini-card {
-  position: relative;
-  background: #222;
+.lang-btn {
+  background: transparent;
+  color: #888;
   border: 2px solid #444;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.3s ease;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.mini-card:hover {
+.lang-btn:hover {
   border-color: #e94560;
-  box-shadow: 0 0 18px rgba(233,69,96,0.7);
+  color: #e94560;
+  box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
 }
 
-.mini-info {
-  padding: 5px;
-  text-align: center;
-}
-
-.mini-name {
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.mini-rep {
-  font-size: 12px;
-  color: #ccc;
-}
-
-.add-btn, .remove-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: #e94560;
+.lang-btn.active {
+  background: linear-gradient(135deg, #e94560 0%, #c2185b 100%);
   color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 34px;
-  height: 34px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
+  border-color: #e94560;
+  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.5);
 }
 
-.remove-btn {
-  background: #ff3366;
-  right: 35px;  /* Чтоб не накладывалась на + для Minion */
-}
-
-.mini-card .count {
-  position: absolute;
-  top: 5px;
-  right: 65px;  /* Рядом с кнопками */
-  color: #ffd700;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-/* Модальное окно выбора ранга */
-.rank-select-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 9999;
+.main-menu {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0c0c0c 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.main-menu-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 80%, rgba(233, 69, 96, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.8) 0%, transparent 70%);
+  z-index: 0;
+  animation: bgPulse 8s ease-in-out infinite;
+}
+
+@keyframes bgPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.main-menu-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
   padding: 20px;
 }
 
-.rank-select-content {
-  background: #111;
-  border: 4px solid #e94560;
-  border-radius: 16px;
-  max-width: 90%;
-  width: 360px;
-  box-shadow: 0 0 40px rgba(233, 69, 96, 0.8);
-  overflow: hidden;
-}
-
-.rank-select-header {
-  background: #e94560;
-  color: #fff;
-  padding: 16px 20px;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  position: relative;
-}
-
-.rank-select-close {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  background: #000;
-  color: #e94560;
-  border-radius: 50%;
-  font-size: 28px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.rank-select-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 24px 20px;
-}
-
-.rank-select-btn {
-  background: #222;
-  color: #fff;
-  border: 2px solid #e94560;
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.rank-select-btn:hover {
-  background: #e94560;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(233, 69, 96, 0.5);
-}
-
-.official-trait button {
-  cursor: pointer; /* Курсор руки для кнопок */
-  background: #ffd700; /* Золотой фон */
-  color: #000; /* Черный текст */
-  border: none; /* Без рамки */
-  padding: 11px 14px;
-  border-radius: 30px;
-  font-weight: bold;
-  font-size: 12.5px;
-  transition: all .25s;
-}
-
-.official-trait button:hover {
-  background: #fff; /* Белый при hover */
-}
-
-.official-trait.special {
-  background: #000000; /* Черный фон для special */
-  color: #ffffff; /* Белый текст */
-  border: 2px solid #ffd700; /* Золотая рамка */
-  box-shadow: 0 4px 15px rgba(139, 0, 255, 0.6); /* Тень */
-}
-
-.official-trait.special:hover {
-  background: #a020f0; /* Фиолетовый при hover */
-  transform: translateY(-2px); /* Легкий подъем */
-}
-
-
-
-
-.mini-card .equipment-icon {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 32px;
-  height: 32px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #ffd700;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-  z-index: 11;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.8);
-  transition: all 0.3s;
-}
-
-.mini-card .equipment-icon:hover {
-  background: #e94560;
-  transform: scale(1.1);
-}
-
-.mini-card.in-crew .equipment-icon {
-  display: flex; /* показываем только у моделей в банде */
-}
-
-
-
-
-.remove-eq {
-  position: absolute;
-  top: -10px; /* Чуть выше, но не слишком */
-  right: -10px; /* Чуть правее */
-  background: #ff0000; /* Ярко-красный для видимости */
-  color: #fff;
-  width: 28px; /* Увеличили с 22px */
-  height: 28px; /* Увеличили */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px; /* Крестик больше */
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(255, 0, 0, 0.8); /* Красная тень для выделения */
-  z-index: 12; /* Выше всего */
-  transition: all 0.3s;
-}
-
-.remove-eq:hover {
-  background: #ff3333; /* Ещё ярче при hover */
-  transform: scale(1.2); /* Увеличение для лёгкого нажатия */
-}
-
-
-
-
-/* Контейнер для рангов в мини-карточках */
-.mini-ranks {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;          /* Расстояние между иконками */
-  margin: 4px 0;     /* Отступ от имени и стоимости */
-  flex-wrap: wrap;
-  min-height: 22px;
-}
-
-/* Иконка ранга с белым круглым фоном */
-.rank-icon {
-  height: 24px !important;           /* Размер самой картинки */
-  width: auto !important;
-  max-width: 60px;
-  object-fit: contain;
-  
-  /* Круглый белый фон */
-  background: #ffffff;               /* Белый фон */
-  padding: 2px;                      /* Внутренний отступ — делает круг больше картинки */
-  border-radius: 50%;                /* Полностью круглый */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.6); /* Тень для объёма */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Для полной карточки (rank-badge) — чуть крупнее */
-.rank-badge .rank-icon {
-  height: 22px !important;
-  padding: 2px;                      /* Больший круг */
-  box-shadow: 0 3px 8px rgba(0,0,0,0.7);
-}
-
-
-#factionRulesTooltip {
-  cursor: help;
-  background: #e94560;
-  color: #fff;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  margin-left: 10px;
-}
-
-/* Делаем красивое перетаскивание мышкой на ПК */
-.tabs {
-  cursor: grab;
-  user-select: none;
-}
-
-.tabs.grabbing {
-  cursor: grabbing;
-}
-
-
-.tabs {
-  cursor: grab;
-  user-select: none;
-  touch-action: pan-x; /* Позволяет горизонтальный скролл пальцем */
-}
-
-.tabs.grabbing {
-  cursor: grabbing;
-}
-
-
-
-
-
-
-
-/* Список для билдера */
-.models-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-}
-
-/* Горизонтальные мини-карточки в списке билдера */
-.models-list .mini-card {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  background: #1a1a1a;
-  border-radius: 14px;
-  overflow: hidden;
-  position: relative;
-  cursor: pointer;
-  border: 2px solid transparent;
-  box-shadow: 0 4px 12px rgba(0,0,0,.5);
-  transition: all .3s;
-  height: auto; /* Авто-высота для строки */
-  padding: 10px;
-}
-
-.models-list .mini-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(233,69,96,.4);
-}
-
-.models-list .mini-card.in-crew {
-  border: 4px solid #e94560;
-  box-shadow: 0 0 30px rgba(233,69,96,.8);
-}
-
-.models-list .mini-card img {
-  width: 80px; /* Меньше, чем в сетке */
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px; /* Закруглённые углы для эстетики */
-}
-
-.models-list .mini-info {
-  flex: 1;
-  text-align: left; /* Выравнивание слева для списка */
-  padding: 0;
-}
-
-.models-list .mini-name {
-  font-weight: bold;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 3px;
-}
-
-.models-list .mini-rep {
-  color: #e94560;
-  font-weight: bold;
-  font-size: 13px;
-}
-
-/* Кнопки +/- и счётчик — позиционируем справа */
-.models-list .add-btn,
-.models-list .remove-btn {
-  position: static; /* Убираем absolute, чтобы не ломать flex */
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  box-shadow: 0 3px 10px rgba(0,0,0,.6);
-  transition: all .3s;
-  cursor: pointer;
-  margin-left: auto; /* Выравниваем вправо */
-}
-
-.models-list .add-btn {
-  background: #e94560;
-  color: #fff;
-}
-
-.models-list .add-btn:hover {
-  background: #ff3366;
-}
-
-.models-list .remove-btn {
-  background: #c00;
-  color: #fff;
-  margin-left: 5px; /* Расстояние между + и - */
-}
-
-.models-list .remove-btn:hover {
-  background: #f00;
-}
-
-.models-list .mini-card .count {
-  position: static; /* Убираем absolute */
-  background: rgba(0, 0, 0, 0.7);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 12px;
-  min-width: 24px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.781);
-  text-shadow: 1px 1px 2px #000;
-  pointer-events: none;
-  margin-left: 10px; /* Рядом с кнопками */
-}
-
-/* Иконка equipment — слева от кнопок */
-.models-list .mini-card .equipment-icon {
-  position: static;
-  width: 32px;
-  height: 32px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #ffd700;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.8);
-  transition: all 0.3s;
-  margin-left: 10px;
-}
-
-.models-list .mini-card .equipment-icon:hover {
-  background: #e94560;
-  transform: scale(1.1);
-}
-
-.models-list .mini-card.in-crew .equipment-icon {
-  display: flex;
-}
-
-/* Ранги в списке — горизонтально под именем */
-.models-list .mini-ranks {
-  display: flex;
-  gap: 6px;
-  margin-top: 4px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ======================== ОСНОВНОЙ СТИЛЬ ГЛАВНОЙ СТРАНИЦЫ ======================== */
-#mainMenu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0c0c0c 100%);
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Логотип */
 .main-logo {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 40px;
-    text-align: center;
-}
-
-.main-logo img {
-    max-width: 300px;
-    height: auto;
-    filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.5));
-    animation: logoFloat 3s ease-in-out infinite;
+  text-align: center;
+  margin-bottom: 50px;
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
 @keyframes logoFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .main-logo h1 {
-    color: #fff;
-    font-size: 2.5rem;
-    margin: 20px 0 10px;
-    text-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
-    font-family: 'Arial Black', sans-serif;
-    letter-spacing: 2px;
+  font-size: 80px;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.5),
+    0 0 40px rgba(233, 69, 96, 0.8),
+    0 0 60px rgba(233, 69, 96, 0.4);
+  letter-spacing: 15px;
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
 }
 
 .main-logo .subtitle {
-    color: #aaa;
-    font-size: 1.2rem;
-    font-style: italic;
+  font-size: 16px;
+  color: #aaa;
+  margin-top: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* Кнопки меню */
 .menu-buttons {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 
 .menu-btn {
-    background: linear-gradient(135deg, #e94560 0%, #c2185b 100%);
-    color: white;
-    border: none;
-    padding: 20px 30px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: linear-gradient(135deg, #e94560 0%, #c2185b 100%);
+  color: #fff;
+  border: none;
+  padding: 20px 40px;
+  font-size: 22px;
+  font-weight: 700;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 5px 20px rgba(233, 69, 96, 0.4),
+    0 0 30px rgba(233, 69, 96, 0.2),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.menu-btn:hover::before {
+  left: 100%;
+}
+
+.menu-btn:hover {
+  background: linear-gradient(135deg, #ff3366 0%, #e94560 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 10px 30px rgba(233, 69, 96, 0.6),
+    0 0 50px rgba(233, 69, 96, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.menu-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.btn-icon {
+  font-size: 28px;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.btn-text {
+  letter-spacing: 4px;
+}
+
+.main-menu-footer {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.version {
+  color: #666;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Анимация появления */
+.main-menu-content {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 400px) {
+  .main-logo h1 {
+    font-size: 60px;
+    letter-spacing: 10px;
+  }
+  
+  .menu-btn {
+    padding: 15px 30px;
+    font-size: 18px;
+  }
+  
+  .btn-icon {
+    font-size: 24px;
+  }
 }

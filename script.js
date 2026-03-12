@@ -1,13 +1,13 @@
 // ======================== ГЛОБАЛЬНЫЕ ========================
 let crew = [];
 let crewEquipmentCounts = {}; // { "Magazine": count } for crew-wide limits
-let modifiers = { 
-  extraFreeAgents: 0, 
-  extraVehicles: 0, 
-  extraFunding: 0, 
-  extraDuplicates: 0, 
-  extraElites: {}, 
-  extraVeterans: {}, 
+let modifiers = {
+  extraFreeAgents: 0,
+  extraVehicles: 0,
+  extraFunding: 0,
+  extraDuplicates: 0,
+  extraElites: {},
+  extraVeterans: {},
   extraMinions: {},
   extraTalons: 0,
   allowBetray: false
@@ -15,28 +15,235 @@ let modifiers = {
 let currentFaction = null; // Изменено: null по умолчанию (нет фракции)
 let allCompendiumHTML = "";
 let compendiumKeys = [];
+let specialTraitNames = new Set(); // Кэш специальных трейтов
 
 // Режимы просмотра
 let currentMode = 'menu'; // menu, cards, builder, rules
+
+// ======================== ЛОКАЛИЗАЦИЯ ========================
+let currentLang = 'ru';
+
+const translations = {
+  ru: {
+    cards: "КАРТОЧКИ",
+    crews: "ОТРЯДЫ",
+    rules: "ПРАВИЛА",
+    select_faction: "ВЫБОР ФРАКЦИИ",
+    crew: "ОТРЯД",
+    rep: "REP",
+    back: "НАЗАД",
+    compendium: "СПРАВОЧНИК",
+    rulebook: "Правила",
+    faqs: "FAQ",
+    batmatch: "Batmatch",
+    model_search: "ПОИСК МОДЕЛЕЙ",
+    compendium_search: "Поиск по трейтам, оружию, правилам...",
+    model_search_placeholder: "Введите имя модели...",
+    nothing_found: "Ничего не найдено",
+    subtitle: "Batman: Gotham Chronicles<br>Конструктор отрядов",
+    leader_first: "Первой моделью должен быть Leader для этой фракции!",
+    leader_cults: "Для фракции Cults лидером может быть только Deacon Blackfire или Kobra",
+    treacherous_warn: "Предупреждение: Treacherous модель может предать отряд!",
+    boss_sidekick: "Если босс — Sidekick, модели с Leader/Sidekick можно добавить только как Sidekick",
+    rank_not_found: "У модели не указан ранг!",
+    min_limit_100: "Минимальный лимит — 100 Rep",
+    rep_exceeds: "Внимание! Текущий отряд ({current} Rep) превышает новый лимит ({new} Rep).",
+    rank_not_selected: "Ранг модели не выбран!",
+    rep_exceeded: "Превышен лимит Reputation (учтено снаряжение)",
+    funding_insufficient: "Недостаточно Funding (учтено снаряжение)",
+    leader_required: "Первой моделью должен быть {rank}",
+    model_not_affiliation: "Модель не входит в аффилиацию Босса",
+    model_not_match_affiliation: "Модель не совпадает по Affiliation с Боссом или не имеет аффилиации Unknown",
+    model_not_match: "Модель не совпадает по Affiliation с Боссом",
+    leader_trait_required: "Для лидера {leader} разрешены только модели с трейтом \"{trait}\"",
+    model_already_added: "Вы уже добавили модель с именем («{name}»)",
+    only_one_leader: "Только один Leader",
+    leader_already_added: "Нельзя добавить Leader, если Sidekick уже является лидером отряда",
+    max_2_sidekick: "Максимум 2 Sidekick без Leader",
+    max_1_sidekick_with_leader: "Максимум 1 Sidekick с Leader",
+    fa_limit_exceeded: "Превышен лимит Free Agents",
+    vehicle_limit_exceeded: "Превышен лимит Vehicles",
+    henchman_limit_exceeded: "Нельзя брать больше Henchmen с одинаковым именем (учтены трейты)",
+    elite_limit_exceeded: "Превышен лимит Elite ({type})",
+    veteran_limit_exceeded: "Превышен лимит Veteran ({type})",
+    minion_limit_exceeded: "Превышен лимит Minion ({type})",
+    horde_limit_exceeded: "Превышен лимит для Horde",
+    hates_cannot_add: "Нельзя добавить: Hates ({hated})",
+    avert_cannot_add: "Нельзя добавить: Aversion ({averted})",
+    required_cannot_add: "Требуется: Required ({required})",
+    incorruptible_cannot_add: "Incorruptible: Нельзя в эту фракцию",
+    requires_liberator: "Требует освободителя (He Freed Me)",
+    requires_idol: "Требует кумира (My Idol!)",
+    possessed_only_supernatural: "Possessed: Только в сверхъестественных фракциях",
+    requires_goliath: "Требует Goliath",
+    sidekick_limit_exceeded: "Превышен лимит Sidekick",
+    leader_required_for_sidekick: "Требует Leader для Sidekick",
+    amazon_lineage: "Amazon Lineage: Только в amazon фракциях"
+  },
+  en: {
+    cards: "CARDS",
+    crews: "CREWS",
+    rules: "RULES",
+    select_faction: "SELECT FACTION",
+    crew: "CREW",
+    rep: "REP",
+    back: "BACK",
+    compendium: "COMPENDIUM",
+    rulebook: "Rulebook",
+    faqs: "FAQs",
+    batmatch: "Batmatch",
+    model_search: "MODEL SEARCH",
+    compendium_search: "Search traits, weapons, rules...",
+    model_search_placeholder: "Enter model name...",
+    nothing_found: "Nothing found",
+    subtitle: "Batman: Gotham Chronicles<br>Crew Builder",
+    leader_first: "Leader must be the first model for this faction!",
+    leader_cults: "For Cults faction, only Deacon Blackfire or Kobra can be leader",
+    treacherous_warn: "Warning: Treacherous model may betray the crew!",
+    boss_sidekick: "If boss is Sidekick, models with Leader/Sidekick can only be added as Sidekick",
+    rank_not_found: "Model rank not specified!",
+    min_limit_100: "Minimum limit is 100 Rep",
+    rep_exceeds: "Warning! Current crew ({current} Rep) exceeds new limit ({new} Rep).",
+    rank_not_selected: "Model rank not selected!",
+    rep_exceeded: "Reputation limit exceeded (equipment counted)",
+    funding_insufficient: "Insufficient Funding (equipment counted)",
+    leader_required: "{rank} must be the first model",
+    model_not_affiliation: "Model is not in Boss's affiliation",
+    model_not_match_affiliation: "Model doesn't match Boss's Affiliation or doesn't have Unknown affiliation",
+    model_not_match: "Model doesn't match Boss's Affiliation",
+    leader_trait_required: "For leader {leader}, only models with trait \"{trait}\" are allowed",
+    model_already_added: "You've already added a model named \"{name}\"",
+    only_one_leader: "Only one Leader",
+    leader_already_added: "Cannot add Leader if Sidekick is already crew leader",
+    max_2_sidekick: "Maximum 2 Sidekick without Leader",
+    max_1_sidekick_with_leader: "Maximum 1 Sidekick with Leader",
+    fa_limit_exceeded: "Free Agents limit exceeded",
+    vehicle_limit_exceeded: "Vehicles limit exceeded",
+    henchman_limit_exceeded: "Cannot add more Henchmen with the same name (traits counted)",
+    elite_limit_exceeded: "Elite limit exceeded ({type})",
+    veteran_limit_exceeded: "Veteran limit exceeded ({type})",
+    minion_limit_exceeded: "Minion limit exceeded ({type})",
+    horde_limit_exceeded: "Horde limit exceeded",
+    hates_cannot_add: "Cannot add: Hates ({hated})",
+    avert_cannot_add: "Cannot add: Aversion ({averted})",
+    required_cannot_add: "Required: Required ({required})",
+    incorruptible_cannot_add: "Incorruptible: Cannot join this faction",
+    requires_liberator: "Requires liberator (He Freed Me)",
+    requires_idol: "Requires idol (My Idol!)",
+    possessed_only_supernatural: "Possessed: Only in supernatural factions",
+    requires_goliath: "Requires Goliath",
+    sidekick_limit_exceeded: "Sidekick limit exceeded",
+    leader_required_for_sidekick: "Requires Leader for Sidekick",
+    amazon_lineage: "Amazon Lineage: Only in amazon factions"
+  }
+};
+
+function t(key, params = {}) {
+  const lang = translations[currentLang] || translations.ru;
+  let text = lang[key] || translations.ru[key] || key;
+  for (const [param, value] of Object.entries(params)) {
+    text = text.replace(new RegExp(`\\{${param}\\}`, 'g'), value);
+  }
+  return text;
+}
+
+function setLanguage(lang) {
+  if (!translations[lang]) return;
+  currentLang = lang;
+
+  // Обновляем кнопки переключения
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  // Обновляем текстовые элементы (innerHTML для поддержки HTML тегов)
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    el.innerHTML = t(key);
+  });
+
+  // Обновляем placeholder'ы
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    el.placeholder = t(key);
+  });
+
+  // Сохраняем в localStorage
+  localStorage.setItem('bmg_lang', lang);
+
+  // Перерисовываем компендиум если открыт
+  if (document.getElementById('compendiumModal').classList.contains('active')) {
+    openCompendium();
+  }
+}
+
+// Загрузка сохранённого языка при старте
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('bmg_lang') || 'ru';
+  setLanguage(savedLang);
+});
 
 const $ = id => document.getElementById(id);
 const hasInCrew = m => crew.some(x => x.name === m.name);
 const countInCrew = m => crew.filter(x => x.name === m.name).length;
 
 // ======================== ФУНКЦИИ МЕНЮ ========================
+// Улучшенная функция очистки имени от иконок и лишних символов
+function getCleanName(name) {
+  if (!name) return "";
+  // Удаляем всё, что в фигурных скобках {...} и обрезаем пробелы
+  // Также заменяем специфические апострофы на стандартные
+  return name.split('{')[0].trim().replace(/’/g, "'");
+}
+
+function findCompendiumEntry(searchTerm) {
+  if (!window.compendium) return null;
+
+  // 1. Очищаем поисковый запрос (например, "Fly {ICON}" -> "Fly")
+  const cleanSearch = getCleanName(searchTerm);
+  const lowerSearch = cleanSearch.toLowerCase();
+
+  // 2. Пробуем найти точное совпадение (на случай, если ищем "Fast (2'')")
+  if (window.compendium[searchTerm]) return window.compendium[searchTerm];
+  if (window.compendium[cleanSearch]) return window.compendium[cleanSearch];
+
+  const keys = Object.keys(window.compendium);
+
+  // 3. Поиск с игнорированием регистра и иконок в ключах базы
+  for (let key of keys) {
+    const cleanKey = getCleanName(key).toLowerCase();
+    if (cleanKey === lowerSearch) {
+      return window.compendium[key];
+    }
+  }
+
+  // 4. Логика для трейтов с параметрами в скобках, например "Fast (3)"
+  // Если в карточке "Fast (2'')", а в базе "Fast" или "Fast {ICON}"
+  if (cleanSearch.includes('(')) {
+    const baseName = cleanSearch.split('(')[0].trim().toLowerCase();
+    for (let key of keys) {
+      const cleanKey = getCleanName(key).split('(')[0].trim().toLowerCase();
+      if (cleanKey === baseName) {
+        return window.compendium[key];
+      }
+    }
+  }
+
+  return null;
+}
+
 function showCards() {
   currentMode = 'cards';
   $('mainMenu').style.display = 'none';
   $('cardsSection').style.display = 'block';
   $('builderSection').style.display = 'none';
   $('compendiumModal').classList.remove('active');
-  
-  // Скрываем модели, показываем placeholder и tabs
-  currentFaction = null; // Сбрасываем фракцию
-  $('modelsGridCards').innerHTML = ''; // Очищаем модели
-  $('factionPlaceholder').style.display = 'block'; // Показываем placeholder
-  $('cardsTabsContainer').style.display = 'block'; // Показываем вкладки фракций
-  initTabs(); // Инициализация табов для карточек
+
+  // Сбрасываем фракцию и показываем вкладки
+  currentFaction = null;
+  $('modelsGridCards').innerHTML = '';
+  $('cardsTabsContainer').classList.remove('hidden');
+  initTabs();
 }
 
 function showBuilder() {
@@ -64,14 +271,13 @@ function backToMenu() {
   $('cardsSection').style.display = 'none';
   $('builderSection').style.display = 'none';
   $('compendiumModal').classList.remove('active');
-  $('modelSearchModal').classList.remove('active'); // ПРАВКА: Закрываем все модалы
+  $('modelSearchModal').classList.remove('active');
   resetCrew();
 
   // Восстанавливаем состояние для cardsSection при повторном входе
   currentFaction = null;
   if ($('cardsTabsContainer')) {
-    $('cardsTabsContainer').style.display = 'block';
-    $('factionPlaceholder').style.display = 'block';
+    $('cardsTabsContainer').classList.remove('hidden');
     $('modelsGridCards').innerHTML = '';
   }
 }
@@ -97,13 +303,6 @@ function selectFaction(faction) {
   currentFaction = faction;
   $('factionSelect').style.display = 'none';
   $('builderMain').style.display = 'block';
-  // Установить таб фракции в builderTabs
-  $('builderTabs').innerHTML = `
-    <div class="tabs">
-      <button class="tab active" data-faction="${faction}"><img src="https://veland55.github.io/btb/img/${faction.toUpperCase().replace(/\s/g, '_')}.png" alt="${faction}"></button> <!-- ПРАВКА: toUpperCase() для совпадения с именами файлов (e.g., BIRDS_OF_PREY) -->
-    </div>
-  `;
-  initTabs(); // Переинициализация табов
   renderMiniCardsBuilder();
   updateCrewBar();
 }
@@ -121,11 +320,16 @@ const addToCrew = m => {
   if (!isMinionOrHorde && hasInCrew(m)) {
     removeFromCrew(m);
   } else {
-    const ranks = getRanks(m);
+    let ranks = getRanks(m);
 
     if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && !ranks.includes("Leader")) {
-      alert("Первой моделью должен быть Leader для этой фракции!");
+      alert(t("leader_first"));
       return;
+    }
+
+    // Если босс — Sidekick, и модель имеет оба ранга (Leader и Sidekick), автоматически выбираем Sidekick
+    if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick" && ranks.includes("Leader") && ranks.includes("Sidekick")) {
+      ranks = ["Sidekick"];
     }
 
     if (ranks.length === 1) {
@@ -133,7 +337,7 @@ const addToCrew = m => {
     } else if (ranks.length > 1) {
       showRankSelectionModal(m, ranks);
     } else {
-      alert("У модели не указан ранг!");
+      alert(t("rank_not_found"));
     }
   }
 
@@ -145,20 +349,29 @@ const addToCrew = m => {
 function addModelWithRank(model, chosenRank) {
   // Проверка на Treacherous - предупреждение
   if (model.traits.includes("Treacherous")) {
-    alert("Предупреждение: Treacherous модель может betray отряд!");
+    alert(t("treacherous_warn"));
   }
-  
+
   const factionRules = factionCrewRules[currentFaction] || {};
   // Специальное правило для Cults: первым (Leader) может быть только Deacon Blackfire или Kobra
   if (currentFaction === "Cults" && !BMG_BOSS && chosenRank === "Leader") {
     if (!["Deacon Blackfire", "Kobra"].includes(model.name)) {
-      alert("Для фракции Cults лидером может быть только Deacon Blackfire или Kobra");
+      alert(t("leader_cults"));
       return;
     }
   }
   if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && chosenRank !== "Leader") {
-    alert("Первой моделью должен быть Leader для этой фракции!");
+    alert(t("leader_first"));
     return;
+  }
+
+  // Если босс — Sidekick, и модель имеет оба ранга (Leader и Sidekick), то можно добавить только как Sidekick
+  if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick") {
+    const modelRanks = getRanks(model);
+    if (modelRanks.includes("Leader") && modelRanks.includes("Sidekick") && chosenRank === "Leader") {
+      alert(t("boss_sidekick"));
+      return;
+    }
   }
 
   const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
@@ -177,6 +390,15 @@ function addModelWithRank(model, chosenRank) {
 
 // Модальное окно выбора ранга
 function showRankSelectionModal(model, ranks) {
+  // Если босс — Sidekick, и модель имеет оба ранга (Leader и Sidekick), показываем только Sidekick
+  let availableRanks = ranks;
+  if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick") {
+    const modelRanks = getRanks(model);
+    if (modelRanks.includes("Leader") && modelRanks.includes("Sidekick")) {
+      availableRanks = ["Sidekick"];
+    }
+  }
+
   // Создаём overlay
   const overlay = document.createElement("div");
   overlay.className = "rank-select-modal";
@@ -187,7 +409,7 @@ function showRankSelectionModal(model, ranks) {
         <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
       </div>
       <div class="rank-select-buttons">
-        ${ranks.map(rank => `
+        ${availableRanks.map(rank => `
           <button class="rank-select-btn" data-rank="${rank}">
             ${rank}
           </button>
@@ -492,6 +714,69 @@ ${item.inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); o
 }, 100);
 
 // ======================== ПОЛНАЯ КАРТОЧКА ========================
+// Вспомогательная функция для замены текстовых кодов иконками
+function replaceIcons(text) {
+  if (!text) return "";
+  return text
+    .replace(/{SPECIAL_ICON}/g, '<img src="https://veland55.github.io/btb/img/special.png" class="inline-icon">')
+    .replace(/{S}/g, '<img src="https://veland55.github.io/btb/img/special.png" class="inline-icon">');
+}
+
+function renderTraits(traits) {
+  if (!traits || !traits.length) return '';
+
+  const traitsArray = Array.isArray(traits) ? traits : [traits];
+
+  return traitsArray.map(trait => {
+    const traitText = String(trait);
+    const isSpecial = isSpecialTrait(traitText);
+    const content = replaceIcons(traitText);
+    const highlightClass = isSpecial ? 'special-trait-highlight' : '';
+
+    return `
+      <div class="official-trait ${highlightClass}"
+           onclick="event.stopPropagation(); showTraitDesc('${traitText.replace(/'/g, "\\'")}')">
+        ${content}
+      </div>
+    `;
+  }).join('');
+}
+
+// Вспомогательная функция для определения специальных трейтов
+function isSpecialTrait(trait) {
+  // Если трейт содержит {SPECIAL_ICON} или {S} — он специальный
+  if (trait.includes("{SPECIAL_ICON}") || trait.includes("{S}")) {
+    return true;
+  }
+
+  // Очищаем трейт от иконок и пробелов
+  const cleanTrait = getCleanName(trait).trim();
+  
+  // Проверяем в кэше специальных трейтов
+  if (specialTraitNames.has(cleanTrait)) {
+    return true;
+  }
+
+  // Список специальных трейтов (базовые)
+  const specialTraits = [
+    "Fly",
+    "Leap",
+    "Tough",
+    "Invulnerable",
+    "Regenerate",
+    "Stealth",
+    "Camouflage"
+  ];
+
+  return specialTraits.includes(cleanTrait);
+}
+
+// Вспомогательная функция для получения описания трейта
+function getTraitDescription(trait) {
+  const entry = findCompendiumEntry(trait);
+  return entry ? entry.description : "Описание отсутствует";
+}
+
 const showFullCard = model => {
   const realName = model.realname || "—";
   const base = model.base || "30mm";
@@ -518,7 +803,7 @@ const showFullCard = model => {
   const rep = model.rep || 0;
   const funding = model.funding || 0;
 
-  // --- Маппинг иконок (добавь сюда все нужные, если будут новые) ---
+  // --- Маппинг иконок ---
   const factionIcons = {
     "Bat Family": "BATMAN.png",
     "GCPD": "GCPD.png",
@@ -552,57 +837,52 @@ const showFullCard = model => {
   const factionIconsHTML = renderIcons(mainFactions);
   const rivalsIconsHTML   = renderIcons(rivalFactions);
 
-  // --- Оружие и трейты (без изменений) ---
-  const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
+  // --- Оружие и трейты ---
+const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
     if (!w || Object.keys(w).length === 0) return "";
     const traits = w.traits ? w.traits.split("/").map(t => t.trim()).filter(Boolean) : [];
-    return `<div class="official-weapon"><div class="official-weapon-first-line">
-      <span class="official-weapon-name">${w.name || "Unnamed"}</span>
-      ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
-      ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ""}
-      ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ""}
-    </div>${traits.length ? `<div class="official-weapon-traits-line">${traits.map(t => `<span class="weapon-trait-chip" onclick="event.stopPropagation();showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</span>`).join("")}</div>` : ""}</div>`;
+    return `
+      <div class="official-weapon">
+        <div class="official-weapon-first-line">
+          <span class="official-weapon-name">${w.name || "Unnamed"}</span>
+          ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
+          ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ""}
+          ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ""}
+        </div>
+        ${traits.length ? `<div class="official-weapon-traits-line">${traits.map(t => `<span class="weapon-trait-chip" onclick="event.stopPropagation(); showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</span>`).join("")}</div>` : ""}
+      </div>`;
   }).join("") : "";
 
-const traitsHTML = model.traits?.length
-  ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${model.traits.map(t => {
-      // Нормализуем имя трейта модели (удаляем параметры в скобках, заменяем curly apostrophe на прямой)
-      const baseT = t.replace(/\s*\(.*?\)\s*$/, '').trim().replace(/’/g, "'");
-      // Проверяем, есть ли в compendium ключ с 🦇, чья база совпадает с baseT
-      const hasBatInCompendium = window.compendium && Object.keys(window.compendium).some(key => {
-        if (!key.endsWith('🦇')) return false;
-        const baseKey = key.replace(/\s*🦇$/, '').replace(/\s*\(.*?\)\s*$/, '').trim().replace(/’/g, "'");
-        return baseKey === baseT;
-      });
-      return `<div class="official-trait${hasBatInCompendium ? ' special' : ''}" onclick="showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</div>`;
-    }).join("")}</div></div>`
-  : "";
+  // ИСПРАВЛЕНО: Используем новую функцию renderTraits для отображения трейтов с иконками и специальными стилями
+  const traitsHTML = model.traits?.length
+    ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${renderTraits(model.traits)}</div></div>`
+    : "";
 
-// Новый блок: equipment (только если есть в crewModel)
-const crewModel = crew.find(m => m.name === model.name); // Находим экземпляр в crew
-let equipmentHTML = '';
-if (crewModel && crewModel.equipment && crewModel.equipment.length > 0) {
-  equipmentHTML = `
-    <div class="official-section-title">EQUIPMENT</div>
-    <div class="official-traits-grid">
-      ${crewModel.equipment.map(eq => `
-        <div style="position: relative;">
-          <button 
-            class="official-trait equipment-chip" 
-            onclick="showTraitPopup('${eq.name}', '${eq.effects.join('<br>')}')">
-            ${eq.name} 
-            <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>
-          </button>
-          <span 
-            class="remove-eq" 
-            onclick="event.stopPropagation(); removeEquipmentFromModel('${model.name}', '${eq.name}')">
-            ×
-          </span>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
+  // Новый блок: equipment (только если есть в crewModel)
+  const crewModel = crew.find(m => m.name === model.name); // Находим экземпляр в crew
+  let equipmentHTML = '';
+  if (crewModel && crewModel.equipment && crewModel.equipment.length > 0) {
+    equipmentHTML = `
+      <div class="official-section-title">EQUIPMENT</div>
+      <div class="official-traits-grid">
+        ${crewModel.equipment.map(eq => `
+          <div style="position: relative;">
+            <button 
+              class="official-trait equipment-chip" 
+              onclick="showTraitPopup('${eq.name}', '${eq.effects.join('<br>')}')">
+              ${eq.name} 
+              <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>
+            </button>
+            <span 
+              class="remove-eq" 
+              onclick="event.stopPropagation(); removeEquipmentFromModel('${model.name}', '${eq.name}')">
+              ×
+            </span>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
   
   // --- Финальная сборка карточки ---
   $("fullCardContent").innerHTML = `
@@ -650,6 +930,7 @@ const closeFullCard = () => $("fullCard").classList.remove("active");
 const openCompendium = () => {
   $("compendiumModal").classList.add("active");
   $("compendiumSearch").value = "";
+  $("compendiumSearch").placeholder = t("compendium_search");
   $("compendiumList").innerHTML = allCompendiumHTML;
   setTimeout(() => $("compendiumSearch").focus(), 300);
 };
@@ -665,8 +946,8 @@ $("compendiumSearch").oninput = function() {
   document.querySelector("#compendiumModal .clear-search").style.display = q ? "flex" : "none";
   if (!q) { $("compendiumList").innerHTML = allCompendiumHTML; return; }
   const html = compendiumKeys.filter(k => k.toLowerCase().includes(q)).map(k => `
-    <div class="comp-entry"><div class="comp-title">${k}</div><div class="comp-text">${(compendium[k]||"").replace(/\n/g,"<br>")}</div></div>`).join("");
-  $("compendiumList").innerHTML = html || `<div style="text-align:center;color:#888;padding:80px;font-size:18px;">Ничего не найдено</div>`;
+    <div class="comp-entry"><div class="comp-title">${k}</div><div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div></div>`).join("");
+  $("compendiumList").innerHTML = html || `<div style="text-align:center;color:#888;padding:80px;font-size:18px;">${t("nothing_found")}</div>`;
 };
 
 // ======================== ПОИСК МОДЕЛЕЙ ========================
@@ -699,7 +980,7 @@ const renderModelSearch = () => {
       <div class="comp-text" style="padding:12px;font-size:14px;color:#aaa">
         ${m.rank||"Free Agent"} • ${Array.isArray(m.faction)?m.faction.join(" • "):m.faction||"—"}
       </div>
-    </div>`).join("") : `<div style="text-align:center;color:#888;padding:100px;font-size:18px">Ничего не найдено</div>`;
+    </div>`).join("") : `<div style="text-align:center;color:#888;padding:100px;font-size:18px">${t("nothing_found")}</div>`;
 
   $("modelSearchResults").innerHTML = html;
 };
@@ -707,105 +988,126 @@ const renderModelSearch = () => {
 $("modelSearchInput").oninput = renderModelSearch;
 
 // ======================== ТРЕЙТЫ ========================
-const showTraitDesc = (rawKeyword) => {
-  const keyword = rawKeyword.trim();
-  let title = keyword;
-  let description = "";
+function replaceIcons(text) {
+  if (!text) return "";
+  
+  const iconMap = {
+    "{+ATT_ICON}": "+ATT_ICON.png",
+    "{+DEF_ICON}": "+DEF_ICON.png",
+    "{-ATT_ICON}": "-ATT_ICON.png",
+    "{-DEF_ICON}": "-DEF_ICON.png",
+    "{AFF_BANE_ICON}": "AFF_BANE_ICON.png",
+    "{AFF_BATMAN_ICON}": "AFF_BATMAN_ICON.png",
+    "{AFF_CULTS_ICON}": "AFF_CULTS_ICON.png",
+    "{AFF_MRFREEZE_ICON}": "AFF_MRFREEZE_ICON.png",
+    "{AFF_OWLS_ICON}": "AFF_OWLS_ICON.png",
+    "{BLOOD_ICON}": "BLOOD_ICON.png",
+    "{CROWN_ICON}": "CROWN_ICON.png",
+    "{EFF_BLIND_ICON}": "EFF_BLIND_ICON.png",
+    "{EFF_ENERV1_ICON}": "EFF_ENERV1_ICON.png",
+    "{EFF_FIRE_ICON}": "EFF_FIRE_ICON.png",
+    "{EFF_FREEZE_ICON}": "EFF_FREEZE_ICON.png",
+    "{EFF_PARALYZE_ICON}": "EFF_PARALYZE_ICON.png",
+    "{EFF_POISON1_ICON}": "EFF_POISON1_ICON.png",
+    "{EFF_SCARED_ICON}": "EFF_SCARED_ICON.png",
+    "{EFF_STUNNED_ICON}": "EFF_STUNNED_ICON.png",
+    "{KD_ICON}": "KD_ICON.png",
+    "{MOV+2_ICON}": "MOV+2_ICON.png",
+    "{MOV+4_ICON}": "MOV+4_ICON.png",
+    "{MOV-2_ICON}": "MOV-2_ICON.png",
+    "{OBJECTIVE_CROSS_ICON}": "OBJECTIVE_CROSS_ICON.png",
+    "{OT_CONTROL_ICON}": "OT_CONTROL_ICON.png",
+    "{OT_MENACE_ICON}": "OT_MENACE_ICON.png",
+    "{OT_PROTECTION_ICON}": "OT_PROTECTION_ICON.png",
+    "{OT_VIOLENCE_ICON}": "OT_VIOLENCE_ICON.png",
+    "{RANK_FREEAGENT_ICON}": "RANK_FREEAGENT_ICON.png",
+    "{RANK_HENCHMAN_ICON}": "RANK_HENCHMAN_ICON.png",
+    "{RANK_LEADER_ICON}": "RANK_LEADER_ICON.png",
+    "{RANK_SIDEKICK_ICON}": "RANK_SIDEKICK_ICON.png",
+    "{RANK_VEHICLE_ICON}": "RANK_VEHICLE_ICON.png",
+    "{SPECIAL_ICON}": "SPECIAL_ICON.png",
+    "{STUN_ICON}": "STUN_ICON.png"
+  };
 
-  // Вспомогательная функция нормализации
-  const normalize = str => str.toLowerCase()
-    .replace(/:/g, '')
-    .replace(/[^\w\s\(\)]/g, '')
-    .trim();
+  let html = text;
+  Object.keys(iconMap).forEach(tag => {
+    const iconFile = iconMap[tag];
+    // Экранируем спецсимволы в теге для RegExp
+    const safeTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(safeTag, 'g');
+    // Путь img/icons/ как в твоем проекте
+    html = html.replace(regex, `<img src="img/ico/${iconFile}" class="inline-icon" alt="icon">`);
+  });
 
-  // 1. Точное совпадение
-  if (window.compendium[keyword]) {
-    description = window.compendium[keyword].replace(/\n/g, "<br>");
-    // Показываем попап сразу, если нашли
-    showPopup(title, description);
-    return;
+  return html;
+}
+
+function showTraitDesc(traitName) {
+  // 1. Твоя родная логика поиска 1 в 1
+  const entry = findCompendiumEntry(traitName);
+  
+  // 2. Извлекаем текст (проверяем, объект это или строка)
+  let rawText = "";
+  if (entry) {
+    rawText = (typeof entry === 'object' && entry.description) ? entry.description : entry;
+  } else {
+    rawText = "Description not found in Compendium.";
   }
 
-  // 2. Совпадение по нормализованному ключу
-  const foundKey = Object.keys(window.compendium).find(k => normalize(k) === normalize(keyword));
-  if (foundKey) {
-    description = window.compendium[foundKey].replace(/\n/g, "<br>");
-    showPopup(title, description);
-    return;
-  }
+  // 3. Создаем элементы
+  const overlay = document.createElement("div");
+  overlay.className = "trait-popup";
 
-  // 3. Трейты с параметром в скобках: CRT (Stunned), Teamwork (HAWK), Elite (Plants), Enervating (3)
-  const match = keyword.match(/^(.*?)\s*\(\s*([^()]+)\s*\)$/);
-  if (match) {
-    let baseName = match[1].trim();      // e.g. "Teamwork"
-    const param = match[2].trim();       // e.g. "HAWK"
+  // Обрабатываем иконки в заголовке и в самом тексте
+  const formattedTitle = replaceIcons(traitName); 
+  const formattedBody = replaceIcons(rawText).replace(/\n/g, "<br>");
 
-    // Возможные варианты названий в compendium
-    const candidates = [
-      `${baseName} (X)`,
-      `${baseName} X`,
-      baseName
-    ];
-
-    let baseDesc = candidates.reduce((desc, c) => desc || window.compendium[c] || 
-      Object.keys(window.compendium).find(k => normalize(k) === normalize(c)) ? 
-      window.compendium[Object.keys(window.compendium).find(k => normalize(k) === normalize(c))] : null, null);
-
-    if (baseDesc) {
-      description = baseDesc.replace(/X/g, param).replace(/\(X\)/g, `(${param})`).replace(/\n/g, "<br>");
-
-      // Если параметр — это другой эффект (не число и не имя модели вроде HAWK), добавляем его описание
-      if (isNaN(param) && window.compendium[param]) {  // Проверяем, существует ли как ключ (игнорируем имена моделей)
-        description += `<br><br><strong>${param}:</strong><br>${window.compendium[param].replace(/\n/g, "<br>")}`;
-      }
-    }
-  }
-
-  // 4. Трейты с двоеточием: True Love: Batman, Teamwork: Robin
-  if (!description && keyword.includes(":")) {
-    const main = keyword.split(":")[0].trim();
-    const candidates = [main, "True Love", "Teamwork", "Elite"];
-    description = candidates.reduce((desc, c) => desc || window.compendium[c] || 
-      (Object.keys(window.compendium).find(k => normalize(k) === normalize(c)) ? 
-      window.compendium[Object.keys(window.compendium).find(k => normalize(k) === normalize(c))].replace(/\n/g, "<br>") : null), null);
-  }
-
-  // 5. Последний резерв — поиск по вхождению подстроки (если ничего не нашли)
-  if (!description) {
-    const loose = Object.keys(window.compendium).find(k => 
-      k.toLowerCase().includes(keyword.toLowerCase()) || keyword.toLowerCase().includes(k.toLowerCase().replace(/\(x\)/g, '').trim())
-    );
-    if (loose) {
-      description = window.compendium[loose].replace(/\n/g, "<br>");
-      title += ` → ${loose}`;
-    }
-  }
-
-  // Если ничего не нашли
-  if (!description) {
-    alert("Нет описания: " + keyword);
-    return;
-  }
-
-  // Показываем попап
-  showPopup(title, description);
-};
-
-// Вспомогательная функция для попапа (чтобы не дублировать)
-const showPopup = (title, desc) => {
-  const popup = document.createElement("div");
-  popup.className = "trait-popup";
-  popup.innerHTML = `
+  overlay.innerHTML = `
     <div class="trait-popup-content">
       <div class="trait-popup-header">
-        <div>${title}</div>
+        <strong>${formattedTitle}</strong>
         <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
       </div>
-      <div class="trait-popup-text">${desc}</div>
-    </div>`;
-  popup.onclick = e => e.target === popup && popup.remove();
-  document.body.appendChild(popup);
-};
+      <div class="trait-popup-body">
+        ${formattedBody}
+      </div>
+    </div>
+  `;
+
+  // Закрытие по клику на фон
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  document.body.appendChild(overlay);
+}
+
+// Функция для показа попапа с описанием (для трейтов и equipment) - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function showTraitPopup(name, desc) {
+  // Обрабатываем и название, и описание с заменой иконок
+  const processedName = replaceIcons(name || '');
+  const processedDesc = replaceIcons(desc || '');
+  
+  // Создаём overlay (как в showRankSelectionModal)
+  const overlay = document.createElement("div");
+  overlay.className = "rank-select-modal"; // Используем существующий класс для стиля
+  overlay.innerHTML = `
+    <div class="rank-select-content">
+      <div class="rank-select-header">
+        ${processedName}   <!-- ← теперь здесь обрабатывается {SPECIAL_ICON} -->
+        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+      </div>
+      <div class="rank-select-buttons" style="padding: 24px 20px; font-size: 16px; line-height: 1.8; color: #eee;">
+        ${processedDesc}
+      </div>
+    </div>
+  `;
+
+  // Клик вне окна — закрыть
+  overlay.onclick = e => {
+    if (e.target === overlay) overlay.remove();
+  };
+
+  document.body.appendChild(overlay);
+}
 
 // Новая функция для показа effects equipment
 function removeEquipmentFromModel(modelName, eqName) {
@@ -834,8 +1136,7 @@ function initTabs() {
 
       if (card.closest('#cardsSection')) { // Для cardsSection
         // Скрываем вкладки фракций после выбора
-        $('cardsTabsContainer').style.display = 'none';
-        $('factionPlaceholder').style.display = 'none';
+        $('cardsTabsContainer').classList.add('hidden');
         renderMiniCardsView(); // Рендерим модели только после выбора
       } else if (card.closest('#factionSelect')) {
         const faction = card.dataset.faction;
@@ -859,9 +1160,17 @@ window.addEventListener("load", () => {
     allCompendiumHTML = compendiumKeys.map(k => `
       <div class="comp-entry">
         <div class="comp-title">${k}</div>
-        <div class="comp-text">${(compendium[k]||"").replace(/\n/g,"<br>")}</div>
+        <div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div>
       </div>`).join("");
     $("compendiumList").innerHTML = allCompendiumHTML;
+
+    // Инициализация кэша специальных трейтов
+    compendiumKeys.forEach(key => {
+      if (key.includes("{SPECIAL_ICON}") || key.includes("{S}")) {
+        const cleanKey = getCleanName(key).trim();
+        specialTraitNames.add(cleanKey);
+      }
+    });
   }
 
   // Присваиваем уникальный _id каждой модели для корректного сравнения в отряде
@@ -874,7 +1183,7 @@ window.addEventListener("load", () => {
     repLimitInput.onchange = function() {
       const newLimit = parseInt(this.value) || 350;
       if (newLimit < 100) {
-        alert("Минимальный лимит — 100 Rep");
+        alert(t("min_limit_100"));
         this.value = BMG_REP_LIMIT;
         return;
       }
@@ -891,7 +1200,7 @@ window.addEventListener("load", () => {
       // Опционально: предупреждение, если текущий отряд превышает новый лимит
       const currentRep = crew.reduce((a, m) => a + (m.rep || 0), 0);
       if (currentRep > BMG_REP_LIMIT) {
-        alert(`Внимание! Текущий отряд (${currentRep} Rep) превышает новый лимит (${BMG_REP_LIMIT} Rep).`);
+        alert(t("rep_exceeds", { current: currentRep, new: BMG_REP_LIMIT }));
       }
     };
   }
@@ -937,7 +1246,7 @@ function bmgCanAddModel(model) {
 
   const rank = model.rankUsed;
   if (!rank) {
-    alert("Ранг модели не выбран!");
+    alert(t("rank_not_selected"));
     return false;
   }
 
@@ -947,11 +1256,11 @@ function bmgCanAddModel(model) {
 
   // Проверка лимитов Rep и Funding
   if (totalRep > BMG_REP_LIMIT) {
-    alert("Превышен лимит Reputation (учтены equipment)");
+    alert(t("rep_exceeded"));
     return false;
   }
   if (usedFunding > bmgFundingLimit()) {
-    alert("Недостаточно Funding (учтены equipment)");
+    alert(t("funding_insufficient"));
     return false;
   }
 
@@ -959,7 +1268,7 @@ function bmgCanAddModel(model) {
   if (!BMG_BOSS) {
     const validBossRanks = factionRules.mustHaveLeaderAsBoss ? ["Leader"] : ["Leader", "Sidekick"];
     if (!getRanks(model).some(r => validBossRanks.includes(r))) {
-      alert(`Первой моделью должен быть ${factionRules.mustHaveLeaderAsBoss ? "Leader" : "Leader или Sidekick"}`);
+      alert(t("leader_required", { rank: factionRules.mustHaveLeaderAsBoss ? "Leader" : "Leader или Sidekick" }));
       return false;
     }
   }
@@ -972,19 +1281,19 @@ function bmgCanAddModel(model) {
     if (factionRules.onlyAffiliationMembers) {
       // Для Batman Who Laughs: только члены аффилиации
       if (!modelFactions.some(a => bossFactions.includes(a))) {
-        alert("Модель не входит в аффилиацию Босса");
+        alert(t("model_not_affiliation"));
         return false;
       }
     } else if (factionRules.onlyBossAffiliationOrNoAffiliation) {
       // Для Bat Family и Cults: только аффилиация Босса или без аффилиации
       if (!modelFactions.includes("Unknown") && !modelFactions.some(a => bossFactions.includes(a))) {
-        alert("Модель не совпадает по Affiliation с Боссом или не имеет аффилиации Unknown");
+        alert(t("model_not_match_affiliation"));
         return false;
       }
     } else {
       // Стандартная проверка
       if (!modelFactions.includes("Unknown") && !modelFactions.some(a => bossFactions.includes(a))) {
-        alert("Модель не совпадает по Affiliation с Боссом");
+        alert(t("model_not_match"));
         return false;
       }
     }
@@ -999,7 +1308,7 @@ function bmgCanAddModel(model) {
     }
 
     if (requiredTrait && !model.traits.includes(requiredTrait)) {
-      alert(`Для лидера ${BMG_BOSS.name} разрешены только модели с трейтом "${requiredTrait}"`);
+      alert(t("leader_trait_required", { leader: BMG_BOSS.name, trait: requiredTrait }));
       return false;
     }
   }
@@ -1009,7 +1318,7 @@ function bmgCanAddModel(model) {
   if (!factionRules.allowSameNameDifferentAlias && realname !== "Unknown" && realname !== "—") {
     const existingWithSameRealname = crew.find(m => (m.realname || "—") === realname);
     if (existingWithSameRealname) {
-      alert(`Вы уже добавили модель с именем («${realname}»)`);
+      alert(t("model_already_added", { name: realname }));
       return false;
     }
   }
@@ -1017,26 +1326,34 @@ function bmgCanAddModel(model) {
   // Проверка лимитов рангов
   if (!factionRules.ignoreStandardRankRequirements) {
     // Стандартные проверки рангов
-    if (rank === "Leader" && bmgRankCount("Leader") >= 1) {
-      alert("Только один Leader");
-      return false;
+    if (rank === "Leader") {
+      // Если уже есть Leader — нельзя добавить ещё одного
+      if (bmgRankCount("Leader") >= 1) {
+        alert(t("only_one_leader"));
+        return false;
+      }
+      // Если босс — Sidekick, и у текущей модели есть только Leader (без Sidekick) — нельзя добавить
+      if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick" && !getRanks(model).includes("Sidekick")) {
+        alert(t("leader_already_added"));
+        return false;
+      }
     }
     if (rank === "Sidekick") {
       if (bmgRankCount("Leader") === 0 && bmgRankCount("Sidekick") >= 2) {
-        alert("Максимум 2 Sidekick без Leader");
+        alert(t("max_2_sidekick"));
         return false;
       }
       if (bmgRankCount("Leader") >= 1 && bmgRankCount("Sidekick") >= 1) {
-        alert("Максимум 1 Sidekick с Leader");
+        alert(t("max_1_sidekick_with_leader"));
         return false;
       }
     }
     if (rank === "Free Agent" && bmgRankCount("Free Agent") >= 1 + extras + (modifiers.extraFreeAgents || 0)) {
-      alert("Превышен лимит Free Agents");
+      alert(t("fa_limit_exceeded"));
       return false;
     }
     if (rank === "Vehicle" && bmgRankCount("Vehicle") >= 1 + extras + (modifiers.extraVehicles || 0)) {
-      alert("Превышен лимит Vehicles");
+      alert(t("vehicle_limit_exceeded"));
       return false;
     }
     if (rank === "Henchman") {
@@ -1044,19 +1361,22 @@ function bmgCanAddModel(model) {
       if (!hasMinionOrHorde) {
         const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
         if (sameNameCount >= 1 + (modifiers.extraDuplicates || 0)) {
-          alert("Нельзя брать больше Henchmen с одинаковым именем (учтены трейты)");
+          alert(t("henchman_limit_exceeded"));
           return false;
         }
       }
-      // Проверка Elite, Veteran, Minion (без изменений)
+      // Проверка Elite, Veteran, Minion
       let eliteExceeded = false;
       model.traits.forEach(t => {
         const eliteMatch = t.match(/^Elite \((.+)\)$/);
         if (eliteMatch) {
           const type = eliteMatch[1];
           const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
-          if (count >= 1 + (modifiers.extraElites[type] || 0)) {
-            alert(`Превышен лимит Elite (${type})`);
+          // Проверяем, есть ли в отряде Elite Boss этого типа
+          const hasEliteBoss = crew.some(m => m.traits.some(u => u === `Elite Boss (${type})`));
+          const limit = hasEliteBoss ? 99 : 1 + (modifiers.extraElites[type] || 0);
+          if (count >= limit) {
+            alert(t("elite_limit_exceeded", { type }));
             eliteExceeded = true;
           }
         }
@@ -1070,7 +1390,7 @@ function bmgCanAddModel(model) {
           const type = veteranMatch[1];
           const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Veteran \\(${type}\\)$`)))).length;
           if (count >= 1 + (modifiers.extraVeterans[type] || 0)) {
-            alert(`Превышен лимит Veteran (${type})`);
+            alert(t("veteran_limit_exceeded", { type }));
             veteranExceeded = true;
           }
         }
@@ -1086,7 +1406,7 @@ function bmgCanAddModel(model) {
           const limit = isNaN(parsedX) ? 1 + (modifiers.extraMinions[x] || 0) : parsedX;
           const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Minion \\(${x}\\)$`)))).length;
           if (count >= limit) {
-            alert(`Превышен лимит Minion (${x})`);
+            alert(t("minion_limit_exceeded", { type: x }));
             minionExceeded = true;
           }
         }
@@ -1098,20 +1418,23 @@ function bmgCanAddModel(model) {
   // НОВЫЕ ПРОВЕРКИ НА ТРЕЙТЫ
   let exceeded = false;
   model.traits.forEach(t => {
-    // Elite (X): Уже частично есть, но уточним
+    // Elite (X): Проверяем с учётом Elite Boss
     const eliteMatch = t.match(/^Elite \((.+)\)$/);
     if (eliteMatch) {
       const type = eliteMatch[1];
       const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
-      if (count >= 1 + (modifiers.extraElites[type] || 0)) {
-        alert(`Превышен лимит Elite (${type})`);
+      // Проверяем, есть ли в отряде Elite Boss этого типа
+      const hasEliteBoss = crew.some(m => m.traits.some(u => u === `Elite Boss (${type})`));
+      const limit = hasEliteBoss ? 99 : 1 + (modifiers.extraElites[type] || 0);
+      if (count >= limit) {
+        alert(t("elite_limit_exceeded", { type }));
         exceeded = true;
       }
     }
 
     // Horde: Если модель имеет Horde, игнор лимита миньонов на +3
     if (t === "Horde" && bmgRankCount("Henchman") >= 5 + (modifiers.extraMinions["All"] || 0)) {
-      alert("Превышен лимит для Horde");
+      alert(t("horde_limit_exceeded"));
       exceeded = true;
     }
 
@@ -1120,41 +1443,47 @@ function bmgCanAddModel(model) {
     if (hatesMatch) {
       const hated = hatesMatch[1];
       if (crew.some(m => m.name === hated || getFactions(m).includes(hated))) {
-        alert(`Нельзя добавить: Hates (${hated})`);
+        alert(t("hates_cannot_add", { hated }));
         exceeded = true;
       }
     }
-    
+
     // Aversion (X): Нельзя добавлять если X в отряде
     const aversionMatch = t.match(/^Aversion \((.+)\)$/);
     if (aversionMatch) {
       const averted = aversionMatch[1];
       if (crew.some(m => m.name === averted || getFactions(m).includes(averted))) {
-        alert(`Нельзя добавить: Aversion (${averted})`);
+        alert(t("avert_cannot_add", { averted }));
         exceeded = true;
       }
     }
 
-    // Required (X): Требует X в отряде
+    // Required (X): Требует X в отряде (поддержка нескольких имён через "or")
     const requiredMatch = t.match(/^Required \((.+)\)$/);
     if (requiredMatch) {
       const required = requiredMatch[1];
-      if (!crew.some(m => m.name === required || m.traits.includes(required))) {
-        alert(`Требуется: Required (${required})`);
+      // Разбиваем на варианты по " or " (например: "Dr. Hugo Strange or SCARECROW")
+      const requiredOptions = required.split(/\s+or\s+/).map(s => s.trim());
+      // Проверяем, есть ли в отряде хотя бы один из требуемых вариантов
+      const hasRequired = requiredOptions.some(req =>
+        crew.some(m => m.name === req || m.name.includes(req) || getFactions(m).includes(req))
+      );
+      if (!hasRequired) {
+        alert(t("required_cannot_add", { required }));
         exceeded = true;
       }
     }
 
     // Incorruptible: Нельзя в злые фракции (если фракция villain)
     if (t === "Incorruptible" && ["Joker", "Bane", "Penguin", "Mr. Freeze", "Scarecrow", "Two-Face", "The Riddler", "Organized Crime", "Suicide Squad", "Batman Who Laughs", "Cults"].includes(currentFaction)) {
-      alert("Incorruptible: Нельзя в эту фракцию");
+      alert(t("incorruptible_cannot_add"));
       exceeded = true;
     }
 
     // Freed / He Freed Me: Требует liberator (например, Bane)
     if (t === "Freed" || t === "He Freed Me") {
       if (!crew.some(m => m.name === "Bane" || m.traits.includes("Liberator"))) {
-        alert("Требует liberator (He Freed Me)");
+        alert(t("requires_liberator"));
         exceeded = true;
       }
     }
@@ -1162,38 +1491,38 @@ function bmgCanAddModel(model) {
     // My Idol!: Требует idol в отряде
     if (t === "My Idol!") {
       if (!BMG_BOSS || BMG_BOSS.name !== "Joker") {
-        alert("Требует idol (My Idol!)");
+        alert(t("requires_idol"));
         exceeded = true;
       }
     }
 
     // Possessed: Только в supernatural фракциях
     if (t === "Possessed" && !["Cults", "Batman Who Laughs"].includes(currentFaction)) {
-      alert("Possessed: Только в supernatural фракциях");
+      alert(t("possessed_only_supernatural"));
       exceeded = true;
     }
 
     // Meet Goliath!: Требует Goliath
     if (t === "Meet Goliath!") {
       if (!crew.some(m => m.name === "Goliath")) {
-        alert("Требует Goliath");
+        alert(t("requires_goliath"));
         exceeded = true;
       }
     }
 
     // The Sidekick: Лимит 1, требует Leader
     if (t === "The Sidekick" && bmgRankCount("Sidekick") >= 1) {
-      alert("Превышен лимит Sidekick");
+      alert(t("sidekick_limit_exceeded"));
       exceeded = true;
     }
     if (t === "The Sidekick" && !BMG_BOSS) {
-      alert("Требует Leader для Sidekick");
+      alert(t("leader_required_for_sidekick"));
       exceeded = true;
     }
 
     // Amazon Lineage: Только в amazon фракциях
     if (t === "Amazon Lineage" && currentFaction !== "Birds of Prey") {
-      alert("Amazon Lineage: Только в amazon фракциях");
+      alert(t("amazon_lineage"));
       exceeded = true;
     }
   });
@@ -1273,7 +1602,7 @@ const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
         ${availableEq.length ? availableEq.map(eq => `
           <button class="rank-select-btn" data-eq-name="${eq.name}">
             ${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})
-            <small style="display:block; opacity:0.8; font-size:12px;">${eq.effects.join(" • ")}</small>
+            <small style="display:block; opacity:0.8; font-size:12px;">${replaceIcons(eq.effects.join(" • "))}</small>
           </button>
         `).join("") : "<p style='text-align:center; color:#aaa;'>Нет доступного equipment</p>"}
       </div>
@@ -1308,79 +1637,18 @@ const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
   document.body.appendChild(overlay);
 }
 
-
-// Функция для показа попапа с описанием (для трейтов и equipment)
-function showTraitPopup(name, desc) {
-  // Создаём overlay (как в showRankSelectionModal)
-  const overlay = document.createElement("div");
-  overlay.className = "rank-select-modal"; // Используем существующий класс для стиля
-  overlay.innerHTML = `
-    <div class="rank-select-content">
-      <div class="rank-select-header">
-        ${name}
-        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
-      </div>
-      <div class="rank-select-buttons" style="padding: 20px; font-size: 16px; line-height: 1.5; color: #ccc;">
-        ${desc}  <!-- Здесь effects с <br> станут переносами строк -->
-      </div>
-    </div>
-  `;
-
-  // Клик вне окна — закрыть
-  overlay.onclick = e => {
-    if (e.target === overlay) overlay.remove();
-  };
-
-  document.body.appendChild(overlay);
-}
-
-// script.js
-function renderObjectiveSelection() {
-  const factionRules = factionCrewRules[currentFaction] || {};
-  if (!BMG_BOSS) {
-    alert("Сначала выберите Босса!");
-    return;
-  }
-
-  const allowedAffiliations = factionRules.onlyBossAffiliationObjectives ? [...BMG_AFFILIATIONS, ""] : null;
-  const availableObjectives = allowedAffiliations
-    ? objectives.filter(obj => obj.affiliation.length === 0 || obj.affiliation.some(a => allowedAffiliations.includes(a)))
-    : objectives;
-
-  // Пример рендеринга в модальном окне
-  const modal = document.createElement("div");
-  modal.className = "rank-select-modal";
-  modal.innerHTML = `
-    <div class="rank-select-content">
-      <div class="rank-select-header">
-        Выберите объективы
-        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
-      </div>
-      <div class="rank-select-buttons">
-        ${availableObjectives.map(obj => `
-          <button class="rank-select-btn" data-objective="${obj.name}">
-            ${obj.name}
-            <small style="display:block; opacity:0.8; font-size:12px;">${obj.description}</small>
-          </button>
-        `).join("")}
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-}
-
 function resetCrew() {
   crew = [];
   BMG_BOSS = null;
   BMG_AFFILIATIONS = null;
   crewEquipmentCounts = {};
-  modifiers = { 
-    extraFreeAgents: 0, 
-    extraVehicles: 0, 
-    extraFunding: 0, 
-    extraDuplicates: 0, 
-    extraElites: {}, 
-    extraVeterans: {}, 
+  modifiers = {
+    extraFreeAgents: 0,
+    extraVehicles: 0,
+    extraFunding: 0,
+    extraDuplicates: 0,
+    extraElites: {},
+    extraVeterans: {},
     extraMinions: {},
     extraTalons: 0,
     allowBetray: false
@@ -1388,50 +1656,5 @@ function resetCrew() {
   updateCrewBar();
   if (currentMode === 'builder') {
     renderMiniCardsBuilder();
-  }
-}
-
-let isDesktop = window.innerWidth > 768 && !/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-if (isDesktop) {
-  const tabs = document.querySelector('.tabs');
-  if (tabs) {
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    // Зажали мышку
-    tabs.addEventListener('mousedown', (e) => {
-      isDown = true;
-      tabs.classList.add('grabbing');
-      startX = e.pageX - tabs.offsetLeft;
-      scrollLeft = tabs.scrollLeft;
-      e.preventDefault(); // чтобы не выделялся текст
-    });
-
-    // Отпустили мышку (где угодно)
-    tabs.addEventListener('mouseleave', () => {
-      isDown = false;
-      tabs.classList.remove('grabbing');
-    });
-    tabs.addEventListener('mouseup', () => {
-      isDown = false;
-      tabs.classList.remove('grabbing');
-    });
-
-    // Тянем
-    tabs.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - tabs.offsetLeft;
-      const walk = (x - startX) * 2; // скорость прокрутки (можно поменять 2 на 1.5 или 3)
-      tabs.scrollLeft = scrollLeft - walk;
-    });
-
-    // Колёсико мыши → горизонтальная прокрутка
-    tabs.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      tabs.scrollLeft += e.deltaY * 1.5; // скорость можно настроить
-    });
   }
 }

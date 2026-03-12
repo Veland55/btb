@@ -11,10 +11,34 @@
 
   <!-- ГЛАВНОЕ МЕНЮ ВЫБОРА -->
   <div id="mainMenu" class="main-menu">
-    <h1>BMG</h1>
-    <button class="menu-btn" onclick="showCards()">CARDS</button>
-    <button class="menu-btn" onclick="showBuilder()">CREWS</button>
-    <button class="menu-btn" onclick="showRules()">RULES</button>
+    <div class="main-menu-bg"></div>
+    <div class="main-menu-content">
+      <div class="main-logo">
+        <h1>BMG</h1>
+        <p class="subtitle" data-i18n="subtitle">Batman: Gotham Chronicles<br>Crew Builder</p>
+      </div>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="ru" onclick="setLanguage('ru')">RU</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+      </div>
+      <div class="menu-buttons">
+        <button class="menu-btn" onclick="showCards()">
+          <span class="btn-icon">🃏</span>
+          <span class="btn-text" data-i18n="cards">CARDS</span>
+        </button>
+        <button class="menu-btn" onclick="showBuilder()">
+          <span class="btn-icon">👥</span>
+          <span class="btn-text" data-i18n="crews">CREWS</span>
+        </button>
+        <button class="menu-btn" onclick="showRules()">
+          <span class="btn-icon">📖</span>
+          <span class="btn-text" data-i18n="rules">RULES</span>
+        </button>
+      </div>
+      <div class="main-menu-footer">
+        <p class="version">v0.6</p>
+      </div>
+    </div>
   </div>
 
   <!-- РАЗДЕЛ КАРТОЧКИ (ПРОСМОТР) -->
@@ -32,7 +56,7 @@
     </div>
 
     <!-- ВКЛАДКИ ФРАКЦИЙ -->
-<div class="tabs-container" id="cardsTabsContainer">
+    <div class="tabs-container hidden" id="cardsTabsContainer">
       <div class="faction-cards">
         <div class="faction-card" data-faction="Bat Family" style="background-image: url('https://veland55.github.io/btb/img/menu/BATMAN.jpg');">
           <img class="faction-icon" src="https://veland55.github.io/btb/img/menu/BATMAN.png" alt="Bat Family">
@@ -119,7 +143,6 @@
 
     <!-- Контейнер для моделей -->
     <div id="modelsGridCards" class="models-list"></div>
-    <div id="factionPlaceholder" style="text-align: center; padding: 20px; color: #aaa; font-size: 18px;">Выберите фракцию для просмотра карточек</div>
   </div>
 
   <!-- РАЗДЕЛ БИЛДЕР -->
@@ -128,14 +151,14 @@
     <div id="factionSelect" class="faction-select">
       <div class="top-bar">
         <div class="top-bar-content">
-          <h1>ВЫБОР ФРАКЦИИ</h1>
+          <h1 data-i18n="select_faction">ВЫБОР ФРАКЦИИ</h1>
           <button class="compendium-small-btn" onclick="backToMenu()">
             <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
         </div>
       </div>
       <!-- ВКЛАДКИ ФРАКЦИЙ -->
-<div class="tabs-container" id="cardsTabsContainer">
+      <div class="tabs-container" id="builderFactionCards">
       <div class="faction-cards">
         <div class="faction-card" data-faction="Bat Family" style="background-image: url('https://veland55.github.io/btb/img/menu/BATMAN.jpg');">
           <img class="faction-icon" src="https://veland55.github.io/btb/img/menu/BATMAN.png" alt="Bat Family">
@@ -235,32 +258,34 @@
               <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h12v16zm-4-8H10v-1h4v1zm0-3H10V8h4v1zm0-3H10V6h4v1z"/></svg>
             </button>
             <button class="compendium-small-btn" onclick="resetCrew(); backToFactionSelect()">
-              <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> <!-- ПРАВКА: Изменена иконка на reset (крестик) -->
+              <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
           </div>
         </div>
         <div class="funds">
-          ОТРЯД: <span id="crewCount">0</span> | REP: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350" style="width:50px; background:#222; color:#fff; border:1px solid #e94560;"> | $<span id="totalFunding">0 / 1500</span>
+          <span data-i18n="crew">ОТРЯД</span>: <span id="crewCount">0</span> | <span data-i18n="rep">REP</span>: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350" style="width:50px; background:#222; color:#fff; border:1px solid #e94560;"> | $<span id="totalFunding">0 / 1500</span>
         </div>
       </div>
 
-      <!-- ВКЛАДКИ ФРАКЦИЙ (БУДЕТ ОТОБРАЖАТЬ ТОЛЬКО ВЫБРАННУЮ) -->
-      <div class="tabs-container" id="builderTabs"></div>
-
-      <div id="modelsGridBuilder" class="models-list"></div>  <!-- Изменено: class="models-list" вместо "models-grid" -->
+      <div id="modelsGridBuilder" class="models-list"></div>
     </div>
   </div>
 
   <!-- COMPENDIUM (ПРАВИЛА) -->
   <div id="compendiumModal" class="compendium-modal">
     <div class="compendium-header">
-      <button onclick="closeCompendium()" class="back-btn">НАЗАД</button>
-      <h2>COMPENDIUM <span>v1.4</span></h2>
+      <button onclick="closeCompendium()" class="back-btn" data-i18n="back">НАЗАД</button>
+      <h2 data-i18n="compendium">СПРАВОЧНИК <span>v1.4</span></h2>
+      <div class="rules-docs-buttons">
+        <a href="https://app.knightmodels.com/files//rule-document-rulebook-1701448204.pdf" target="_blank" class="rules-doc-btn" data-i18n="rulebook">Rulebook</a>
+        <a href="https://app.knightmodels.com/files//rule-document-faqs-1701683889.pdf" target="_blank" class="rules-doc-btn" data-i18n="faqs">FAQs</a>
+        <a href="https://app.knightmodels.com/files//rule-document-batmatch-1700369985.pdf" target="_blank" class="rules-doc-btn" data-i18n="batmatch">Batmatch</a>
+      </div>
     </div>
     <div class="compendium-search-wrapper">
       <div class="compendium-search">
         <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" id="compendiumSearch" placeholder="Поиск по трейтам, оружию, правилам...">
+        <input type="text" id="compendiumSearch" placeholder="Поиск по трейтам, оружию, правилам..." data-i18n-placeholder="compendium_search">
         <button class="clear-search" onclick="clearCompendiumSearch()">×</button>
       </div>
     </div>
@@ -270,13 +295,13 @@
   <!-- ПОИСК МОДЕЛЕЙ (ДЛЯ БИЛДЕРА) -->
   <div id="modelSearchModal" class="compendium-modal">
     <div class="compendium-header">
-      <button onclick="closeModelSearch()" class="back-btn">НАЗАД</button>
-      <h2>ПОИСК МОДЕЛЕЙ</h2>
+      <button onclick="closeModelSearch()" class="back-btn" data-i18n="back">НАЗАД</button>
+      <h2 data-i18n="model_search">ПОИСК МОДЕЛЕЙ</h2>
     </div>
     <div class="compendium-search-wrapper">
       <div class="compendium-search">
         <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" id="modelSearchInput" placeholder="Введите имя модели..." autocomplete="off">
+        <input type="text" id="modelSearchInput" placeholder="Введите имя модели..." data-i18n-placeholder="model_search_placeholder" autocomplete="off">
         <button class="clear-search" onclick="document.getElementById('modelSearchInput').value='';renderModelSearch();">×</button>
       </div>
     </div>
