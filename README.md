@@ -190,9 +190,9 @@ This project is a fan-made tool and is not affiliated with Knight Models or DC C
 
 ## 📬 Контакты / Contact
 
-Проект создан для сообщества игроков Batman: Gotham Chronicles.
+Проект создан для сообщества игроков Batman Miniature Game.
 
-Created for the Batman: Gotham Chronicles player community.
+Created for the Batman Miniature Game player community.
 
 ---
 
