@@ -158,7 +158,7 @@
         </div>
       </div>
       <!-- ВКЛАДКИ ФРАКЦИЙ -->
-      <div class="tabs-container" id="builderFactionCards">
+      <div class="tabs-container hidden" id="builderFactionCards">
       <div class="faction-cards">
         <div class="faction-card" data-faction="Bat Family" style="background-image: url('https://veland55.github.io/btb/img/menu/BATMAN.jpg');">
           <img class="faction-icon" src="https://veland55.github.io/btb/img/menu/BATMAN.png" alt="Bat Family">
@@ -257,6 +257,9 @@
             <button class="compendium-small-btn" onclick="openCompendium()">
               <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h12v16zm-4-8H10v-1h4v1zm0-3H10V8h4v1zm0-3H10V6h4v1z"/></svg>
             </button>
+            <button class="compendium-small-btn" onclick="exportRoster()" data-i18n-title="export_title" title="Экспорт ростера">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            </button>
             <button class="compendium-small-btn" onclick="resetCrew(); backToFactionSelect()">
               <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
@@ -264,6 +267,7 @@
         </div>
         <div class="funds">
           <span data-i18n="crew">ОТРЯД</span>: <span id="crewCount">0</span> | <span data-i18n="rep">REP</span>: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350" style="width:50px; background:#222; color:#fff; border:1px solid #e94560;"> | $<span id="totalFunding">0 / 1500</span>
+          <span id="charismaticIndicator" style="margin-left:15px; color:#ffd700; font-weight:bold; display:none;">✨ CHARISMATIC: <span id="charismaticStatus">AVAILABLE</span></span>
         </div>
       </div>
 

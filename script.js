@@ -10,7 +10,8 @@ let modifiers = {
   extraVeterans: {},
   extraMinions: {},
   extraTalons: 0,
-  allowBetray: false
+  allowBetray: false,
+  charismaticUsed: false // Был ли уже использован слот от Charismatic
 };
 let currentFaction = null; // Изменено: null по умолчанию (нет фракции)
 let allCompendiumHTML = "";
@@ -78,7 +79,15 @@ const translations = {
     requires_goliath: "Требует Goliath",
     sidekick_limit_exceeded: "Превышен лимит Sidekick",
     leader_required_for_sidekick: "Требует Leader для Sidekick",
-    amazon_lineage: "Amazon Lineage: Только в amazon фракциях"
+    amazon_lineage: "Amazon Lineage: Только в amazon фракциях",
+    animal_no_equipment: "Модели с трейтом Animal не могут покупать оборудование!",
+    export_empty_roster: "Отряд пуст! Добавьте модели перед экспортом.",
+    export_copied: "Ростер скопирован в буфер обмена!",
+    export_copy_prompt: "Скопируйте текст ростера:",
+    charismatic_available: "ДОСТУПЕН",
+    charismatic_used: "ИСПОЛЬЗОВАН",
+    export_title: "Экспорт ростера",
+    no_available_equipment: "Нет доступного оборудования"
   },
   en: {
     cards: "CARDS",
@@ -134,7 +143,15 @@ const translations = {
     requires_goliath: "Requires Goliath",
     sidekick_limit_exceeded: "Sidekick limit exceeded",
     leader_required_for_sidekick: "Requires Leader for Sidekick",
-    amazon_lineage: "Amazon Lineage: Only in amazon factions"
+    amazon_lineage: "Amazon Lineage: Only in amazon factions",
+    animal_no_equipment: "Models with Animal trait cannot purchase equipment!",
+    export_empty_roster: "Crew is empty! Add models before exporting.",
+    export_copied: "Roster copied to clipboard!",
+    export_copy_prompt: "Copy the roster text:",
+    charismatic_available: "AVAILABLE",
+    charismatic_used: "USED",
+    export_title: "Export Roster",
+    no_available_equipment: "No available equipment"
   }
 };
 
@@ -160,6 +177,12 @@ function setLanguage(lang) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     el.innerHTML = t(key);
+  });
+
+  // Обновляем title атрибуты
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.dataset.i18nTitle;
+    el.title = t(key);
   });
 
   // Обновляем placeholder'ы
@@ -254,6 +277,7 @@ function showBuilder() {
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
   $('compendiumModal').classList.remove('active');
+  $('builderFactionCards').classList.remove('hidden'); // Показываем вкладки фракций
   initTabs(); // Инициализация табов для выбора фракции
 }
 
@@ -285,6 +309,7 @@ function backToMenu() {
 function backToFactionSelect() {
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
+  $('builderFactionCards').classList.remove('hidden'); // Показываем вкладки фракций
   resetCrew();
 }
 
@@ -302,6 +327,7 @@ function closeModelSearch() {
 function selectFaction(faction) {
   currentFaction = faction;
   $('factionSelect').style.display = 'none';
+  $('builderFactionCards').classList.add('hidden'); // Скрываем вкладки фракций
   $('builderMain').style.display = 'block';
   renderMiniCardsBuilder();
   updateCrewBar();
@@ -470,6 +496,24 @@ const updateCrewBar = () => {
   let usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
   $("totalRep").textContent = totalRep;
   $("totalFunding").textContent = `${usedFunding} / ${bmgFundingLimit()}`;
+  
+  // Обновляем индикатор Charismatic
+  const hasCharismatic = crew.some(m => m.traits && m.traits.includes("Charismatic"));
+  const indicator = $("charismaticIndicator");
+  const status = $("charismaticStatus");
+  
+  if (hasCharismatic) {
+    indicator.style.display = "inline";
+    if (modifiers.charismaticUsed) {
+      status.textContent = t("charismatic_used");
+      status.style.color = "#ff4444";
+    } else {
+      status.textContent = t("charismatic_available");
+      status.style.color = "#44ff44";
+    }
+  } else {
+    indicator.style.display = "none";
+  }
 };
 
 function calculateModifiers() {
@@ -519,7 +563,6 @@ function calculateModifiers() {
       if (t === "Supply Cache") mods.extraFunding += 300;
       
       // Новые трейты для Funding
-      if (t === "Charismatic") mods.extraFunding += 100; // +100 Funding
       if (t === "Corrupt") mods.extraFunding += 50; // +Funding для corrupt моделей
       if (t === "Vocational") mods.extraFunding += 200; // +Funding для vocational jobs
 
@@ -1325,6 +1368,11 @@ function bmgCanAddModel(model) {
 
   // Проверка лимитов рангов
   if (!factionRules.ignoreStandardRankRequirements) {
+    // Проверяем, есть ли в отряде модель с Charismatic
+    const hasCharismatic = crew.some(m => m.traits && m.traits.includes("Charismatic"));
+    // Charismatic позволяет добавить одного дополнительного Free Agent
+    const canUseCharismatic = hasCharismatic && !modifiers.charismaticUsed && rank === "Free Agent";
+    
     // Стандартные проверки рангов
     if (rank === "Leader") {
       // Если уже есть Leader — нельзя добавить ещё одного
@@ -1349,8 +1397,13 @@ function bmgCanAddModel(model) {
       }
     }
     if (rank === "Free Agent" && bmgRankCount("Free Agent") >= 1 + extras + (modifiers.extraFreeAgents || 0)) {
-      alert(t("fa_limit_exceeded"));
-      return false;
+      // Charismatic позволяет добавить одного дополнительного Free Agent
+      if (canUseCharismatic) {
+        modifiers.charismaticUsed = true;
+      } else {
+        alert(t("fa_limit_exceeded"));
+        return false;
+      }
     }
     if (rank === "Vehicle" && bmgRankCount("Vehicle") >= 1 + extras + (modifiers.extraVehicles || 0)) {
       alert(t("vehicle_limit_exceeded"));
@@ -1536,101 +1589,152 @@ function bmgCanAddModel(model) {
 function openEquipmentMenu(model, cardElement) {
   event.stopPropagation();
 
-  // Находим экземпляр модели в банде по uniqueId (но так как у нас может быть несколько одинаковых имён — ищем первый в банде с этим именем)
+  // Находим экземпляр модели в банде
   const crewModel = crew.find(m => m.name === model.name && m.rankUsed);
   if (!crewModel) return;
 
-  const faction = currentFaction; // текущая фракция
-const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
-  // Проверка maxPerCrew (остаётся без изменений)
-  const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
-  if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
+  // Модели с трейтом Animal не могут покупать оборудование
+  if (crewModel.traits && crewModel.traits.some(t => t.includes("Animal"))) {
+    alert(t("animal_no_equipment"));
+    return;
+  }
 
-  // Улучшенная проверка conditions (все должны выполняться)
-  if (eq.conditions && eq.conditions.length) {
-    const allConditionsMet = eq.conditions.every(cond => {
-      const trimmed = cond.trim();
+  const faction = currentFaction;
+  const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
+    // Проверка maxPerCrew
+    const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
+    if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
 
-      // "Only Plants" или "Only Animals" — trait у текущей модели
-      if (trimmed.startsWith('Only ')) {
-        const requiredTrait = trimmed.replace('Only ', '').trim();
-        return crewModel.traits && crewModel.traits.some(t => t === requiredTrait);
-      }
+    // Проверка условий (conditions)
+    if (eq.conditions && eq.conditions.length) {
+      const allConditionsMet = eq.conditions.every(cond => {
+        const trimmed = cond.trim();
 
-      // "Model has Elite (SWAT) trait"
-      if (trimmed.startsWith('Model has ') && trimmed.endsWith(' trait')) {
-        const trait = trimmed.replace('Model has ', '').replace(' trait', '').trim();
-        return crewModel.traits && crewModel.traits.some(t => t === trait);
-      }
-
-      // "Bruce Wayne in crew" или "Alias: Poison Ivy in crew"
-      if (trimmed.endsWith(' in crew')) {
-        let modelName = trimmed.replace(' in crew', '').trim();
-        if (modelName.startsWith('Alias: ')) {
-          modelName = modelName.replace('Alias: ', '').trim();
+        // Отрицательное условие: "Nightmares cannot buy" или "Plants cannot purchase"
+        if (trimmed.match(/cannot (buy|purchase)/i)) {
+          const forbiddenTrait = trimmed.replace(/.*?(Nightmares|Plants|Animals|Bots).*?/i, '$1').trim();
+          // Если у модели есть запрещённый трейт — условие не выполнено
+          if (crewModel.traits && crewModel.traits.some(t => t.includes(forbiddenTrait))) {
+            return false;
+          }
+          return true;
         }
-        return crew.some(m => modelName === m.name);  // Точное совпадение имени
-      }
 
-      // Простое имя модели — наличие в crew
-      return crew.some(m => m.name === trimmed);
-    });
+        // "Only Plants", "Only Animals", "Only Nightmares" — требуется трейт
+        if (trimmed.startsWith('Only ')) {
+          const requiredTrait = trimmed.replace('Only ', '').trim();
+          // Поддержка множественных трейтов через "/"
+          const traits = requiredTrait.split('/').map(t => t.trim());
+          return crewModel.traits && traits.some(t => crewModel.traits.some(trait => trait.includes(t)));
+        }
 
-    if (!allConditionsMet) return false;
-  }
+        // "Only Henchman/Free Agents" — проверка по рангу
+        if (trimmed.startsWith('Only Henchman') || trimmed.startsWith('Only Free Agent')) {
+          const allowedRanks = trimmed.replace('Only ', '').split('/').map(r => r.trim());
+          return allowedRanks.some(r => crewModel.rankUsed && crewModel.rankUsed.includes(r));
+        }
 
-  // Проверка targetModels (с защитой на undefined)
-  if (eq.targetModels && eq.targetModels.length) {
-    const allowedByName = eq.targetModels.some(t => t === crewModel.name);
-    const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
-    if (!allowedByName && !allowedByRank) return false;
-  }
+        // "Model has Elite (SWAT) trait"
+        if (trimmed.startsWith('Model has ') && trimmed.endsWith(' trait')) {
+          const trait = trimmed.replace('Model has ', '').replace(' trait', '').trim();
+          return crewModel.traits && crewModel.traits.some(t => t === trait);
+        }
 
-  return true;
-});
+        // "Model has Bot trait"
+        if (trimmed.startsWith('Model has ') && trimmed.endsWith(' trait')) {
+          const trait = trimmed.replace('Model has ', '').replace(' trait', '').trim();
+          return crewModel.traits && crewModel.traits.some(t => t.includes(trait));
+        }
+
+        // "Bruce Wayne in crew" или "Alias: Poison Ivy in crew"
+        if (trimmed.endsWith(' in crew')) {
+          let modelName = trimmed.replace(' in crew', '').trim();
+          if (modelName.startsWith('Alias: ')) {
+            modelName = modelName.replace('Alias: ', '').trim();
+          }
+          return crew.some(m => m.name === modelName || m.alias === modelName);
+        }
+
+        // Простое имя модели — наличие в crew
+        return crew.some(m => m.name === trimmed || m.alias === trimmed);
+      });
+
+      if (!allConditionsMet) return false;
+    }
+
+    // Проверка targetModels (ограничение на какие модели можно купить)
+    if (eq.targetModels && eq.targetModels.length) {
+      const allowedByName = eq.targetModels.some(t => t === crewModel.name);
+      const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
+      if (!allowedByName && !allowedByRank) return false;
+    }
+
+    return true;
+  });
 
   // Создаём модальное окно
   const overlay = document.createElement("div");
-  overlay.className = "rank-select-modal"; // используем тот же стиль, что и для рангов
+  overlay.className = "rank-select-modal";
+  
+  // Считаем доступный бюджет
+  const usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+  const availableFunding = bmgFundingLimit() - usedFunding;
+  
   overlay.innerHTML = `
     <div class="rank-select-content">
       <div class="rank-select-header">
         Equipment для <strong>${model.name}</strong>
         <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
       </div>
-      <div class="rank-select-buttons" style="max-height: 60vh; overflow-y: auto;">
-        ${availableEq.length ? availableEq.map(eq => `
-          <button class="rank-select-btn" data-eq-name="${eq.name}">
+      <div style="background:#222; padding:10px; text-align:center; border-bottom:2px solid #e94560;">
+        <span style="color:#ffd700; font-weight:bold;">Доступно: $${availableFunding}</span>
+        <span style="color:#aaa; font-size:12px; margin-left:10px;">(из $${bmgFundingLimit()})</span>
+      </div>
+      <div class="rank-select-buttons" style="max-height: 50vh; overflow-y: auto;">
+        ${availableEq.length ? availableEq.map(eq => {
+          const canAfford = availableFunding >= (eq.fundingCost || 0);
+          const insufficientFundsText = currentLang === 'ru' ? '⚠ Недостаточно средств' : '⚠ Insufficient funds';
+          return `
+          <button class="rank-select-btn" data-eq-name="${eq.name}" ${!canAfford ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
             ${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})
             <small style="display:block; opacity:0.8; font-size:12px;">${replaceIcons(eq.effects.join(" • "))}</small>
+            ${!canAfford ? `<span style="color:#ff4444; font-size:11px;">${insufficientFundsText}</span>` : ''}
           </button>
-        `).join("") : "<p style='text-align:center; color:#aaa;'>Нет доступного equipment</p>"}
+        `}).join("") : `<p style='text-align:center; color:#aaa;'>${t("no_available_equipment")}</p>`}
       </div>
     </div>
   `;
 
   overlay.querySelectorAll(".rank-select-btn").forEach(btn => {
     btn.onclick = () => {
-  const eqName = btn.dataset.eqName;
-  const eq = availableEq.find(e => e.name === eqName);
-  if (!eq) return;
+      if (btn.disabled) return;
+      
+      const eqName = btn.dataset.eqName;
+      const eq = availableEq.find(e => e.name === eqName);
+      if (!eq) return;
 
-  // Добавляем equipment к модели
-  if (!crewModel.equipment) crewModel.equipment = [];
-  crewModel.equipment.push(eq);
+      // Проверка бюджета
+      const usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+      const availableFunding = bmgFundingLimit() - usedFunding;
+      if (availableFunding < (eq.fundingCost || 0)) {
+        alert("Недостаточно Funding для этого equipment!");
+        return;
+      }
 
-  // Обновляем счётчики и интерфейс
-  updateCrewEquipmentCounts();
-  modifiers = calculateModifiers();
-  updateCrewBar();
-  renderMiniCardsBuilder();
-  
-  // Удалите эту строку: overlay.remove();
-  
-  // Добавьте это для обновления списка (переоткрываем меню с новыми availableEq)
-  overlay.remove(); // Сначала закрываем старое
-  openEquipmentMenu(model, cardElement); // Открываем заново с обновлённым списком
-};
+      // Добавляем equipment к модели
+      if (!crewModel.equipment) crewModel.equipment = [];
+      crewModel.equipment.push(eq);
+
+      // Обновляем счётчики и интерфейс
+      updateCrewEquipmentCounts();
+      modifiers = calculateModifiers();
+      updateCrewBar();
+      renderMiniCardsBuilder();
+
+      // Закрываем и открываем заново для обновления списка
+      overlay.remove();
+      openEquipmentMenu(model, cardElement);
+    };
   });
 
   overlay.onclick = e => e.target === overlay && overlay.remove();
@@ -1651,10 +1755,58 @@ function resetCrew() {
     extraVeterans: {},
     extraMinions: {},
     extraTalons: 0,
-    allowBetray: false
+    allowBetray: false,
+    charismaticUsed: false
   };
   updateCrewBar();
   if (currentMode === 'builder') {
     renderMiniCardsBuilder();
   }
+}
+
+// ======================== ЭКСПОРТ РОСТЕРА ========================
+function exportRoster() {
+  if (crew.length === 0) {
+    alert(t("export_empty_roster"));
+    return;
+  }
+
+  const repLimit = document.getElementById('repLimit').value;
+  const fundingLimit = bmgFundingLimit();
+  
+  // Формируем текст экспорта
+  let exportText = `BMG CREW - ${currentFaction || "Unknown"}\n`;
+  exportText += `Rep: ${repLimit} | Funding: $${fundingLimit}\n`;
+  exportText += `════════════════════════════════════════\n\n`;
+  
+  const totalRep = crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0);
+  const usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+  
+  crew.forEach(m => {
+    exportText += `${m.name}`;
+    
+    // Добавляем стоимость модели если есть
+    if (m.funding && m.funding > 0) {
+      exportText += ` ($${m.funding})`;
+    }
+    
+    // Добавляем equipment
+    if (m.equipment && m.equipment.length > 0) {
+      const eqList = m.equipment.map(eq => `${eq.name}$${eq.fundingCost || 0}`).join(", ");
+      exportText += ` + ${eqList}`;
+    }
+    
+    exportText += `\n`;
+  });
+  
+  exportText += `\n════════════════════════════════════════\n`;
+  exportText += `Total: ${totalRep} Rep | $${usedFunding}\n`;
+  
+  // Копируем в буфер обмена
+  navigator.clipboard.writeText(exportText).then(() => {
+    alert(t("export_copied"));
+  }).catch(err => {
+    // Если буфер не доступен, показываем в prompt
+    prompt(t("export_copy_prompt"), exportText);
+  });
 }

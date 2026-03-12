@@ -238,9 +238,9 @@ const equipmentByFaction = {
   ],
   "Scarecrow": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
-    { name: "Apparition", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["Model gains the Apparition trait."] },
-    { name: "Handcuffs", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["Model gains the Arrest trait."] },
-    { name: "Neurotoxic Drugs", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["+2 Movement and Dodge traits."] },
+    { name: "Apparition", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["Model gains the Apparition trait."] },
+    { name: "Handcuffs", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["Model gains the Arrest trait."] },
+    { name: "Neurotoxic Drugs", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["+2 Movement and Dodge traits."] },
     { name: "Fear Advantage", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr"], effects: ["Protect Me! on Nightmare without Effort."] },
     { name: "Intensive Treatment", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr"], effects: ["Model gains the Intensive Treatment (1) trait."] },
     { name: "Disposable Nightmare", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["On removal, Discard a card from deck."] },
