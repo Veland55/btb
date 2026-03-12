@@ -18,7 +18,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .funds span { color:#e94560; margin:0 10px; }
 
 /* ВКЛАДКИ ФРАКЦИЙ */
-.tabs-container { background:#111; padding:10px 0 8px; border-bottom:3px solid #222; overflow-y:auto; max-height:calc(100vh - 200px); display:none; }
+.tabs-container { background:#111; padding:10px 0 8px; border-bottom:3px solid #222; overflow-y:auto; display:none; }
 .tabs-container:not(.hidden) { display:block; }
 .faction-cards { display:flex; flex-direction:column; gap:12px; padding:0 12px; }
 .faction-card {
