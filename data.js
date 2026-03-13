@@ -238,9 +238,9 @@ const equipmentByFaction = {
   ],
   "Scarecrow": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
-    { name: "Apparition", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["Model gains the Apparition trait."] },
-    { name: "Handcuffs", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["Model gains the Arrest trait."] },
-    { name: "Neurotoxic Drugs", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["+2 Movement and Dodge traits."] },
+    { name: "Apparition", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["Model gains the Apparition trait."] },
+    { name: "Handcuffs", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["Model gains the Arrest trait."] },
+    { name: "Neurotoxic Drugs", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["+2 Movement and Dodge traits."] },
     { name: "Fear Advantage", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr"], effects: ["Protect Me! on Nightmare without Effort."] },
     { name: "Intensive Treatment", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr"], effects: ["Model gains the Intensive Treatment (1) trait."] },
     { name: "Disposable Nightmare", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["On removal, Discard a card from deck."] },
@@ -11923,6 +11923,46 @@ const models = [
 },
 
 {
+  "name": "Roller Derby Thug 1",
+  "realname": "Unknown",
+  "base": "40mm",
+  "rep": 44,
+  "funding": 0,
+  "rank": ["Henchman"],
+  "faction": ["Birds of Prey"],
+  "rivals": "GCPD",
+  "img": "https://veland55.github.io/btb/img/RollerDerbyThug1.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "3+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 8
+  },
+  "traits": [
+    "360° Strike",
+    "Desensitized",
+    "Fully Equipped",
+    "Juggernaut",
+    "Tough Guy",
+    "Charge",
+    "Large",
+    "Fast (2)",
+    "Harlequin"
+  ],
+  "weapons": [
+    {
+      "name": "Chained Hook",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Sharp / Reach (3)"
+    }
+  ]
+},
+
+{
   "name": "Roller Derby Thug 2",
   "realname": "Unknown",
   "base": "30mm",
@@ -17582,7 +17622,10 @@ const models = [
 window.models = models;
 
 const traitDescriptions = {
-    "A Challenge for you": "Every time your crew places a Suspect, you must place a Numeric Counter on it. You decide the number on the counter, unless a card or ability specifies the number. These Numeric Counters cannot be reduced below 0.",
+    
+  //A
+  
+  "A Challenge for you": "Every time your crew places a Suspect, you must place a Numeric Counter on it. You decide the number on the counter, unless a card or ability specifies the number. These Numeric Counters cannot be reduced below 0.",
     "A Lot Colder": "This model gains the following bonuses based on the amount of Ice Age cards not in your Ice Age pile:\n1- Can choose to ignore the penalty for move before attacking, but instead suffer a -1 penalty to its Ranged attack dice rolls.\n2- +2 Attack.\n3- +1 Defense.\n4- +2 Strength dice rolls.\n(Bonuses stay in effect as the number increases and will be removed as the number decreases.)\nWhen a model with this trait is recruited in your crew, you cannot include the Searching for Nora card in your Objective deck.",
     "A Real Change": "Once per round, during this model's activation you may look at the opponent's Objective hand, then the opponent may target one of their models and preform an immediate Manipulate action with that model.",
     "A Bit of Magic": "This model may assign Magic Counters to itself when performing Actions. If there is a Magical Conflux remove all the Magic Counters from this model, and this model takes just 1 Damage.",
@@ -17653,6 +17696,9 @@ const traitDescriptions = {
     "Automatic Guns": "Model gains the Instinctive Shooting trait.",
     "Autorepair (X)": "At the beginning of the Recount phase, this model rolls 1D6. On a result of (X)+ remove a Damage marker (any type) from this model.",
     "Aversion (X)": "This model cannot be included in the same crew as the specified model.",
+    
+    //B
+    
     "Back on Track": "If this model has a Task counter on it, this model can be targeted by a Cranial Bomb Activated card, then return it to the Cranial Bomb pile without removing this model. If you do so, remove the Task counter from this model.",
     "Back to the Nightmare": "Once per round, when an Objective card is removed from the Terror pile, after the current action is resolved, this model may be removed from the gaming area and use the Shadowed Nightmare trait to enter again later.",
     "Backpack": "This model can perform a Reveal Manipulate action once per activation without spending an Action.",
@@ -17731,6 +17777,9 @@ const traitDescriptions = {
     "Bulletproof Vest": "Traits and attacks with the Firearm rule deduct 1 attack die when rolling against this model.",
     "Bushido Bat-Armor": "Enemy models cannot roll Strength dice against this model. In addition, this model rolls 1 additional Attack/Defense die against a target Challenged by this model.",
     "Business Agent": "When this model is recruited, add $350 to the crew’s available Funding.",
+    
+    //C
+    
     "C-4": "Model gains the Explosive Gel trait.",
     "Camo Vest": "Model gains the Stealth rule.",
     "Can You Solve This? (X)": "Once per round, this model may move up to 4” a suspect marker within 4” during its activation by rolling a +(X) result in a die roll.",
@@ -17822,6 +17871,9 @@ const traitDescriptions = {
     "Cybernetic": "This model gains +1 to its Defense rolls, and can reroll Recovery rolls.",
     "Cybernetic Arms": "This model gains the Reinforced Gloves trait.",
     "Cyclops": "This model’s ranged attacks gain the Imprecise rule when the target is more than 8” away.",
+    
+    //D
+    
     "Daddy’s Girrrl": "If this model starts its activation within 6” of the Boss, its gains +1 {+ATT_ICON}.",
     "Dark Influence {SPECIAL_ICON}": "A friendly model without Audacity perform a Move 4\" and then a Tactical Action immediately. When resolved continue with this model's activation. Or you may search into your deck a card that has the Freed resource.",
     "Dark Intimidation (Spell)": "Special Action. 1 Magic Counter. Enemy models within 8\" and LoS cannot make Efforts when Attacking friendly models.",
@@ -17894,6 +17946,9 @@ const traitDescriptions = {
     "Duelist": "While in contact with only one enemy model, this model may reroll failed attack dice rolls in Melee.",
     "Duke of Duality": "When this model scores an Objective card, flip a coin or roll a D6: if the result is ‘heads’ (or an even number) draw an additional card. If the result is ‘tails’ (or an odd number), Discard an Objective card at random before drawing a new card.",
     "Duo (X)": "When this model is included in a crew that also contains the model names in parentheses that share a Rank with this model, one of them ignores the shared Rank for the purposes of crew configuration.",
+    
+    //E
+    
     "EMP": "This model rerolls failed Strength die rolls against models with the Cybernetic, Bot or Robot traits, and against models with Rank {RANK_VEHICLE_ICON}.",
     "EM Smoke Grenades": "Model gains the Vanish trait.",
     "Echolocation": "This model does not suffer the Blind Status and ignores the rules of a Smoke event marker. In addition, this model may see at any distance, limited only by Line of Sight and intervening scenery.",
@@ -17923,6 +17978,7 @@ const traitDescriptions = {
     "Enhanced Vision": "This model can see at any distance and ignores the Concealment trait. In addition, the model is immune to the Blind Status.",
     "Enigma Data-Pack": "Model gains the Bluff traits.",
     "Enough Evidence": "At the start of this model's activation, for each 2 friendly models that has at least 1 friendly Suspect within 4\" of it, you can draw 1 Objective card, then you can keep 1 of them and discard the others. In addition, if a Monitoring card is discarded in this way, you can move 4\" a Clue marker, if any Following the Clues is discarded you can place a *X* marker on top of a Monitoring Objective card in play.",
+    
     "Equipment List - {AFF_BANE_ICON}": "• 0-2 Magazine ($200): To Ammunition for one weapon.\r\n• 0-2 Grapple-gun ($300): Model gains the Batclaw/Grapple-gun rule.\r\n• 0-2 Titan Dose ($100): Model gains one Titan Dose.\r\n• 0-1 Night Vision Goggles ($200): Model gains the Night Vision rule.\r\n• 0-3 Venom Dose ($100): Model gains one Venom Dose.\r\n• 0-1 Backpack ($100): Model gains the Backpack rule.\r\n• 0-1 Antidote ($50): Model is immune to Poison Status.\r\n• 0-2 Neurotoxic Drugs ($250): Model gains +2 Movement and Dodge trait.\r\n• 0-2 Camo Vest ($200): Model gains the Stealth rule.\r\n• 0-3 Gas Mask ($150): Model gains the Gas Mask rule.\r\n• 0-1 War Hardened ($200): Model gains the Cruel trait.\r\n\r\n\r\nThe following options may be taken only when a model with Name: Bane is in the crew:\r\n• 0-1 Handcuffs ($100): Model gains the Arrest rule.\r\n• 0-1 Venom Laboratory ($100+5 Rep Points)* (Can only be purchased by {RANK_LEADER_ICON} or {RANK_SIDEKICK_ICON}): All model in your crew can use more than 1 Titan Dose per game. This bonus remains in play even if this model is removed from play or leaves the board. Also, the cost of Venom Doses in the equipment list is reduced to $50.\r\n• 0-2 Venom Applicator ($0+2 Rep Points): This model can use Titan and Venom Doses on a friendly model in contact.\r\n\r\nThe following options may be taken only when a model with Name: Bird is in the crew:\r\n• 0-2 Military Progress ($150) Model gains Veteran rule.\r\n\r\nThe following options may be taken only when a model with Name: Thomas Wayne is in the crew:\r\n• 0-1 Dual Handguns ($300+7 Rep Points)* (Can only be purchased by Thomas Wayne): Model gains the Rapid Fire trait and the following weapon: Dual Handguns: {BLOOD_ICON}{STUN_ICON} ROF: 4 AMMO:3 S. Range / Firearm / Light / Assault.\r\n• 0-1 Surgeon Training ($200): Model gains the Medic trait.\r\n\r\nThe following option may be taken only when a model with Alias: Scarecrow (Arkham Knight) is in the crew:\r\n• 0-1 Fear Gas Dispenser ($150): Model gains the Inspire Fear rule.\r\n• 0-1 Secret Laboratory ($100+2Rep points)* (Can only be purchased by Scarecrow): At the start of the game you can chose up to 2 henchmen in your crew. These models let you use Scarecrow Inspire Fear from those models position as if Scarecrow would be placed over there. The Willpower roll caused by any Inspire Fear suffers a +1 Penalty to the roll.\r\n\r\nThe following option may be taken only when a character with Name: Jason Todd is in the crew:\r\n• 0-2 Radio ($150): This model is always treated as though it were within range of the Inspire rule.\r\n• 0-1 Hidden Magazines ($200) (Only can be taken by Jason Todd): +1 Magazines to one weapon.\r\n• 0-1 Cybernetic Arms ($50) (Can only be purchased by Jason Todd): Gains Reinforced Gloves rule.\r\n• 0-1 Arkham Knight Secret Armoury ($100): One ranged weapon of this model gains the Acid rule.\r\n• 0-1 Hook Pistol (400$) (Can only be purchased by the Jason Todd, and only if he is the Boss): Gains the Grapple Gun and the following ranged weapon: Electric Hook: {STUN_ICON}{STUN_ICON} RoF: 1 Ammo: 2 S.Range /Mechanical / Electric / Devastating.\r\n\r\nThe following option may be taken only when a model with Name: Slade Wilson is in the crew:\r\n• 0-1 Martial Training ($150): Model gains the Martial Artist and Master Fighter rules.\r\n• 0-1 Contract ($0)* (Can only be purchased by Slade Wilson): Gains rank {RANK_SIDEKICK_ICON} of {AFF_BANE_ICON}.\r\n\r\nEquipment marked * cannot be affected by the Broken Equipment rule.",
     "Equipment List - {AFF_CRIME_ICON}": "• 0-3 Magazine ($150): +1 to Ammunition for one weapon.\r\n• 0-1 Bribe ($100): Model gains the Informer trait.\r\n• 0-1 Kevlar Vest ($200): Model gains the Kevlar Vest trait.\r\n• 0-1 Grapple-gun ($250): Model gains the Grapple-gun trait.\r\n• 0-1 C-4 ($250): Model gains the Explosive Gel trait.\r\n• 0-1 Gas Mask ($150): Model gains the Gas Mask trait.\r\n• 0-1 Silencer ($200): One of the models ranged weapons gains the Silencer trait.\r\n• 0-2 Brass Knuckles ($100): Model gains the Reinforced Gloves trait.\r\n• 0-1 The Cleaner ($100): When this model reveals an enemy Suspect, you may immediately draw 1 card from your Objective deck.\r\n• 0-2 Backpack ($100): Model gains the Backpack trait.\r\n• 0-2 Family ($150): Model gains the Mobster trait.\r\n• 0-1 Rusty Tools ($200): Model gains the Cruel trait.\r\n• 0-1 Planted Evidence ($200) (Can only be purchased by models with the Cop trait): Model gains the Evidence Tampering trait.\r\n• 0-1 Abuse the Badge ($150) (Can only be purchased by models with the Cop trait): Model gains the Interrogation trait.\r\n\r\nThe following option may be taken only when a model with Name: Roman Sionis is in the crew:\r\n• 0-1 Psychotic ($150) (Can only be purchased by Black Mask): Gain Protect Me! rule.\r\n\r\nThe following option may be taken only when a model with Name: Carmine Falcone is in the crew:\r\n• 0-1 Mob Payroll ($200) (Can only be purchased by Carmine Falcone): Model gains the Corrupt trait.\r\n\r\nThe following option may be taken only when a model with Name: Salvatore Maroni is in the crew:\r\n• 0-1 Long Guns ($0): If Sal Maroni is the Boss, select up to three friendly Henchmen with ranged weapons with the Short Range and Firearm rules. Those weapons replace the Short Range rule with the Medium Range rule. These models must be selected before Pre-Game Phase C.\r\n\r\nThe following option may be taken only when a model with Name: Arnold Wesker is in the crew:\r\n• 0-2 Mafia ($100): Model gains the Criminal trait.\r\n\r\nThe following option may be taken only when a model with Name: Alexander Joseph Luthor is in the crew:\r\n• 0-1 Advanced Weaponry ($200): One of this model ranged weapons gain the Accurate rule.\r\n\r\nThe following option may be taken only when a model with Name: Jervis Tetch is in the crew:\r\n• 0-1 Broken Equipment ($250): Before Phase A of the pre-game sequence choose one item of equipment purchased by the opposing player before the game begins. That item may not be used during the game.\r\n• 0-2 Weird Device ($200): Model gains the Goad trait.\r\n• 0-1 Trained Mind ($100): Model gains Desensitized rule.\r\n• 0-1 Rhyme with Me ($200): Model gains Disarray rule.\r\n• 0-3 Masks of Wonderland ($200): When choosing this equipment, choose only one of the following masks:\r\n0-1 Queen of Hearts mask: Model gains Assassin (1) and Order rules.\r\n0-1 White Rabbit mask: model gains Fast and Tireless rules.\r\n0-1 Cheshire Cat mask: model gains Stealth and Climbing Claws rules.\r\n\r\nThe following option may be taken only when a model with Name: Alexander Joseph Luthor is in the crew:\r\n• 0-1 Advanced Weaponry ($200): One of this model ranged weapons gain the Accurate rule.",
     "Equipment List - {AFF_HARLEY_QUINN_FRIENDS_ICON}": "• 0-2 Spray Can ($150): Model gains 1 Spray Can.\r\n• 0-1 Grapple-gun (2) ($300): Model gains the Grapple-gun rule.\r\n• 0-1 Camo Vest (2) ($300): Model gains the Stealth rule.\r\n• 0-2 Adaptive Planning (2) ($150+2Rep. points): Model gains the Adaptable trait.\r\n• 0-2 Titanic Mutation (2) ($150): Model gains one Titan Dose.\r\n• 0-1 Sense Mutation (1) ($100): Model gains the Night Vision rule.\r\n• 0-1 Extra Spores (1) ($100): +1 to Ammunition for one weapon.\r\n• 0-2 Spikes Mutation (1) ($200): Model gains the Claws rule.\r\n• 0-1 Luminescent Mutation (1) ($100): Model gains the Lantern rule.\r\n• 0-1 Large Roots (1) ($200): Models moving within this model's action radius suffer Impaired Movement.\r\n\r\nThe following option may be taken only when a model with Name: Dr. Harleen Frances Quinzel is in the crew:\r\n• 0-1 Smash 'n Grab ($200): Model’s Close Combat attacks gain the Steal trait.\r\n\r\nThe following option may be taken only when a model with Name: Dr. Pamela Lillian Isley is in the crew:\r\n• 0-3 Corrosive Blood ($50): When this model becomes a Casualty, all models in Contact must pass an Endurance roll of receive {BLOOD_ICON} Damage.\r\n• 0-1 Mutation Serum (2) ($200+3 Rep. points): Model gains the Tough Skin and Desensitized traits.\r\n• 0-1 Modified Pheromones (2) ($150+5 Rep Points) (Can only be purchased by Leader, Sidekicks or Free Agents): When using the Control Pheromones trait, all models in the crew can target up to 2 enemy models instead of 1. Resolve the effect one a time.\r\n• 0-1 Ancient Plants (1,3) ($200+40 Rep. points): Model gains the Invulnerability (1) and Tough Skin traits, +1 to all Basic Skills except Endurance, +3 to Endurance, and the action area radius is increased to 6”.\r\n\r\nThe following option may be taken only when a model with Name: Barbara Gordon is in the crew:\r\n• 0-1 Watch Tower ($200) (Can only be taken by Barbara Gordon): Model gains Exhaustive Planner rule.\r\n• 0-1 Radio ($200): This model is always treated as though it were within range of it's Boss's Inspire trait.\r\n\r\nThe following option may be taken only when a model with Name: Dinah Lance is in the crew:\r\n• 0-1 Pitch Perfect Vocals ($200) (Can only be taken by Dinah Lance): Model gains the Mixed Combat Style trait.\r\n\r\nThe following option may be taken only when a model with Name: Alec Holland is in the crew:\r\n• 0-1 Passage ($200): Model gains the Undercover rule.\r\n\r\n(1) Only Plants can purchase this equipment.\r\n(2) Plants cannot purchase this equipment.\r\n(3) This Equipment cannot be affected by the Broken Equipment rule.",
@@ -17936,6 +17992,7 @@ const traitDescriptions = {
     "Equipment List - {AFF_ROYAL_FLUSH_ICON}": "• 0-2 Magazine ($200): Model gains +1 Ammunition for one weapon.\r\n• 0-1 Halt! ($150): Model gains the Stop! trait.\r\n• 0-2 Comrades ($150): Model gains the Teamwork (1) (Spades, Clubs, Diamonds, Hearts) trait.\r\n• 0-1 Royal Communication Device ($200): Model gains the Radio trait.\r\n• 0-1 Grapple Gun ($250): Model gains the Grapple Gun trait.\r\n• 0-1 Royal Medic ($200): Model gains the Medic trait.\r\n• 0-1 Familiar with the Subject ($200): When this model places a Suspect within 4\" of an enemy model, you can search for a card that haves the same Suit as this model Keyword.\r\n• 0-2 Levy's Work ($150)(Can only be Purchased by models with the For My Lords! trait): This model can activate a 2nd time each round, at the end of that 2nd activation, this model suffers {BLOOD_ICON}{BLOOD_ICON} (you can force this model to be removed as casualty by the use of this trait).\r\n• 0-1 The Good King ($400)(Can only be Purchased by {RANK_LEADER_ICON}): Model gains the Leadership trait.\r\n• 0-1 King's Call ($300)(Can only be Purchased by {RANK_LEADER_ICON}): During this model activation you can spend 1 Action to place within 4\" a previously removed as Casualty model with the trait For My Lords!\r\nIf you do, the opponent immediately gains a Pass marker.\r\n• 0-1 Last Service ($300)(Can only be Purchased by {RANK_SIDEKICK_ICON}): When a friendly model is removed as a Casualty within 8\" and LoS to this model, you can search into your Objective deck 1 card and add it to your hand.\r\n\r\nThe following option may be taken only when a model with Alias: Punchline is in the crew:\r\n• 0-2 Punchline's Toys ($100): Model gains the Poison Device trait.\r\n• 0-1 Poison Training ($250) (Can only be purchased by Punchline): Model gains the Poison Master trait.",
     "Equipment List - {AFF_SCARECROW_ICON}": "• 0-2 Magazine ($200): Model gains +1 Ammunition for one weapon.\r\n• 0-1 Apparition (2) ($200): Model gains the Apparition trait.\r\n• 0-1 Handcuffs (2) ($150): Model gains the Arrest trait.\r\n• 0-1 Neurotoxic Drugs (2) ($300): Model gains +2 Movement and Dodge trait.\r\n• 0-1 Fear Advantage (3) ($200): This model may use the Protect Me! Trait on a friendly model with the Nightmare trait without the need of performing an Effort.\r\n• 0-1 Intensive Treatment (3) ($100): Model gains the Intensive Treatment trait.\r\n• 0-2 Disposable Nightmare (1) ($150): Model gains the Disposable Nightmare trait. Disposable Nightmare: When this model is removed, Discard a card from your deck.\r\n• 0-2 Terror Invigoration (1) ($200): Model gains the Terror Invigoration trait. Terror Invigoration: This model may throw X additional dice when taking Attack and Defense rolls (X is the number of cards in your Terror Pile).\r\n• 0-1 Fear Dampening (1) ($300): Model gains the Fear Dampening trait.\r\n• 0-2 Terrible Visage (1) ($200): Model gains the Terrible Visage trait.\r\n\r\nThe following option may be taken only when a model with Alias: Scarecrow is in the crew:\r\n• 0-1 Intense Fear ($200): Model gains the Intense Fear trait.\r\n\r\nThe following option may be taken only when a model with Alias: Dr. Friitawa is in the crew:\r\n• 0-1 Working in Advance ($200): Model gains the Working in Advance trait.\r\n\r\n(1) Only Nightmares can purchase this equipment.\r\n(2) Nightmares cannot purchase this equipment.\r\n(3) Only Arkham Asylum Dr can purchase this equipment.\r\n(4) This Equipment cannot be affected by the Broken Equipment rule.",
     "Equipment List - {AFF_SUICIDE_SQUAD_ICON}": "• 0-2 Airborne Deployment ($300): Select a model in your Suicide Squad crew before the game starts. This model is not deployed at the beginning of the game, but is instead held in reserve. At the beginning of the second round or any subsequent round, before determining who takes the lead, deploy the model in contact with any board edge, as long as the model’s base physically fits in the new position. The model may act normally in the round it arrives.\r\n\r\n• 0-1 Aerial Locator System ($200): Once per game at the start of the round, before determining who takes the lead, you can target one model currently in play. For the remainder of the round the target is illuminated, as if affected by a Lantern. Note that unlike the Lantern or Lamppost rules, only the target model is illuminated, not other models within 4”. NB. The rules governing line of sight apply as normal.\r\n\r\n• 0-1 Magazine ($300): Model gains +1 Ammunition for one weapon..\r\n\r\n• 0-2 Back on Track ($150): If this model has a Task counter on it, this model can be targeted by a Cranial Bomb Activated card, then return it to the Cranial Bomb pile without removing this model. If you do so, remove the Task counter from this model.\r\n\r\n• 0-2 Right Motivation ($200): While this model does not have a Task counter, it gains a free Manipulate action.\r\n\r\nThe following option may be taken only when a model with Alias: Poison Ivy is in the crew:\r\n• 0-2 Modified Pheromone ($100) (Can only be purchased by models with the Control Pheromones trait): When this model uses the Control Pheromones trait, the targeted model adds 1 additional dice and adds all the 3 results together while taking that Hypnotize Willpower roll. If the target Efforts to add an additional die to the Willpower roll, then they must roll 4D6 and then choose 3 of them.\r\n\r\nThe following option may be taken only when a model with Alias: Deathstroke (Vanguard Team) is in the crew:\r\n• 0-1 Father Teamwork ($150) (Can only be purchased by a model with Alias: Deathstroke (Vanguard Team)): Model gains the Teamwork (1) (Ravager (Vanguard Team)) trait.\r\n\r\nThe following option may be taken only when a model with Alias: Ravager (Vanguard Team) is in the crew:\r\n• 0-1 Daughter Teamwork ($150) (Can only be purchased by a model with Alias: Ravager (Vanguard Team)): Model gains the Teamwork (1) (Deathstroke (Vanguard Team)) trait.",
+    
     "Escape Artist": "After resolving an enemy attack against this model, as long as it is not made KO or a Casualty, it may immediately move up to 4”.",
     "Eternal Life": "Model gains the Immortal trait.",
     "Evidence Tampering": "When this model Reveals an enemy Suspect marker, it may place a friendly Suspect marker in contact with it first. Then, remove the enemy Suspect marker as normal.",
@@ -17958,6 +18015,9 @@ const traitDescriptions = {
     "Exposure": "For each additional successful hit after the first, the target suffers 1 additional damage marker (any type).",
     "Extended Limbs {SPECIAL_ICON}": "This model can perform Melee Attacks against models up to 3” away as if they were in contact.",
     "Extremely mutated": "This model cannot buy more than one item of Equipment.",
+    
+    //F
+    
     "Faint": "When this model becomes KO, it is also removed as a Casualty.",
     "Falconry {SPECIAL_ICON}": "Until the end of the round, this model can perform ranged attacks against enemy models within 16”, ignoring cover and LoS, as long as the target models are within 6” of a friendly Suspect. If you remove that marker at the start of the Attack action, you may roll one additional Attack die.",
     "Family": "Model gains the Mobster trait.",
@@ -18008,6 +18068,9 @@ const traitDescriptions = {
     "Froot Loops": "While this model is within 4” of a friendly Raj model, when it performs Efforts it may ignore up to 1 {STUN_ICON} caused by the Efforts. If this model is not within 8” of a friendly Raj model at the start of its activation, it suffers Enervating 1.",
     "Fully Equipped": "This model cannot purchase any Equipment.",
     "Funny Bomb {SPECIAL_ICON}": "Center the Explosive template over this model. This is resolved as an Explosive Ranged Attack, rolling a Strength 3+ die for each affected model – on a successful roll, the model receives {BLOOD_ICON}{STUN_ICON} Damage. Once this action is resolved, remove this model as a Casualty.",
+    
+    //G
+    
     "Gambling Time": "As long as this model is not KO, it counts as a friendly Suspect for friendly Objective cards scoring requirements.",
     "Gang Lord": "When this model is your crew’s Boss, friendly models with the Gangster trait may Reveal Suspects within 3\" instead of in contact.",
     "Gangsters": "For every 2 models with this trait in your crew at the start of the game, gain 1 Blood Money counter. During the activation of a friendly model with the Gangsters trait, you may spend 1 Blood Money counter to gain the following rules until the end of that activation:\n• The model may move and make a ranged attack losing only one die, but suffers -1 to hit.\n• The model’s ranged weapons gain the Light rule.\n• When this model performs an Attack action, pick another friendly model with the Gangsters trait immediately, and place it up to 4” from its original position.",
@@ -18038,6 +18101,9 @@ const traitDescriptions = {
     "Growling Hound {SPECIAL_ICON}": "Target an enemy model within 8\" and LoS. That model must take a Willpower roll. If unsuccesful, it must immediately Move X\" directly away from this model (X is equal to the difference between the result and target's Willpower).",
     "Growing Anger": "While you have more than 5 Faith points, this model gains a +1 bonus to its Attack dice rolls when performing Melee Attacks.",
     "Gunman {SPECIAL_ICON}": "After activating this trait, the first time this model performs a Ranged Attack this activation, it gains an extra Ranged Attack action.",
+    
+    //H    
+    
     "Hacking {SPECIAL_ICON}": "This model may move up to 2 markers within 8” up to 4”.",
     "Hail to the Queen!": "This model counts as having the Spades, Clubs, Diamonds, and Hearts keywords.",
     "Hallucination {SPECIAL_ICON}": "This model can use this trait to place a friendly model (not KO or Knocked Down) with Alias: Bat-Mite in contact with itself.",
@@ -18094,6 +18160,9 @@ const traitDescriptions = {
     "Hunting Knives": "Model gains the Combo: Hunting Knives trait.",
     "Hypnotic Radio Waves {SPECIAL_ICON}": "Choose an enemy model with Rank {RANK_HENCHMAN_ICON} (not with Rank {RANK_VEHICLE_ICON}) within 5” and line of sight. \r\nThe target immediately suffers the Hypnotize Status.",
     "Hypnotize": "Status. Any non-vehicle model affected by Hypnotize must make a Willpower roll immediately. If it fails, it immediately performs up to 2 different actions under the control of the player who hypnotized it counting as one of that player’s crew in all respects. While performing these actions, you may perform up to 2 Free Efforts (you cannot make another Efforts) and you do not expend Ammunition.\r\nCounts as if you are performing an activation for traits and performing actions. Models that are Hypnotized cannot be moved so they would Fall or otherwise take Damage.\r\n\r\nNb: If you move and shoot per example, you lose attack dice as usual, you cannot repeat actions, but you are affected by active traits (special actions) that remains active for the activation of the model (like Inspire, Sewer Worker...). That model may be activated by its owner later, because is not an activation.",
+    
+    //I
+    
     "I am Chaos {SPECIAL_ICON}": "Discard an Objective card at random. The opponent must show you their Objective card hand. For each enemy model within 8\" and LoS, choose one of those cards – the opponent must Discard it",
     "I Believe in Harvey Dent": "If this model is the Boss, friendly models with Rank {RANK_HENCHMAN_ICON} must roll a die or flip a coin at the start of their activation. If the result is even/heads, that model gains 1 free Effort until the end of the round. If the result is odd/tails, it suffers Enervating 1.",
     "I Bought this Place": "When a friendly model with Rank: {RANK_FREEAGENT_ICON} starts its activation, you may spend 1 Business Counter to allow that model to benefit from this model's Inspire trait as if it had Rank: {RANK_HENCHMAN_ICON}.",
@@ -18148,6 +18217,9 @@ const traitDescriptions = {
     "It's Mine": "Enemy models cannot Reveal your Suspect markers while the marker is within 2” of this model.",
     "It's a Dud": "At the start of this model's activation you may remove 1 Riddle marker from the Gaming Area.",
     "Ivy's Snow Coat": "Model gains the Cold Acclimation trait.",
+    
+    //J
+    
     "Jack of Spades": "When a friendly model with the Spades trait within 8\" and LoS to this model Sets a Suspect, you may Discard a card.",
     "Joker's Gas {SPECIAL_ICON}": "All other models within 4” and LoS suffer Enervating (1) and the Poison Statuses, with the Gas rule.",
     "Joy for the Victory": "Friendly models within 8” gains 1 Free Effort while performing Willpower rolls. In addition, inspired friendly models that score an Objective card during their activation may immediately remove 2 Damage.",
@@ -18156,6 +18228,9 @@ const traitDescriptions = {
     "Jump Up": "Whenever this model would suffer the Knocked Down Status, it may first immediately make an Effort to remove that Status.",
     "Junk Hoarder  {SPECIAL_ICON}": "Discard a card. Depending on the type of the card: • {OT_CONTROL_ICON}: Place a Suspect within 4\". • {OT_MENACE_ICON}: Move 4\" a friendly model within 4\". • {OT_VIOLENCE_ICON}: A friendly model within 4\" gains 2 {+ATT_ICON}. • {OT_PROTECTION_ICON}: A friendly model within 4\" gains 2 {+DEF_ICON}.",
     "Justice": "When a friendly model is removed as a casualty, an enemy model suffers the Quarry (1) Status.",
+    
+    //K
+    
     "Kaos Agent": "All friendly models with Rank {RANK_HENCHMAN_ICON} gain the Trickster trait for the duration of the game. You do not have to place all of your Audacity Activation markers during the Raise the Plan phase (or any, if you wish). Instead, whenever a friendly model with the Trickster trait activates, you may give it one of your remaining Audacity Activation markers.",
     "KaPow!!! {SPECIAL_ICON}": "Until the end of its activation this model’s Melee Attacks gain +1 to attack dice rolls and Blunt 3.",
     "Kevlar Vest": "Whenever this model takes Damage from an enemy attack or special rule, reduce the total number of Damage markers it receives by 1, to a minimum of 1. You may choose which marker is ignored.",
@@ -18172,6 +18247,9 @@ const traitDescriptions = {
     "Kowabunga! {SPECIAL_ICON}": "Until the end of this round, This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling. In addition, if this model ends a movement action in a lower position than it started, it can immediately move an extra 4\" and unarmed attacks gains Devastating until the end of the turn.",
     "Kryptonian (X)": "A model with this trait gains a number of rules determined by the trait’s level (X), see below.\n\n1: Fast, Invulnerability/1, Natural Immunities.\n2: Fast, Invulnerability/2, Natural Immunities, Super Jump.\n3: Fast, Fly, Invulnerability/3, Natural Immunities.\n4: Fast, Fly, Invulnerability/3, Natural Immunities, Tough Skin.\n5: Fast, Fly, Hover, Flying High, Invulnerability/4, Natural Immunities, Tough Skin.\n6: Fast, Fly, Hover, Flying High, Invulnerability/5, Natural Immunities, Tough Skin.\n\nIf the game is affected by the Day rules, the Invulnerability rule is improved by +1 and all the levels gain the Regeneration trait.",
     "Kryptonite": "If a weapon with this rule hits a model with the Kryptonian trait, the Kryptonian model loses the Invulnerability and Regeneration traits (if they possess them) until the end of the round.",
+    
+    //L
+    
     "Lace": "Model's Close Combat attacks gain the Blunt (2) trait.",
     "Lantern": "A model with this trait can activate it at any time during its activation. The model counts as a Light source with a radius of 2” until the end of the round.",
     "Large": "This model ignores up to 1 {STUN_ICON} Damage per attack suffered.",
@@ -18214,6 +18292,9 @@ const traitDescriptions = {
     "Luck": "Once per round, this model may reroll any single die that it has rolled, for whatever reason.",
     "Luminescent Mutation": "Model gains the Lantern trait.",
     "Lunatic Laugh {SPECIAL_ICON}": "Until the end of the round, enemy models within 8\" and LoS roll 1 fewer die when making a Defense roll.",
+    
+    //M
+    
     "Made Man": "If this model inflicts a KO on an enemy model, it counts as having Revealed either a friendly or enemy Suspect with a Manipulate action during its activation.",
     "Mafia": "Model gains the Criminal trait.",
     "Magic": "An attack made with this special weapon trait is considered a Cast a Spell action that uses the Attack action of the model and assigns the caster 1 Magical Counter.",
@@ -18294,6 +18375,9 @@ const traitDescriptions = {
     "Multiverse Teleportation Device": "This model may not be deployed as normal at the start of the game. Instead, at the start of the Raise the Plan phase of the second round, place this model anywhere on the board (but not inside a building or similar enclosed space).",
     "Mutation Serum": "Model gains the Tough Skin and Desensitized traits.",
     "My Idol!": "This model can only be recruited if a model with the Alias: Zur-En-Arrh Batman is part of the crew. In addition, while a friendly model with Alias: Zur-En-Arrh Batman is in play and not KO, this model gains +1 Willpower.",
+    
+    //N
+    
     "Narcotic Dose (Dose)": "A model may use a Narcotics Dose at any time during its activation. If it does so, the model gains the Desensitized trait until the end of the round.",
     "Natural Immunities": "This model cannot be affected by the Blind, Poison or Steal Statuses.",
     "Nature's Arm {SPECIAL_ICON}": "Until the end of the round, This model may place or reveal a Suspect marker within 4” and LoS instead of in contact. An enemy model in contact with that suspect increases the Slow Status value by (2), unless it doesn't have it, then it suffers the Slow (2) Status.",
@@ -18312,6 +18396,9 @@ const traitDescriptions = {
     "No More Lies": "During the activation of a friendly model with the Riddler Followers keyword, you may remove a friendly Suspect within 4\" of that model. If you do, during this and the subsequent activation, the opponent cannot play Objectives as Resources.",
     "Non-Lethal Ammo": "When this model attacks non-Vehicle models with its ranged weapons, all {BLOOD_ICON} damage becomes {STUN_ICON} damage.",
     "Not Him": "When this model suffers Damage that causes it to suffer KO or be removed as a Casualty, you may place it in contact with a friendly model within 8\" that share a Keyword with this model. The friendly model suffers that damage instead.",
+    
+    //O
+
     "Objective Keyword - Burn X": "You can play this Resource by paying X Resource points to discard this card from your hand, placing it at the bottom of your Objective deck.",
     "Objective Keyword - Chaos": "When you score this Objective, both players discard an Objective card at random.",
     "Objective Keyword - Exception (In Play)": "This Resource is not played in the usual way. This Resource may only be used while this card is in play as an Objective and does not be discarded when used.",
@@ -18350,6 +18437,9 @@ const traitDescriptions = {
     "Ostentatious Clothing": "Model gains the Goad trait.",
     "Outlaw Field Commander {SPECIAL_ICON}": "Choose another friendly model within 4” and line of sight. That model gains +2 {+ATT_ICON} or {+DEF_ICON}.",
     "Overwhelming": "The target of an attack made by this weapon suffers -1 to its Defense rolls.",
+    
+    //P
+    
     "Painful Empathy {SPECIAL_ICON}": "Transfer Damage markers from another friendly model within 8\" and LoS to this model. If any Damage markers are moved in this way, this model gains +1 to its Attacks and Defense skills and +1 to its Strength rolls until the end of the round.",
     "Panda Costume": "This model must spend an Action (any type) to stand up. This model may do nothing else during that Action.",
     "Paralyze": "Status. A paralyzed model reduces its Defense skill by -2, and cannot perform Actions until the end of the round.",
@@ -18420,11 +18510,17 @@ const traitDescriptions = {
     "Put More Effort": "This model places an additional Counter for the purpose of the Attempt Thwarted Objective cards.",
     "Puzzle Master": "When this model is going to place a Suspect by a Manipulate action, it can place 2 Suspect markers and can place them within 6” instead of in contact.",
     "Pyromania (Mental Disorder)": "If this model can see any model that suffers the Fire Status, this model gains a {+DEF_ICON}.",
+    
+    //Q
+    
     "Quarry (X)": "Status. When a friendly model attacks this model, it receives +1 to hit against it. Then reduce the X by 1.",
     "Queen of Spades {SPECIAL_ICON}": "Another friendly model with the Spades trait performs a Move 4\" and then a Manipulate Action immediately. When resolved continue with this model's activation.",
     "Queen's Choosen": "Model gains the Bodyguard rule.",
     "Quiz Master": "After playing an Objective card during this model's activation, instead of drawing, you may search your Objective deck for any card, reveal it and place it in to your hand. Then shuffle your deck.",
     "Quilt's Helmet": "This model can see any model within 8” of it, ignoring any other rule and scenery and ignores the Blind effect. In addition, this model may spend its Special Action to target an enemy model within 6”, that model suffers the Hypnotize Status. This model may only purchase up to 1 Equipment.",
+    
+    //R
+    
     "Radio": "This model is always treated as though it were within range of it's Boss's Inspire trait.",
     "Radioactive Soul-Self {SPECIAL_ICON}": "When this trait is used, this model becomes immune to all Damage and Statuses, cannot be targeted by any model, cannot move, and cannot perform Manipulate actions. However, this\r\nmodel gains +1 Attacks skill, adds +2 to its attack dice rolls, and its Unarmed Melee Attacks produce {STUN_ICON}{STUN_ICON} Damage. This model can make Melee Attacks against models up to 8” away as if it were in contact. These conditions last until the end of the model’s next activation. This trait cannot be used in two consecutive rounds.",
     "Raised in the Sewers": "This model can deploy in contact with a Sewer marker instead of in its deployment zone.",
@@ -18479,6 +18575,9 @@ const traitDescriptions = {
     "Runner": "Model gains the Tireless trait.",
     "Rusty Tools": "Model gains the Cruel trait.",
     "Ruthless Team": "Model gains the Death Pack trait.",
+    
+    //S
+    
     "Sad Life": "Enemies within 6” that wish to perform an Action must first make 1 Effort (if the target cannot make an Effort, it can ignore this rule).",
     "Safe hands": "This model is immune to the Steal Status.",
     "Saint Dumas Zealot": "Keyword.",
@@ -18597,6 +18696,9 @@ const traitDescriptions = {
     "Swarm": "This model cannot be recruited, but can only be brought into play by the Sewer Swarm X trait or another rule that specifically say it. This model gains +1 Defense skill vs enemy Ranged Attacks. This model cannot perform Manipulate Actions by any means. Swarms do not fulfill enemy Objective criteria for making models KO or removing them as Casualties. If this model is made KO, remove it as a Casualty. This model is ignored by the Suicide Squad Cranial Bomb rule and cannot be removed by the Cranial Bomb Activated card.",
     "SWAT Special Training": "Model gains the Tracking and Precise Aim traits.",
     "Swift": "This model can make 1 Effort to improve its basic move distance by +2” for the remainder of the round.",
+    
+    //T
+    
     "Tachyon device": "In the Drain Speed Force sub-phase, if there aren’t any Speed Force markers in the Speed Force pool, this model adds up to 2 Speed Force markers to its own reserve.",
     "Tactical Approach": "During this model's activation you may discard 1 card from your hand to Move 4\" a friendly marker that is within 8\" of another friendly model.",
     "Tactical Gloves": "Gains Reinforced Gloves rule.",
@@ -18700,6 +18802,9 @@ const traitDescriptions = {
     "True Psychopath": "When an model within 8” is removed as a Casualty, you may place 2 {OBJECTIVE_CROSS_ICON} on top of the Psychopaths Objective card instead of 1.",
     "Truly Immortal": "This model cannot become KO or be removed as Casualty from the game by any means. Instead, remove one Damage marker, then the opponent relocates this model, placing it within 4”.",
     "Truth-Seeker": "When a model within 10” of this model becomes KO or is removed as a Casualty, you may first place a friendly Suspect marker in contact with it (ignoring the normal minimum distance between Suspect markers). This model may remove 1 friendly Suspect marker within 4” during its activation to perform an extra move of up to 4”. In addition, when a friendly model within 4” of a friendly Suspect marker scores an Objective card, you may remove that marker to draw an additional Objective card.",
+    
+    //U
+    
     "Umbrella's Knout Gas {SPECIAL_ICON}": "Target an enemy within 4\" and LoS. That model must take an Endurance Roll. If not successful, it suffers the Enervating (3) Status.",
     "Unarmed Combat Training": "Model gains the Close Combat Master trait.",
     "Undead": "This model is immune to all Statuses and CRT, except Knock Down and Blind.",
@@ -18719,6 +18824,9 @@ const traitDescriptions = {
     "Unstoppable Monster": "At the start of this model’s activation, it must move 2” in a straight line as an extra Action. Enemy models within 4” of this model cannot perform the Manipulate Action.",
     "Upgraded Batsuit": "Model gains +1 to Endurance.",
     "Upgrades": "This model allows your crew to purchase the Equipment pieces marked as Lucius's Inventions. Only one of these equipment options are active during the game and only the active equipment option applies its effects to the equipped models. Mark the active equipment at the start of the first activation of the game.\r\nThe Upgrades are: Improved Batclaw (only purchasable by models with the Batclaw/Grapple Gun trait), Improved Batlings (only purchasable by models with a weapon with the Throwing trait), Improved Bat-Armor (only purchasable by models with the Bat-Armor MkII trait) and Improved Reinforced Gloves (only purchasable by models with the Reinforced Gloves trait).",
+    
+    //V
+    
     "Vampire": "Enemy models roll 1 fewer attack die when targeting this model and when this model inflicts {BLOOD_ICON} with a Melee attack, remove 1 Damage marker.\r\nIn addition, at the start of this model's activation, if is it not within the area effect of a Light source it may remove 1 Damage marker.",
     "Vampire Reign": "Enemy models within 8\" suffer -1 to it's attack and defense dice rolls and may not use the Dodging rule.",
     "Vanish {SPECIAL_ICON}": "Perform an extra Attack action with this model’s EM Smoke Grenades (not affected by Rapid Fire), inflicting a single automatic hit. For the duration of this attack, the EM Smoke Grenades gain the Light special rule. If this model has not moved during its activation and is beneath the template when it makes this attack, this model may be placed anywhere within 4” of its current position. This model cannot move (or use the Grapple Gun/Batclaw Trait) for the remainder of its activation. This model ignores the Damage and ignores the rules of the Smoke event marker caused by its own EM Smoke Grenades. This use of this trait requires a magazine as usual but does not count as the model’s Attack Action.",
@@ -18739,6 +18847,9 @@ const traitDescriptions = {
     "Volunteer": "This model cannot be selected by a Cranial Bomb Activated card. When this model gains a Task token, instead may be placed on another friendly model within 8\" and LoS.",
     "Vote for Harvey Dent Banner": "Model's Inspire radius is increased by 4\".",
     "Vulnerability to Fire": "When this model suffers Damage by the Fire Status, inflicts to it 1 {BLOOD_ICON} Damage additionally.",
+    
+    //W
+    
     "Wah! Wah! Wah!": "All the models within 8\" and LoS to this model counts as having Audacity for the Stage Play Objective card.",
     "Walking Plant": "This model does not benefit from its Action Zone to perform Attack and Manipulate actions.\r\nIn addition, if this model starts its activation within 8\" from a friendly model with the Elite Boss (Plants) trait, it removes 1 Damage, if not, it suffers 1 {BLOOD_ICON}.",
     "Walking Suspects": "When this model performs the Manipulate action to Place or Reveal a Suspect, it is immediately removed as a Casualty.",
@@ -18762,8 +18873,14 @@ const traitDescriptions = {
     "Wizard of Quiz": "When this model places a Suspect within 8” of an enemy model, if that enemy model can see this model and the Suspect, you may look at the top 2 cards in that model’s controller’s Objective deck. Discard one of the cards and place the other one on top of the deck.",
     "Working in Advance": "At the end of step 6 of Prepare the Game, you must inflict the Terror Status onto an enemy model.",
     "Wrestler": "Keyword.",
+    
+    
     "You're locked in here with ME!": "This model gains the Takedown and Intimidate traits.",
+    
+    
     "Zoom, Zoom": "This model may spend its movement action to place a friendly Suspect anywhere in the gaming area more following the usual rules.",
+    
+    
     "360° Strike {SPECIAL_ICON}": "When this model performs a Melee Attack this round, it must be performed against all the models available to be a target (friendly and enemy). During this attack, no one model can make Efforts. Roll only once, and compare with all the targets results. Friendly models cannot make defense rolls against these attacks, but they cannot be the only models affected by it (there must be at least one enemy to target)."
 
 };
