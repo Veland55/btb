@@ -81,6 +81,8 @@ const translations = {
     leader_required_for_sidekick: "Требует Leader для Sidekick",
     amazon_lineage: "Amazon Lineage: Только в amazon фракциях",
     animal_no_equipment: "Модели с трейтом Animal не могут покупать оборудование!",
+    fully_equipped_no_equipment: "Модель с трейтом Fully Equipped не может покупать оборудование!",
+    limited_equipment_max_reached: "Модель с трейтом Limited Equipment уже достигла лимита в 1 единицу оборудования!",
     export_empty_roster: "Отряд пуст! Добавьте модели перед экспортом.",
     export_copied: "Ростер скопирован в буфер обмена!",
     export_copy_prompt: "Скопируйте текст ростера:",
@@ -145,6 +147,8 @@ const translations = {
     leader_required_for_sidekick: "Requires Leader for Sidekick",
     amazon_lineage: "Amazon Lineage: Only in amazon factions",
     animal_no_equipment: "Models with Animal trait cannot purchase equipment!",
+    fully_equipped_no_equipment: "Model with Fully Equipped trait cannot purchase any equipment!",
+    limited_equipment_max_reached: "Model with Limited Equipment trait has already reached the limit of 1 equipment!",
     export_empty_roster: "Crew is empty! Add models before exporting.",
     export_copied: "Roster copied to clipboard!",
     export_copy_prompt: "Copy the roster text:",
@@ -1597,6 +1601,21 @@ function openEquipmentMenu(model, cardElement) {
   if (crewModel.traits && crewModel.traits.some(t => t.includes("Animal"))) {
     alert(t("animal_no_equipment"));
     return;
+  }
+
+  // Модели с трейтом Fully Equipped не могут покупать оборудование
+  if (crewModel.traits && crewModel.traits.some(t => t.includes("Fully Equipped"))) {
+    alert(t("fully_equipped_no_equipment"));
+    return;
+  }
+
+  // Модели с трейтом Limited Equipment могут купить только 1 единицу оборудования
+  if (crewModel.traits && crewModel.traits.some(t => t.includes("Limited Equipment"))) {
+    const currentEquipmentCount = (crewModel.equipment || []).length;
+    if (currentEquipmentCount >= 1) {
+      alert(t("limited_equipment_max_reached"));
+      return;
+    }
   }
 
   const faction = currentFaction;
