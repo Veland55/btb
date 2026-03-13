@@ -4242,6 +4242,38 @@ const models = [
     ]
   },
   {
+    "name": "Black Mask Thug 4",
+    "realname": "Koulikov Khrushchev",
+    "base": "30mm",
+    "rep": 21,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "https://veland55.github.io/btb/img/BlackMaskThug4.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Criminal",
+      "Power Strike",
+      "Mobster"
+    ],
+    "weapons": [
+      {
+        "name": "Maul",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
     "name": "Black Mask Thug 2",
     "realname": "Vassili Danilov",
     "base": "30mm",
