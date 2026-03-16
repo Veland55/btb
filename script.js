@@ -21,6 +21,67 @@ let specialTraitNames = new Set(); // Кэш специальных трейто
 // Режимы просмотра
 let currentMode = 'menu'; // menu, cards, builder, rules
 
+// ======================== ИКОНКИ ========================
+const ICON_MAP = {
+  "{+ATT_ICON}": "img/ico/+ATT_ICON.png",
+  "{+DEF_ICON}": "img/ico/+DEF_ICON.png",
+  "{-ATT_ICON}": "img/ico/-ATT_ICON.png",
+  "{-DEF_ICON}": "img/ico/-DEF_ICON.png",
+  "{AFF_BANE_ICON}": "img/ico/AFF_BANE_ICON.png",
+  "{AFF_BATMAN_ICON}": "img/ico/AFF_BATMAN_ICON.png",
+  "{AFF_CULTS_ICON}": "img/ico/AFF_CULTS_ICON.png",
+  "{AFF_CRIME_ICON}": "img/ico/AFF_CRIME_ICON.png",
+  "{AFF_HARLEY_QUINN_FRIENDS_ICON}": "img/ico/AFF_HARLEY_QUINN_FRIENDS_ICON.png",
+  "{AFF_JOKER_ICON}": "img/ico/AFF_JOKER_ICON.png",
+  "{AFF_LAW_FORCES_ICON}": "img/ico/AFF_LAW_FORCES_ICON.png",
+  "{AFF_LEAGUE_ICON}": "img/ico/AFF_LEAGUE_ICON.png",
+  "{AFF_MRFREEZE_ICON}": "img/ico/AFF_MRFREEZE_ICON.png",
+  "{AFF_OWLS_ICON}": "img/ico/AFF_OWLS_ICON.png",
+  "{AFF_PENGUIN_ICON}": "img/ico/AFF_PENGUIN_ICON.png",
+  "{AFF_RIDDLER_ICON}": "img/ico/AFF_RIDDLER_ICON.png",
+  "{AFF_ROYAL_FLUSH_ICON}": "img/ico/AFF_ROYAL_FLUSH_ICON.png",
+  "{AFF_SCARECROW_ICON}": "img/ico/AFF_SCARECROW_ICON.png",
+  "{AFF_SUICIDE_SQUAD_ICON}": "img/ico/AFF_SUICIDE_SQUAD_ICON.png",
+  "{BLOOD_ICON}": "img/ico/BLOOD_ICON.png",
+  "{CROWN_ICON}": "img/ico/CROWN_ICON.png",
+  "{EFF_BLIND_ICON}": "img/ico/EFF_BLIND_ICON.png",
+  "{EFF_ENERV1_ICON}": "img/ico/EFF_ENERV1_ICON.png",
+  "{EFF_FIRE_ICON}": "img/ico/EFF_FIRE_ICON.png",
+  "{EFF_FREEZE_ICON}": "img/ico/EFF_FREEZE_ICON.png",
+  "{EFF_PARALYZE_ICON}": "img/ico/EFF_PARALYZE_ICON.png",
+  "{EFF_POISON1_ICON}": "img/ico/EFF_POISON1_ICON.png",
+  "{EFF_SCARED_ICON}": "img/ico/EFF_SCARED_ICON.png",
+  "{EFF_STUNNED_ICON}": "img/ico/EFF_STUNNED_ICON.png",
+  "{KD_ICON}": "img/ico/KD_ICON.png",
+  "{MOV+2_ICON}": "img/ico/MOV+2_ICON.png",
+  "{MOV+4_ICON}": "img/ico/MOV+4_ICON.png",
+  "{MOV-2_ICON}": "img/ico/MOV-2_ICON.png",
+  "{OBJECTIVE_CROSS_ICON}": "img/ico/OBJECTIVE_CROSS_ICON.png",
+  "{OT_CONTROL_ICON}": "img/ico/OT_CONTROL_ICON.png",
+  "{OT_MENACE_ICON}": "img/ico/OT_MENACE_ICON.png",
+  "{OT_PROTECTION_ICON}": "img/ico/OT_PROTECTION_ICON.png",
+  "{OT_VIOLENCE_ICON}": "img/ico/OT_VIOLENCE_ICON.png",
+  "{RANK_FREEAGENT_ICON}": "img/ico/RANK_FREEAGENT_ICON.png",
+  "{RANK_HENCHMAN_ICON}": "img/ico/RANK_HENCHMAN_ICON.png",
+  "{RANK_LEADER_ICON}": "img/ico/RANK_LEADER_ICON.png",
+  "{RANK_SIDEKICK_ICON}": "img/ico/RANK_SIDEKICK_ICON.png",
+  "{RANK_VEHICLE_ICON}": "img/ico/RANK_VEHICLE_ICON.png",
+  "{SPECIAL_ICON}": "img/ico/SPECIAL_ICON.png",
+  "{STUN_ICON}": "img/ico/STUN_ICON.png"
+};
+
+function replaceIcons(text) {
+  if (!text) return "";
+  let html = text;
+  Object.keys(ICON_MAP).forEach(tag => {
+    const iconFile = ICON_MAP[tag];
+    const safeTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(safeTag, 'g');
+    html = html.replace(regex, `<img src="${iconFile}" class="inline-icon" alt="icon">`);
+  });
+  return html;
+}
+
 // ======================== ЛОКАЛИЗАЦИЯ ========================
 let currentLang = 'ru';
 
@@ -761,14 +822,6 @@ ${item.inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); o
 }, 100);
 
 // ======================== ПОЛНАЯ КАРТОЧКА ========================
-// Вспомогательная функция для замены текстовых кодов иконками
-function replaceIcons(text) {
-  if (!text) return "";
-  return text
-    .replace(/{SPECIAL_ICON}/g, '<img src="https://veland55.github.io/btb/img/special.png" class="inline-icon">')
-    .replace(/{S}/g, '<img src="https://veland55.github.io/btb/img/special.png" class="inline-icon">');
-}
-
 function renderTraits(traits) {
   if (!traits || !traits.length) return '';
 
@@ -1035,60 +1088,6 @@ const renderModelSearch = () => {
 $("modelSearchInput").oninput = renderModelSearch;
 
 // ======================== ТРЕЙТЫ ========================
-function replaceIcons(text) {
-  if (!text) return "";
-  
-  const iconMap = {
-    "{+ATT_ICON}": "+ATT_ICON.png",
-    "{+DEF_ICON}": "+DEF_ICON.png",
-    "{-ATT_ICON}": "-ATT_ICON.png",
-    "{-DEF_ICON}": "-DEF_ICON.png",
-    "{AFF_BANE_ICON}": "AFF_BANE_ICON.png",
-    "{AFF_BATMAN_ICON}": "AFF_BATMAN_ICON.png",
-    "{AFF_CULTS_ICON}": "AFF_CULTS_ICON.png",
-    "{AFF_MRFREEZE_ICON}": "AFF_MRFREEZE_ICON.png",
-    "{AFF_OWLS_ICON}": "AFF_OWLS_ICON.png",
-    "{BLOOD_ICON}": "BLOOD_ICON.png",
-    "{CROWN_ICON}": "CROWN_ICON.png",
-    "{EFF_BLIND_ICON}": "EFF_BLIND_ICON.png",
-    "{EFF_ENERV1_ICON}": "EFF_ENERV1_ICON.png",
-    "{EFF_FIRE_ICON}": "EFF_FIRE_ICON.png",
-    "{EFF_FREEZE_ICON}": "EFF_FREEZE_ICON.png",
-    "{EFF_PARALYZE_ICON}": "EFF_PARALYZE_ICON.png",
-    "{EFF_POISON1_ICON}": "EFF_POISON1_ICON.png",
-    "{EFF_SCARED_ICON}": "EFF_SCARED_ICON.png",
-    "{EFF_STUNNED_ICON}": "EFF_STUNNED_ICON.png",
-    "{KD_ICON}": "KD_ICON.png",
-    "{MOV+2_ICON}": "MOV+2_ICON.png",
-    "{MOV+4_ICON}": "MOV+4_ICON.png",
-    "{MOV-2_ICON}": "MOV-2_ICON.png",
-    "{OBJECTIVE_CROSS_ICON}": "OBJECTIVE_CROSS_ICON.png",
-    "{OT_CONTROL_ICON}": "OT_CONTROL_ICON.png",
-    "{OT_MENACE_ICON}": "OT_MENACE_ICON.png",
-    "{OT_PROTECTION_ICON}": "OT_PROTECTION_ICON.png",
-    "{OT_VIOLENCE_ICON}": "OT_VIOLENCE_ICON.png",
-    "{RANK_FREEAGENT_ICON}": "RANK_FREEAGENT_ICON.png",
-    "{RANK_HENCHMAN_ICON}": "RANK_HENCHMAN_ICON.png",
-    "{RANK_LEADER_ICON}": "RANK_LEADER_ICON.png",
-    "{RANK_SIDEKICK_ICON}": "RANK_SIDEKICK_ICON.png",
-    "{RANK_VEHICLE_ICON}": "RANK_VEHICLE_ICON.png",
-    "{SPECIAL_ICON}": "SPECIAL_ICON.png",
-    "{STUN_ICON}": "STUN_ICON.png"
-  };
-
-  let html = text;
-  Object.keys(iconMap).forEach(tag => {
-    const iconFile = iconMap[tag];
-    // Экранируем спецсимволы в теге для RegExp
-    const safeTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(safeTag, 'g');
-    // Путь img/icons/ как в твоем проекте
-    html = html.replace(regex, `<img src="img/ico/${iconFile}" class="inline-icon" alt="icon">`);
-  });
-
-  return html;
-}
-
 function showTraitDesc(traitName) {
   // 1. Твоя родная логика поиска 1 в 1
   const entry = findCompendiumEntry(traitName);
@@ -1618,22 +1617,128 @@ function openEquipmentMenu(model, cardElement) {
     }
   }
 
+  // ПРАВКА 1: Leader не может покупать equipment, если явно не разрешено в targetModels
+  if (crewModel.rankUsed === "Leader") {
+    // Проверяем, есть ли equipment с targetModels, разрешающим Leader
+    const faction = currentFaction;
+    const hasLeaderPermission = (equipmentByFaction[faction] || []).some(eq => 
+      eq.targetModels && eq.targetModels.includes("Leader")
+    );
+    if (!hasLeaderPermission) {
+      alert(currentLang === 'ru' ? "Leader не может покупать оборудование!" : "Leader cannot purchase equipment!");
+      return;
+    }
+  }
+
   const faction = currentFaction;
   const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
-    // Проверка maxPerCrew
+    // ПРАВКА 2: Проверка maxPerCrew (ограничение на количество предметов в отряде)
     const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
     if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
 
-    // Проверка условий (conditions)
+    // ПРАВКА 3: Модель не может иметь одно и то же оборудование дважды
+    if (crewModel.equipment && crewModel.equipment.some(e => e.name === eq.name)) {
+      return false;
+    }
+
+    // ПРАВКА 4: Проверка targetModels (ограничение на какие модели можно купить)
+    // По умолчанию только Henchman могут покупать equipment
+    // Все остальные ранги (Leader, Sidekick, Free Agent) могут покупать только если явно разрешено
+
+    // Сначала проверяем, является ли это Special Equipment (требует персонажа в отряде)
+    // Special Equipment доступно ВСЕМ моделям независимо от ранга, если персонаж есть в отряде
+    const isSpecialEquipment = eq.conditions && eq.conditions.some(cond =>
+      cond.endsWith(' in crew') || cond.startsWith('Alias:')
+    );
+
+    if (isSpecialEquipment) {
+      // Это Special Equipment — проверяем только наличие требуемого персонажа в отряде
+      const hasRequiredCharacter = eq.conditions.some(cond => {
+        let modelName = '';
+        // Правильный порядок замен: сначала убираем "Alias: ", потом " in crew"
+        modelName = cond.replace('Alias: ', '').replace(' in crew', '').trim();
+
+        if (modelName) {
+          // Проверяем точное совпадение или совпадение по базовому имени
+          // Например, "Scarecrow" должен совпадать с "Scarecrow (The Worst Nightmare)"
+          const foundModel = crew.find(m => {
+            // Точное совпадение
+            if (m.name === modelName || m.alias === modelName) return true;
+            // Проверка: modelName является началом имени модели (например, "Scarecrow" -> "Scarecrow (The Worst Nightmare)")
+            if (m.name.startsWith(modelName + ' ') || m.name.startsWith(modelName + '(')) return true;
+            // Проверка по alias
+            if (m.alias && (m.alias.startsWith(modelName + ' ') || m.alias.startsWith(modelName + '('))) return true;
+            return false;
+          });
+          return foundModel;
+        }
+        return false;
+      });
+
+      if (!hasRequiredCharacter) {
+        return false; // Требуемый персонаж отсутствует в отряде
+      }
+      // Если персонаж есть, Special Equipment доступно независимо от ранга — пропускаем дальше
+    } else {
+      // Это не Special Equipment, применяем обычные правила
+      if (crewModel.rankUsed !== "Henchman") {
+        // Модель не Henchman, проверяем есть ли разрешение в targetModels
+        if (!eq.targetModels || !eq.targetModels.length) {
+          return false; // Нет targetModels — не Henchman не могут покупать
+        }
+
+        const allowedByName = eq.targetModels.some(t => t === crewModel.name);
+        const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
+
+        if (!allowedByName && !allowedByRank) {
+          return false; // Модель не соответствует targetModels
+        }
+      }
+    }
+
+    // ПРАВКА 5: Проверка условий (conditions)
     if (eq.conditions && eq.conditions.length) {
       const allConditionsMet = eq.conditions.every(cond => {
         const trimmed = cond.trim();
 
+        // Пропускаем условия "Alias: X in crew", так как они уже были проверены в isSpecialEquipment
+        if (trimmed.endsWith(' in crew') || trimmed.startsWith('Alias:')) {
+          return true;
+        }
+
+        // Отрицательное условие: "Model has X trait cannot purchase"
+        if (trimmed.match(/Model has \w+ trait cannot purchase/i)) {
+          const traitMatch = trimmed.match(/Model has (\w+) trait cannot purchase/i);
+          if (traitMatch) {
+            const forbiddenTrait = traitMatch[1];
+            // Если у модели есть запрещённый трейт — условие не выполнено
+            if (crewModel.traits && crewModel.traits.some(t => t === forbiddenTrait)) {
+              return false;
+            }
+            return true;
+          }
+        }
+
+        // Положительное условие: "Model has X trait"
+        if (trimmed.match(/Model has \w+ trait$/i)) {
+          const traitMatch = trimmed.match(/Model has (\w+) trait$/i);
+          if (traitMatch) {
+            const requiredTrait = traitMatch[1];
+            // Если у модели есть требуемый трейт — условие выполнено
+            return crewModel.traits && crewModel.traits.some(t => t === requiredTrait);
+          }
+        }
+
         // Отрицательное условие: "Nightmares cannot buy" или "Plants cannot purchase"
         if (trimmed.match(/cannot (buy|purchase)/i)) {
           const forbiddenTrait = trimmed.replace(/.*?(Nightmares|Plants|Animals|Bots).*?/i, '$1').trim();
+          // Нормализуем имена трейтов: "Nightmares" -> "Nightmare", "Plants" -> "Plant", etc.
+          const normalizedForbiddenTrait = forbiddenTrait === 'Nightmares' ? 'Nightmare' :
+                                           forbiddenTrait === 'Plants' ? 'Plant' :
+                                           forbiddenTrait === 'Animals' ? 'Animal' :
+                                           forbiddenTrait === 'Bots' ? 'Bot' : forbiddenTrait;
           // Если у модели есть запрещённый трейт — условие не выполнено
-          if (crewModel.traits && crewModel.traits.some(t => t.includes(forbiddenTrait))) {
+          if (crewModel.traits && crewModel.traits.some(t => t.includes(normalizedForbiddenTrait))) {
             return false;
           }
           return true;
@@ -1644,7 +1749,20 @@ function openEquipmentMenu(model, cardElement) {
           const requiredTrait = trimmed.replace('Only ', '').trim();
           // Поддержка множественных трейтов через "/"
           const traits = requiredTrait.split('/').map(t => t.trim());
-          return crewModel.traits && traits.some(t => crewModel.traits.some(trait => trait.includes(t)));
+          // Нормализуем имена трейтов: "Nightmares" -> "Nightmare", "Plants" -> "Plant", "Animals" -> "Animal", "Bots" -> "Bot"
+          const normalizedTraits = traits.map(t => {
+            if (t === 'Nightmares') return 'Nightmare';
+            if (t === 'Plants') return 'Plant';
+            if (t === 'Animals') return 'Animal';
+            if (t === 'Bots') return 'Bot';
+            return t;
+          });
+          return crewModel.traits && normalizedTraits.some(t => crewModel.traits.some(trait => trait.includes(t) || trait.startsWith(t)));
+        }
+
+        // "Only Arkham Asylum Dr." — проверка на трейт с точкой
+        if (trimmed.startsWith('Only Arkham Asylum Dr')) {
+          return crewModel.traits && crewModel.traits.some(t => t.startsWith('Arkham Asylum Dr'));
         }
 
         // "Only Henchman/Free Agents" — проверка по рангу
@@ -1665,27 +1783,36 @@ function openEquipmentMenu(model, cardElement) {
           return crewModel.traits && crewModel.traits.some(t => t.includes(trait));
         }
 
-        // "Bruce Wayne in crew" или "Alias: Poison Ivy in crew"
-        if (trimmed.endsWith(' in crew')) {
-          let modelName = trimmed.replace(' in crew', '').trim();
-          if (modelName.startsWith('Alias: ')) {
-            modelName = modelName.replace('Alias: ', '').trim();
-          }
-          return crew.some(m => m.name === modelName || m.alias === modelName);
-        }
-
-        // Простое имя модели — наличие в crew
+        // Простое имя модели — наличие в crew (SPECIAL EQUIPMENT)
         return crew.some(m => m.name === trimmed || m.alias === trimmed);
       });
 
       if (!allConditionsMet) return false;
     }
 
-    // Проверка targetModels (ограничение на какие модели можно купить)
-    if (eq.targetModels && eq.targetModels.length) {
-      const allowedByName = eq.targetModels.some(t => t === crewModel.name);
-      const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
-      if (!allowedByName && !allowedByRank) return false;
+    // ПРАВКА 6: Проверка на дублирование трейтов от equipment
+    // Если equipment даёт трейт, проверяем, нет ли уже такого трейта у модели
+    if (eq.effects && eq.effects.length) {
+      // Извлекаем названия трейтов из effects
+      for (const effect of eq.effects) {
+        // Паттерны для извлечения трейтов: "Model gains the X rule/trait"
+        const gainsMatch = effect.match(/Model gains (?:the )?([^(.]+?)(?: rule| trait|\.)$/i);
+        if (gainsMatch) {
+          const gainedTrait = gainsMatch[1].trim();
+          // Проверяем, есть ли уже такой трейт у модели
+          if (crewModel.traits && crewModel.traits.some(t => t.includes(gainedTrait))) {
+            return false; // Трейт уже есть, нельзя добавить ещё раз
+          }
+        }
+        // Паттерн для "Model gains X rule/trait" (без "the")
+        const gainsDirectMatch = effect.match(/Model gains ([^(]+?)(?: rule| trait|\.)$/i);
+        if (gainsDirectMatch) {
+          const gainedTrait = gainsDirectMatch[1].trim();
+          if (crewModel.traits && crewModel.traits.some(t => t.includes(gainedTrait))) {
+            return false;
+          }
+        }
+      }
     }
 
     return true;
@@ -1694,11 +1821,24 @@ function openEquipmentMenu(model, cardElement) {
   // Создаём модальное окно
   const overlay = document.createElement("div");
   overlay.className = "rank-select-modal";
-  
+
   // Считаем доступный бюджет
   const usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
   const availableFunding = bmgFundingLimit() - usedFunding;
-  
+
+  // Функция для определения Special Equipment
+  function isSpecialEquipment(eq) {
+    // Special Equipment имеет conditions с именем персонажа или "in crew"
+    if (eq.conditions && eq.conditions.length) {
+      return eq.conditions.some(cond => 
+        cond.endsWith(' in crew') || 
+        cond.startsWith('Alias:') ||
+        crew.some(m => m.name === cond.trim() || m.alias === cond.trim())
+      );
+    }
+    return false;
+  }
+
   overlay.innerHTML = `
     <div class="rank-select-content">
       <div class="rank-select-header">
@@ -1713,11 +1853,16 @@ function openEquipmentMenu(model, cardElement) {
         ${availableEq.length ? availableEq.map(eq => {
           const canAfford = availableFunding >= (eq.fundingCost || 0);
           const insufficientFundsText = currentLang === 'ru' ? '⚠ Недостаточно средств' : '⚠ Insufficient funds';
+          const isSpecial = isSpecialEquipment(eq);
+          const specialBadge = isSpecial ? '<span style="color:#ffd700; font-size:11px; margin-left:6px;">⭐ SPECIAL</span>' : '';
+          const reqCharacter = isSpecial && eq.conditions ? eq.conditions.find(c => c.endsWith(' in crew') || crew.some(m => m.name === c.trim()))?.replace(' in crew', '').replace('Alias: ', '') : null;
+          const reqCharacterText = reqCharacter ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCharacter}</small>` : '';
           return `
           <button class="rank-select-btn" data-eq-name="${eq.name}" ${!canAfford ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
-            ${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})
+            ${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})${specialBadge}
             <small style="display:block; opacity:0.8; font-size:12px;">${replaceIcons(eq.effects.join(" • "))}</small>
             ${!canAfford ? `<span style="color:#ff4444; font-size:11px;">${insufficientFundsText}</span>` : ''}
+            ${reqCharacterText}
           </button>
         `}).join("") : `<p style='text-align:center; color:#aaa;'>${t("no_available_equipment")}</p>`}
       </div>
