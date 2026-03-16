@@ -238,17 +238,17 @@ const equipmentByFaction = {
   ],
   "Scarecrow": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
-    { name: "Apparition", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["Model gains the Apparition trait."] },
-    { name: "Handcuffs", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["Model gains the Arrest trait."] },
-    { name: "Neurotoxic Drugs", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot buy"], effects: ["+2 Movement and Dodge traits."] },
-    { name: "Fear Advantage", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr"], effects: ["Protect Me! on Nightmare without Effort."] },
-    { name: "Intensive Treatment", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr"], effects: ["Model gains the Intensive Treatment (1) trait."] },
-    { name: "Disposable Nightmare", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["On removal, Discard a card from deck."] },
-    { name: "Terror Invigoration", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["+X dice to Attack/Defense (X = Defense Pile cards)."] },
-    { name: "Terror Pile", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Only Nightmares"], effects: ["Model gains the Fear Dampening trait."] },
+    { name: "Apparition", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["Model gains the Apparition trait."] },
+    { name: "Handcuffs", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["Model gains the Arrest trait."] },
+    { name: "Neurotoxic Drugs", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Nightmares cannot purchase"], effects: ["+2 Movement and Dodge traits."] },
+    { name: "Fear Advantage", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr."], effects: ["This model may use the Protect Me! Trait on a friendly model with the Nightmare trait without the need of performing an Effort."] },
+    { name: "Intensive Treatment", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Arkham Asylum Dr."], effects: ["Model gains the Intensive Treatment trait."] },
+    { name: "Disposable Nightmare", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["Model gains the Disposable Nightmare trait. When this model is removed, Discard a card from your deck."] },
+    { name: "Terror Invigoration", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["Model gains the Terror Invigoration trait. This model may throw X additional dice when taking Attack and Defense rolls (X is the number of cards in your Terror Pile)."] },
+    { name: "Fear Dampening", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Only Nightmares"], effects: ["Model gains the Fear Dampening trait."] },
     { name: "Terrible Visage", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Only Nightmares"], effects: ["Model gains the Terrible Visage trait."] },
-    { name: "Intense Fear", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Scarecrow"], effects: ["Model gains the Intense Fear trait."] },
-    { name: "Working in Advance", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dr. Fritawa"], effects: ["Model gains the Working in Advance trait."] }
+    { name: "Intense Fear", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Alias: Scarecrow in crew"], effects: ["Model gains the Intense Fear trait."] },
+    { name: "Working in Advance", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Alias: Dr. Friitawa in crew"], effects: ["Model gains the Working in Advance trait."] }
   ],
   "Royal Flush": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -11537,6 +11537,44 @@ const models = [
 },
 
 {
+  "name": "Harley Quinn KaBoom!",
+  "realname": "Dr. Harleen Frances Quinzel",
+  "base": "60mm",
+  "rep": 84,
+  "funding": 0,
+  "rank": ["Sidekick"],
+  "faction": ["Birds of Prey"],
+  "img": "https://veland55.github.io/btb/img/HarleyQuinn_Kaboom.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 12,
+    "Willpower": 8,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Adaptable",
+    "Charismatic",
+    "Coordination",
+    "Harlequin",
+    "KaBoom!",
+    "More Explosives!",
+    "True Love (Poison Ivy)"
+  ],
+  "weapons": [
+    {
+      "name": "Mallet",
+      "damage": "★★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Reach (1) / Heavy"
+    }
+  ]
+},
+
+{
   "name": "Poison Ivy",
   "realname": "Dr. Pamela Lillian Isley",
   "base": "40mm / 60mm",
@@ -18265,6 +18303,7 @@ const traitDescriptions = {
     
     "Kaos Agent": "All friendly models with Rank {RANK_HENCHMAN_ICON} gain the Trickster trait for the duration of the game. You do not have to place all of your Audacity Activation markers during the Raise the Plan phase (or any, if you wish). Instead, whenever a friendly model with the Trickster trait activates, you may give it one of your remaining Audacity Activation markers.",
     "KaPow!!! {SPECIAL_ICON}": "Until the end of its activation this model’s Melee Attacks gain +1 to attack dice rolls and Blunt 3.",
+    "KaBoom! {SPECIAL_ICON}": "Target a Vandalized element and place an Event marker in contact with it. Roll a Strength 3- die against each model within 2\" of this Event marker. On a success, the model suffers {BLOOD_ICON}{STUN_ICON}. That Vandalized element is no longer Vandalized. Remove this Event marker.",
     "Kevlar Vest": "Whenever this model takes Damage from an enemy attack or special rule, reduce the total number of Damage markers it receives by 1, to a minimum of 1. You may choose which marker is ignored.",
     "Kill them! {SPECIAL_ICON}": "Target a friendly model with Rank {RANK_HENCHMAN_ICON} within 4” of this model (but not the activated model itself). Target model gains +2 {+ATT_ICON}.",
     "Kinetic Tornado": "Cost: 2 Paradox: 6+\r\n\r\nPlace a Spray template in contact with this model. All models affected by it suffer a Push (5) and an auto hit with a Str 4+ and damage {STUN_ICON}{STUN_ICON}. This can be dodged as a ranged attack",
@@ -18279,7 +18318,7 @@ const traitDescriptions = {
     "Kowabunga! {SPECIAL_ICON}": "Until the end of this round, This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling. In addition, if this model ends a movement action in a lower position than it started, it can immediately move an extra 4\" and unarmed attacks gains Devastating until the end of the turn.",
     "Kryptonian (X)": "A model with this trait gains a number of rules determined by the trait’s level (X), see below.\n\n1: Fast, Invulnerability/1, Natural Immunities.\n2: Fast, Invulnerability/2, Natural Immunities, Super Jump.\n3: Fast, Fly, Invulnerability/3, Natural Immunities.\n4: Fast, Fly, Invulnerability/3, Natural Immunities, Tough Skin.\n5: Fast, Fly, Hover, Flying High, Invulnerability/4, Natural Immunities, Tough Skin.\n6: Fast, Fly, Hover, Flying High, Invulnerability/5, Natural Immunities, Tough Skin.\n\nIf the game is affected by the Day rules, the Invulnerability rule is improved by +1 and all the levels gain the Regeneration trait.",
     "Kryptonite": "If a weapon with this rule hits a model with the Kryptonian trait, the Kryptonian model loses the Invulnerability and Regeneration traits (if they possess them) until the end of the round.",
-    
+
     //L
     
     "Lace": "Model's Close Combat attacks gain the Blunt (2) trait.",
@@ -18394,6 +18433,7 @@ const traitDescriptions = {
     "Monitoring": "Model gains the Monitoring Device trait.",
     "Monitoring Device {SPECIAL_ICON}": "Until the end of the round, this model gains Total Vision and its ranged weapons gain Remote Controlled.",
     "Moral Compass": "This model cannot attack KO models.",
+    "More Explosives!": "If this model Sets a Suspect or an enemy model becomes KO as result of this model's attack action, you can mark a scenery element within 4\" of this model as Vandalized.",
     "Morality": "Model gains Moral Compass and Demotivate traits.",
     "Mortal Kiss {SPECIAL_ICON}": "If this model successfully performs at least 3 hits against a model (not a Vehicle), remove the target model as Casualty.",
     "Motion (X)": "When using this weapon, if any hits are scored the wielder may immediately Move X\".",
