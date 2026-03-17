@@ -359,7 +359,10 @@ const models = [
         "ammo": "-",
         "traits": "Defensive / Handy / Sharp"
       }
-    ]
+    ],
+    "specialRules": {
+      "sidekickRequiresRasGhulDecoy": true
+    }
   },
 
     {
@@ -413,7 +416,7 @@ const models = [
     "base": "30mm",
     "rep": 46,
     "funding": 0,
-    "rank": ["Leader", "Sidekick"],
+    "rank": ["Leader"],
     "faction": ["League of Shadows"],
     "img": "https://veland55.github.io/btb/img/RasalGhulDecoy.png",
     "stats": {
