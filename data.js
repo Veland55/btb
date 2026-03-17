@@ -382,7 +382,7 @@ const models = [
     "traits": [
       "Darkness Manipulation (Spell)",
       "Demon",
-      "Magical Power [5]",
+      "Magical Power (5)",
       "Natural Immunities",
       "Painful Empathy",
       "Regeneration",
@@ -429,7 +429,7 @@ const models = [
       "Expendable",
       "Final Trial",
       "Martial Artist",
-      "No Mercy!",
+      "No Mercy!!!",
       "Order"
     ],
     "weapons": [
@@ -18198,7 +18198,8 @@ const traitDescriptions = {
     "Duelist": "While in contact with only one enemy model, this model may reroll failed attack dice rolls in Melee.",
     "Duke of Duality": "When this model scores an Objective card, flip a coin or roll a D6: if the result is ‘heads’ (or an even number) draw an additional card. If the result is ‘tails’ (or an odd number), Discard an Objective card at random before drawing a new card.",
     "Duo (X)": "When this model is included in a crew that also contains the model names in parentheses that share a Rank with this model, one of them ignores the shared Rank for the purposes of crew configuration.",
-    
+    "Darkness Manipulation (Spell)": "Special Action. 1 Magic Counter. Until the end of round, when a friendly model within 8\" is targeted with a Ranged Attack, it is always considered away than 12\" of the attacker and is considered under the effect of a Light source, ignoring any other rule that provides Light [like Lantern] and gains Cover against that attack.",
+
     //E
     
     "EMP": "This model rerolls failed Strength die rolls against models with the Cybernetic, Bot or Robot traits, and against models with Rank {RANK_VEHICLE_ICON}.",
@@ -18694,6 +18695,7 @@ const traitDescriptions = {
     
     //P
     
+    "Purging Fire {SPECIAL_ICON}": "This model Set a Suspect in contact with an enemy model within 8\" and LoS. Then, the opponent must choose either to reveal their hand to you or allow you to place one of your friendly models in contact with that Suspect.",
     "Painful Empathy {SPECIAL_ICON}": "Transfer Damage markers from another friendly model within 8\" and LoS to this model. If any Damage markers are moved in this way, this model gains +1 to its Attacks and Defense skills and +1 to its Strength rolls until the end of the round.",
     "Panda Costume": "This model must spend an Action (any type) to stand up. This model may do nothing else during that Action.",
     "Paralyze": "Status. A paralyzed model reduces its Defense skill by -2, and cannot perform Actions until the end of the round.",
@@ -19056,6 +19058,7 @@ const traitDescriptions = {
     "True Psychopath": "When an model within 8” is removed as a Casualty, you may place 2 {OBJECTIVE_CROSS_ICON} on top of the Psychopaths Objective card instead of 1.",
     "Truly Immortal": "This model cannot become KO or be removed as Casualty from the game by any means. Instead, remove one Damage marker, then the opponent relocates this model, placing it within 4”.",
     "Truth-Seeker": "When a model within 10” of this model becomes KO or is removed as a Casualty, you may first place a friendly Suspect marker in contact with it (ignoring the normal minimum distance between Suspect markers). This model may remove 1 friendly Suspect marker within 4” during its activation to perform an extra move of up to 4”. In addition, when a friendly model within 4” of a friendly Suspect marker scores an Objective card, you may remove that marker to draw an additional Objective card.",
+    "Final Trial": "When this model or another model during this mode's activation Sets a Suspect, you can search on your deck for a copy of From the Shadows objective card.",
     
     //U
     
