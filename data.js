@@ -12381,6 +12381,55 @@ const models = [
   },
 
   {
+    "name": "Batgirl Vampire Queen",
+    "realname": "Barbara Gordon",
+    "base": "40mm",
+    "rep": 130,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD",],
+    "rivals": "",
+    "img": "https://veland55.github.io/btb/img/BatgirlVampireQueen.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "2+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bat-Family",
+      "Bat Form",
+      "Batcape",
+      "Queens Command",
+      "Detective",
+      "Master of Stealth",
+      "Protect Me!",
+      "Sneak Attack",
+      "Vampire",
+      "Vampire Queen",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      },
+      {
+        "name": "Claws & Teeth",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating"
+      }
+    ]
+  },
+
+  {
     "name": "Mutated Plant 1",
     "realname": "Unknown",
     "base": "30mm",
@@ -17781,6 +17830,8 @@ const traitDescriptions = {
     "Bat-Armor Mk III": "Enemy models don’t roll a Strength die when attacking this model. In addition, if this model has moved this activation, it can make Melee Attacks against enemies up to 2” away in line of sight (ignore all traits that improve the model’s line of sight, such as Total Vision, for the purpose of these attacks).",
     "Bat Cape": "This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling.",
     "Bat Family": "Keyword.",
+    "Bat Beacon {SPECIAL_ICON}": "Target a Suspect within 6\". Place an Explosive Template centered over it and roll 2D6. All affected models with a Willpower value less than the result suffer Scared and Push (2) Statuses. If this model is affected, it may be placed anywhere within 4\" of its current position. This model ignores the Statuses caused by this trait. However, this model may not use this trait in two consecutive activations.",
+    "Bat Form {SPECIAL_ICON}": "Target a Suspect within 6\". Place an Explosive Template centered over it and roll 2D6. All affected models with a Willpower value less than the result suffer Scared and Push (2) Statuses. If this model is affected, it may be placed anywhere within 4\" of its current position. This model ignores the Statuses caused by this trait. However, this model may not use this trait in two consecutive activations.",
     "Bat-Lenses": "When this model or a friendly model with Alias: Batman (Robert Pattinson) reveals an enemy Suspect, you may look at your opponent's Objective hand.",
     "Bat-Signal {SPECIAL_ICON}": "One use only. This model can use this trait to place a friendly model (not KO or Knocked Down) with Alias: Batman in contact with itself. Until the end of that round, this model is considered Illuminated.",
     "Batclaw/Grapple Gun {SPECIAL_ICON}": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations.\n\n*Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun!",
@@ -17913,6 +17964,7 @@ const traitDescriptions = {
     "Cooperative Fight Plan": "Models in a Teen Titans Team gain the Resilient trait while they are within 4” of two or more friendly models.\n\nResilient:  This model can reroll failed Endurance rolls.\n",
     "Cooperative Fighting": "Other friendly models that make a Close Combat attack against an enemy in contact with this model gain +1 to hit.",
     "Coordination  {SPECIAL_ICON}": "Target another friendly model within 8” of this model that share a keyword with this model, then, immediately perform an action with that model.",
+    "Queens Command {SPECIAL_ICON}": "Target another friendly model within 8” of this model that share a keyword with this model, then, immediately perform an action with that model.",
     "Cop": "Keyword.",
     "Corrosive Blood": "When this model becomes a Casualty, all models in Contact must pass an Endurance roll of receive {BLOOD_ICON} Damage.",
     "Corrupt": "If this model is included your crew, you can recruit up to 3 models with Rank {RANK_HENCHMAN_ICON} with the Cop trait. Additional models in the crew with this trait have no further effect.",
@@ -18900,6 +18952,7 @@ const traitDescriptions = {
     //V
     
     "Vampire": "Enemy models roll 1 fewer attack die when targeting this model and when this model inflicts {BLOOD_ICON} with a Melee attack, remove 1 Damage marker.\r\nIn addition, at the start of this model's activation, if is it not within the area effect of a Light source it may remove 1 Damage marker.",
+    "Vampire Queen": "When recruiting this model, you can purchase The Turning equipment piece to other models in this crew.",
     "Vampire Reign": "Enemy models within 8\" suffer -1 to it's attack and defense dice rolls and may not use the Dodging rule.",
     "Vanish {SPECIAL_ICON}": "Perform an extra Attack action with this model’s EM Smoke Grenades (not affected by Rapid Fire), inflicting a single automatic hit. For the duration of this attack, the EM Smoke Grenades gain the Light special rule. If this model has not moved during its activation and is beneath the template when it makes this attack, this model may be placed anywhere within 4” of its current position. This model cannot move (or use the Grapple Gun/Batclaw Trait) for the remainder of its activation. This model ignores the Damage and ignores the rules of the Smoke event marker caused by its own EM Smoke Grenades. This use of this trait requires a magazine as usual but does not count as the model’s Attack Action.",
     "Vanguard Team": "This model places an additional Counter for the purpose of the Extermination Mission Objective cards. When Misunderstood Orders Objective card targets this model, it may Move 4\".",
