@@ -56,6 +56,9 @@ const equipmentByFaction = {
     { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["Enhances Air Support (details in desc)."] },
     { name: "Sergeant Training", fundingCost: 50, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true }
   ],
+  "Bat Family": [
+    { name: "The Turning", fundingCost: 200, repCost: 10, maxPerCrew: 4, conditions: ["Vampire Queen in crew"], effects: ["Model gains the Vampire rule."] }
+  ],
   "Joker": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
     { name: "Grapple-gun", fundingCost: 300, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Model gains the Batclaw/Grapple-gun rule."] },
@@ -317,6 +320,132 @@ const models = [
       }
     ]
   },
+
+//New Models
+  {
+    "name": "Henry Ducard",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 108,
+    "funding": 0,
+    "rank": ["Leader", "Sidekick"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/HenryDucard.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Elite Boss (Ninja)",
+      "Grand Strategist",
+      "Hidden Boss",
+      "Immortal",
+      "Martial Artist",
+      "Mastermind",
+      "Persuasive",
+      "Pulling the Strings",
+      "Purging Fire",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Katana & Bracers",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Defensive / Handy / Sharp"
+      }
+    ]
+  },
+
+    {
+    "name": "Raven Trigon's Daughter",
+    "realname": "Rachel Roth",
+    "base": "60mm",
+    "rep": 70,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "https://veland55.github.io/btb/img/RavenTrigonDaughter.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Darkness Manipulation (Spell)",
+      "Demon",
+      "Magical Power [5]",
+      "Natural Immunities",
+      "Painful Empathy",
+      "Regeneration",
+      "Soul-Self (Spell)",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Soul's Touch",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Magic / Suggest / Terror"
+      },
+      {
+        "name": "Dark Blast",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Devastating / Magic / Ranged / Terror / Throwing"
+      }
+    ]
+  },
+  
+   {
+    "name": "Ra's al Ghul Decoy",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 46,
+    "funding": 0,
+    "rank": ["Leader", "Sidekick"],
+    "faction": ["League of Shadows"],
+    "img": "https://veland55.github.io/btb/img/RasalGhulDecoy.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Distract",
+      "Expendable",
+      "Final Trial",
+      "Martial Artist",
+      "No Mercy!",
+      "Order"
+    ],
+    "weapons": [
+      {
+        "name": "Katana",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      }
+    ]
+  },
+
+
+  //---------------------------------------------------------------------------//
+
   {
     "name": "The Drifter Robert Pattinson",
     "realname": "Bruce Wayne / 40mm",
@@ -12399,7 +12528,7 @@ const models = [
       "Endurance": 9
     },
     "traits": [
-      "Bat-Family",
+      "Bat Family",
       "Bat Form",
       "Batcape",
       "Queens Command",
@@ -17838,6 +17967,7 @@ const traitDescriptions = {
     "Grapple Gun {SPECIAL_ICON}": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations.\n\n*Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun!",
     "Batclaw {SPECIAL_ICON}": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations.\n\n*Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun!",
     "Batcave Support {SPECIAL_ICON}": "Target a friendly model within 8\" and LoS without the Cop trait. That model gains X+1 {+ATT_ICON} or X+1 {+DEF_ICON}, where X is the number of friendly Suspects within 4\" of this model.",
+    "Batcape": "This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling.",
     "Batman Inc.": "Model gains the Bat-Armor MKII trait. A model cannot have more than one Bat-Armor trait.",
     "Batman Lives": "This model may perform an extra Movement Action at the start of its activation if no enemy models have LoS to it. When in contact with a KO enemy model, this model may remove it as a Casualty by spending a Special Action. In addition, when this model is included in your crew, you can also include model with Name: William Cobb (ignoring its Affiliation), but if you do so you may not include any model with Rank {RANK_FREEAGENT_ICON} rank unless it also has Affiliation: {AFF_BANE_ICON}.",
     "Batman's Tumbler": "This model can neither Jump nor Climb. When the Upgrade Card becomes disabled, you can immediately exchange this Upgrade Card with the Batman’s Batpod Upgrade card.",
