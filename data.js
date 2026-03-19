@@ -635,7 +635,7 @@ const models = [
       "damage": "★",
       "rof": "-",
       "ammo": "-",
-      "traits": "Handy / Reach [2]"
+      "traits": "Handy / Reach (2)"
     }
   ]
 },
