@@ -150,7 +150,9 @@ const translations = {
     charismatic_available: "ДОСТУПЕН",
     charismatic_used: "ИСПОЛЬЗОВАН",
     export_title: "Экспорт ростера",
-    no_available_equipment: "Нет доступного оборудования"
+    no_available_equipment: "Нет доступного оборудования",
+    henry_ducard_sidekick_requires_ras: "Henry Ducard может быть нанят как Sidekick только если лидером банды является Ra's al Ghul Decoy!",
+    model_requires_other: "Модель {model} требует, чтобы в отряде была модель {required}"
   },
   en: {
     cards: "CARDS",
@@ -216,7 +218,9 @@ const translations = {
     charismatic_available: "AVAILABLE",
     charismatic_used: "USED",
     export_title: "Export Roster",
-    no_available_equipment: "No available equipment"
+    no_available_equipment: "No available equipment",
+    henry_ducard_sidekick_requires_ras: "Henry Ducard can only be recruited as Sidekick if Ra's al Ghul Decoy is the crew leader!",
+    model_requires_other: "Model {model} requires {required} model in the crew"
   }
 };
 
@@ -317,6 +321,34 @@ function findCompendiumEntry(searchTerm) {
     }
   }
 
+  return null;
+}
+
+// ======================== ПРОВЕРКА ЗАВИСИМОСТЕЙ МОДЕЛЕЙ ========================
+// Возвращает true, если зависимость модели выполнена (требуемая модель есть в отряде)
+function checkModelDependency(model) {
+  const dependency = window.modelDependencyRules?.[model.name];
+  if (!dependency) return true; // Если нет правила зависимости, считаем что всё ок
+  
+  const requiredModel = dependency.requiredModel;
+  if (!requiredModel) return true; // Если нет требуемой модели в правиле, считаем что всё ок
+  
+  // Проверяем, есть ли требуемая модель в отряде
+  return crew.some(m => m.name === requiredModel);
+}
+
+// Возвращает имя требуемой модели или null, если зависимости нет или она выполнена
+function getUnmetDependency(model) {
+  const dependency = window.modelDependencyRules?.[model.name];
+  if (!dependency) return null;
+  
+  const requiredModel = dependency.requiredModel;
+  if (!requiredModel) return null;
+  
+  if (!crew.some(m => m.name === requiredModel)) {
+    return requiredModel;
+  }
+  
   return null;
 }
 
@@ -465,6 +497,15 @@ function addModelWithRank(model, chosenRank) {
     }
   }
 
+  // Специальное правило для Henry Ducard: может быть Sidekick только если лидером нанят Ra's al Ghul Decoy
+  if (model.name === "Henry Ducard" && chosenRank === "Sidekick") {
+    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul Decoy" && BMG_BOSS.rankUsed === "Leader";
+    if (!hasRasGhulDecoyAsLeader) {
+      alert(t("henry_ducard_sidekick_requires_ras"));
+      return;
+    }
+  }
+
   const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
   if (!bmgCanAddModel(cloned)) return;
   // ИЗМЕНЕНИЕ: используем unshift вместо push для добавления в начало массива
@@ -487,6 +528,15 @@ function showRankSelectionModal(model, ranks) {
     const modelRanks = getRanks(model);
     if (modelRanks.includes("Leader") && modelRanks.includes("Sidekick")) {
       availableRanks = ["Sidekick"];
+    }
+  }
+
+  // Специальное правило для Henry Ducard: может быть Sidekick только если лидером нанят Ra's al Ghul Decoy
+  if (model.name === "Henry Ducard" && availableRanks.includes("Sidekick")) {
+    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul Decoy" && BMG_BOSS.rankUsed === "Leader";
+    if (!hasRasGhulDecoyAsLeader) {
+      // Если Ra's al Ghul Decoy не лидер, убираем Sidekick из доступных рангов
+      availableRanks = availableRanks.filter(r => r !== "Sidekick");
     }
   }
 
@@ -681,12 +731,15 @@ const renderMiniCardsView = debounce(() => {
     $('modelsGridCards').innerHTML = '';
     return;
   }
-  
+
   const grid = $("modelsGridCards");
-  
+
   // === ИСПРАВЛЕНО: используем canViewInFaction для режима просмотра ===
   let filteredModels = models.filter(m => canViewInFaction(m, currentFaction));
-  
+
+  // Скрываем модели с невыполненными зависимостями
+  filteredModels = filteredModels.filter(m => checkModelDependency(m));
+
   const rankOrder = {
     "Leader": 1,
     "Sidekick": 2,
@@ -751,7 +804,10 @@ const renderMiniCardsBuilder = debounce(() => {
   
   // === ИСПРАВЛЕНО: используем canHireInFaction для режима билдера ===
   let filteredModels = models.filter(m => canHireInFaction(m, currentFaction) && !hasInCrew(m));
-  
+
+  // Скрываем модели с невыполненными зависимостями
+  filteredModels = filteredModels.filter(m => checkModelDependency(m));
+
   // Определение порядка рангов
   const rankOrder = {
     "Leader": 1,
@@ -1068,7 +1124,15 @@ const renderModelSearch = () => {
         : typeof m.faction === "string"
           ? m.faction.replace(/ *& */gi,",").replace(/ *\/ */g,",").split(",").map(s=>s.trim())
           : [];
-      return factions.includes(currentFaction) && m.name.toLowerCase().includes(query);
+      // Проверяем фракцию и поиск по имени
+      if (!factions.includes(currentFaction) || !m.name.toLowerCase().includes(query)) {
+        return false;
+      }
+      // Проверяем зависимости модели - скрываем если зависимость не выполнена
+      if (!checkModelDependency(m)) {
+        return false;
+      }
+      return true;
     })
     .sort((a,b) => a.name.localeCompare(b.name));
 
@@ -1293,6 +1357,13 @@ function bmgCanAddModel(model) {
   const rank = model.rankUsed;
   if (!rank) {
     alert(t("rank_not_selected"));
+    return false;
+  }
+
+  // Проверка зависимостей моделей (например, Robin Who Laughs требует The Batman Who Laughs)
+  const unmetDependency = getUnmetDependency(model);
+  if (unmetDependency) {
+    alert(t("model_requires_other", { model: model.name, required: unmetDependency }));
     return false;
   }
 
@@ -1645,53 +1716,77 @@ function openEquipmentMenu(model, cardElement) {
     // По умолчанию только Henchman могут покупать equipment
     // Все остальные ранги (Leader, Sidekick, Free Agent) могут покупать только если явно разрешено
 
-    // Сначала проверяем, является ли это Special Equipment (требует персонажа в отряде)
-    // Special Equipment доступно ВСЕМ моделям независимо от ранга, если персонаж есть в отряде
-    const isSpecialEquipment = eq.conditions && eq.conditions.some(cond =>
-      cond.endsWith(' in crew') || cond.startsWith('Alias:')
+    // Проверяем, является ли это Equipment с условием на трейт в банде (например, "Vampire Queen in crew")
+    // Такое оборудование доступно ВСЕМ моделям независимо от ранга, если требуемый трейт есть в банде
+    const hasTraitInCrewCondition = eq.conditions && eq.conditions.some(cond =>
+      cond.endsWith(' in crew') && !cond.startsWith('Alias:')
     );
 
-    if (isSpecialEquipment) {
-      // Это Special Equipment — проверяем только наличие требуемого персонажа в отряде
-      const hasRequiredCharacter = eq.conditions.some(cond => {
-        let modelName = '';
-        // Правильный порядок замен: сначала убираем "Alias: ", потом " in crew"
-        modelName = cond.replace('Alias: ', '').replace(' in crew', '').trim();
-
-        if (modelName) {
-          // Проверяем точное совпадение или совпадение по базовому имени
-          // Например, "Scarecrow" должен совпадать с "Scarecrow (The Worst Nightmare)"
-          const foundModel = crew.find(m => {
-            // Точное совпадение
-            if (m.name === modelName || m.alias === modelName) return true;
-            // Проверка: modelName является началом имени модели (например, "Scarecrow" -> "Scarecrow (The Worst Nightmare)")
-            if (m.name.startsWith(modelName + ' ') || m.name.startsWith(modelName + '(')) return true;
-            // Проверка по alias
-            if (m.alias && (m.alias.startsWith(modelName + ' ') || m.alias.startsWith(modelName + '('))) return true;
-            return false;
-          });
-          return foundModel;
+    if (hasTraitInCrewCondition) {
+      // Проверяем наличие требуемого трейта в банде
+      const hasRequiredTrait = eq.conditions.some(cond => {
+        if (cond.endsWith(' in crew') && !cond.startsWith('Alias:')) {
+          const traitName = cond.replace(' in crew', '').trim();
+          // Проверяем, есть ли в банде модель с таким трейтом
+          return crew.some(m => m.traits && m.traits.some(t => t.includes(traitName)));
         }
         return false;
       });
 
-      if (!hasRequiredCharacter) {
-        return false; // Требуемый персонаж отсутствует в отряде
+      if (!hasRequiredTrait) {
+        return false; // Требуемый трейт отсутствует в банде
       }
-      // Если персонаж есть, Special Equipment доступно независимо от ранга — пропускаем дальше
+      // Если трейт есть в банде, оборудование доступно всем моделям — пропускаем проверку ранга
     } else {
-      // Это не Special Equipment, применяем обычные правила
-      if (crewModel.rankUsed !== "Henchman") {
-        // Модель не Henchman, проверяем есть ли разрешение в targetModels
-        if (!eq.targetModels || !eq.targetModels.length) {
-          return false; // Нет targetModels — не Henchman не могут покупать
+      // Это не Equipment с условием на трейт в банде, применяем обычные правила
+      // Сначала проверяем, является ли это Special Equipment (требует персонажа в отряде)
+      const isSpecialEquipment = eq.conditions && eq.conditions.some(cond =>
+        cond.startsWith('Alias:') || 
+        (cond.endsWith(' in crew') && crew.some(m => m.name === cond.replace(' in crew', '').trim()))
+      );
+
+      if (isSpecialEquipment) {
+        // Это Special Equipment — проверяем только наличие требуемого персонажа в отряде
+        const hasRequiredCharacter = eq.conditions.some(cond => {
+          let modelName = '';
+          // Правильный порядок замен: сначала убираем "Alias: ", потом " in crew"
+          modelName = cond.replace('Alias: ', '').replace(' in crew', '').trim();
+
+          if (modelName) {
+            // Проверяем точное совпадение или совпадение по базовому имени
+            // Например, "Scarecrow" должен совпадать с "Scarecrow (The Worst Nightmare)"
+            const foundModel = crew.find(m => {
+              // Точное совпадение
+              if (m.name === modelName || m.alias === modelName) return true;
+              // Проверка: modelName является началом имени модели (например, "Scarecrow" -> "Scarecrow (The Worst Nightmare)")
+              if (m.name.startsWith(modelName + ' ') || m.name.startsWith(modelName + '(')) return true;
+              // Проверка по alias
+              if (m.alias && (m.alias.startsWith(modelName + ' ') || m.alias.startsWith(modelName + '('))) return true;
+              return false;
+            });
+            return foundModel;
+          }
+          return false;
+        });
+
+        if (!hasRequiredCharacter) {
+          return false; // Требуемый персонаж отсутствует в отряде
         }
+        // Если персонаж есть, Special Equipment доступно независимо от ранга — пропускаем дальше
+      } else {
+        // Это не Special Equipment, применяем обычные правила
+        if (crewModel.rankUsed !== "Henchman") {
+          // Модель не Henchman, проверяем есть ли разрешение в targetModels
+          if (!eq.targetModels || !eq.targetModels.length) {
+            return false; // Нет targetModels — не Henchman не могут покупать
+          }
 
-        const allowedByName = eq.targetModels.some(t => t === crewModel.name);
-        const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
+          const allowedByName = eq.targetModels.some(t => t === crewModel.name);
+          const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
 
-        if (!allowedByName && !allowedByRank) {
-          return false; // Модель не соответствует targetModels
+          if (!allowedByName && !allowedByRank) {
+            return false; // Модель не соответствует targetModels
+          }
         }
       }
     }
@@ -1701,8 +1796,15 @@ function openEquipmentMenu(model, cardElement) {
       const allConditionsMet = eq.conditions.every(cond => {
         const trimmed = cond.trim();
 
+        // Проверка на наличие трейта в банде: "Vampire Queen in crew"
+        if (trimmed.endsWith(' in crew')) {
+          const traitName = trimmed.replace(' in crew', '').trim();
+          // Проверяем, есть ли в банде модель с таким трейтом
+          return crew.some(m => m.traits && m.traits.some(t => t.includes(traitName)));
+        }
+
         // Пропускаем условия "Alias: X in crew", так как они уже были проверены в isSpecialEquipment
-        if (trimmed.endsWith(' in crew') || trimmed.startsWith('Alias:')) {
+        if (trimmed.startsWith('Alias:')) {
           return true;
         }
 
@@ -1828,11 +1930,22 @@ function openEquipmentMenu(model, cardElement) {
 
   // Функция для определения Special Equipment
   function isSpecialEquipment(eq) {
-    // Special Equipment имеет conditions с именем персонажа или "in crew"
+    // Special Equipment имеет conditions с именем персонажа или "Alias: X in crew"
+    // Equipment с условием на трейт (например, "Vampire Queen in crew") не считается Special Equipment
     if (eq.conditions && eq.conditions.length) {
-      return eq.conditions.some(cond => 
-        cond.endsWith(' in crew') || 
+      // Проверяем, есть ли условие на трейт в банде (не имя персонажа)
+      const hasTraitCondition = eq.conditions.some(cond =>
+        cond.endsWith(' in crew') && !cond.startsWith('Alias:') &&
+        !crew.some(m => m.name === cond.replace(' in crew', '').trim())
+      );
+      
+      if (hasTraitCondition) {
+        return false; // Это equipment с условием на трейт, а не Special Equipment
+      }
+      
+      return eq.conditions.some(cond =>
         cond.startsWith('Alias:') ||
+        cond.endsWith(' in crew') ||
         crew.some(m => m.name === cond.trim() || m.alias === cond.trim())
       );
     }
@@ -1855,14 +1968,31 @@ function openEquipmentMenu(model, cardElement) {
           const insufficientFundsText = currentLang === 'ru' ? '⚠ Недостаточно средств' : '⚠ Insufficient funds';
           const isSpecial = isSpecialEquipment(eq);
           const specialBadge = isSpecial ? '<span style="color:#ffd700; font-size:11px; margin-left:6px;">⭐ SPECIAL</span>' : '';
-          const reqCharacter = isSpecial && eq.conditions ? eq.conditions.find(c => c.endsWith(' in crew') || crew.some(m => m.name === c.trim()))?.replace(' in crew', '').replace('Alias: ', '') : null;
-          const reqCharacterText = reqCharacter ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCharacter}</small>` : '';
+
+          // Проверяем условие на трейт в банде (например, "Vampire Queen in crew")
+          const reqTrait = eq.conditions ? eq.conditions.find(c => 
+            c.endsWith(' in crew') && !c.startsWith('Alias:') &&
+            !crew.some(m => m.name === c.replace(' in crew', '').trim())
+          )?.replace(' in crew', '').trim() : null;
+          
+          // Проверяем условие по имени персонажа (Special Equipment)
+          const reqCharacter = isSpecial && eq.conditions ? eq.conditions.find(c => 
+            (c.endsWith(' in crew') && crew.some(m => m.traits && m.traits.some(t => t.includes(c.replace(' in crew', '').trim())))) || 
+            crew.some(m => m.name === c.trim())
+          )?.replace(' in crew', '').replace('Alias: ', '') : null;
+
+          const reqText = reqTrait
+            ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqTrait} ${currentLang === 'ru' ? 'в банде' : 'in crew'}</small>`
+            : reqCharacter
+              ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCharacter}</small>`
+              : '';
+
           return `
           <button class="rank-select-btn" data-eq-name="${eq.name}" ${!canAfford ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
             ${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})${specialBadge}
             <small style="display:block; opacity:0.8; font-size:12px;">${replaceIcons(eq.effects.join(" • "))}</small>
             ${!canAfford ? `<span style="color:#ff4444; font-size:11px;">${insufficientFundsText}</span>` : ''}
-            ${reqCharacterText}
+            ${reqText}
           </button>
         `}).join("") : `<p style='text-align:center; color:#aaa;'>${t("no_available_equipment")}</p>`}
       </div>

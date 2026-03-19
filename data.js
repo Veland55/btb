@@ -20,6 +20,57 @@ const factionCrewRules = {
 // Экспортируем для использования в script.js
 window.factionCrewRules = factionCrewRules;
 
+// ======================== ПРАВИЛА ЗАВИСИМОСТЕЙ МОДЕЛЕЙ ========================
+// Структура: { "Модель": { requiredModel: "Требуемая модель", trait: "Требуемый трейт (опционально)" } }
+// Модель будет скрыта в поиске и не может быть добавлена, пока не выполнена зависимость
+// Для сложных условий (or) можно указать requiredModels — массив требуемых моделей (нужна хотя бы одна)
+const modelDependencyRules = {
+  // Batman Who Laughs
+  "Robin Who Laughs": { requiredModel: "The Batman Who Laughs" },
+  
+  // Dark Knight Rises
+  "Gordon Infiltrate": { requiredModel: "Batman Dark Knight Rises" },
+  "Catwoman Dark Knight Rises": { requiredModel: "Batman Dark Knight Rises" },
+  
+  // Adam West 1966
+  "Robin Burt Ward": { requiredModel: "Batman Adam West" },
+  
+  // Batman Beyond (Terry McGinnis)
+  "Mr. Wayne Beyond": { requiredModel: "Batman Beyond" },
+  "Robin Beyond": { requiredModel: "Batman Beyond" },
+  
+  // The Animated Series
+  "Harley Quinn The Animated Series": { requiredModel: "Batman The Animated Series" },
+  
+  // GCPD / Two-Face
+  "Gilda Dent": { requiredModel: "Two-Face" },
+  
+  // The Riddler (Jim Carrey / Riddler 1995)
+  "Two-Face": { requiredModel: "The Riddler" },
+  
+  // Batman Michael Keaton
+  "Catwoman Michelle Pfeiffer": { requiredModel: "Batman Michael Keaton" },
+  
+  // Suicide Squad
+  "Ratcatcher": { requiredModel: "Ratcatcher 2 The Suicide Squad" },
+  "Eagly": { requiredModel: "Peacemaker John Cena" },
+  
+  // League of Shadows / Batman Begins
+  "Bruce Batman Begins": { requiredModel: "Henry Ducard" },
+  
+  // Joker Cesar Romero (Batman 1966)
+  "The Riddler (Frank Gorshin)": { requiredModel: "Joker (Cesar Romero)" },
+  "The Penguin (Burgess Meredith)": { requiredModel: "Joker (Cesar Romero)" },
+  
+  // Arkham Assistants (требуется Dr. Hugo Strange или Scarecrow The Worst Nightmare)
+  "Arkham Assistant 1": { requiredModels: ["Dr. Hugo Strange", "Scarecrow (The Worst Nightmare)"] },
+  "Arkham Assistant 2": { requiredModels: ["Dr. Hugo Strange", "Scarecrow (The Worst Nightmare)"] }
+  // Добавляйте новые правила здесь по мере необходимости
+};
+
+// Экспортируем для использования в script.js
+window.modelDependencyRules = modelDependencyRules;
+
 const equipmentByFaction = {
   "GCPD": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
