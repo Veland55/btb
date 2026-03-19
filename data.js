@@ -464,7 +464,7 @@ const models = [
     "Endurance": 5
   },
   "traits": [
-    "Elite: Ninja",
+    "Elite (Ninja)",
     "Instinctive Shooting",
     "Martial Artist",
     "Stealth"
@@ -504,7 +504,7 @@ const models = [
     "Endurance": 5
   },
   "traits": [
-    "Elite: Ninja",
+    "Elite (Ninja)",
     "Martial Artist",
     "Stealth",
     "Timely Arrival",
@@ -545,7 +545,7 @@ const models = [
     "Endurance": 9
   },
   "traits": [
-    "Elite: [Ninja]",
+    "Elite (Ninja)",
     "Required: Henry Ducard",
     "Stealth",
     "Deception",
@@ -565,7 +565,7 @@ const models = [
   }
 },
 {
-  "name": "Gordon (Infiltrate)",
+  "name": "Gordon Infiltrate",
   "realname": "James W. Gordon",
   "base": "30mm",
   "rep": 40,
@@ -623,7 +623,7 @@ const models = [
     "Endurance": 5
   },
   "traits": [
-    "Elite: Ninja",
+    "Elite (Ninja)",
     "Martial Artist",
     "Protect the Shadows",
     "Stealth",
