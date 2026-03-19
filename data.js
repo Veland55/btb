@@ -528,7 +528,7 @@ const models = [
   ]
 },
 {
-  "name": "Bruce (Batman Begins)",
+  "name": "Bruce Batman Begins",
   "realname": "Bruce Wayne",
   "base": "30mm",
   "rep": 52,
@@ -546,7 +546,7 @@ const models = [
   },
   "traits": [
     "Elite (Ninja)",
-    "Required: Henry Ducard",
+    "Required (Henry Ducard)",
     "Stealth",
     "Deception",
     "The Code"
@@ -588,7 +588,7 @@ const models = [
     "Elite Boss (SWAT)",
     "Groundwork",
     "One of the Boys",
-    "Required: Batman Dark Knight Rises",
+    "Required (Batman Dark Knight Rises)",
     "Timely Arrival",
     "Veteran"
   ],
@@ -19374,6 +19374,9 @@ const traitDescriptions = {
     "Working in Advance": "At the end of step 6 of Prepare the Game, you must inflict the Terror Status onto an enemy model.",
     "Wrestler": "Keyword.",
     
+
+    "Deception {SPECIAL_ICON}": "Set a Suspect in contact with this model. Then place this model in contact with a friendly Suspect within 8\".",
+    "The Code": "This model cannot inflict Casualties under any circumstances. If you would remove a model as a Casualty with an action, instead replace all {BLOOD_ICON} damage inflicted on the target with {STUN_ICON}.",
     
     "You're locked in here with ME!": "This model gains the Takedown and Intimidate traits.",
     
@@ -19382,6 +19385,8 @@ const traitDescriptions = {
     
     
     "360° Strike {SPECIAL_ICON}": "When this model performs a Melee Attack this round, it must be performed against all the models available to be a target (friendly and enemy). During this attack, no one model can make Efforts. Roll only once, and compare with all the targets results. Friendly models cannot make defense rolls against these attacks, but they cannot be the only models affected by it (there must be at least one enemy to target)."
+
+
 
 };
 
