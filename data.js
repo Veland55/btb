@@ -446,6 +446,200 @@ const models = [
     ]
   },
 
+  {
+  "name": "League of Shadows Ninja 1",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 40,
+  "funding": 100,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/LeagueOfShadowsNinja1.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 6,
+    "Endurance": 5
+  },
+  "traits": [
+    "Elite: Ninja",
+    "Instinctive Shooting",
+    "Martial Artist",
+    "Stealth"
+  ],
+  "weapons": [
+    {
+      "name": "Katana",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Sharp"
+    },
+    {
+      "name": "Shuriken",
+      "damage": "🩸",
+      "rof": 2,
+      "ammo": 2,
+      "traits": "Light / S. Range / Throwing"
+    }
+  ]
+},
+{
+  "name": "League of Shadows Ninja 3",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 26,
+  "funding": 300,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/LeagueOfShadowsNinja3.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 4,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 4,
+    "Endurance": 5
+  },
+  "traits": [
+    "Elite: Ninja",
+    "Martial Artist",
+    "Stealth",
+    "Timely Arrival",
+    "Tracking"
+  ],
+  "weapons": [
+    {
+      "name": "Bow",
+      "damage": "🩸🩸",
+      "rof": 1,
+      "ammo": 3,
+      "traits": "Acceleration / Aim"
+    },
+    {
+      "name": "Smoke Arrow",
+      "damage": "-",
+      "rof": 1,
+      "ammo": 1,
+      "traits": "Grenade / Smoke"
+    }
+  ]
+},
+{
+  "name": "Bruce (Batman Begins)",
+  "realname": "Bruce Wayne",
+  "base": "30mm",
+  "rep": 52,
+  "funding": 0,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/BruceBatmanBegins.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 5,
+    "Strength": "3+",
+    "Movement": 10,
+    "Willpower": 7,
+    "Endurance": 9
+  },
+  "traits": [
+    "Elite: [Ninja]",
+    "Required: Henry Ducard",
+    "Stealth",
+    "Deception",
+    "The Code"
+  ],
+  "weapons": [
+    {
+      "name": "Katana & Bracers",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Defensive / Handy / Sharp"
+    }
+  ],
+  "specialRules": {
+    "requiredHenryDucard": true
+  }
+},
+{
+  "name": "Gordon (Infiltrate)",
+  "realname": "James W. Gordon",
+  "base": "30mm",
+  "rep": 40,
+  "funding": 300,
+  "rank": ["Sidekick"],
+  "faction": ["GCPD"],
+  "img": "https://veland55.github.io/btb/img/GordonInfiltrate.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 8,
+    "Willpower": 6,
+    "Endurance": 6
+  },
+  "traits": [
+    "Bulletproof Vest",
+    "Cop",
+    "Detective",
+    "Elite Boss (SWAT)",
+    "Groundwork",
+    "One of the Boys",
+    "Required: Batman Dark Knight Rises",
+    "Timely Arrival",
+    "Veteran"
+  ],
+  "weapons": [
+    {
+      "name": "Shotgun",
+      "damage": "🩸🩸★",
+      "rof": 2,
+      "ammo": 3,
+      "traits": "Assault / Firearm / M. Range"
+    }
+  ],
+  "specialRules": {
+    "requiredBatmanDarkKnightRises": true
+  }
+},
+{
+  "name": "League of Shadows Ninja 2",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 28,
+  "funding": 0,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/LeagueOfShadowsNinja2.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 5
+  },
+  "traits": [
+    "Elite: Ninja",
+    "Martial Artist",
+    "Protect the Shadows",
+    "Stealth",
+    "360° Strike"
+  ],
+  "weapons": [
+    {
+      "name": "Bo",
+      "damage": "★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Reach [2]"
+    }
+  ]
+},
+
 
   //---------------------------------------------------------------------------//
 
@@ -13463,7 +13657,7 @@ const models = [
       }
     ]
   },
-  {
+    {
     "name": "Robin",
     "realname": "Damian Wayne",
     "base": "30mm",
@@ -13503,6 +13697,51 @@ const models = [
         "rof": "-",
         "ammo": "-",
         "traits": "Handy / Overwhelming / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Robin",
+    "realname": "Damian Wayne",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Sidekick", "Henchman"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "https://veland55.github.io/btb/img/RobinDamian.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Family",
+      "Batclaw",
+      "Combo (Damian's Attack)",
+      "Detective",
+      "Martial Artist",
+      "Mentoring",
+      "Small",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Batlngs",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      },
+      {
+        "name": "Damian's Attack",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Boosted (2)"
       }
     ]
   },
