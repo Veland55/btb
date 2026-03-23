@@ -373,6 +373,132 @@ const models = [
   },
 
 //New Models
+
+{
+  "name": "Armored Assassin",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 29,
+  "funding": 200,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/ArmoredAssassin.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 4,
+    "Endurance": 5
+  },
+  "traits": [
+    "Assassin (2)",
+    "Light Armor",
+    "Martial Artist",
+    "Obstinate",
+    "Shadowed Nightmare"
+  ],
+  "weapons": [
+    {
+      "name": "Katana",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Sharp"
+    },
+    {
+      "name": "Kunai",
+      "damage": "🩸",
+      "rof": 3,
+      "ammo": 2,
+      "traits": "S. Range / Sharp / Throwing"
+    }
+  ]
+},
+{
+  "name": "Guardian Monk",
+  "realname": "Unknown",
+  "base": "40mm",
+  "rep": 52,
+  "funding": 0,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/GuardianMonk.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "4+",
+    "Movement": 8,
+    "Willpower": 6,
+    "Endurance": 7
+  },
+  "traits": [
+    "Adaptable",
+    "Desensitized",
+    "Large",
+    "Martial Artist",
+    "Precise Blow",
+    "Protect the Shadows",
+    "Self-Discipline"
+  ],
+  "weapons": [
+    {
+      "name": "Finesse",
+      "damage": "★★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy"
+    }
+  ]
+},
+{
+  "name": "Nyssa al Ghul (Arkham Knight)",
+  "realname": "Nyssa Raatko",
+  "base": "40mm",
+  "rep": 100,
+  "funding": 0,
+  "rank": ["Leader"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/NyssaAlGhulArkhamKnight.png",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 10,
+    "Willpower": 8,
+    "Endurance": 7
+  },
+  "traits": [
+    "Acrobat",
+    "Aversion (Ra's al Ghul, Talia al Ghul)",
+    "Brawler",
+    "Counter Attack",
+    "Elite Boss: Rebels",
+    "Leading from the Shadows",
+    "Light Armor",
+    "Martial Artist",
+    "Provoke",
+    "Shadowed Nightmare"
+  ],
+  "weapons": [
+    {
+      "name": "Mastercrafted Katana",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Devastating / Handy / Sharp"
+    },
+    {
+      "name": "Kunai",
+      "damage": "🩸★",
+      "rof": 3,
+      "ammo": 2,
+      "traits": "S. Range / Sharp / Throwing"
+    }
+  ]
+},
+
+
   {
     "name": "Henry Ducard",
     "realname": "Unknown",
