@@ -71,6 +71,34 @@ const modelDependencyRules = {
 // Экспортируем для использования в script.js
 window.modelDependencyRules = modelDependencyRules;
 
+// ======================== ПРАВИЛА AVERSION ========================
+// Структура: { "Модель": ["Список моделей, с которыми не может быть в одной банде"] }
+// Модель скрывается в билдере, если в отряде есть модель из списка Aversion
+// И наоборот: если эта модель в отряде, модели из списка не могут быть наняты
+const modelAversionRules = {
+  // League of Shadows / Nyssa al Ghul
+  "Nyssa al Ghul (Arkham Knight)": ["Ra's al Ghul", "Talia Rebirth"],
+
+  // GCPD / Aaron Cash
+  "Aaron Cash": ["Killer Croc"],
+
+  // Falcone / The Roman
+  "The Roman": ["Catwoman"],
+
+  // Holiday / The Holiday Killer
+  "The Holiday Killer": ["Maroni"],
+
+  // Joker Gang / Gaggy variants and Punchline
+  "Gaggy Rebirth": ["Harley Quinn"],
+  "Gaggy": ["Harley Quinn"],
+  "Punchline": ["Harley Quinn"]
+
+  // Добавляйте новые правила здесь по мере необходимости
+};
+
+// Экспортируем для использования в script.js
+window.modelAversionRules = modelAversionRules;
+
 const equipmentByFaction = {
   "GCPD": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },

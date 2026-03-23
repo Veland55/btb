@@ -326,30 +326,62 @@ function findCompendiumEntry(searchTerm) {
 
 // ======================== ПРОВЕРКА ЗАВИСИМОСТЕЙ МОДЕЛЕЙ ========================
 // Возвращает true, если зависимость модели выполнена (требуемая модель есть в отряде)
+// Также проверяет правила Aversion — если в отряде есть модель из списка Aversion, возвращает false
 function checkModelDependency(model) {
+  // Проверяем зависимости (Required)
   const dependency = window.modelDependencyRules?.[model.name];
-  if (!dependency) return true; // Если нет правила зависимости, считаем что всё ок
-  
-  const requiredModel = dependency.requiredModel;
-  if (!requiredModel) return true; // Если нет требуемой модели в правиле, считаем что всё ок
-  
-  // Проверяем, есть ли требуемая модель в отряде
-  return crew.some(m => m.name === requiredModel);
+  if (dependency) {
+    const requiredModel = dependency.requiredModel;
+    if (requiredModel) {
+      // Проверяем, есть ли требуемая модель в отряде
+      if (!crew.some(m => m.name === requiredModel)) {
+        return false;
+      }
+    }
+  }
+
+  // Проверяем правила Aversion
+  const aversionList = window.modelAversionRules?.[model.name];
+  if (aversionList && Array.isArray(aversionList)) {
+    // Если в отряде есть хотя бы одна модель из списка Aversion, эта модель не может быть добавлена
+    if (crew.some(m => aversionList.includes(m.name))) {
+      return false;
+    }
+  }
+
+  // Также проверяем обратную ситуацию: если эта модель в отряде,
+  // то модели из её списка Aversion не могут быть добавлены
+  // Это обрабатывается при фильтрации списка моделей
+
+  return true;
 }
 
 // Возвращает имя требуемой модели или null, если зависимости нет или она выполнена
 function getUnmetDependency(model) {
   const dependency = window.modelDependencyRules?.[model.name];
   if (!dependency) return null;
-  
+
   const requiredModel = dependency.requiredModel;
   if (!requiredModel) return null;
-  
+
   if (!crew.some(m => m.name === requiredModel)) {
     return requiredModel;
   }
-  
+
   return null;
+}
+
+// Проверяет, должна ли модель быть скрыта из-за правил Aversion
+// Возвращает true, если модель должна быть скрыта (в отряде есть модель, для которой эта модель в списке Aversion)
+function checkAversionHidden(model) {
+  // Проверяем каждую модель в отряде: есть ли текущая модель в её списке Aversion
+  for (const crewModel of crew) {
+    const aversionList = window.modelAversionRules?.[crewModel.name];
+    if (aversionList && Array.isArray(aversionList) && aversionList.includes(model.name)) {
+      return true; // Эта модель должна быть скрыта
+    }
+  }
+  return false;
 }
 
 function showCards() {
@@ -740,6 +772,9 @@ const renderMiniCardsView = debounce(() => {
   // Скрываем модели с невыполненными зависимостями
   filteredModels = filteredModels.filter(m => checkModelDependency(m));
 
+  // Скрываем модели из-за правил Aversion (если в отряде есть модель, для которой эта модель в списке Aversion)
+  filteredModels = filteredModels.filter(m => !checkAversionHidden(m));
+
   const rankOrder = {
     "Leader": 1,
     "Sidekick": 2,
@@ -807,6 +842,9 @@ const renderMiniCardsBuilder = debounce(() => {
 
   // Скрываем модели с невыполненными зависимостями
   filteredModels = filteredModels.filter(m => checkModelDependency(m));
+
+  // Скрываем модели из-за правил Aversion (если в отряде есть модель, для которой эта модель в списке Aversion)
+  filteredModels = filteredModels.filter(m => !checkAversionHidden(m));
 
   // Определение порядка рангов
   const rankOrder = {
@@ -1567,6 +1605,27 @@ function bmgCanAddModel(model) {
       if (crew.some(m => m.name === averted || getFactions(m).includes(averted))) {
         alert(t("avert_cannot_add", { averted }));
         exceeded = true;
+      }
+    }
+
+    // Проверка правил modelAversionRules: если в отряде есть модель, для которой эта модель в списке Aversion
+    const aversionList = window.modelAversionRules?.[model.name];
+    if (aversionList && Array.isArray(aversionList)) {
+      const conflictingModel = crew.find(m => aversionList.includes(m.name));
+      if (conflictingModel) {
+        const aversionNames = aversionList.join(", ");
+        alert(t("avert_cannot_add", { averted: aversionNames }));
+        exceeded = true;
+      }
+    }
+
+    // Обратная проверка: если эта модель в списке Aversion для какой-либо модели в отряде
+    for (const crewModel of crew) {
+      const crewAversionList = window.modelAversionRules?.[crewModel.name];
+      if (crewAversionList && Array.isArray(crewAversionList) && crewAversionList.includes(model.name)) {
+        alert(t("avert_cannot_add", { averted: crewModel.name }));
+        exceeded = true;
+        break;
       }
     }
 
