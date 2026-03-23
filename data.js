@@ -403,6 +403,159 @@ const models = [
 //New Models
 
 {
+  "name": "Rebel Armored Assassin",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 35,
+  "funding": 200,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/RebelArmoredAssassin.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 4,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 5
+  },
+  "traits": [
+    "Assassin (2)",
+    "Elite (Rebel)",
+    "Light Armor",
+    "Martial Artist",
+    "Shadowed Nightmare",
+    "Tireless"
+  ],
+  "weapons": [
+    {
+      "name": "Katana",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Sharp"
+    },
+    {
+      "name": "Kunai",
+      "damage": "🩸",
+      "rof": 3,
+      "ammo": 2,
+      "traits": "S. Range / Sharp / Throwing"
+    }
+  ]
+},
+{
+  "name": "Rebel Masked Assassin 2",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 28,
+  "funding": 0,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/RebelMaskedAssassin2.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 4,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 5
+  },
+  "traits": [
+    "Assassin (2)",
+    "Demon Mask (Inspire Fear)",
+    "Elite (Rebel)",
+    "Martial Artist",
+    "Shadowed Nightmare"
+  ],
+  "weapons": [
+    {
+      "name": "Nunchaku",
+      "damage": "🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Defensive / Handy / Heavy"
+    }
+  ]
+},
+{
+  "name": "Rebel Monk",
+  "realname": "Unknown",
+  "base": "40mm",
+  "rep": 35,
+  "funding": 0,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/RebelMonk.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "4+",
+    "Movement": 8,
+    "Willpower": 4,
+    "Endurance": 5
+  },
+  "traits": [
+    "Adaptable",
+    "Demon Mask (Inspire Fear)",
+    "Desensitized",
+    "Elite (Rebel)",
+    "Martial Artist",
+    "Self-Discipline"
+  ],
+  "weapons": [
+    {
+      "name": "Finesse",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy"
+    }
+  ]
+},
+{
+  "name": "Rebel Masked Assassin 1",
+  "realname": "Unknown",
+  "base": "30mm",
+  "rep": 35,
+  "funding": 150,
+  "rank": ["Henchman"],
+  "faction": ["League of Shadows"],
+  "img": "https://veland55.github.io/btb/img/RebelMaskedAssassin1.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 4,
+    "Strength": "5+",
+    "Movement": 10,
+    "Willpower": 5,
+    "Endurance": 5
+  },
+  "traits": [
+    "Assassin (2)",
+    "Demon Mask (Inspire Fear)",
+    "Elite (Rebel)",
+    "Martial Artist",
+    "Shadowed Nightmare"
+  ],
+  "weapons": [
+    {
+      "name": "Katana",
+      "damage": "🩸🩸",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Sharp"
+    },
+    {
+      "name": "Kunai",
+      "damage": "🩸",
+      "rof": 3,
+      "ammo": 2,
+      "traits": "S. Range / Sharp / Throwing"
+    }
+  ]
+},
+
+{
   "name": "Armored Assassin",
   "realname": "Unknown",
   "base": "30mm",
@@ -18572,7 +18725,7 @@ const traitDescriptions = {
     "Cyclops": "This model’s ranged attacks gain the Imprecise rule when the target is more than 8” away.",
     
     //D
-    
+    "Demon Mask (Inspire Fear) {SPECIAL_ICON}": "Target an enemy model [not a Vehicle) within 4\" and LOS. The target must take a Willpower roll. If this roll is failed, consult the following chart (the results are cumulative): Fail by 1-2 Target suffers the Scared Status. Fail by 3-5. Target suffers the Terror and Slow (4) Status. Fails by 6 or more: Target receives {BLOOD_ICON} damage equal to half is Endurance (rounding down).",
     "Daddy’s Girrrl": "If this model starts its activation within 6” of the Boss, its gains +1 {+ATT_ICON}.",
     "Dark Influence {SPECIAL_ICON}": "A friendly model without Audacity perform a Move 4\" and then a Tactical Action immediately. When resolved continue with this model's activation. Or you may search into your deck a card that has the Freed resource.",
     "Dark Intimidation (Spell)": "Special Action. 1 Magic Counter. Enemy models within 8\" and LoS cannot make Efforts when Attacking friendly models.",
