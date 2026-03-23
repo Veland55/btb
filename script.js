@@ -907,24 +907,9 @@ function isSpecialTrait(trait) {
 
   // Очищаем трейт от иконок и пробелов
   const cleanTrait = getCleanName(trait).trim();
-  
+
   // Проверяем в кэше специальных трейтов
-  if (specialTraitNames.has(cleanTrait)) {
-    return true;
-  }
-
-  // Список специальных трейтов (базовые)
-  const specialTraits = [
-    "Fly",
-    "Leap",
-    "Tough",
-    "Invulnerable",
-    "Regenerate",
-    "Stealth",
-    "Camouflage"
-  ];
-
-  return specialTraits.includes(cleanTrait);
+  return specialTraitNames.has(cleanTrait);
 }
 
 // Вспомогательная функция для получения описания трейта
