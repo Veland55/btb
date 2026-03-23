@@ -473,7 +473,7 @@ const models = [
     "Aversion (Ra's al Ghul, Talia al Ghul)",
     "Brawler",
     "Counter Attack",
-    "Elite Boss: Rebels",
+    "Elite Boss (Rebels)",
     "Leading from the Shadows",
     "Light Armor",
     "Martial Artist",
