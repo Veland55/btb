@@ -767,13 +767,9 @@ const renderMiniCardsView = debounce(() => {
   const grid = $("modelsGridCards");
 
   // === ИСПРАВЛЕНО: используем canViewInFaction для режима просмотра ===
+  // В режиме просмотра НЕ применяем правила factionCrewRules и modelDependencyRules
+  // Эти правила работают только в билдере
   let filteredModels = models.filter(m => canViewInFaction(m, currentFaction));
-
-  // Скрываем модели с невыполненными зависимостями
-  filteredModels = filteredModels.filter(m => checkModelDependency(m));
-
-  // Скрываем модели из-за правил Aversion (если в отряде есть модель, для которой эта модель в списке Aversion)
-  filteredModels = filteredModels.filter(m => !checkAversionHidden(m));
 
   const rankOrder = {
     "Leader": 1,

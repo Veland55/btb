@@ -30,7 +30,7 @@ const modelDependencyRules = {
   
   // Dark Knight Rises
   "Gordon Infiltrate": { requiredModel: "Batman Dark Knight Rises" },
-  "Catwoman Dark Knight Rises": { requiredModel: "Batman Dark Knight Rises" },
+  "Catwoman Dark Knight Rises": { requiredModel: ["Batman Dark Knight Rises", "Bane Dark Knight Rises"] },
   
   // Adam West 1966
   "Robin Burt Ward": { requiredModel: "Batman Adam West" },
@@ -1510,9 +1510,11 @@ const models = [
       "Bat-Armor MK II",
       "Batclaw/Grapple Gun",
       "Combo (Unarmed)",
+      "Dark Knight",
       "Detective",
       "Master of Stealth",
       "Reinforced Gloves",
+      "Shadows Agent",
       "Sneak Attack"
     ],
     "weapons": [
@@ -1625,9 +1627,10 @@ const models = [
       "Climbing Claws",
       "Night Vision",
       "Pickpocket",
-      "Required (Batman Dark Knight Rises)",
+      "Required (Batman Dark Knight Rises or Bane Dark Knight Rises)",
       "Sneak Attack",
-      "Undercover"
+      "Undercover",
+      "Drop It!"
     ],
     "weapons": [
       {
@@ -19587,6 +19590,7 @@ const traitDescriptions = {
     "The Cleaner": "When this model reveals an enemy Suspect, you may immediately draw 1 card from your Objective deck.",
     "The Crew {SPECIAL_ICON}": "All friendly models with this model’s Affiliation within 8” and in LoS with this model gain {MOV+2_ICON} Marker.",
     "The Dark Knight Returns": "Keyword.",
+    "Dark Knight": " If this model is the Boss, before the start of the game, choose another friendly model to be the Boss instead.",
     "The Devil You Know": "When this model casts a Spell, it may apply any Failure result to a friendly model instead of itself.",
     "The Don": "Model gains the Grand Strategist trait.",
     "The Dude": "Once per game, this model may ignore a rule targeting it.",
