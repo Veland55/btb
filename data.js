@@ -471,7 +471,7 @@ const models = [
   "weapons": [
     {
       "name": "Nunchaku",
-      "damage": "🩸",
+      "damage": "★",
       "rof": "-",
       "ammo": "-",
       "traits": "Defensive / Handy / Heavy"
@@ -506,7 +506,7 @@ const models = [
   "weapons": [
     {
       "name": "Finesse",
-      "damage": "🩸🩸",
+      "damage": "★★",
       "rof": "-",
       "ammo": "-",
       "traits": "Handy"
@@ -837,7 +837,7 @@ const models = [
     },
     {
       "name": "Shuriken",
-      "damage": "🩸",
+      "damage": "★★",
       "rof": 2,
       "ammo": 2,
       "traits": "Light / S. Range / Throwing"
