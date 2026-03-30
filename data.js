@@ -6801,7 +6801,7 @@ const models = [
       {
         "name": "Wrecking Hammer",
         "damage": "🩸★",
-        "rof": 3,
+        "rof": "-",
         "ammo": "-",
         "traits": "Heavy / Handy / Devastating"
       }
