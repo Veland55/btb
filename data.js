@@ -2488,7 +2488,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin",
+    "name": "Robin  ",
     "realname": "Jason Todd",
     "base": "30mm",
     "rep": 40,
@@ -2659,7 +2659,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin",
+    "name": "Robin    ",
     "realname": "Carrie Kelley",
     "base": "30mm",
     "rep": 54,
