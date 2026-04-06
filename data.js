@@ -363,7 +363,7 @@ const equipmentByFaction = {
 const models = [
   {
     "name": "Batman Bushi",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 105,
     "funding": 0,
@@ -1376,12 +1376,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/AaronCash.png",
     "stats": {
-      "attack": 4,
-      "defense": 3,
-      "strength": "4+",
-      "movement": 8,
-      "willpower": 6,
-      "endurance": 6
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
     },
     "traits": [
       "Aversion (Killer Croc)",
@@ -1420,12 +1420,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/GreenArrowRebirth.png",
     "stats": {
-      "attack": 4,
-      "defense": 4,
-      "strength": "4+",
-      "movement": 13,
-      "willpower": 7,
-      "endurance": 8
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 8
     },
     "traits": [
       "Acrobat",
@@ -1457,12 +1457,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/BatmanGaslight.png",
     "stats": {
-      "attack": 4,
-      "defense": 4,
-      "strength": "3+",
-      "movement": 10,
-      "willpower": 8,
-      "endurance": 8
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
     },
     "traits": [
       "Bat Cape",
@@ -1489,7 +1489,7 @@ const models = [
   },
   {
     "name": "Batman Dark Knight Rises",
-    "realname": "Bruce Wayne / 30mm",
+    "realname": "Bruce Wayne",
     "base": "30mm",
     "rep": 120,
     "funding": 0,
@@ -1497,12 +1497,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/BatmanDarkKnightRises.png",
     "stats": {
-      "attack": 4,
-      "defense": 5,
-      "strength": "3+",
-      "movement": 12,
-      "willpower": 8,
-      "endurance": 8
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 8,
+      "Endurance": 8
     },
     "traits": [
       "Arrest",
@@ -1537,12 +1537,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/CommissionerGordon.png",
     "stats": {
-      "attack": 3,
-      "defense": 3,
-      "strength": "5+",
-      "movement": 8,
-      "willpower": 6,
-      "endurance": 6
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
     },
     "traits": [
       "Affinity (Batman)",
@@ -1577,12 +1577,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/RobinBurtWard.png",
     "stats": {
-      "attack": 3,
-      "defense": 4,
-      "strength": "5+",
-      "movement": 10,
-      "willpower": 5,
-      "endurance": 4
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 4
     },
     "traits": [
       "Batclaw",
@@ -1615,12 +1615,12 @@ const models = [
     "rivals": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/CatwomanDarkKnightRises.png",
     "stats": {
-      "attack": 4,
-      "defense": 5,
-      "strength": "5+",
-      "movement": 13,
-      "willpower": 6,
-      "endurance": 6
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 6
     },
     "traits": [
       "Acrobat",
@@ -1659,12 +1659,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/BatmanDarkKnightRisesBatpod.png",
     "stats": {
-      "attack": 3,
-      "defense": 5,
-      "strength": "3+",
-      "movement": 12,
-      "willpower": 8,
-      "endurance": 8
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 12,
+      "Willpower": 8,
+      "Endurance": 8
     },
     "traits": [
       "Bat-Armor MK II",
@@ -1704,12 +1704,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/ChiefMackenzie.png",
     "stats": {
-      "attack": 3,
-      "defense": 3,
-      "strength": "5+",
-      "movement": 8,
-      "willpower": 6,
-      "endurance": 6
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
     },
     "traits": [
       "Arrest",
@@ -1738,12 +1738,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/Robin1997.png",
     "stats": {
-      "attack": 3,
-      "defense": 4,
-      "strength": "4+",
-      "movement": 12,
-      "willpower": 6,
-      "endurance": 5
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 5
     },
     "traits": [
       "Acrobat",
