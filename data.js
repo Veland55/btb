@@ -1799,7 +1799,7 @@ const models = [
     "weapons": [
       {
         "name": "Batlings",
-        "damage": "★ ★",
+        "damage": "★★",
         "rof": 2,
         "ammo": 2,
         "traits": "Light / S. Range / Throwing"
@@ -19590,7 +19590,7 @@ const traitDescriptions = {
     "The Cleaner": "When this model reveals an enemy Suspect, you may immediately draw 1 card from your Objective deck.",
     "The Crew {SPECIAL_ICON}": "All friendly models with this model’s Affiliation within 8” and in LoS with this model gain {MOV+2_ICON} Marker.",
     "The Dark Knight Returns": "Keyword.",
-    "Dark Knight": " If this model is the Boss, before the start of the game, choose another friendly model to be the Boss instead.",
+    "Dark Knight": "When this model uses the Arrest trait, it may immediately perform a free Manipulate Action",
     "The Devil You Know": "When this model casts a Spell, it may apply any Failure result to a friendly model instead of itself.",
     "The Don": "Model gains the Grand Strategist trait.",
     "The Dude": "Once per game, this model may ignore a rule targeting it.",
