@@ -363,7 +363,7 @@ const equipmentByFaction = {
 const models = [
   {
     "name": "Batman Bushi",
-    "realname": "Bruce Wayne",
+    "realname": "Bruce Wayne / 40mm",
     "base": "40mm",
     "rep": 105,
     "funding": 0,
@@ -678,7 +678,6 @@ const models = [
     }
   ]
 },
-
 
   {
     "name": "Henry Ducard",
@@ -1376,12 +1375,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/AaronCash.png",
     "stats": {
-      "Attack": 4,
-      "Defense": 3,
-      "Strength": "4+",
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 6
+      "attack": 4,
+      "defense": 3,
+      "strength": "4+",
+      "movement": 8,
+      "willpower": 6,
+      "endurance": 6
     },
     "traits": [
       "Aversion (Killer Croc)",
@@ -1420,12 +1419,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/GreenArrowRebirth.png",
     "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "4+",
-      "Movement": 13,
-      "Willpower": 7,
-      "Endurance": 8
+      "attack": 4,
+      "defense": 4,
+      "strength": "4+",
+      "movement": 13,
+      "willpower": 7,
+      "endurance": 8
     },
     "traits": [
       "Acrobat",
@@ -1457,12 +1456,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/BatmanGaslight.png",
     "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "3+",
-      "Movement": 10,
-      "Willpower": 8,
-      "Endurance": 8
+      "attack": 4,
+      "defense": 4,
+      "strength": "3+",
+      "movement": 10,
+      "willpower": 8,
+      "endurance": 8
     },
     "traits": [
       "Bat Cape",
@@ -1489,7 +1488,7 @@ const models = [
   },
   {
     "name": "Batman Dark Knight Rises",
-    "realname": "Bruce Wayne",
+    "realname": "Bruce Wayne / 30mm",
     "base": "30mm",
     "rep": 120,
     "funding": 0,
@@ -1497,12 +1496,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/BatmanDarkKnightRises.png",
     "stats": {
-      "Attack": 4,
-      "Defense": 5,
-      "Strength": "3+",
-      "Movement": 12,
-      "Willpower": 8,
-      "Endurance": 8
+      "attack": 4,
+      "defense": 5,
+      "strength": "3+",
+      "movement": 12,
+      "willpower": 8,
+      "endurance": 8
     },
     "traits": [
       "Arrest",
@@ -1537,12 +1536,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/CommissionerGordon.png",
     "stats": {
-      "Attack": 3,
-      "Defense": 3,
-      "Strength": "5+",
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 6
+      "attack": 3,
+      "defense": 3,
+      "strength": "5+",
+      "movement": 8,
+      "willpower": 6,
+      "endurance": 6
     },
     "traits": [
       "Affinity (Batman)",
@@ -1577,12 +1576,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/RobinBurtWard.png",
     "stats": {
-      "Attack": 3,
-      "Defense": 4,
-      "Strength": "5+",
-      "Movement": 10,
-      "Willpower": 5,
-      "Endurance": 4
+      "attack": 3,
+      "defense": 4,
+      "strength": "5+",
+      "movement": 10,
+      "willpower": 5,
+      "endurance": 4
     },
     "traits": [
       "Batclaw",
@@ -1615,12 +1614,12 @@ const models = [
     "rivals": ["Bat Family"],
     "img": "https://veland55.github.io/btb/img/CatwomanDarkKnightRises.png",
     "stats": {
-      "Attack": 4,
-      "Defense": 5,
-      "Strength": "5+",
-      "Movement": 13,
-      "Willpower": 6,
-      "Endurance": 6
+      "attack": 4,
+      "defense": 5,
+      "strength": "5+",
+      "movement": 13,
+      "willpower": 6,
+      "endurance": 6
     },
     "traits": [
       "Acrobat",
@@ -1659,12 +1658,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/BatmanDarkKnightRisesBatpod.png",
     "stats": {
-      "Attack": 3,
-      "Defense": 5,
-      "Strength": "3+",
-      "Movement": 12,
-      "Willpower": 8,
-      "Endurance": 8
+      "attack": 3,
+      "defense": 5,
+      "strength": "3+",
+      "movement": 12,
+      "willpower": 8,
+      "endurance": 8
     },
     "traits": [
       "Bat-Armor MK II",
@@ -1704,12 +1703,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/ChiefMackenzie.png",
     "stats": {
-      "Attack": 3,
-      "Defense": 3,
-      "Strength": "5+",
-      "Movement": 8,
-      "Willpower": 6,
-      "Endurance": 6
+      "attack": 3,
+      "defense": 3,
+      "strength": "5+",
+      "movement": 8,
+      "willpower": 6,
+      "endurance": 6
     },
     "traits": [
       "Arrest",
@@ -1738,12 +1737,12 @@ const models = [
     "faction": ["GCPD"],
     "img": "https://veland55.github.io/btb/img/Robin1997.png",
     "stats": {
-      "Attack": 3,
-      "Defense": 4,
-      "Strength": "4+",
-      "Movement": 12,
-      "Willpower": 6,
-      "Endurance": 5
+      "attack": 3,
+      "defense": 4,
+      "strength": "4+",
+      "movement": 12,
+      "willpower": 6,
+      "endurance": 5
     },
     "traits": [
       "Acrobat",
@@ -1799,7 +1798,7 @@ const models = [
     "weapons": [
       {
         "name": "Batlings",
-        "damage": "★★",
+        "damage": "★ ★",
         "rof": 2,
         "ammo": 2,
         "traits": "Light / S. Range / Throwing"
@@ -2488,7 +2487,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin  ",
+    "name": "Robin",
     "realname": "Jason Todd",
     "base": "30mm",
     "rep": 40,
@@ -2659,7 +2658,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin    ",
+    "name": "Robin",
     "realname": "Carrie Kelley",
     "base": "30mm",
     "rep": 54,
@@ -12475,7 +12474,7 @@ const models = [
   "name": "Lady Shiva",
   "realname": "Sandra Wu-San",
   "base": "40mm",
-  "rep": 88,
+  "rep": 80,
   "funding": 0,
   "rank": ["Sidekick"],
   "faction": ["League of Shadows", "Birds of Prey"],
@@ -19590,7 +19589,7 @@ const traitDescriptions = {
     "The Cleaner": "When this model reveals an enemy Suspect, you may immediately draw 1 card from your Objective deck.",
     "The Crew {SPECIAL_ICON}": "All friendly models with this model’s Affiliation within 8” and in LoS with this model gain {MOV+2_ICON} Marker.",
     "The Dark Knight Returns": "Keyword.",
-    "Dark Knight": "When this model uses the Arrest trait, it may immediately perform a free Manipulate Action",
+    "Dark Knight": " If this model is the Boss, before the start of the game, choose another friendly model to be the Boss instead.",
     "The Devil You Know": "When this model casts a Spell, it may apply any Failure result to a friendly model instead of itself.",
     "The Don": "Model gains the Grand Strategist trait.",
     "The Dude": "Once per game, this model may ignore a rule targeting it.",
