@@ -955,13 +955,6 @@ const models = [
     ]
   },
   
-  
-  
-  
-  
-  
-  
-  
   {
     "name": "Batmobile Arkham Knight",
     "realname": "Bruce Wayne",
@@ -1008,7 +1001,7 @@ const models = [
   },
   
   {
-    "name": "Cat Woman Dark Knight Rises",
+    "name": "Catwoman Dark Knight Rises",
     "realname": "Selina Kyle",
     "base": "30mm",
     "rep": "64",
@@ -1016,7 +1009,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD", "Unknown"],
     "rivals": ["Bat Family"],
-    "img": "https://veland55.github.io/btb/img/CatWomanDarkKnightRises.png",
+    "img": "https://veland55.github.io/btb/img/CatwomanDarkKnightRises.png",
     "stats": {
       "Attack": "4",
       "Defense": "5",
@@ -2401,46 +2394,7 @@ const models = [
       }
     ]
   },
-  {
-    "name": "Batman Dark Knight Rises",
-    "realname": "Bruce Wayne / 30mm",
-    "base": "30mm",
-    "rep": 120,
-    "funding": 0,
-    "rank": ["Leader"],
-    "faction": ["GCPD"],
-    "img": "https://veland55.github.io/btb/img/BatmanDarkKnightRises.png",
-    "stats": {
-      "attack": 4,
-      "defense": 5,
-      "strength": "3+",
-      "movement": 12,
-      "willpower": 8,
-      "endurance": 8
-    },
-    "traits": [
-      "Arrest",
-      "Bat Cape",
-      "Bat-Armor MK II",
-      "Batclaw/Grapple Gun",
-      "Combo (Unarmed)",
-      "Dark Knight",
-      "Detective",
-      "Master of Stealth",
-      "Reinforced Gloves",
-      "Shadows Agent",
-      "Sneak Attack"
-    ],
-    "weapons": [
-      {
-        "name": "Batlings",
-        "damage": "★★",
-        "rof": 2,
-        "ammo": 2,
-        "traits": "Light / Short Range / Throwing"
-      }
-    ]
-  },
+
   {
     "name": "Commissioner Gordon",
     "realname": "James W. Gordon / 40mm / 60mm",
@@ -2518,51 +2472,7 @@ const models = [
       }
     ]
   },
-  {
-    "name": "Catwoman Dark Knight Rises",
-    "realname": "Selina Kyle / 30mm",
-    "base": "30mm",
-    "rep": 64,
-    "funding": 300,
-    "rank": ["Free Agent"],
-    "faction": ["GCPD", "Unknown"],
-    "rivals": ["Bat Family"],
-    "img": "https://veland55.github.io/btb/img/CatwomanDarkKnightRises.png",
-    "stats": {
-      "attack": 4,
-      "defense": 5,
-      "strength": "5+",
-      "movement": 13,
-      "willpower": 6,
-      "endurance": 6
-    },
-    "traits": [
-      "Acrobat",
-      "Climbing Claws",
-      "Night Vision",
-      "Pickpocket",
-      "Required (Batman Dark Knight Rises or Bane Dark Knight Rises)",
-      "Sneak Attack",
-      "Undercover",
-      "Drop It!"
-    ],
-    "weapons": [
-      {
-        "name": "Automatic Gun",
-        "damage": "🩸★",
-        "rof": 3,
-        "ammo": 2,
-        "traits": "Short Range / Firearm / Light"
-      },
-      {
-        "name": "Heels",
-        "damage": "🩸★",
-        "rof": "-",
-        "ammo": "-",
-        "traits": "Sharp"
-      }
-    ]
-  },
+
   {
     "name": "Batman Dark Knight Rises Batpod",
     "realname": "Bruce Wayne / 42x75mm",
@@ -12014,41 +11924,7 @@ const models = [
       }
     ]
   },
-  {
-    "name": "Miranda Tate",
-    "realname": "Talia al Ghul",
-    "base": "30mm",
-    "rep": 53,
-    "funding": 0,
-    "rank": ["Sidekick"],
-    "faction": ["League of Shadows"],
-    "img": "https://veland55.github.io/btb/img/MirandaTate.png",
-    "stats": {
-      "Attack": 4,
-      "Defense": 4,
-      "Strength": "4+",
-      "Movement": 10,
-      "Willpower": 7,
-      "Endurance": 6
-    },
-    "traits": [
-      "Charm",
-      "Millionaire",
-      "True Love (Bane)",
-      "Disguised Sneak Attack",
-      "Scheming (3)",
-      "Undercover"
-    ],
-    "weapons": [
-      {
-        "name": "Knife",
-        "damage": "🩸",
-        "rof": "-",
-        "ammo": "-",
-        "traits": "Sharp"
-      }
-    ]
-  },
+
   {
     "name": "Goliath",
     "realname": "Goliath",
