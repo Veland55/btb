@@ -433,7 +433,7 @@ const models = [
     "weapons": [
       {
         "name": "SMG",
-        "damage": "🩸",
+        "damage": "🩸🩸",
         "rof": "4",
         "ammo": "2",
         "traits": "Firearm / S. Range"
