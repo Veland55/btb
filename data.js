@@ -19337,6 +19337,7 @@ const traitDescriptions = {
     "Automatic Guns": "Model gains the Instinctive Shooting trait.",
     "Autorepair (X)": "At the beginning of the Recount phase, this model rolls 1D6. On a result of (X)+ remove a Damage marker (any type) from this model.",
     "Aversion (X)": "This model cannot be included in the same crew as the specified model.",
+    "Arkham Asylum's Warden": "Other friendly models within 8\" and LoS with either the Arkham Asylum Dr. or Arkham Asylum Worker trait cannot be targeted by attacks. A model may take 2 Efforts to ignore this rule.",
     
     //B
     
@@ -19516,6 +19517,7 @@ const traitDescriptions = {
     "Cybernetic": "This model gains +1 to its Defense rolls, and can reroll Recovery rolls.",
     "Cybernetic Arms": "This model gains the Reinforced Gloves trait.",
     "Cyclops": "This model’s ranged attacks gain the Imprecise rule when the target is more than 8” away.",
+    "Combat Mode": "This model is only allowed to use its weapons if you move with it at maximum 6\" in the same round.",
     
     //D
     "Demon Mask (Inspire Fear) {SPECIAL_ICON}": "Target an enemy model [not a Vehicle) within 4\" and LOS. The target must take a Willpower roll. If this roll is failed, consult the following chart (the results are cumulative): Fail by 1-2 Target suffers the Scared Status. Fail by 3-5. Target suffers the Terror and Slow (4) Status. Fails by 6 or more: Target receives {BLOOD_ICON} damage equal to half is Endurance (rounding down).",
@@ -19661,6 +19663,7 @@ const traitDescriptions = {
     "Exposure": "For each additional successful hit after the first, the target suffers 1 additional damage marker (any type).",
     "Extended Limbs {SPECIAL_ICON}": "This model can perform Melee Attacks against models up to 3” away as if they were in contact.",
     "Extremely mutated": "This model cannot buy more than one item of Equipment.",
+    "Ejection System": "When this model ends a Movement Action, you may place a new friendly model with Alias: Batman Arkham Knight within 8\" and LoS and remove this model from the game. Transfer all Damage, Statuses, Audacity, and any Objectives that had targeted this model to the new model. No objectives may be scored as a result of this trait. This model counts as Alias: Batman Arkham Knight for the purpose of forming your Objective Deck.",
     
     //F
     
@@ -19806,7 +19809,8 @@ const traitDescriptions = {
     "Hunting Knives": "Model gains the Combo: Hunting Knives trait.",
     "Hypnotic Radio Waves {SPECIAL_ICON}": "Choose an enemy model with Rank {RANK_HENCHMAN_ICON} (not with Rank {RANK_VEHICLE_ICON}) within 5” and line of sight. \r\nThe target immediately suffers the Hypnotize Status.",
     "Hypnotize": "Status. Any non-vehicle model affected by Hypnotize must make a Willpower roll immediately. If it fails, it immediately performs up to 2 different actions under the control of the player who hypnotized it counting as one of that player’s crew in all respects. While performing these actions, you may perform up to 2 Free Efforts (you cannot make another Efforts) and you do not expend Ammunition.\r\nCounts as if you are performing an activation for traits and performing actions. Models that are Hypnotized cannot be moved so they would Fall or otherwise take Damage.\r\n\r\nNb: If you move and shoot per example, you lose attack dice as usual, you cannot repeat actions, but you are affected by active traits (special actions) that remains active for the activation of the model (like Inspire, Sewer Worker...). That model may be activated by its owner later, because is not an activation.",
-    
+    "Harley's Revenge": "Keyword.",
+
     //I
     
     "I am Chaos {SPECIAL_ICON}": "Discard an Objective card at random. The opponent must show you their Objective card hand. For each enemy model within 8\" and LoS, choose one of those cards – the opponent must Discard it",
@@ -19894,7 +19898,8 @@ const traitDescriptions = {
     "Kowabunga! {SPECIAL_ICON}": "Until the end of this round, This model does not take Damage, nor can it be removed as a Casualty, as a result of Falling. In addition, if this model ends a movement action in a lower position than it started, it can immediately move an extra 4\" and unarmed attacks gains Devastating until the end of the turn.",
     "Kryptonian (X)": "A model with this trait gains a number of rules determined by the trait’s level (X), see below.\n\n1: Fast, Invulnerability/1, Natural Immunities.\n2: Fast, Invulnerability/2, Natural Immunities, Super Jump.\n3: Fast, Fly, Invulnerability/3, Natural Immunities.\n4: Fast, Fly, Invulnerability/3, Natural Immunities, Tough Skin.\n5: Fast, Fly, Hover, Flying High, Invulnerability/4, Natural Immunities, Tough Skin.\n6: Fast, Fly, Hover, Flying High, Invulnerability/5, Natural Immunities, Tough Skin.\n\nIf the game is affected by the Day rules, the Invulnerability rule is improved by +1 and all the levels gain the Regeneration trait.",
     "Kryptonite": "If a weapon with this rule hits a model with the Kryptonian trait, the Kryptonian model loses the Invulnerability and Regeneration traits (if they possess them) until the end of the round.",
-
+    "Khushu Idol": "When a model is removed as a Casualty within 8\" and LoS to this model, you can place 1 Empower counter on this model (use any counter to remember it). During this model's activation you can spend 1 Empower counter instead of gaining 1 Magic counter or spend 2 Empower counters to gain 1 free Tactical Action (one per activation).",
+    
     //L
     
     "Lace": "Model's Close Combat attacks gain the Blunt (2) trait.",
@@ -20345,7 +20350,18 @@ const traitDescriptions = {
     "Swarm": "This model cannot be recruited, but can only be brought into play by the Sewer Swarm X trait or another rule that specifically say it. This model gains +1 Defense skill vs enemy Ranged Attacks. This model cannot perform Manipulate Actions by any means. Swarms do not fulfill enemy Objective criteria for making models KO or removing them as Casualties. If this model is made KO, remove it as a Casualty. This model is ignored by the Suicide Squad Cranial Bomb rule and cannot be removed by the Cranial Bomb Activated card.",
     "SWAT Special Training": "Model gains the Tracking and Precise Aim traits.",
     "Swift": "This model can make 1 Effort to improve its basic move distance by +2” for the remainder of the round.",
-    
+    "Shock Armor {SPECIAL_ICON}": "All models within 2\" must take an Endurance test. If they fail they suffer {STUN_ICON}{STUN_ICON}.",
+    "Sneak Attack Takedown": "When this model inflicts a KO on an enemy model affected by this model's Sneak Attack trait, it can immediately take a Free Manipulate action.",
+
+
+    "Life-Force Absorption (Spell)": "Attack Action. 1 Magical counter. Take an opposed Willpower test against an enemy model within 4\" and LoS. If you pass the Willpower roll by a difference of up to 3, deal 1 ★ Damage to that model and remove 2 damage from this model. If you surpass the test by 4 or more, deal 2 ★ Damage to that model and remove 4 damage from this model.",
+    "Magical Telekinesis (Spell)": "Manipulate Action. 2 Magical Counters. Target 2 combinations of 2 models or Suspects within 8\" and LoS to this model, move the selected items 4\".",
+    "Telepathy (Spell)": "Movement Action. 1 Magic Counter. Target a friendly model and choose one option: Move the target its Movement value, or the target Sets a Suspect within 4\".",
+
+    "Be My Alice": "When this model Sets a Suspect you may choose to make it a Wonderland Suspect. If there are any other friendly Wonderland Suspects in play, choose one to revert to a normal Suspect and move a Wonderland Suspect 4\".",
+    "Wonderland": "After choosing deployment zones, Set 3 friendly Wonderland markers (they are also friendly Suspect markers), following normal placement rules. When an enemy model Reveals a friendly Wonderland marker, your opponent may search their Objective deck for any one card, then shuffle.",
+    "Gotham's Finished": "While this model is in the Gaming Area, friendly models with the Veteran trait may spend a Special Action to search your Objective Deck for a Black Ops, Invasion, or Domination Objective card. Reveal the chosen card, shuffle your Objective deck, then add that card to your hand.",
+
     //T
     
     "Tachyon device": "In the Drain Speed Force sub-phase, if there aren’t any Speed Force markers in the Speed Force pool, this model adds up to 2 Speed Force markers to its own reserve.",
@@ -20499,7 +20515,8 @@ const traitDescriptions = {
     "Volunteer": "This model cannot be selected by a Cranial Bomb Activated card. When this model gains a Task token, instead may be placed on another friendly model within 8\" and LoS.",
     "Vote for Harvey Dent Banner": "Model's Inspire radius is increased by 4\".",
     "Vulnerability to Fire": "When this model suffers Damage by the Fire Status, inflicts to it 1 {BLOOD_ICON} Damage additionally.",
-    
+    "Vehicle": "Keyword.",
+
     //W
     
     "Wah! Wah! Wah!": "All the models within 8\" and LoS to this model counts as having Audacity for the Stage Play Objective card.",
@@ -20531,6 +20548,7 @@ const traitDescriptions = {
     "The Code": "This model cannot inflict Casualties under any circumstances. If you would remove a model as a Casualty with an action, instead replace all {BLOOD_ICON} damage inflicted on the target with {STUN_ICON}.",
     
     "You're locked in here with ME!": "This model gains the Takedown and Intimidate traits.",
+    "You Have Failed This City": "When this model removes an enemy model as a Casualty with an attack, it counts also as being removed by the Arrest trait and this model may be removed from the gaming área and use the Shadowed Nightmare trait to enter again later. \n \n In addition, when a friendly model without the Cop trait deals Damage to an enemy model, that model may instead of dealing the Damage Reveals a Suspect within 4\" of the Target or Move a Suspect 4\".",    
     
     
     "Zoom, Zoom": "This model may spend its movement action to place a friendly Suspect anywhere in the gaming area more following the usual rules.",
