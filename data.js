@@ -400,6 +400,53 @@ const models = [
     ]
   },
 
+//New Models 18.05
+
+  {
+    "name": "The Penguin Crime Lord Rising",
+    "realname": "Oswald Chesterfield Cobblepot",
+    "base": "40mm",
+    "rep": 74,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Penguin"],
+    "img": "",
+    "stats": {
+      "Attack": "3",
+      "Defense": "3",
+      "Strength": "5+",
+      "Movement": "8",
+      "Willpower": "7",
+      "Endurance": "7"
+    },
+    "traits": [
+      "Business Agent",
+      "Criminal Bonds",
+      "Drop It!",
+      "Empire of Lies",
+      "Handyman",
+      "Manipulative",
+      "Tough Guy",
+      "Underworld King",
+      "Protect Me!"
+    ],
+    "weapons": [
+      {
+        "name": "SMG",
+        "damage": "🩸🩸",
+        "rof": "4",
+        "ammo": "2",
+        "traits": "Firearm / S. Range"
+      },
+      {
+        "name": "Torture Tools",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Steal"
+      }
+    ]
+  },
 
 //New Models 20.04
 
@@ -19552,7 +19599,10 @@ const traitDescriptions = {
     "Cybernetic Arms": "This model gains the Reinforced Gloves trait.",
     "Cyclops": "This model’s ranged attacks gain the Imprecise rule when the target is more than 8” away.",
     "Combat Mode": "This model is only allowed to use its weapons if you move with it at maximum 6\" in the same round.",
-    
+
+    "Criminal Bonds": "If this model is included in your crew, you can recruit up to 3 models with Affiliation {AFF_CRIME_ICON} with Rank {RANK_HENCHMAN_ICON} and with the Criminal trait. Additional models in the crew with this trait have no further effect.",
+    "Empire of Lies": "After this model Sets a Suspect within 8\" and LOS of an enemy model, the opponent must show you their objective card hand. choose one of those cards and the opponent must Discard it. You can search into you Objective deck for a card that shares the Type of the card discarded by the opponent.",
+
     //D
     "Demon Mask (Inspire Fear) {SPECIAL_ICON}": "Target an enemy model [not a Vehicle) within 4\" and LOS. The target must take a Willpower roll. If this roll is failed, consult the following chart (the results are cumulative): Fail by 1-2 Target suffers the Scared Status. Fail by 3-5. Target suffers the Terror and Slow (4) Status. Fails by 6 or more: Target receives {BLOOD_ICON} damage equal to half is Endurance (rounding down).",
     "Daddy’s Girrrl": "If this model starts its activation within 6” of the Boss, its gains +1 {+ATT_ICON}.",
@@ -20589,8 +20639,6 @@ const traitDescriptions = {
     
     
     "360° Strike {SPECIAL_ICON}": "When this model performs a Melee Attack this round, it must be performed against all the models available to be a target (friendly and enemy). During this attack, no one model can make Efforts. Roll only once, and compare with all the targets results. Friendly models cannot make defense rolls against these attacks, but they cannot be the only models affected by it (there must be at least one enemy to target)."
-
-
 
 };
 
