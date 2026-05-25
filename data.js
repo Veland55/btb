@@ -3393,7 +3393,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin",
+    "name": "Robin [Jason Todd]",
     "realname": "Jason Todd",
     "base": "30mm",
     "rep": 40,
@@ -3564,7 +3564,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin",
+    "name": "Robin [Carrie Kelley]",
     "realname": "Carrie Kelley",
     "base": "30mm",
     "rep": 54,
@@ -4183,7 +4183,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin Tim Drake",
+    "name": "Robin [Tim Drake]",
     "realname": "Tim Drake",
     "base": "40mm",
     "rep": 50,
@@ -5039,7 +5039,7 @@ const models = [
     "img": "https://veland55.github.io/btb/img/LtGordonYearOne.png",
     "stats": {
       "Attack": 3,
-      "Defense": 3,
+      "Defense": 4,
       "Strength": "5+",
       "Movement": 8,
       "Willpower": 6,
@@ -14933,7 +14933,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin",
+    "name": "Robin [Damian Wayne]",
     "realname": "Damian Wayne",
     "base": "30mm",
     "rep": 50,
