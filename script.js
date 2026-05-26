@@ -152,7 +152,10 @@ const translations = {
     export_title: "Экспорт ростера",
     no_available_equipment: "Нет доступного оборудования",
     henry_ducard_sidekick_requires_ras: "Henry Ducard может быть нанят как Sidekick только если лидером банды является Ra's al Ghul Decoy!",
-    model_requires_other: "Модель {model} требует, чтобы в отряде была модель {required}"
+    model_requires_other: "Модель {model} требует, чтобы в отряде была модель {required}",
+    affinity_requires_model: "Модель {model} требует, чтобы в отряде была модель {target} (Affinity)",
+    expendable_penguin_requires_trait: "Модель {model} может быть нанята только если в отряде есть модель с трейтом Penguin Caller или Hidden Penguins",
+    william_cobb_restrict_free_agents: "Если William Cobb в отряде, Free Agent модели должны быть с аффилиацией Bane или Unknown"
   },
   en: {
     cards: "CARDS",
@@ -220,7 +223,10 @@ const translations = {
     export_title: "Export Roster",
     no_available_equipment: "No available equipment",
     henry_ducard_sidekick_requires_ras: "Henry Ducard can only be recruited as Sidekick if Ra's al Ghul Decoy is the crew leader!",
-    model_requires_other: "Model {model} requires {required} model in the crew"
+    model_requires_other: "Model {model} requires {required} model in the crew",
+    affinity_requires_model: "Model {model} requires {target} model in the crew (Affinity)",
+    expendable_penguin_requires_trait: "Model {model} can only be recruited if the crew includes a model with Penguin Caller or Hidden Penguins trait",
+    william_cobb_restrict_free_agents: "If William Cobb is in the crew, Free Agent models must have Bane or Unknown affiliation"
   }
 };
 
@@ -324,6 +330,53 @@ function findCompendiumEntry(searchTerm) {
   return null;
 }
 
+// ======================== HELPER ФУНКЦИИ ДЛЯ ФИЛЬТРАЦИИ И ПРОВЕРОК ========================
+
+// Получить список рангов модели
+function getRanks(model) {
+  if (!model.rank) return [];
+  if (Array.isArray(model.rank)) return model.rank;
+  if (typeof model.rank === 'string') {
+    return model.rank.split('/').map(r => r.trim());
+  }
+  return [];
+}
+
+// Получить список аффилиаций модели
+function getFactions(model) {
+  if (!model.faction) return ["Unknown"];
+  
+  let factions = [];
+  if (Array.isArray(model.faction)) {
+    factions = model.faction;
+  } else if (typeof model.faction === "string") {
+    factions = model.faction.replace(/ *& */gi, ",").replace(/ *\/ */g, ",").split(",").map(s => s.trim());
+  }
+  
+  return factions.length > 0 ? factions : ["Unknown"];
+}
+
+// Проверить может ли модель быть нанята в текущую фракцию (для режима билдера)
+function canHireInFaction(model, faction) {
+  if (!faction) return false;
+  
+  const modelFactions = getFactions(model);
+  
+  // Если модель "Unknown" - может быть нанята везде
+  if (modelFactions.includes("Unknown")) return true;
+  
+  // Проверяем совпадение фракции
+  return modelFactions.includes(faction);
+}
+
+// Проверить может ли модель быть просмотрена в текущей фракции (для режима карточек)
+function canViewInFaction(model, faction) {
+  if (!faction) return false;
+  
+  // Для просмотра используем более мягкие правила - показываем все модели которые могут быть наняты
+  return canHireInFaction(model, faction);
+}
+
 // ======================== ПРОВЕРКА ЗАВИСИМОСТЕЙ МОДЕЛЕЙ ========================
 // Возвращает true, если зависимость модели выполнена (требуемая модель есть в отряде)
 // Также проверяет правила Aversion — если в отряде есть модель из списка Aversion, возвращает false
@@ -338,6 +391,13 @@ function checkModelDependency(model) {
         return false;
       }
     }
+    const requiredModels = dependency.requiredModels;
+    if (requiredModels && Array.isArray(requiredModels)) {
+      // Для сложных условий (or): нужна хотя бы одна из моделей
+      if (!crew.some(m => requiredModels.includes(m.name))) {
+        return false;
+      }
+    }
   }
 
   // Проверяем правила Aversion
@@ -346,6 +406,29 @@ function checkModelDependency(model) {
     // Если в отряде есть хотя бы одна модель из списка Aversion, эта модель не может быть добавлена
     if (crew.some(m => aversionList.includes(m.name))) {
       return false;
+    }
+  }
+
+  // Проверяем трейты модели, которые могут иметь зависимости
+  if (model.traits && Array.isArray(model.traits)) {
+    // Проверяем Affinity (Model) - модель может присоединиться если есть указанная модель
+    const affinityTraits = model.traits.filter(t => t.startsWith("Affinity (") && t.endsWith(")"));
+    for (const trait of affinityTraits) {
+      const targetModelName = trait.replace("Affinity (", "").replace(")", "");
+      // Affinity позволяет нанять модель даже если она не подходит по аффилиации
+      // Нам не нужно проверять наличие - это расширитель прав, не ограничение
+      // Просто отмечаем что трейт обработан
+    }
+
+    // Проверяем Expendable Penguin X - требует Penguin Caller или Hidden Penguins
+    const expendablePenguinMatch = model.traits.some(t => t.startsWith("Expendable Penguin"));
+    if (expendablePenguinMatch) {
+      const hasPenguinCaller = crew.some(m => m.traits && m.traits.some(t => 
+        t.includes("Penguin Caller") || t.includes("Hidden Penguins")
+      ));
+      if (!hasPenguinCaller) {
+        return false;
+      }
     }
   }
 
@@ -679,7 +762,8 @@ function calculateModifiers() {
   crew.forEach(m => {
     m.traits.forEach(t => {
       // === Уже были ===
-      if (t === "Business Agent") mods.extraFunding += 100;
+      if (t === "Business Agent") mods.extraFunding += 350;
+      if (t === "Lord of Business") mods.extraFunding += 500;
       if (t === "Kaos Agent") mods.extraDuplicates += 1;
 
       const eliteBossMatch = t.match(/^Elite Boss \((.+)\)$/);
@@ -708,9 +792,12 @@ function calculateModifiers() {
       if (t === "Politician") mods.extraFunding += 200;
       if (t === "Rich") mods.extraFunding += 200; // чаще всего 200, иногда 100 — можно уточнить по модели
       if (t === "Supply Cache") mods.extraFunding += 300;
+      if (t === "Dirty Money") mods.extraFunding += 300;
+      if (t === "Unlimited Funds") mods.extraFunding += 300;
+      if (t === "Public Resources") mods.extraFunding += 300;
+      if (t === "Millionaire") mods.extraFunding += 400;
       
       // Новые трейты для Funding
-      if (t === "Corrupt") mods.extraFunding += 50; // +Funding для corrupt моделей
       if (t === "Vocational") mods.extraFunding += 200; // +Funding для vocational jobs
 
       // Free Agents
@@ -841,6 +928,29 @@ const renderMiniCardsBuilder = debounce(() => {
 
   // Скрываем модели из-за правил Aversion (если в отряде есть модель, для которой эта модель в списке Aversion)
   filteredModels = filteredModels.filter(m => !checkAversionHidden(m));
+
+  // Скрываем модели с Affinity, если требуемая модель отсутствует в отряде
+  filteredModels = filteredModels.filter(m => {
+    if (!m.traits || !Array.isArray(m.traits)) return true;
+    const affinityTraits = m.traits.filter(t => t.startsWith("Affinity (") && t.endsWith(")"));
+    for (const trait of affinityTraits) {
+      const targetModelName = trait.replace("Affinity (", "").replace(")", "");
+      // Модель должна быть скрыта если требуемой модели нет в отряде
+      if (!crew.some(crewMember => crewMember.name === targetModelName)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // Обработка Batman Lives: если Boss имеет Batman Lives, показываем William Cobb даже если не совпадает аффилиация
+  if (BMG_BOSS && BMG_BOSS.traits && BMG_BOSS.traits.includes("Batman Lives")) {
+    // Добавляем William Cobb в доступные модели если его еще нет в отряде
+    const williamCobb = models.find(m => m.name === "William Cobb");
+    if (williamCobb && !hasInCrew(williamCobb) && !filteredModels.some(m => m.name === "William Cobb")) {
+      filteredModels.push(williamCobb);
+    }
+  }
 
   // Определение порядка рангов
   const rankOrder = {
@@ -1692,7 +1802,52 @@ function bmgCanAddModel(model) {
       alert(t("amazon_lineage"));
       exceeded = true;
     }
+
+    // Affinity (Model): Проверяем что модель может присоединиться
+    const affinityMatch = t.match(/^Affinity \((.+)\)$/);
+    if (affinityMatch) {
+      const affinityTarget = affinityMatch[1];
+      // Модель с Affinity может присоединиться только если в отряде есть целевая модель
+      if (!crew.some(m => m.name === affinityTarget)) {
+        alert(t("affinity_requires_model", { model: model.name, target: affinityTarget }));
+        exceeded = true;
+      }
+    }
+
+    // Expendable Penguin X: Требует Penguin Caller или Hidden Penguins
+    if (t.startsWith("Expendable Penguin")) {
+      const hasPenguinTrait = crew.some(m => m.traits && m.traits.some(trait => 
+        trait.includes("Penguin Caller") || trait.includes("Hidden Penguins")
+      ));
+      if (!hasPenguinTrait) {
+        alert(t("expendable_penguin_requires_trait", { model: model.name }));
+        exceeded = true;
+      }
+    }
+
+    // Batman Lives: Позволяет нанять William Cobb, но накладывает ограничения на Free Agent
+    // Это проверяется в основной логике аффилиации выше
   });
+
+  // Проверка Batman Lives после основных проверок трейтов
+  if (BMG_BOSS && BMG_BOSS.traits && BMG_BOSS.traits.includes("Batman Lives")) {
+    // Batman Lives позволяет нанять William Cobb без учета аффилиации
+    // Но если William Cobb нанят, Free Agent модели должны быть с аффилиацией Bane
+    const hasWilliamCobb = crew.some(m => m.name === "William Cobb");
+    if (hasWilliamCobb && rank === "Free Agent") {
+      const modelFactions = getFactions(model);
+      if (!modelFactions.includes("Bane") && !modelFactions.includes("Unknown")) {
+        alert(t("william_cobb_restrict_free_agents"));
+        exceeded = true;
+      }
+    }
+  }
+
+  // Проверка Contractor: может изменить аффилиацию на Bane если используется как Leader
+  if (model.traits && model.traits.includes("Contractor") && rank === "Leader") {
+    // Contractor может рассматриваться как Leader, но изменяет аффилиацию на Bane
+    // Это обрабатывается при выборе ранга, здесь просто отмечаем что обработан
+  }
 
   if (exceeded) return false;
 
