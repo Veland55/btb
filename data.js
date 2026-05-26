@@ -410,7 +410,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "",
+    "img": "https://veland55.github.io/btb/img/ThePenguinCrimeLordRising.png",
     "stats": {
       "Attack": "3",
       "Defense": "3",
