@@ -9,8 +9,6 @@ let modifiers = {
   extraElites: {},
   extraVeterans: {},
   extraMinions: {},
-  extraTalons: 0,
-  allowBetray: false,
   charismaticUsed: false // Был ли уже использован слот от Charismatic
 };
 let currentFaction = null; // Изменено: null по умолчанию (нет фракции)
@@ -20,6 +18,48 @@ let specialTraitNames = new Set(); // Кэш специальных трейто
 
 // Режимы просмотра
 let currentMode = 'menu'; // menu, cards, builder, rules
+
+// ======================== ФРАКЦИИ ========================
+// Единый источник списка фракций и их иконок: используется и для генерации
+// вкладок выбора фракции (cardsSection/builderSection), и для иконок на карточках моделей
+const FACTION_ICON_MAP = {
+  "Bat Family": "BATMAN.png",
+  "GCPD": "GCPD.png",
+  "Birds of Prey": "BIRDS_OF_PREY.png",
+  "Joker": "JOKER.png",
+  "Bane": "SOLDIERS.png",
+  "League of Shadows": "LEAGUE.png",
+  "Royal Flush": "RoyalFlush.png",
+  "Penguin": "PENGUIN.png",
+  "Mr. Freeze": "MR_FREEZE.png",
+  "Scarecrow": "SCARECROW.png",
+  "Two-Face": "TWO-FACE.png",
+  "The Riddler": "RIDDLER.png",
+  "Organized Crime": "OrganizedCrime.png",
+  "Suicide Squad": "Suicide_Squad.png",
+  "Court of Owls": "OWLS.png",
+  "Watchmen": "Watchmen.png",
+  "Batman Who Laughs": "BatmanWhoLaughs.png",
+  "Cults": "CULTS.png",
+  "Doom Patrol": "Doom_Patrol.png",
+  "Unknown": "UNKNOWN.png"
+};
+
+function buildFactionCardsHTML() {
+  const base = "https://veland55.github.io/btb/img/menu/";
+  return Object.entries(FACTION_ICON_MAP).map(([faction, iconFile]) => {
+    const bgFile = iconFile.replace(/\.png$/, ".jpg");
+    return `
+        <div class="faction-card" data-faction="${faction}" style="background-image: url('${base}${bgFile}');">
+          <img class="faction-icon" src="${base}${iconFile}" alt="${faction}">
+        </div>`;
+  }).join("");
+}
+
+function renderFactionCards() {
+  const html = buildFactionCardsHTML();
+  document.querySelectorAll('.tabs-container .faction-cards').forEach(el => el.innerHTML = html);
+}
 
 // ======================== ИКОНКИ ========================
 const ICON_MAP = {
@@ -105,7 +145,7 @@ const translations = {
     subtitle: "Batman: Gotham Chronicles<br>Конструктор отрядов",
     leader_first: "Первой моделью должен быть Leader для этой фракции!",
     leader_cults: "Для фракции Cults лидером может быть только Deacon Blackfire или Kobra",
-    treacherous_warn: "Предупреждение: Treacherous модель может предать отряд!",
+    treacherous_cannot_be_boss: "Эта модель не может быть боссом отряда (Treacherous)",
     boss_sidekick: "Если босс — Sidekick, модели с Leader/Sidekick можно добавить только как Sidekick",
     rank_not_found: "У модели не указан ранг!",
     min_limit_100: "Минимальный лимит — 100 Rep",
@@ -133,14 +173,13 @@ const translations = {
     hates_cannot_add: "Нельзя добавить: Hates ({hated})",
     avert_cannot_add: "Нельзя добавить: Aversion ({averted})",
     required_cannot_add: "Требуется: Required ({required})",
-    incorruptible_cannot_add: "Incorruptible: Нельзя в эту фракцию",
-    requires_liberator: "Требует освободителя (He Freed Me)",
-    requires_idol: "Требует кумира (My Idol!)",
-    possessed_only_supernatural: "Possessed: Только в сверхъестественных фракциях",
-    requires_goliath: "Требует Goliath",
-    sidekick_limit_exceeded: "Превышен лимит Sidekick",
-    leader_required_for_sidekick: "Требует Leader для Sidekick",
-    amazon_lineage: "Amazon Lineage: Только в amazon фракциях",
+    requires_batman_who_laughs: "Требует The Batman Who Laughs в отряде",
+    requires_idol: "Требует модель с Alias: Zur-En-Arrh Batman в отряде",
+    requires_goliath: "Требует модель Damian Wayne в отряде",
+    requires_goliath_not_owls: "Эта модель не может быть нанята во фракцию Court of Owls",
+    leader_required_for_sidekick: "Требует, чтобы боссом отряда был Batman (Modern Age)",
+    amazon_lineage: "Если босс отряда имеет Amazon Lineage, нанимать можно только моделей с трейтом Amazon",
+    mercenary_requires_bane: "Эта модель может быть нанята в League of Shadows только если в отряде есть модель Bane",
     animal_no_equipment: "Модели с трейтом Animal не могут покупать оборудование!",
     fully_equipped_no_equipment: "Модель с трейтом Fully Equipped не может покупать оборудование!",
     limited_equipment_max_reached: "Модель с трейтом Limited Equipment уже достигла лимита в 1 единицу оборудования!",
@@ -176,7 +215,7 @@ const translations = {
     subtitle: "Batman: Gotham Chronicles<br>Crew Builder",
     leader_first: "Leader must be the first model for this faction!",
     leader_cults: "For Cults faction, only Deacon Blackfire or Kobra can be leader",
-    treacherous_warn: "Warning: Treacherous model may betray the crew!",
+    treacherous_cannot_be_boss: "This model cannot be the Boss of your crew (Treacherous)",
     boss_sidekick: "If boss is Sidekick, models with Leader/Sidekick can only be added as Sidekick",
     rank_not_found: "Model rank not specified!",
     min_limit_100: "Minimum limit is 100 Rep",
@@ -204,14 +243,13 @@ const translations = {
     hates_cannot_add: "Cannot add: Hates ({hated})",
     avert_cannot_add: "Cannot add: Aversion ({averted})",
     required_cannot_add: "Required: Required ({required})",
-    incorruptible_cannot_add: "Incorruptible: Cannot join this faction",
-    requires_liberator: "Requires liberator (He Freed Me)",
-    requires_idol: "Requires idol (My Idol!)",
-    possessed_only_supernatural: "Possessed: Only in supernatural factions",
-    requires_goliath: "Requires Goliath",
-    sidekick_limit_exceeded: "Sidekick limit exceeded",
-    leader_required_for_sidekick: "Requires Leader for Sidekick",
-    amazon_lineage: "Amazon Lineage: Only in amazon factions",
+    requires_batman_who_laughs: "Requires The Batman Who Laughs model in the crew",
+    requires_idol: "Requires a model with Alias: Zur-En-Arrh Batman in the crew",
+    requires_goliath: "Requires Damian Wayne model in the crew",
+    requires_goliath_not_owls: "This model cannot be recruited into a Court of Owls crew",
+    leader_required_for_sidekick: "Requires Batman (Modern Age) to be the crew's Boss",
+    amazon_lineage: "If the crew's Boss has Amazon Lineage, only models with the Amazon trait can be recruited",
+    mercenary_requires_bane: "This model can only be recruited in a League of Shadows crew if Bane is also included",
     animal_no_equipment: "Models with Animal trait cannot purchase equipment!",
     fully_equipped_no_equipment: "Model with Fully Equipped trait cannot purchase any equipment!",
     limited_equipment_max_reached: "Model with Limited Equipment trait has already reached the limit of 1 equipment!",
@@ -285,6 +323,10 @@ const $ = id => document.getElementById(id);
 const hasInCrew = m => crew.some(x => x.name === m.name);
 const countInCrew = m => crew.filter(x => x.name === m.name).length;
 
+// Суммарные Rep/Funding отряда (с учётом оборудования каждой модели)
+const getCrewTotalRep = () => crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0);
+const getCrewUsedFunding = () => crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+
 // ======================== ФУНКЦИИ МЕНЮ ========================
 // Улучшенная функция очистки имени от иконок и лишних символов
 function getCleanName(name) {
@@ -340,6 +382,17 @@ function getRanks(model) {
     return model.rank.split('/').map(r => r.trim());
   }
   return [];
+}
+
+// Ранги, доступные модели именно при найме в билдере — расширяет getRanks()
+// условными трейтами (например Contractor: "may treat its rank as Leader").
+// Не используется для отображения официального ранга на карточке.
+function getHireableRanks(model) {
+  const ranks = getRanks(model);
+  if (model.traits && model.traits.includes("Contractor") && !ranks.includes("Leader")) {
+    return [...ranks, "Leader"];
+  }
+  return ranks;
 }
 
 // Получить список аффилиаций модели
@@ -467,6 +520,20 @@ function checkAversionHidden(model) {
   return false;
 }
 
+// Трейты, помечающие модель как недоступную для прямого найма (только служебное появление
+// в игре — например, замена формы или автодобавление другой моделью)
+const UNRECRUITABLE_TRAITS = [
+  "Swarm",
+  "Kobra Swarm",
+  "Shapeshifting Gorilla Progress",
+  "Shapeshifting Hawk Progress",
+  "Shapeshifting Tiger Progress"
+];
+
+function isUnrecruitable(model) {
+  return model.traits && model.traits.some(t => UNRECRUITABLE_TRAITS.includes(t));
+}
+
 function showCards() {
   currentMode = 'cards';
   $('mainMenu').style.display = 'none';
@@ -547,18 +614,13 @@ function selectFaction(faction) {
 
 // ======================== ОТРЯД (ТОЛЬКО ДЛЯ БИЛДЕРА) ========================
 const addToCrew = m => {
-  // Проверка на Mercenary - автоматически считаем как Free Agent
-  if (m.traits.includes("Mercenary")) {
-    m.rankUsed = "Free Agent";
-  }
-  
   const isMinionOrHorde = m.traits.some(t => t.startsWith("Minion") || t === "Horde");
   const factionRules = factionCrewRules[currentFaction] || {};
 
   if (!isMinionOrHorde && hasInCrew(m)) {
     removeFromCrew(m);
   } else {
-    let ranks = getRanks(m);
+    let ranks = getHireableRanks(m);
 
     if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && !ranks.includes("Leader")) {
       alert(t("leader_first"));
@@ -585,9 +647,10 @@ const addToCrew = m => {
 };
 
 function addModelWithRank(model, chosenRank) {
-  // Проверка на Treacherous - предупреждение
-  if (model.traits.includes("Treacherous")) {
-    alert(t("treacherous_warn"));
+  // Treacherous: "This model cannot be the Boss of your crew."
+  if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick") && model.traits.includes("Treacherous")) {
+    alert(t("treacherous_cannot_be_boss"));
+    return;
   }
 
   const factionRules = factionCrewRules[currentFaction] || {};
@@ -627,8 +690,20 @@ function addModelWithRank(model, chosenRank) {
   crew.unshift(cloned);
   if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
     BMG_BOSS = cloned;
-    BMG_AFFILIATIONS = getFactions(cloned);
+    // Contractor: "may treat its rank as Leader, but if it does so its Affiliation changes to Bane"
+    BMG_AFFILIATIONS = (chosenRank === "Leader" && cloned.traits.includes("Contractor"))
+      ? ["Bane"]
+      : getFactions(cloned);
   }
+
+  // Kobra Swarm: "is added automatically to the crew when you hire a model with the Void Priest trait"
+  if (cloned.traits.includes("Void Priest")) {
+    const swarmModel = models.find(m => m.traits && m.traits.includes("Kobra Swarm"));
+    if (swarmModel) {
+      crew.unshift({ ...swarmModel, rankUsed: "Henchman", uniqueId: Date.now() + Math.random(), equipment: [] });
+    }
+  }
+
   updateCrewEquipmentCounts();
   modifiers = calculateModifiers();
   updateCrewBar();
@@ -722,8 +797,8 @@ function updateCrewEquipmentCounts() {
 
 const updateCrewBar = () => {
   $("crewCount").textContent = crew.length;
-  let totalRep = crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0);
-  let usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+  let totalRep = getCrewTotalRep();
+  let usedFunding = getCrewUsedFunding();
   $("totalRep").textContent = totalRep;
   $("totalFunding").textContent = `${usedFunding} / ${bmgFundingLimit()}`;
   
@@ -747,24 +822,31 @@ const updateCrewBar = () => {
 };
 
 function calculateModifiers() {
-  const mods = { 
-    extraFreeAgents: 0, 
-    extraVehicles: 0, 
-    extraFunding: 0, 
-    extraDuplicates: 0, 
-    extraElites: {}, 
-    extraVeterans: {}, 
+  const mods = {
+    extraFreeAgents: 0,
+    extraVehicles: 0,
+    extraFunding: 0,
+    extraDuplicates: 0,
+    extraElites: {},
+    extraVeterans: {},
     extraMinions: {},
-    extraTalons: 0,
-    allowBetray: false
+    // Сохраняем текущее состояние Charismatic — иначе оно сбрасывалось
+    // при каждом пересчёте модификаторов (после каждого добавления модели)
+    charismaticUsed: modifiers.charismaticUsed || false
   };
 
   crew.forEach(m => {
+    const isBoss = BMG_BOSS && m === BMG_BOSS;
     m.traits.forEach(t => {
-      // === Уже были ===
+      // Funding — по тексту компендиума:
+      // "Business Agent": +$350, не требует Boss.
       if (t === "Business Agent") mods.extraFunding += 350;
-      if (t === "Lord of Business") mods.extraFunding += 500;
-      if (t === "Kaos Agent") mods.extraDuplicates += 1;
+      // "Lord of Business" / "Dirty Money" / "Unlimited Funds" (= Dirty Money): "If this model is the Boss..."
+      if (t === "Lord of Business" && isBoss) mods.extraFunding += 500;
+      if ((t === "Dirty Money" || t === "Unlimited Funds") && isBoss) mods.extraFunding += 300;
+      // "Public Resources" / "Millionaire": не требуют Boss.
+      if (t === "Public Resources") mods.extraFunding += 300;
+      if (t === "Millionaire") mods.extraFunding += 400;
 
       const eliteBossMatch = t.match(/^Elite Boss \((.+)\)$/);
       if (eliteBossMatch) {
@@ -783,50 +865,6 @@ function calculateModifiers() {
         const type = minionBossMatch[1];
         mods.extraMinions[type] = (mods.extraMinions[type] || 0) + 1;
       }
-
-      // === НОВЫЕ ТРЕЙТЫ, влияющие на набор банды ===
-
-      // Funding
-      if (t === "Black Market Connections") mods.extraFunding += 200;
-      if (t === "Corporate Resources") mods.extraFunding += 300;
-      if (t === "Politician") mods.extraFunding += 200;
-      if (t === "Rich") mods.extraFunding += 200; // чаще всего 200, иногда 100 — можно уточнить по модели
-      if (t === "Supply Cache") mods.extraFunding += 300;
-      if (t === "Dirty Money") mods.extraFunding += 300;
-      if (t === "Unlimited Funds") mods.extraFunding += 300;
-      if (t === "Public Resources") mods.extraFunding += 300;
-      if (t === "Millionaire") mods.extraFunding += 400;
-      
-      // Новые трейты для Funding
-      if (t === "Vocational") mods.extraFunding += 200; // +Funding для vocational jobs
-
-      // Free Agents
-      if (t === "Undercover Agent") mods.extraFreeAgents += 1;
-      if (t === "Politician") mods.extraFreeAgents += 1; // у большинства версий Politician даёт +1 FA
-      if (t === "Mercenary") mods.extraFreeAgents += 1; // +1 Free Agent слот
-      if (t === "Heir to the Cowl" && currentFaction === "Bat Family") mods.extraFreeAgents += 1; // +1 FA в Bat Family
-      if (t === "Watchmen") mods.extraFreeAgents += 1; // +1 FA для Watchmen
-
-      // Vehicles
-      if (t === "Vehicle Boss" || t === "Large Vehicle Boss") mods.extraVehicles += 1;
-
-      // Дополнительные Henchmen (дубликаты уникальных)
-      if (t === "Recruiter") mods.extraDuplicates += 1;
-
-      // Horde
-      if (t === "Horde") mods.extraMinions["All"] = (mods.extraMinions["All"] || 0) + 3; // +3 миньона любого типа
-      
-      // Court of Owls
-      if (t === "Court of Owls Crew") mods.extraTalons += 2; // +2 Talons для resurrection
-      
-      // Treacherous
-      if (t === "Treacherous") mods.allowBetray = true; // Разрешает betray
-
-      // Редкие/специфические случаи (на будущее, если встретятся модели)
-      if (t === "Tactician") mods.extraFreeAgents += 1; // иногда даёт +1 FA
-      if (t === "Strategist") mods.extraDuplicates += 1; // иногда +1 Henchman
-
-      // Добавь здесь другие трейты, если в compendium появятся новые с бонусами к набору
     });
   });
 
@@ -843,6 +881,32 @@ const debounce = (func, delay) => {
 };
 
 // ======================== МИНИ-КАРТОЧКИ ========================
+// Порядок сортировки по рангу (используется и в просмотре, и в билдере)
+const RANK_ORDER = {
+  "Leader": 1,
+  "Sidekick": 2,
+  "Henchman": 3,
+  "Free Agent": 4,
+  "Vehicle": 5
+};
+
+// Сортирует модели по старшему рангу, затем по имени
+function sortModelsByRank(list) {
+  return list.sort((a, b) => {
+    const ranksA = getRanks(a);
+    const ranksB = getRanks(b);
+    const minA = ranksA.length > 0 ? Math.min(...ranksA.map(r => RANK_ORDER[r] || 999)) : 999;
+    const minB = ranksB.length > 0 ? Math.min(...ranksB.map(r => RANK_ORDER[r] || 999)) : 999;
+    if (minA !== minB) return minA - minB;
+    return a.name.localeCompare(b.name);
+  });
+}
+
+// HTML иконок рангов модели
+const renderRankIconsHTML = ranks => ranks.map(rank =>
+  `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`
+).join('');
+
 // Версия для просмотра (без +/-)
 const renderMiniCardsView = debounce(() => {
   if (!currentFaction) {
@@ -856,24 +920,7 @@ const renderMiniCardsView = debounce(() => {
   // === ИСПРАВЛЕНО: используем canViewInFaction для режима просмотра ===
   // В режиме просмотра НЕ применяем правила factionCrewRules и modelDependencyRules
   // Эти правила работают только в билдере
-  let filteredModels = models.filter(m => canViewInFaction(m, currentFaction));
-
-  const rankOrder = {
-    "Leader": 1,
-    "Sidekick": 2,
-    "Henchman": 3,
-    "Free Agent": 4,
-    "Vehicle": 5
-  };
-
-  filteredModels.sort((a, b) => {
-    const ranksA = getRanks(a);
-    const ranksB = getRanks(b);
-    const minA = ranksA.length > 0 ? Math.min(...ranksA.map(r => rankOrder[r] || 999)) : 999;
-    const minB = ranksB.length > 0 ? Math.min(...ranksB.map(r => rankOrder[r] || 999)) : 999;
-    if (minA !== minB) return minA - minB;
-    return a.name.localeCompare(b.name);
-  });
+  let filteredModels = sortModelsByRank(models.filter(m => canViewInFaction(m, currentFaction)));
 
   const fragment = document.createDocumentFragment();
 
@@ -888,7 +935,7 @@ const renderMiniCardsView = debounce(() => {
 <div class="mini-info">
   <div class="mini-name">${model.name}</div>
   <div class="mini-ranks">
-    ${ranks.map(rank => `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`).join('')}
+    ${renderRankIconsHTML(ranks)}
   </div>
   <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
 </div>
@@ -923,6 +970,9 @@ const renderMiniCardsBuilder = debounce(() => {
   // === ИСПРАВЛЕНО: используем canHireInFaction для режима билдера ===
   let filteredModels = models.filter(m => canHireInFaction(m, currentFaction) && !hasInCrew(m));
 
+  // Скрываем модели, которые нельзя нанять напрямую (Swarm, Kobra Swarm, Shapeshifting-формы и т.п.)
+  filteredModels = filteredModels.filter(m => !isUnrecruitable(m));
+
   // Скрываем модели с невыполненными зависимостями
   filteredModels = filteredModels.filter(m => checkModelDependency(m));
 
@@ -952,24 +1002,8 @@ const renderMiniCardsBuilder = debounce(() => {
     }
   }
 
-  // Определение порядка рангов
-  const rankOrder = {
-    "Leader": 1,
-    "Sidekick": 2,
-    "Henchman": 3,
-    "Free Agent": 4,
-    "Vehicle": 5
-  };
-
   // Сортировка: сначала по наивысшему (минимальному по номеру) рангу, затем по имени алфавитно
-  filteredModels.sort((a, b) => {
-    const ranksA = getRanks(a);
-    const ranksB = getRanks(b);
-    const minA = ranksA.length > 0 ? Math.min(...ranksA.map(r => rankOrder[r] || 999)) : 999;
-    const minB = ranksB.length > 0 ? Math.min(...ranksB.map(r => rankOrder[r] || 999)) : 999;
-    if (minA !== minB) return minA - minB;
-    return a.name.localeCompare(b.name);
-  });
+  sortModelsByRank(filteredModels);
 
   // Добавляем отфильтрованные модели в renderArray
   renderArray.push(...filteredModels.map(m => ({
@@ -1006,7 +1040,7 @@ ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-cr
 <div class="mini-info">
   <div class="mini-name">${item.name}</div>
   <div class="mini-ranks">
-    ${ranks.map(rank => `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`).join('')}
+    ${renderRankIconsHTML(ranks)}
   </div>
   <div class="mini-rep">${item.rep} Rep • $${item.funding || 0}</div>
 </div>
@@ -1088,33 +1122,9 @@ const showFullCard = model => {
   const rep = model.rep || 0;
   const funding = model.funding || 0;
 
-  // --- Маппинг иконок ---
-  const factionIcons = {
-    "Bat Family": "BATMAN.png",
-    "GCPD": "GCPD.png",
-    "Birds of Prey": "BIRDS_OF_PREY.png",
-    "Joker": "JOKER.png",
-    "Bane": "SOLDIERS.png",
-    "League of Shadows": "LEAGUE.png",
-    "Royal Flush": "RoyalFlush.png",
-    "Penguin": "PENGUIN.png",
-    "Mr. Freeze": "MR_FREEZE.png",
-    "Scarecrow": "SCARECROW.png",
-    "Two-Face": "TWO-FACE.png",
-    "The Riddler": "RIDDLER.png",
-    "Organized Crime": "OrganizedCrime.png",
-    "Suicide Squad": "Suicide_Squad.png",
-    "Court of Owls": "OWLS.png",
-    "Watchmen": "Watchmen.png",
-    "Batman Who Laughs": "BatmanWhoLaughs.png",
-    "Cults": "CULTS.png",
-    "Doom Patrol": "Doom_Patrol.png",
-    "Unknown": "UNKNOWN.png"
-  };
-
   const renderIcons = arr => arr.length
     ? arr.map(f => {
-        const file = factionIcons[f] || "UNKNOWN.png";
+        const file = FACTION_ICON_MAP[f] || "UNKNOWN.png";
         return `<img src="https://veland55.github.io/btb/img/${file}" alt="${f}" class="faction-icon-small">`;
       }).join(" ")
     : "—";
@@ -1365,34 +1375,36 @@ function removeEquipmentFromModel(modelName, eqName) {
 }
 
 // ======================== ВКЛАДКИ ========================
-// Инициализация табов (для всех режимов)
+// Обработчик кликов по карточкам фракций, навешивается один раз через
+// делегирование событий (иначе повторные вызовы initTabs() при каждом
+// showCards()/showBuilder() накапливали дублирующиеся обработчики на картах)
+let tabsInitialized = false;
 function initTabs() {
-  document.querySelectorAll('.faction-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.faction-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      currentFaction = card.dataset.faction; // Устанавливаем фракцию
+  if (tabsInitialized) return;
+  tabsInitialized = true;
+  document.addEventListener('click', e => {
+    const card = e.target.closest('.faction-card');
+    if (!card) return;
 
-      if (card.closest('#cardsSection')) { // Для cardsSection
-        // Скрываем вкладки фракций после выбора
-        $('cardsTabsContainer').classList.add('hidden');
-        renderMiniCardsView(); // Рендерим модели только после выбора
-      } else if (card.closest('#factionSelect')) {
-        const faction = card.dataset.faction;
-        selectFaction(faction);
-      } else {
-        if (currentMode === 'cards') {
-          renderMiniCardsView();
-        } else if (currentMode === 'builder') {
-          renderMiniCardsBuilder();
-        }
-      }
-    });
+    document.querySelectorAll('.faction-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    currentFaction = card.dataset.faction; // Устанавливаем фракцию
+
+    if (card.closest('#cardsSection')) { // Для cardsSection
+      // Скрываем вкладки фракций после выбора
+      $('cardsTabsContainer').classList.add('hidden');
+      renderMiniCardsView(); // Рендерим модели только после выбора
+    } else if (card.closest('#factionSelect')) {
+      selectFaction(card.dataset.faction);
+    }
   });
 }
 
 // ======================== ИНИЦИАЛИЗАЦИЯ ========================
 window.addEventListener("load", () => {
+  // Генерируем карточки фракций (одинаковы для cardsSection и builderSection)
+  renderFactionCards();
+
   // Инициализация compendium (если он есть)
   if (window.compendium) {
     compendiumKeys = Object.keys(window.compendium).sort();
@@ -1480,8 +1492,8 @@ function bmgRankCount(rank) {
 
 function bmgCanAddModel(model) {
   // Рассчитываем общую Rep и Funding с учетом оборудования
-  let totalRep = crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0) + (model.rep || 0);
-  let usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0) + (model.funding || 0);
+  let totalRep = getCrewTotalRep() + (model.rep || 0);
+  let usedFunding = getCrewUsedFunding() + (model.funding || 0);
 
   const rank = model.rankUsed;
   if (!rank) {
@@ -1523,23 +1535,69 @@ function bmgCanAddModel(model) {
   if (BMG_BOSS) {
     const modelFactions = getFactions(model);
     const bossFactions = BMG_AFFILIATIONS || [];
+    const bossTraits = BMG_BOSS.traits || [];
 
+    // Court of Owls Crew: "This crew can only hire models with the Affiliation: The Court of Owls."
+    if (bossTraits.includes("Court of Owls Crew") && !modelFactions.includes("Court of Owls")) {
+      alert(t("model_not_affiliation"));
+      return false;
+    }
+
+    // Amazon Lineage: "If this model is your crew's Boss, you can only recruit models with the Amazon trait."
+    if (bossTraits.includes("Amazon Lineage") && !model.traits.includes("Amazon")) {
+      alert(t("amazon_lineage"));
+      return false;
+    }
+
+    const hasRealAffiliationMatch = modelFactions.some(a => bossFactions.includes(a));
+    const hasUnknownBypass = modelFactions.includes("Unknown");
+
+    let passesAffiliation;
+    let failMessageKey;
     if (factionRules.onlyAffiliationMembers) {
       // Для Batman Who Laughs: только члены аффилиации
-      if (!modelFactions.some(a => bossFactions.includes(a))) {
-        alert(t("model_not_affiliation"));
-        return false;
-      }
+      passesAffiliation = hasRealAffiliationMatch;
+      failMessageKey = "model_not_affiliation";
     } else if (factionRules.onlyBossAffiliationOrNoAffiliation) {
       // Для Bat Family и Cults: только аффилиация Босса или без аффилиации
-      if (!modelFactions.includes("Unknown") && !modelFactions.some(a => bossFactions.includes(a))) {
-        alert(t("model_not_match_affiliation"));
-        return false;
-      }
+      passesAffiliation = hasRealAffiliationMatch || hasUnknownBypass;
+      failMessageKey = "model_not_match_affiliation";
     } else {
       // Стандартная проверка
-      if (!modelFactions.includes("Unknown") && !modelFactions.some(a => bossFactions.includes(a))) {
-        alert(t("model_not_match"));
+      passesAffiliation = hasRealAffiliationMatch || hasUnknownBypass;
+      failMessageKey = "model_not_match";
+    }
+
+    // Incorruptible: "This model can only be included into a Crew with a Boss that have its
+    // same affiliation" — для этой модели поблажка через Unknown-аффилиацию не действует
+    if (passesAffiliation && !hasRealAffiliationMatch && model.traits.includes("Incorruptible")) {
+      passesAffiliation = false;
+    }
+
+    if (!passesAffiliation) {
+      // Специальные трейты, разрешающие найм вне аффилиации Босса (с лимитом по числу таких моделей)
+      let hireException = null;
+      if (rank === "Henchman" && bossTraits.includes("Possessed") &&
+          !model.traits.includes("Bot") && !model.traits.includes("Cybernetic") &&
+          crew.filter(m => m.hireException === "Possessed").length < 3) {
+        hireException = "Possessed"; // до 3 Henchman любой аффилиации, если Босс — Possessed
+      } else if (rank === "Henchman" && bossTraits.includes("Corrupt") &&
+          model.traits.includes("Cop") &&
+          crew.filter(m => m.hireException === "Corrupt").length < 3) {
+        hireException = "Corrupt"; // до 3 Henchman с трейтом Cop, если Босс — Corrupt
+      } else if (rank === "Henchman" && bossTraits.includes("Criminal Bonds") &&
+          modelFactions.includes("Organized Crime") && model.traits.includes("Criminal") &&
+          crew.filter(m => m.hireException === "Criminal Bonds").length < 3) {
+        hireException = "Criminal Bonds"; // до 3 Henchman Organized Crime с трейтом Criminal
+      } else if (model.traits.includes("Vocational") &&
+          crew.every(m => m.traits.includes("Cop"))) {
+        hireException = "Vocational"; // допустимо, если у всех в отряде есть трейт Cop
+      }
+
+      if (hireException) {
+        model.hireException = hireException;
+      } else {
+        alert(t(failMessageKey));
         return false;
       }
     }
@@ -1613,8 +1671,16 @@ function bmgCanAddModel(model) {
       return false;
     }
     if (rank === "Henchman") {
-      const hasMinionOrHorde = model.traits.some(t => t.startsWith("Minion") || t === "Horde");
-      if (!hasMinionOrHorde) {
+      const isHorde = model.traits.includes("Horde");
+      const isMinion = model.traits.some(t => t.startsWith("Minion"));
+      if (isHorde) {
+        // Horde: "This model can be recruited up to four times in a crew, regardless of its Name."
+        const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
+        if (sameNameCount >= 4) {
+          alert(t("horde_limit_exceeded"));
+          return false;
+        }
+      } else if (!isMinion) {
         const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
         if (sameNameCount >= 1 + (modifiers.extraDuplicates || 0)) {
           alert(t("henchman_limit_exceeded"));
@@ -1688,12 +1754,6 @@ function bmgCanAddModel(model) {
       }
     }
 
-    // Horde: Если модель имеет Horde, игнор лимита миньонов на +3
-    if (t === "Horde" && bmgRankCount("Henchman") >= 5 + (modifiers.extraMinions["All"] || 0)) {
-      alert(t("horde_limit_exceeded"));
-      exceeded = true;
-    }
-
     // Hates (X): Нельзя добавлять если X в отряде
     const hatesMatch = t.match(/^Hates \((.+)\)$/);
     if (hatesMatch) {
@@ -1751,56 +1811,47 @@ function bmgCanAddModel(model) {
       }
     }
 
-    // Incorruptible: Нельзя в злые фракции (если фракция villain)
-    if (t === "Incorruptible" && ["Joker", "Bane", "Penguin", "Mr. Freeze", "Scarecrow", "Two-Face", "The Riddler", "Organized Crime", "Suicide Squad", "Batman Who Laughs", "Cults"].includes(currentFaction)) {
-      alert(t("incorruptible_cannot_add"));
+    // Mercenary: "You can only recruit this model in a League of Assassins crew
+    // if a model with Name: Bane is also included in the crew."
+    if (t === "Mercenary" && currentFaction === "League of Shadows" && !crew.some(m => m.name === "Bane")) {
+      alert(t("mercenary_requires_bane"));
       exceeded = true;
     }
 
-    // Freed / He Freed Me: Требует liberator (например, Bane)
+    // Freed / He Freed Me: "...only be recruited if the crew also includes The Batman Who Laughs model."
     if (t === "Freed" || t === "He Freed Me") {
-      if (!crew.some(m => m.name === "Bane" || m.traits.includes("Liberator"))) {
-        alert(t("requires_liberator"));
+      if (!crew.some(m => m.name === "The Batman Who Laughs")) {
+        alert(t("requires_batman_who_laughs"));
         exceeded = true;
       }
     }
 
-    // My Idol!: Требует idol в отряде
+    // My Idol!: "...only be recruited if a model with the Alias: Zur-En-Arrh Batman is part of the crew."
     if (t === "My Idol!") {
-      if (!BMG_BOSS || BMG_BOSS.name !== "Joker") {
+      if (!crew.some(m => m.name.includes("Zur-En-Arrh") || (m.realname && m.realname.includes("Zur-En-Arrh")))) {
         alert(t("requires_idol"));
         exceeded = true;
       }
     }
 
-    // Possessed: Только в supernatural фракциях
-    if (t === "Possessed" && !["Cults", "Batman Who Laughs"].includes(currentFaction)) {
-      alert(t("possessed_only_supernatural"));
-      exceeded = true;
-    }
-
-    // Meet Goliath!: Требует Goliath
+    // Meet Goliath!: "...only be recruited in a crew containing a model (Name: Damian Wayne).
+    // However, this model can never be recruited to a Court of Owls crew."
     if (t === "Meet Goliath!") {
-      if (!crew.some(m => m.name === "Goliath")) {
+      if (currentFaction === "Court of Owls") {
+        alert(t("requires_goliath_not_owls"));
+        exceeded = true;
+      } else if (!crew.some(m => m.name === "Damian Wayne")) {
         alert(t("requires_goliath"));
         exceeded = true;
       }
     }
 
-    // The Sidekick: Лимит 1, требует Leader
-    if (t === "The Sidekick" && bmgRankCount("Sidekick") >= 1) {
-      alert(t("sidekick_limit_exceeded"));
-      exceeded = true;
-    }
-    if (t === "The Sidekick" && !BMG_BOSS) {
-      alert(t("leader_required_for_sidekick"));
-      exceeded = true;
-    }
-
-    // Amazon Lineage: Только в amazon фракциях
-    if (t === "Amazon Lineage" && currentFaction !== "Birds of Prey") {
-      alert(t("amazon_lineage"));
-      exceeded = true;
+    // The Sidekick: "...only be hired if Batman (Modern Age) is leading the crew."
+    if (t === "The Sidekick") {
+      if (!BMG_BOSS || BMG_BOSS.rankUsed !== "Leader" || BMG_BOSS.name !== "Batman (Modern Age)") {
+        alert(t("leader_required_for_sidekick"));
+        exceeded = true;
+      }
     }
 
     // Affinity (Model): Проверяем что модель может присоединиться
@@ -1843,17 +1894,64 @@ function bmgCanAddModel(model) {
     }
   }
 
-  // Проверка Contractor: может изменить аффилиацию на Bane если используется как Leader
-  if (model.traits && model.traits.includes("Contractor") && rank === "Leader") {
-    // Contractor может рассматриваться как Leader, но изменяет аффилиацию на Bane
-    // Это обрабатывается при выборе ранга, здесь просто отмечаем что обработан
-  }
-
   if (exceeded) return false;
 
   return true;
 }
 
+// ======================== EQUIPMENT: СОПОСТАВЛЕНИЕ ПЕРСОНАЖЕЙ ========================
+// Многие условия в equipmentByFaction ссылаются на настоящее имя персонажа (например,
+// "Bruce Wayne", "Jason Todd"), а не на печатное имя карты (например, "Batman Bushi").
+// Раньше сопоставление шло только по точному model.name (и несуществующему полю model.alias),
+// из-за чего почти все character-gated предметы были недоступны для покупки. Проверяем и имя
+// карты (с поддержкой версий через префикс "Name " / "Name("), и realname.
+function modelMatchesCharacter(model, characterName) {
+  const name = characterName.trim();
+  if (model.name === name || model.realname === name) return true;
+  if (model.name.startsWith(name + ' ') || model.name.startsWith(name + '(')) return true;
+  return false;
+}
+
+function crewHasCharacter(characterName) {
+  return crew.some(m => modelMatchesCharacter(m, characterName));
+}
+
+// Условие открывает доступ ВСЕЙ банде (независимо от ранга покупателя), если оно ссылается
+// на персонажа/трейт, который должен быть в отряде — а не является ограничением по
+// рангу/трейту самой покупающей модели ("Only ...", "Model has ... trait", "... cannot buy/purchase")
+function isCharacterOrTraitGated(eq) {
+  return (eq.conditions || []).some(cond => {
+    const c = cond.trim();
+    if (c.startsWith('Only ') || c.startsWith('Model has ') || /cannot (buy|purchase)/i.test(c)) return false;
+    return true;
+  });
+}
+
+// Может ли эта модель (по рангу/имени) вообще претендовать на покупку данного предмета —
+// без учёта прочих условий (трейты, необходимые персонажи и т.п.), которые проверяются отдельно
+function isEquipmentRankEligible(eq, crewModel) {
+  // Явное ограничение по рангу текстом условия, например "Only Henchman/Free Agents"
+  const rankRestriction = (eq.conditions || []).find(c => /^Only (Henchman|Free Agent)/i.test(c.trim()));
+  if (rankRestriction) {
+    const allowedRanks = rankRestriction.replace(/^Only /i, '').split('/').map(r => r.trim());
+    // Сравниваем в обе стороны из-за разночтений в числе ("Free Agent" / "Free Agents")
+    return allowedRanks.some(r => crewModel.rankUsed && r.includes(crewModel.rankUsed));
+  }
+
+  // Явно указанный список допустимых покупателей (по рангу или персонажу) главнее общего
+  // правила "только Henchman" — даже если предмет также завязан на присутствие персонажа
+  // в отряде (например, "Watch Tower" открыт присутствием Barbara Gordon, но купить его
+  // может только модель по имени Batgirl)
+  if (eq.targetModels && eq.targetModels.length) {
+    return eq.targetModels.includes(crewModel.rankUsed) || eq.targetModels.some(tm => modelMatchesCharacter(crewModel, tm));
+  }
+
+  // Открыто присутствием персонажа/трейта в отряде — не завязано на ранг покупателя
+  if (isCharacterOrTraitGated(eq)) return true;
+
+  // По умолчанию — только Henchman
+  return crewModel.rankUsed === "Henchman";
+}
 
 function openEquipmentMenu(model, cardElement) {
   event.stopPropagation();
@@ -1883,229 +1981,127 @@ function openEquipmentMenu(model, cardElement) {
     }
   }
 
-  // ПРАВКА 1: Leader не может покупать equipment, если явно не разрешено в targetModels
+  const faction = currentFaction;
+
+  // Leader не может покупать equipment, если во фракции нет ни одного подходящего предмета
   if (crewModel.rankUsed === "Leader") {
-    // Проверяем, есть ли equipment с targetModels, разрешающим Leader
-    const faction = currentFaction;
-    const hasLeaderPermission = (equipmentByFaction[faction] || []).some(eq => 
-      eq.targetModels && eq.targetModels.includes("Leader")
-    );
+    const hasLeaderPermission = (equipmentByFaction[faction] || []).some(eq => isEquipmentRankEligible(eq, crewModel));
     if (!hasLeaderPermission) {
       alert(currentLang === 'ru' ? "Leader не может покупать оборудование!" : "Leader cannot purchase equipment!");
       return;
     }
   }
 
-  const faction = currentFaction;
   const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
-    // ПРАВКА 2: Проверка maxPerCrew (ограничение на количество предметов в отряде)
+    // Проверка maxPerCrew (ограничение на количество предметов в отряде)
     const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
     if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
 
-    // ПРАВКА 3: Модель не может иметь одно и то же оборудование дважды
+    // Модель не может иметь одно и то же оборудование дважды
     if (crewModel.equipment && crewModel.equipment.some(e => e.name === eq.name)) {
       return false;
     }
 
-    // ПРАВКА 4: Проверка targetModels (ограничение на какие модели можно купить)
-    // По умолчанию только Henchman могут покупать equipment
-    // Все остальные ранги (Leader, Sidekick, Free Agent) могут покупать только если явно разрешено
+    // Взаимоисключающие группы оборудования (например, "Iceberg Lounge": можно выбрать только 1 из группы)
+    if (eq.group) {
+      const groupItems = (equipmentByFaction[faction] || []).filter(other => other.group === eq.group).map(other => other.name);
+      const groupAlreadyTaken = crew.some(m => (m.equipment || []).some(e => groupItems.includes(e.name)));
+      if (groupAlreadyTaken) return false;
+    }
 
-    // Проверяем, является ли это Equipment с условием на трейт в банде (например, "Vampire Queen in crew")
-    // Такое оборудование доступно ВСЕМ моделям независимо от ранга, если требуемый трейт есть в банде
-    const hasTraitInCrewCondition = eq.conditions && eq.conditions.some(cond =>
-      cond.endsWith(' in crew') && !cond.startsWith('Alias:')
-    );
+    // Ранг/личность покупателя
+    if (!isEquipmentRankEligible(eq, crewModel)) return false;
 
-    if (hasTraitInCrewCondition) {
-      // Проверяем наличие требуемого трейта в банде
-      const hasRequiredTrait = eq.conditions.some(cond => {
-        if (cond.endsWith(' in crew') && !cond.startsWith('Alias:')) {
-          const traitName = cond.replace(' in crew', '').trim();
-          // Проверяем, есть ли в банде модель с таким трейтом
-          return crew.some(m => m.traits && m.traits.some(t => t.includes(traitName)));
-        }
-        return false;
-      });
+    // Остальные условия (наличие персонажа/трейта в банде, трейты самой модели и т.п.)
+    const allConditionsMet = (eq.conditions || []).every(cond => {
+      const trimmed = cond.trim();
 
-      if (!hasRequiredTrait) {
-        return false; // Требуемый трейт отсутствует в банде
+      // "X in crew" (без Alias:) — трейт в банде, например "Vampire Queen in crew"
+      if (trimmed.endsWith(' in crew') && !trimmed.startsWith('Alias:')) {
+        const traitName = trimmed.replace(' in crew', '').trim();
+        return crew.some(m => m.traits && m.traits.some(tr => tr.includes(traitName)));
       }
-      // Если трейт есть в банде, оборудование доступно всем моделям — пропускаем проверку ранга
-    } else {
-      // Это не Equipment с условием на трейт в банде, применяем обычные правила
-      // Сначала проверяем, является ли это Special Equipment (требует персонажа в отряде)
-      const isSpecialEquipment = eq.conditions && eq.conditions.some(cond =>
-        cond.startsWith('Alias:') || 
-        (cond.endsWith(' in crew') && crew.some(m => m.name === cond.replace(' in crew', '').trim()))
-      );
 
-      if (isSpecialEquipment) {
-        // Это Special Equipment — проверяем только наличие требуемого персонажа в отряде
-        const hasRequiredCharacter = eq.conditions.some(cond => {
-          let modelName = '';
-          // Правильный порядок замен: сначала убираем "Alias: ", потом " in crew"
-          modelName = cond.replace('Alias: ', '').replace(' in crew', '').trim();
+      // "Alias: X" / "Alias: X in crew" — персонаж в банде
+      if (trimmed.startsWith('Alias:')) {
+        const charName = trimmed.replace('Alias:', '').replace(' in crew', '').trim();
+        return crewHasCharacter(charName);
+      }
 
-          if (modelName) {
-            // Проверяем точное совпадение или совпадение по базовому имени
-            // Например, "Scarecrow" должен совпадать с "Scarecrow (The Worst Nightmare)"
-            const foundModel = crew.find(m => {
-              // Точное совпадение
-              if (m.name === modelName || m.alias === modelName) return true;
-              // Проверка: modelName является началом имени модели (например, "Scarecrow" -> "Scarecrow (The Worst Nightmare)")
-              if (m.name.startsWith(modelName + ' ') || m.name.startsWith(modelName + '(')) return true;
-              // Проверка по alias
-              if (m.alias && (m.alias.startsWith(modelName + ' ') || m.alias.startsWith(modelName + '('))) return true;
-              return false;
-            });
-            return foundModel;
-          }
-          return false;
+      // "X is Boss" — персонаж X должен быть боссом отряда
+      const isBossMatch = trimmed.match(/^(.+?)\s+is Boss$/i);
+      if (isBossMatch) {
+        return !!BMG_BOSS && modelMatchesCharacter(BMG_BOSS, isBossMatch[1]);
+      }
+
+      // "Model has X trait cannot purchase" — запрещающий трейт у покупателя
+      const cannotHaveMatch = trimmed.match(/^Model has (.+?) trait cannot purchase$/i);
+      if (cannotHaveMatch) {
+        const forbiddenTrait = cannotHaveMatch[1];
+        return !(crewModel.traits && crewModel.traits.some(tr => tr === forbiddenTrait));
+      }
+
+      // "Model has X trait" — требуемый трейт у покупателя
+      const hasTraitMatch = trimmed.match(/^Model has (.+?) trait$/i);
+      if (hasTraitMatch) {
+        const requiredTrait = hasTraitMatch[1];
+        return crewModel.traits && crewModel.traits.some(tr => tr === requiredTrait);
+      }
+
+      // "Nightmares cannot buy" / "Plants cannot purchase" и т.п.
+      if (/cannot (buy|purchase)/i.test(trimmed)) {
+        const forbiddenGroupMatch = trimmed.match(/(Nightmares|Plants|Animals|Bots)/i);
+        if (forbiddenGroupMatch) {
+          const map = { Nightmares: 'Nightmare', Plants: 'Plant', Animals: 'Animal', Bots: 'Bot' };
+          const forbiddenTrait = map[forbiddenGroupMatch[1]] || forbiddenGroupMatch[1];
+          return !(crewModel.traits && crewModel.traits.some(tr => tr.includes(forbiddenTrait)));
+        }
+        return true;
+      }
+
+      // "Only Arkham Asylum Dr." — трейт с точкой в названии
+      if (trimmed.startsWith('Only Arkham Asylum Dr')) {
+        return crewModel.traits && crewModel.traits.some(tr => tr.startsWith('Arkham Asylum Dr'));
+      }
+
+      // "Only Henchman/Free Agents" — ранг уже проверен в isEquipmentRankEligible выше
+      if (trimmed.startsWith('Only Henchman') || trimmed.startsWith('Only Free Agent')) {
+        return true;
+      }
+
+      // "Only Plants", "Only Animals", "Only Nightmares" — требуется трейт покупателя
+      if (trimmed.startsWith('Only ')) {
+        const requiredTrait = trimmed.replace('Only ', '').trim();
+        const traitsList = requiredTrait.split('/').map(tr => tr.trim());
+        const normalizedTraits = traitsList.map(tr => {
+          if (tr === 'Nightmares') return 'Nightmare';
+          if (tr === 'Plants') return 'Plant';
+          if (tr === 'Animals') return 'Animal';
+          if (tr === 'Bots') return 'Bot';
+          return tr;
         });
-
-        if (!hasRequiredCharacter) {
-          return false; // Требуемый персонаж отсутствует в отряде
-        }
-        // Если персонаж есть, Special Equipment доступно независимо от ранга — пропускаем дальше
-      } else {
-        // Это не Special Equipment, применяем обычные правила
-        if (crewModel.rankUsed !== "Henchman") {
-          // Модель не Henchman, проверяем есть ли разрешение в targetModels
-          if (!eq.targetModels || !eq.targetModels.length) {
-            return false; // Нет targetModels — не Henchman не могут покупать
-          }
-
-          const allowedByName = eq.targetModels.some(t => t === crewModel.name);
-          const allowedByRank = eq.targetModels.some(t => t === crewModel.rankUsed);
-
-          if (!allowedByName && !allowedByRank) {
-            return false; // Модель не соответствует targetModels
-          }
-        }
+        return crewModel.traits && normalizedTraits.some(tr => crewModel.traits.some(trait => trait.includes(tr) || trait.startsWith(tr)));
       }
-    }
 
-    // ПРАВКА 5: Проверка условий (conditions)
-    if (eq.conditions && eq.conditions.length) {
-      const allConditionsMet = eq.conditions.every(cond => {
-        const trimmed = cond.trim();
+      // Составное условие "X or Y" — достаточно одного из персонажей в отряде
+      // (например, "The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight)")
+      if (/\s+or\s+/.test(trimmed)) {
+        return trimmed.split(/\s+or\s+/).map(s => s.trim()).some(opt => crewHasCharacter(opt));
+      }
 
-        // Проверка на наличие трейта в банде: "Vampire Queen in crew"
-        if (trimmed.endsWith(' in crew')) {
-          const traitName = trimmed.replace(' in crew', '').trim();
-          // Проверяем, есть ли в банде модель с таким трейтом
-          return crew.some(m => m.traits && m.traits.some(t => t.includes(traitName)));
-        }
+      // Простое имя персонажа — модель с таким именем/настоящим именем должна быть в банде
+      return crewHasCharacter(trimmed);
+    });
 
-        // Пропускаем условия "Alias: X in crew", так как они уже были проверены в isSpecialEquipment
-        if (trimmed.startsWith('Alias:')) {
-          return true;
-        }
+    if (!allConditionsMet) return false;
 
-        // Отрицательное условие: "Model has X trait cannot purchase"
-        if (trimmed.match(/Model has \w+ trait cannot purchase/i)) {
-          const traitMatch = trimmed.match(/Model has (\w+) trait cannot purchase/i);
-          if (traitMatch) {
-            const forbiddenTrait = traitMatch[1];
-            // Если у модели есть запрещённый трейт — условие не выполнено
-            if (crewModel.traits && crewModel.traits.some(t => t === forbiddenTrait)) {
-              return false;
-            }
-            return true;
-          }
-        }
-
-        // Положительное условие: "Model has X trait"
-        if (trimmed.match(/Model has \w+ trait$/i)) {
-          const traitMatch = trimmed.match(/Model has (\w+) trait$/i);
-          if (traitMatch) {
-            const requiredTrait = traitMatch[1];
-            // Если у модели есть требуемый трейт — условие выполнено
-            return crewModel.traits && crewModel.traits.some(t => t === requiredTrait);
-          }
-        }
-
-        // Отрицательное условие: "Nightmares cannot buy" или "Plants cannot purchase"
-        if (trimmed.match(/cannot (buy|purchase)/i)) {
-          const forbiddenTrait = trimmed.replace(/.*?(Nightmares|Plants|Animals|Bots).*?/i, '$1').trim();
-          // Нормализуем имена трейтов: "Nightmares" -> "Nightmare", "Plants" -> "Plant", etc.
-          const normalizedForbiddenTrait = forbiddenTrait === 'Nightmares' ? 'Nightmare' :
-                                           forbiddenTrait === 'Plants' ? 'Plant' :
-                                           forbiddenTrait === 'Animals' ? 'Animal' :
-                                           forbiddenTrait === 'Bots' ? 'Bot' : forbiddenTrait;
-          // Если у модели есть запрещённый трейт — условие не выполнено
-          if (crewModel.traits && crewModel.traits.some(t => t.includes(normalizedForbiddenTrait))) {
-            return false;
-          }
-          return true;
-        }
-
-        // "Only Plants", "Only Animals", "Only Nightmares" — требуется трейт
-        if (trimmed.startsWith('Only ')) {
-          const requiredTrait = trimmed.replace('Only ', '').trim();
-          // Поддержка множественных трейтов через "/"
-          const traits = requiredTrait.split('/').map(t => t.trim());
-          // Нормализуем имена трейтов: "Nightmares" -> "Nightmare", "Plants" -> "Plant", "Animals" -> "Animal", "Bots" -> "Bot"
-          const normalizedTraits = traits.map(t => {
-            if (t === 'Nightmares') return 'Nightmare';
-            if (t === 'Plants') return 'Plant';
-            if (t === 'Animals') return 'Animal';
-            if (t === 'Bots') return 'Bot';
-            return t;
-          });
-          return crewModel.traits && normalizedTraits.some(t => crewModel.traits.some(trait => trait.includes(t) || trait.startsWith(t)));
-        }
-
-        // "Only Arkham Asylum Dr." — проверка на трейт с точкой
-        if (trimmed.startsWith('Only Arkham Asylum Dr')) {
-          return crewModel.traits && crewModel.traits.some(t => t.startsWith('Arkham Asylum Dr'));
-        }
-
-        // "Only Henchman/Free Agents" — проверка по рангу
-        if (trimmed.startsWith('Only Henchman') || trimmed.startsWith('Only Free Agent')) {
-          const allowedRanks = trimmed.replace('Only ', '').split('/').map(r => r.trim());
-          return allowedRanks.some(r => crewModel.rankUsed && crewModel.rankUsed.includes(r));
-        }
-
-        // "Model has Elite (SWAT) trait"
-        if (trimmed.startsWith('Model has ') && trimmed.endsWith(' trait')) {
-          const trait = trimmed.replace('Model has ', '').replace(' trait', '').trim();
-          return crewModel.traits && crewModel.traits.some(t => t === trait);
-        }
-
-        // "Model has Bot trait"
-        if (trimmed.startsWith('Model has ') && trimmed.endsWith(' trait')) {
-          const trait = trimmed.replace('Model has ', '').replace(' trait', '').trim();
-          return crewModel.traits && crewModel.traits.some(t => t.includes(trait));
-        }
-
-        // Простое имя модели — наличие в crew (SPECIAL EQUIPMENT)
-        return crew.some(m => m.name === trimmed || m.alias === trimmed);
-      });
-
-      if (!allConditionsMet) return false;
-    }
-
-    // ПРАВКА 6: Проверка на дублирование трейтов от equipment
-    // Если equipment даёт трейт, проверяем, нет ли уже такого трейта у модели
+    // Проверка на дублирование трейтов от equipment (нельзя купить то, что уже даёт имеющийся трейт)
     if (eq.effects && eq.effects.length) {
-      // Извлекаем названия трейтов из effects
       for (const effect of eq.effects) {
-        // Паттерны для извлечения трейтов: "Model gains the X rule/trait"
         const gainsMatch = effect.match(/Model gains (?:the )?([^(.]+?)(?: rule| trait|\.)$/i);
         if (gainsMatch) {
           const gainedTrait = gainsMatch[1].trim();
-          // Проверяем, есть ли уже такой трейт у модели
-          if (crewModel.traits && crewModel.traits.some(t => t.includes(gainedTrait))) {
-            return false; // Трейт уже есть, нельзя добавить ещё раз
-          }
-        }
-        // Паттерн для "Model gains X rule/trait" (без "the")
-        const gainsDirectMatch = effect.match(/Model gains ([^(]+?)(?: rule| trait|\.)$/i);
-        if (gainsDirectMatch) {
-          const gainedTrait = gainsDirectMatch[1].trim();
-          if (crewModel.traits && crewModel.traits.some(t => t.includes(gainedTrait))) {
+          if (crewModel.traits && crewModel.traits.some(tr => tr.includes(gainedTrait))) {
             return false;
           }
         }
@@ -2120,32 +2116,8 @@ function openEquipmentMenu(model, cardElement) {
   overlay.className = "rank-select-modal";
 
   // Считаем доступный бюджет
-  const usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+  const usedFunding = getCrewUsedFunding();
   const availableFunding = bmgFundingLimit() - usedFunding;
-
-  // Функция для определения Special Equipment
-  function isSpecialEquipment(eq) {
-    // Special Equipment имеет conditions с именем персонажа или "Alias: X in crew"
-    // Equipment с условием на трейт (например, "Vampire Queen in crew") не считается Special Equipment
-    if (eq.conditions && eq.conditions.length) {
-      // Проверяем, есть ли условие на трейт в банде (не имя персонажа)
-      const hasTraitCondition = eq.conditions.some(cond =>
-        cond.endsWith(' in crew') && !cond.startsWith('Alias:') &&
-        !crew.some(m => m.name === cond.replace(' in crew', '').trim())
-      );
-      
-      if (hasTraitCondition) {
-        return false; // Это equipment с условием на трейт, а не Special Equipment
-      }
-      
-      return eq.conditions.some(cond =>
-        cond.startsWith('Alias:') ||
-        cond.endsWith(' in crew') ||
-        crew.some(m => m.name === cond.trim() || m.alias === cond.trim())
-      );
-    }
-    return false;
-  }
 
   overlay.innerHTML = `
     <div class="rank-select-content">
@@ -2161,26 +2133,13 @@ function openEquipmentMenu(model, cardElement) {
         ${availableEq.length ? availableEq.map(eq => {
           const canAfford = availableFunding >= (eq.fundingCost || 0);
           const insufficientFundsText = currentLang === 'ru' ? '⚠ Недостаточно средств' : '⚠ Insufficient funds';
-          const isSpecial = isSpecialEquipment(eq);
+          const isSpecial = isCharacterOrTraitGated(eq);
           const specialBadge = isSpecial ? '<span style="color:#ffd700; font-size:11px; margin-left:6px;">⭐ SPECIAL</span>' : '';
 
-          // Проверяем условие на трейт в банде (например, "Vampire Queen in crew")
-          const reqTrait = eq.conditions ? eq.conditions.find(c => 
-            c.endsWith(' in crew') && !c.startsWith('Alias:') &&
-            !crew.some(m => m.name === c.replace(' in crew', '').trim())
-          )?.replace(' in crew', '').trim() : null;
-          
-          // Проверяем условие по имени персонажа (Special Equipment)
-          const reqCharacter = isSpecial && eq.conditions ? eq.conditions.find(c => 
-            (c.endsWith(' in crew') && crew.some(m => m.traits && m.traits.some(t => t.includes(c.replace(' in crew', '').trim())))) || 
-            crew.some(m => m.name === c.trim())
-          )?.replace(' in crew', '').replace('Alias: ', '') : null;
-
-          const reqText = reqTrait
-            ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqTrait} ${currentLang === 'ru' ? 'в банде' : 'in crew'}</small>`
-            : reqCharacter
-              ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCharacter}</small>`
-              : '';
+          const reqCond = isSpecial ? (eq.conditions || []).find(c => isCharacterOrTraitGated({ conditions: [c] })) : null;
+          const reqText = reqCond
+            ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCond.replace('Alias: ', '').replace(' in crew', '')}</small>`
+            : '';
 
           return `
           <button class="rank-select-btn" data-eq-name="${eq.name}" ${!canAfford ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
@@ -2203,7 +2162,7 @@ function openEquipmentMenu(model, cardElement) {
       if (!eq) return;
 
       // Проверка бюджета
-      const usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+      const usedFunding = getCrewUsedFunding();
       const availableFunding = bmgFundingLimit() - usedFunding;
       if (availableFunding < (eq.fundingCost || 0)) {
         alert("Недостаточно Funding для этого equipment!");
@@ -2243,8 +2202,6 @@ function resetCrew() {
     extraElites: {},
     extraVeterans: {},
     extraMinions: {},
-    extraTalons: 0,
-    allowBetray: false,
     charismaticUsed: false
   };
   updateCrewBar();
@@ -2268,9 +2225,9 @@ function exportRoster() {
   exportText += `Rep: ${repLimit} | Funding: $${fundingLimit}\n`;
   exportText += `════════════════════════════════════════\n\n`;
   
-  const totalRep = crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0);
-  const usedFunding = crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
-  
+  const totalRep = getCrewTotalRep();
+  const usedFunding = getCrewUsedFunding();
+
   crew.forEach(m => {
     exportText += `${m.name}`;
     

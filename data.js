@@ -133,10 +133,25 @@ const equipmentByFaction = {
     { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Batgirl"], effects: ["Model gains Exhaustive Planner rule."] },
     { name: "Deadly Weapons", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Red Hood (Arkham Knight)"], targetModels: ["Red Hood Arkham Knight"], effects: ["Weapons gain the Silencer rule."] },
     { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["Enhances Air Support (details in desc)."] },
-    { name: "Sergeant Training", fundingCost: 50, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true }
+    { name: "Sergeant Training", fundingCost: 50, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true },
+    // Vampire Queen (Batgirl Vampire Queen — faction Bat Family/GCPD): "When recruiting this model,
+    // you can purchase The Turning equipment piece to other models in this crew."
+    { name: "The Turning", fundingCost: 200, repCost: 10, maxPerCrew: 4, conditions: ["Vampire Queen in crew"], effects: ["Model gains the Vampire rule."] },
+    // Lucius's Inventions (трейт Upgrades у Lucius Fox): в компендиуме нет цены для этих 4 предметов —
+    // указано $0 как временная заглушка, подставьте реальную стоимость, когда она будет известна.
+    // Только один из группы может быть куплен/активен одновременно (см. group).
+    { name: "Improved Batclaw", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox"], group: "Lucius's Inventions", effects: ["Only purchasable by models with the Batclaw/Grapple Gun trait. Batclaw/Grapple Gun range increases from 6\" to 8\"."] },
+    { name: "Improved Batlings", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox"], group: "Lucius's Inventions", effects: ["Only purchasable by models with a weapon with the Throwing trait. Ranged Attacks with that weapon gain +1 to Hit and always hit the Strength die on a 3+, ignoring the wielder's Strength."] },
+    { name: "Improved Bat-Armor", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox", "Model has Bat-Armor MK II trait"], group: "Lucius's Inventions", effects: ["Model gains +1 to Defense rolls while it also benefits from the Bat-Armor MK II trait."] },
+    { name: "Improved Reinforced Gloves", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox", "Model has Reinforced Gloves trait"], group: "Lucius's Inventions", effects: ["When this model attacks unarmed using the Reinforced Gloves trait, it also imposes a -1 to the target to Block."] }
   ],
   "Bat Family": [
-    { name: "The Turning", fundingCost: 200, repCost: 10, maxPerCrew: 4, conditions: ["Vampire Queen in crew"], effects: ["Model gains the Vampire rule."] }
+    { name: "The Turning", fundingCost: 200, repCost: 10, maxPerCrew: 4, conditions: ["Vampire Queen in crew"], effects: ["Model gains the Vampire rule."] },
+    // Lucius's Inventions (трейт Upgrades у Lucius Fox): см. комментарий в списке GCPD выше про цену $0
+    { name: "Improved Batclaw", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox"], group: "Lucius's Inventions", effects: ["Only purchasable by models with the Batclaw/Grapple Gun trait. Batclaw/Grapple Gun range increases from 6\" to 8\"."] },
+    { name: "Improved Batlings", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox"], group: "Lucius's Inventions", effects: ["Only purchasable by models with a weapon with the Throwing trait. Ranged Attacks with that weapon gain +1 to Hit and always hit the Strength die on a 3+, ignoring the wielder's Strength."] },
+    { name: "Improved Bat-Armor", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox", "Model has Bat-Armor MK II trait"], group: "Lucius's Inventions", effects: ["Model gains +1 to Defense rolls while it also benefits from the Bat-Armor MK II trait."] },
+    { name: "Improved Reinforced Gloves", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox", "Model has Reinforced Gloves trait"], group: "Lucius's Inventions", effects: ["When this model attacks unarmed using the Reinforced Gloves trait, it also imposes a -1 to the target to Block."] }
   ],
   "Joker": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -170,13 +185,14 @@ const equipmentByFaction = {
     { name: "Raised on the Streets", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Plead trait."] },
     { name: "Ostentatious Clothes", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Oswald C. Cobblepot"], effects: ["Model gains the Goad rule."] },
     { name: "Trained Mobsters", fundingCost: 250, repCost: 2, maxPerCrew: 2, conditions: ["Emperor Penguin"], effects: ["+2 Endurance."] },
-    { name: "Neurotoxic Drugs", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["+2 Movement and Dodge trait."] },
-    { name: "Silencer", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["One ranged weapon gains Silencer trait."] },
-    { name: "Weird Ammo", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["Ranged attacks gain Enervating 2 or Anti-tank."] },
-    { name: "Mutation Serum", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["Model gains Tough Skin and Desensitized trait."] },
-    { name: "Fear Gas Dispenser", fundingCost: 600, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["Model gains the Inspire Fear trait."] },
-    { name: "Titan Dose", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["Model gains one Titan Dose."] },
-    { name: "Prototype Freeze Ray", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: ["Iceberg Lounge"], effects: ["Model gains the Ice Flash trait."] }
+    // Iceberg Lounge Equipment Options: можно выбрать только 1 из группы (group вместо несуществующего condition)
+    { name: "Neurotoxic Drugs", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: [], group: "Iceberg Lounge", effects: ["+2 Movement and Dodge trait."] },
+    { name: "Silencer", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: [], group: "Iceberg Lounge", effects: ["One ranged weapon gains Silencer trait."] },
+    { name: "Weird Ammo", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], group: "Iceberg Lounge", effects: ["Ranged attacks gain Enervating 2 or Anti-tank."] },
+    { name: "Mutation Serum", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: [], group: "Iceberg Lounge", effects: ["Model gains Tough Skin and Desensitized trait."] },
+    { name: "Fear Gas Dispenser", fundingCost: 600, repCost: 0, maxPerCrew: 1, conditions: [], group: "Iceberg Lounge", effects: ["Model gains the Inspire Fear trait."] },
+    { name: "Titan Dose", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], group: "Iceberg Lounge", effects: ["Model gains one Titan Dose."] },
+    { name: "Prototype Freeze Ray", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: [], group: "Iceberg Lounge", effects: ["Model gains the Ice Flash trait."] }
   ],
   "Bane": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -354,8 +370,8 @@ const equipmentByFaction = {
     { name: "Back on Track", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Reset Task counter with Cranial Bomb."] },
     { name: "Right Motivation", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Free Manipulate action if no Task counter."] },
     { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy"], effects: ["Enhances Control Pheromones (details in desc)."] },
-    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team)"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
-    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team)"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
+    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team)"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
+    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team)"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
    ]
 
 };
@@ -13945,7 +13961,7 @@ const models = [
     "rep": 130,
     "funding": 0,
     "rank": ["Leader"],
-    "faction": ["Bat Family", "GCPD",],
+    "faction": ["Bat Family", "GCPD"],
     "rivals": "",
     "img": "https://veland55.github.io/btb/img/BatgirlVampireQueen.png",
     "stats": {
