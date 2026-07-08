@@ -409,15 +409,28 @@ function getFactions(model) {
   return factions.length > 0 ? factions : ["Unknown"];
 }
 
+// Получить список фракций-соперников (rivals) модели
+function getRivals(model) {
+  if (!model.rivals) return [];
+  if (Array.isArray(model.rivals)) return model.rivals;
+  if (typeof model.rivals === "string" && model.rivals.trim()) {
+    return model.rivals.replace(/ *& */gi, ",").replace(/ *\/ */g, ",").split(",").map(s => s.trim());
+  }
+  return [];
+}
+
 // Проверить может ли модель быть нанята в текущую фракцию (для режима билдера)
 function canHireInFaction(model, faction) {
   if (!faction) return false;
-  
+
+  // Модель не может быть нанята во фракцию, указанную у неё как rival
+  if (getRivals(model).includes(faction)) return false;
+
   const modelFactions = getFactions(model);
-  
+
   // Если модель "Unknown" - может быть нанята везде
   if (modelFactions.includes("Unknown")) return true;
-  
+
   // Проверяем совпадение фракции
   return modelFactions.includes(faction);
 }
@@ -1065,12 +1078,11 @@ function renderTraits(traits) {
     const traitText = String(trait);
     const isSpecial = isSpecialTrait(traitText);
     const content = replaceIcons(traitText);
-    const highlightClass = isSpecial ? 'special-trait-highlight' : '';
 
     return `
-      <div class="official-trait ${highlightClass}"
+      <div class="official-trait-item${isSpecial ? ' is-special' : ''}"
            onclick="event.stopPropagation(); showTraitDesc('${traitText.replace(/'/g, "\\'")}')">
-        ${content}
+        ${content}.
       </div>
     `;
   }).join('');
@@ -1093,7 +1105,41 @@ function isSpecialTrait(trait) {
 // Вспомогательная функция для получения описания трейта
 function getTraitDescription(trait) {
   const entry = findCompendiumEntry(trait);
-  return entry ? entry.description : "Описание отсутствует";
+  if (!entry) return null;
+  return (typeof entry === 'object' && entry.description) ? entry.description : entry;
+}
+
+// Панель-глоссарий (только для широких экранов): расшифровка трейтов модели и правил оружия
+function renderGlossarySection(title, names) {
+  const seen = new Set();
+  const items = names.map(name => {
+    const cleanName = getCleanName(name);
+    if (!cleanName || seen.has(cleanName.toLowerCase())) return '';
+    const desc = getTraitDescription(name);
+    if (!desc) return '';
+    seen.add(cleanName.toLowerCase());
+    return `
+      <div class="sidebar-entry">
+        <div class="sidebar-entry-name">${replaceIcons(name)}</div>
+        <div class="sidebar-entry-desc">${replaceIcons(desc).replace(/\n/g, '<br>')}</div>
+      </div>`;
+  }).join('');
+  return items ? `<div class="sidebar-section"><div class="sidebar-title">${title}</div>${items}</div>` : '';
+}
+
+function renderFullCardSidebar(model) {
+  const sidebarEl = $('fullCardSidebar');
+  if (!sidebarEl) return;
+
+  const traitNames = model.traits || [];
+  const weaponTraitNames = [...new Set(
+    (model.weapons || [])
+      .filter(w => w && w.traits)
+      .flatMap(w => w.traits.split('/').map(t => t.trim()).filter(Boolean))
+  )];
+
+  const html = renderGlossarySection('TRAITS', traitNames) + renderGlossarySection('WEAPON RULES', weaponTraitNames);
+  sidebarEl.innerHTML = html || `<div class="sidebar-empty">${t("nothing_found")}</div>`;
 }
 
 const showFullCard = model => {
@@ -1107,17 +1153,8 @@ const showFullCard = model => {
       ? model.faction.replace(/ *& */gi, ",").replace(/ *\/ */g, ",").split(",").map(s => s.trim())
       : [];
 
-  // --- Rivals (новое поле) ---
-  const rivalFactions = Array.isArray(model.rivals)
-    ? model.rivals
-    : typeof model.rivals === "string" && model.rivals.trim()
-      ? model.rivals.replace(/ *& */gi, ",").replace(/ *\/ */g, ",").split(",").map(s => s.trim())
-      : [];
-
-  // --- Ранг ---
-  const rank = Array.isArray(model.rank)
-    ? model.rank.join(" / ")
-    : model.rank || "Free Agent";
+  // --- Rivals ---
+  const rivalFactions = getRivals(model);
 
   const rep = model.rep || 0;
   const funding = model.funding || 0;
@@ -1133,24 +1170,26 @@ const showFullCard = model => {
   const rivalsIconsHTML   = renderIcons(rivalFactions);
 
   // --- Оружие и трейты ---
-const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
+  const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
     if (!w || Object.keys(w).length === 0) return "";
     const traits = w.traits ? w.traits.split("/").map(t => t.trim()).filter(Boolean) : [];
     return `
       <div class="official-weapon">
         <div class="official-weapon-first-line">
-          <span class="official-weapon-name">${w.name || "Unnamed"}</span>
-          ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
-          ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ""}
-          ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ""}
+          <span class="official-weapon-name">${(w.name || "Unnamed").toUpperCase()}</span>
+          <span class="official-weapon-stats">
+            ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
+            ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ""}
+            ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ""}
+          </span>
         </div>
-        ${traits.length ? `<div class="official-weapon-traits-line">${traits.map(t => `<span class="weapon-trait-chip" onclick="event.stopPropagation(); showTraitDesc('${t.replace(/'/g, "\\'")}')">${t}</span>`).join("")}</div>` : ""}
+        ${traits.length ? `<div class="official-weapon-traits-line">${traits.map(tr => `<span class="weapon-trait-text" onclick="event.stopPropagation(); showTraitDesc('${tr.replace(/'/g, "\\'")}')">${tr.toUpperCase()}</span>`).join(" / ")}</div>` : ""}
       </div>`;
   }).join("") : "";
 
-  // ИСПРАВЛЕНО: Используем новую функцию renderTraits для отображения трейтов с иконками и специальными стилями
+  // Используем renderTraits для отображения трейтов плоским списком с маркером спецтрейтов
   const traitsHTML = model.traits?.length
-    ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-grid">${renderTraits(model.traits)}</div></div>`
+    ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-list">${renderTraits(model.traits)}</div></div>`
     : "";
 
   // Новый блок: equipment (только если есть в crewModel)
@@ -1158,42 +1197,33 @@ const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
   let equipmentHTML = '';
   if (crewModel && crewModel.equipment && crewModel.equipment.length > 0) {
     equipmentHTML = `
-      <div class="official-section-title">EQUIPMENT</div>
-      <div class="official-traits-grid">
-        ${crewModel.equipment.map(eq => `
-          <div style="position: relative;">
-            <button 
-              class="official-trait equipment-chip" 
-              onclick="showTraitPopup('${eq.name}', '${eq.effects.join('<br>')}')">
-              ${eq.name} 
-              <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>
-            </button>
-            <span 
-              class="remove-eq" 
-              onclick="event.stopPropagation(); removeEquipmentFromModel('${model.name}', '${eq.name}')">
-              ×
-            </span>
-          </div>
-        `).join("")}
+      <div class="official-section yellow">
+        <div class="official-section-title">EQUIPMENT</div>
+        <div class="official-traits-list">
+          ${crewModel.equipment.map(eq => `
+            <div class="official-trait-item equipment-item" onclick="showTraitPopup('${eq.name}', '${eq.effects.join('<br>')}')">
+              ${eq.name} <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>.
+              <span class="remove-eq" onclick="event.stopPropagation(); removeEquipmentFromModel('${model.name}', '${eq.name}')">×</span>
+            </div>
+          `).join("")}
+        </div>
       </div>
     `;
   }
-  
+
+  const rankIconsHTML = renderRankIconsHTML(getRanks(model));
+
   // --- Финальная сборка карточки ---
   $("fullCardContent").innerHTML = `
     <div class="official-card">
       <div class="official-header">
-        <div class="official-name">${model.name.toUpperCase()}</div>
-        <div class="official-subtitle">${realName} / ${base}</div>
-        
-        <div class="official-subtitle faction-rivals-line">
-          <span class="label-f">F:</span> ${factionIconsHTML}
-          <span class="label-r">R:</span> ${rivalsIconsHTML}
+        <div class="official-header-text">
+          <div class="official-name">${model.name.toUpperCase()}</div>
+          <div class="official-subtitle">${realName} / ${base.toUpperCase()}</div>
         </div>
-        
-        <div class="official-subtitle rank-rep-line">
-          <span class="rank-badge">${rank}</span>
-          <span class="rep-funding">${rep} REP • $${funding}</span>
+        <div class="official-header-rank">
+          ${rankIconsHTML}
+          <span class="official-rank-label">RANK</span>
         </div>
       </div>
 
@@ -1201,13 +1231,23 @@ const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
         <div class="official-img-wrapper">
           <img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
         </div>
-        <div class="official-stats">
-          <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Willpower || "-"}</span><span class="official-label">Willpower</span></div>
-          <div class="official-stat vertical-stat"><span class="official-value">${model.stats.Endurance || "-"}</span><span class="official-label">Endurance</span></div>
-          <div class="official-stat"><span class="official-value">${model.stats.Attack || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Attack.png" class="stat-icon"></span></div>
-          <div class="official-stat"><span class="official-value">${model.stats.Defense || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Defense.png" class="stat-icon"></span></div>
-          <div class="official-stat"><span class="official-value">${model.stats.Strength || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Strength.png" class="stat-icon"></span></div>
-          <div class="official-stat"><span class="official-value">${model.stats.Movement || "-"}</span><span class="official-label"><img src="https://veland55.github.io/btb/img/Movement.png" class="stat-icon"></span></div>
+        <div class="official-info-col">
+          <div class="official-aff-riv-row">
+            <span class="aff-riv-label">AFF</span>
+            <span class="aff-riv-icons">${factionIconsHTML}</span>
+            <span class="aff-riv-divider"></span>
+            <span class="aff-riv-label">RIV</span>
+            <span class="aff-riv-icons">${rivalsIconsHTML}</span>
+          </div>
+          <div class="official-rep-funding">${rep} <span>REP</span> <span class="rep-funding-sep">•</span> $${funding}</div>
+          <div class="official-stats-grid">
+            <div class="stat-badge stat-big stat-yellow"><span class="stat-num">${model.stats.Willpower || "-"}</span><span class="stat-name">WILLPOWER</span></div>
+            <div class="stat-badge stat-big stat-black"><span class="stat-num">${model.stats.Endurance || "-"}</span><span class="stat-name">ENDURANCE</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Attack.png"><span class="stat-num">${model.stats.Attack || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Defense.png"><span class="stat-num">${model.stats.Defense || "-"}</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Strength.png"><span class="stat-num">${model.stats.Strength || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Movement.png"><span class="stat-num">${model.stats.Movement || "-"}</span></div>
+          </div>
         </div>
       </div>
 
@@ -1215,6 +1255,8 @@ const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
       ${traitsHTML}
       ${equipmentHTML}
     </div>`;
+
+  renderFullCardSidebar(model);
 
   $("fullCard").classList.add("active");
 };
