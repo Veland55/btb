@@ -927,10 +927,62 @@ function sortModelsByRank(list) {
   });
 }
 
-// HTML иконок рангов модели
+// HTML иконок рангов модели (используется в шапке полной карточки)
 const renderRankIconsHTML = ranks => ranks.map(rank =>
   `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`
 ).join('');
+
+// Общая разметка мини-карточки для разделов "Карточки" и "Билдер":
+// фото слева, справа построчно — имя, ранг текстом, Rep/Funding, купленное снаряжение.
+// showButtons включает кнопку добавить/удалить в правом верхнем углу (только билдер).
+function renderMiniCardHTML(item, showButtons) {
+  const ranks = getRanks(item);
+  const rankText = ranks.length ? ranks.join(' / ') : '—';
+
+  let cornerHTML = '';
+  if (showButtons) {
+    const isMinionOrHorde = item.traits && item.traits.some(t => t.startsWith("Minion") || t === "Horde");
+    if (isMinionOrHorde) {
+      cornerHTML = `<button class="add-btn" onclick="event.stopPropagation();addToCrew(models[${item._id}])">+</button>`;
+      if (item.count > 0) {
+        cornerHTML += `
+          <button class="remove-btn" onclick="event.stopPropagation();removeFromCrew(models[${item._id}])">−</button>
+          <span class="count">x${item.count}</span>`;
+      }
+    } else {
+      cornerHTML = `<button class="${item.inCrew ? "remove-btn" : "add-btn"}" onclick="event.stopPropagation();addToCrew(models[${item._id}])">${item.inCrew ? "−" : "+"}</button>`;
+    }
+  }
+
+  const equipment = item.inCrew ? (item.instance.equipment || []) : [];
+  const equipmentChipsHTML = equipment.map(eq => `
+    <span class="mini-equipment-chip">
+      ${eq.name}${eq.fundingCost ? ` <b>$${eq.fundingCost}</b>` : ''}${eq.repCost ? ` +${eq.repCost}Rep` : ''}
+      <span class="mini-equipment-remove" onclick="event.stopPropagation(); removeEquipmentFromModel('${item.name}', '${eq.name.replace(/'/g, "\\'")}')">×</span>
+    </span>
+  `).join('');
+
+  const equipmentRowHTML = item.inCrew ? `
+    <div class="mini-equipment-row">
+      ${equipmentChipsHTML}
+      <span class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[${item._id}], this.closest('.mini-card'))">⚙️</span>
+    </div>
+  ` : '';
+
+  return `
+${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
+<div class="mini-photo-wrap">
+  <img src="${item.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+  ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
+</div>
+<div class="mini-right-col">
+  <div class="mini-name">${item.name}</div>
+  <div class="mini-rank-text">${rankText}</div>
+  <div class="mini-rep">${item.rep} Rep • $${item.inCrew ? getEffectiveModelFunding(item.instance) : (item.funding || 0)}</div>
+  ${equipmentRowHTML}
+</div>
+`;
+}
 
 // Версия для просмотра (без +/-)
 const renderMiniCardsView = debounce(() => {
@@ -950,22 +1002,9 @@ const renderMiniCardsView = debounce(() => {
   const fragment = document.createDocumentFragment();
 
   filteredModels.forEach(model => {
-    const ranks = getRanks(model);
-
     const div = document.createElement("div");
     div.className = `mini-card`;
-
-    div.innerHTML = `
-<img src="${model.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
-<div class="mini-info">
-  <div class="mini-name">${model.name}</div>
-  <div class="mini-ranks">
-    ${renderRankIconsHTML(ranks)}
-  </div>
-  <div class="mini-rep">${model.rep} Rep • $${model.funding || 0}</div>
-</div>
-`;
-
+    div.innerHTML = renderMiniCardHTML({ ...model, inCrew: false, count: 0 }, false);
     div.onclick = () => showFullCard(model);
     fragment.appendChild(div);
   });
@@ -1040,38 +1079,9 @@ const renderMiniCardsBuilder = debounce(() => {
   const fragment = document.createDocumentFragment();
 
   renderArray.forEach(item => {
-    const isMinionOrHorde = item.traits && item.traits.some(t => t.startsWith("Minion") || t === "Horde");
-    const ranks = getRanks(item);
-
     const div = document.createElement("div");
     div.className = `mini-card ${item.inCrew ? "in-crew" : ""}`;
-
-    let buttons = '';
-    if (isMinionOrHorde) {
-      buttons = `<button class="add-btn" onclick="event.stopPropagation();addToCrew(models[${item._id}])">+</button>`;
-      if (item.count > 0) {
-        buttons += `
-          <button class="remove-btn" onclick="event.stopPropagation();removeFromCrew(models[${item._id}])">−</button>
-          <span class="count">x${item.count}</span>`;
-      }
-    } else {
-      buttons = `<button class="${item.inCrew ? "remove-btn" : "add-btn"}" onclick="event.stopPropagation();addToCrew(models[${item._id}])">${item.inCrew ? "−" : "+"}</button>`;
-    }
-
-    div.innerHTML = `
-${buttons}
-${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
-<img src="${item.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
-<div class="mini-info">
-  <div class="mini-name">${item.name}</div>
-  <div class="mini-ranks">
-    ${renderRankIconsHTML(ranks)}
-  </div>
-  <div class="mini-rep">${item.rep} Rep • $${item.inCrew ? getEffectiveModelFunding(item.instance) : (item.funding || 0)}</div>
-</div>
-${item.inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[' + item._id + '], this.closest(\'.mini-card\'))">⚙️</div>' : ''}
-`;
-
+    div.innerHTML = renderMiniCardHTML(item, true);
     div.onclick = () => showFullCard(item);
     fragment.appendChild(div);
   });
@@ -1422,7 +1432,11 @@ function removeEquipmentFromModel(modelName, eqName) {
       modifiers = calculateModifiers();
       updateCrewBar();
       renderMiniCardsBuilder();
-      showFullCard(models.find(m => m.name === modelName)); // Перерендерим полную карточку
+      // Перерендерим полную карточку, только если она сейчас открыта
+      // (иначе удаление equipment из списка билдера непреднамеренно открывало модалку)
+      if ($("fullCard").classList.contains("active")) {
+        showFullCard(models.find(m => m.name === modelName));
+      }
     }
   }
 }

@@ -45,25 +45,57 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .faction-card.active { border:4px solid #e94560; box-shadow:0 0 18px rgba(233,69,96,.7); }
 .faction-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); height:80px; width:auto; filter:drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
 
-/* СЕТКА МОДЕЛЕЙ */
-.models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:14px; padding:14px; }
-.mini-card { background:#1a1a1a; border-radius:14px; overflow:hidden; position:relative; cursor:pointer; border:2px solid transparent; box-shadow:0 4px 12px rgba(0,0,0,.5); transition:all .3s; }
-.mini-card:hover { transform:translateY(-6px); box-shadow:0 12px 25px rgba(233,69,96,.4); }
+/* СЕТКА/СПИСОК МОДЕЛЕЙ */
+.models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; padding:14px; }
+.models-list { display:flex; flex-direction:column; gap:10px; padding:10px; }
+
+/* Мини-карточка модели — общая для разделов "Карточки" и "Билдер":
+   фото слева, справа построчно — имя, ранг текстом, Rep/Funding, купленное снаряжение. */
+.mini-card {
+  background:#1a1a1a; border-radius:14px; overflow:hidden; position:relative; cursor:pointer;
+  border:2px solid transparent; box-shadow:0 4px 12px rgba(0,0,0,.5); transition:all .3s;
+  display:flex; align-items:stretch; gap:12px; padding:10px;
+}
+.mini-card:hover { transform:translateY(-4px); box-shadow:0 10px 20px rgba(233,69,96,.4); }
 .mini-card.in-crew { border:4px solid #e94560; box-shadow:0 0 30px rgba(233,69,96,.8); }
-.mini-card img { width:100%; height:115px; object-fit:cover; }
-.mini-info { padding:10px 8px; text-align:center; }
-.mini-name { font-weight:bold; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
-.mini-rep { color:#e94560; font-weight:bold; font-size:14px; }
-.add-btn, .remove-btn { position:absolute; top:8px; right:8px; width:40px; height:40px; border-radius:50%; font-size:24px; font-weight:bold; border:none; z-index:10; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; }
+
+/* Кнопка добавить/удалить — верхний правый угол (только билдер) */
+.mini-card-corner { position:absolute; top:8px; right:8px; display:flex; align-items:center; gap:6px; z-index:10; }
+.add-btn, .remove-btn { width:34px; height:34px; border-radius:50%; font-size:20px; font-weight:bold; border:none; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; flex-shrink:0; }
 .add-btn { background:#e94560; color:#fff; }
 .add-btn:hover { background:#ff3366; }
 .remove-btn { background:#c00; color:#fff; }
 .remove-btn:hover { background:#f00; }
-.mini-card .count { position:absolute; top:8px; right:65px; background:rgba(0,0,0,0.7); color:#fff; font-size:14px; font-weight:bold; padding:4px 8px; border-radius:12px; min-width:24px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.78); text-shadow:1px 1px 2px #000; pointer-events:none; z-index:11; }
-.mini-card .equipment-icon { position:absolute; top:8px; left:8px; width:32px; height:32px; background:rgba(0,0,0,0.7); color:#ffd700; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; z-index:11; box-shadow:0 2px 8px rgba(0,0,0,0.8); transition:all 0.3s; }
-.mini-card .equipment-icon:hover { background:#e94560; transform:scale(1.1); }
-.mini-card.in-crew .equipment-icon { display:flex; }
-.mini-ranks { display:flex; justify-content:center; align-items:center; gap:6px; margin:4px 0; flex-wrap:wrap; min-height:22px; }
+.mini-card-corner .count { background:rgba(0,0,0,0.7); color:#fff; font-size:12px; font-weight:bold; padding:3px 8px; border-radius:12px; min-width:20px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.78); text-shadow:1px 1px 2px #000; pointer-events:none; }
+
+.mini-photo-wrap { position:relative; flex-shrink:0; }
+.mini-photo-wrap img { width:100px; height:126px; object-fit:cover; border-radius:10px; display:block; }
+.boss-crown { position:absolute; top:-8px; left:-8px; font-size:22px; filter:drop-shadow(0 2px 4px rgba(0,0,0,.8)); }
+
+.mini-right-col { flex:1; display:flex; flex-direction:column; justify-content:center; gap:5px; min-width:0; }
+.models-list .mini-right-col { padding-right:40px; } /* место под угловую кнопку в билдере */
+.mini-name { font-weight:bold; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mini-rank-text { color:#bbb; font-size:12.5px; text-transform:uppercase; letter-spacing:.5px; }
+.mini-rep { color:#e94560; font-weight:bold; font-size:14px; }
+
+/* Купленное снаряжение под моделью (только билдер, если куплено) */
+.mini-equipment-row { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:2px; }
+.mini-equipment-chip {
+  display:inline-flex; align-items:center; gap:5px; background:#000; color:#ffd700;
+  border:1px solid #e94560; border-radius:18px; padding:4px 9px; font-size:11px; font-weight:bold;
+}
+.mini-equipment-chip b { color:#fff; }
+.mini-equipment-remove {
+  display:flex; align-items:center; justify-content:center; width:15px; height:15px;
+  background:#ff0000; color:#fff; border-radius:50%; font-size:11px; line-height:1; cursor:pointer; flex-shrink:0;
+}
+.mini-equipment-remove:hover { background:#ff3333; }
+.mini-equipment-row .equipment-icon {
+  width:26px; height:26px; background:rgba(255,255,255,0.08); color:#ffd700; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; flex-shrink:0; transition:all .2s;
+}
+.mini-equipment-row .equipment-icon:hover { background:#e94560; color:#fff; }
+
 .rank-icon { height:24px !important; width:auto !important; max-width:60px; object-fit:contain; background:#ffffff; padding:2px; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; }
 
 /* ПОЛНАЯ КАРТОЧКА */
@@ -249,19 +281,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .remove-eq { position:absolute; top:-10px; right:-10px; background:#ff0000; color:#fff; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold; cursor:pointer; box-shadow:0 3px 8px rgba(255,0,0,0.8); z-index:12; transition:all 0.3s; }
 .remove-eq:hover { background:#ff3333; transform:scale(1.2); }
 
-/* СПИСОК ДЛЯ БИЛДЕРА */
-.models-list { display:flex; flex-direction:column; gap:10px; padding:10px; }
-.models-list .mini-card { display:flex; flex-direction:row; align-items:center; gap:10px; height:auto; padding:10px; }
-.models-list .mini-card img { width:80px; height:80px; border-radius:8px; }
-.models-list .mini-info { flex:1; text-align:left; padding:0; }
-.models-list .mini-name { font-size:14px; }
-.models-list .mini-rep { font-size:13px; }
-.models-list .add-btn, .models-list .remove-btn { position:static; width:34px; height:34px; font-size:16px; margin-left:auto; }
-.models-list .remove-btn { margin-left:5px; }
-.models-list .mini-card .count { position:static; margin-left:10px; }
-.models-list .mini-card .equipment-icon { position:static; margin-left:10px; }
-.models-list .mini-ranks { display:flex; gap:6px; margin-top:4px; }
-
 /* ИКОНКИ В ТЕКСТЕ */
 .inline-icon { display:inline-block; height:1.1em; width:auto; vertical-align:middle; margin:0 2px; }
 
@@ -368,7 +387,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .main-menu-bg {
   position: absolute;
   inset: 0;
-  background: 
+  background:
     radial-gradient(ellipse at 20% 80%, rgba(233, 69, 96, 0.15) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.8) 0%, transparent 70%);
@@ -407,7 +426,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   font-size: 80px;
   font-weight: 700;
   color: #ffd700;
-  text-shadow: 
+  text-shadow:
     0 0 20px rgba(255, 215, 0, 0.5),
     0 0 40px rgba(233, 69, 96, 0.8),
     0 0 60px rgba(233, 69, 96, 0.4);
@@ -446,7 +465,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 
+  box-shadow:
     0 5px 20px rgba(233, 69, 96, 0.4),
     0 0 30px rgba(233, 69, 96, 0.2),
     inset 0 0 20px rgba(255, 255, 255, 0.1);
@@ -475,7 +494,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .menu-btn:hover {
   background: linear-gradient(135deg, #ff3366 0%, #e94560 100%);
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 10px 30px rgba(233, 69, 96, 0.6),
     0 0 50px rgba(233, 69, 96, 0.4),
     inset 0 0 30px rgba(255, 255, 255, 0.2);
@@ -528,13 +547,65 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
     font-size: 60px;
     letter-spacing: 10px;
   }
-  
+
   .menu-btn {
     padding: 15px 30px;
     font-size: 18px;
   }
-  
+
   .btn-icon {
     font-size: 24px;
   }
+}
+
+/* ======================== АДАПТАЦИЯ ПОД ПЛАНШЕТ / ПК ======================== */
+/* Мобильная вёрстка (по умолчанию) не трогается — только добавляем поведение для широких экранов */
+@media (min-width: 700px) {
+  .top-bar-content,
+  .funds,
+  .tabs-container .faction-cards,
+  .models-grid,
+  .models-list {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Вкладки фракций — сеткой вместо вертикального списка */
+  .tabs-container .faction-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .faction-card { height: 150px; }
+
+  /* Список банды в билдере — несколько колонок вместо одной узкой полосы */
+  .models-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    align-items: start;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .top-bar-content,
+  .funds,
+  .tabs-container .faction-cards,
+  .models-grid,
+  .models-list {
+    max-width: 1500px;
+  }
+}
+
+/* Широкие ПК-мониторы — ещё больше колонок в списке банды */
+@media (min-width: 1600px) {
+  .top-bar-content,
+  .funds,
+  .tabs-container .faction-cards,
+  .models-grid,
+  .models-list {
+    max-width: 1900px;
+  }
+  .models-list { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
 }
