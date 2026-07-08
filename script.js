@@ -323,9 +323,21 @@ const $ = id => document.getElementById(id);
 const hasInCrew = m => crew.some(x => x.name === m.name);
 const countInCrew = m => crew.filter(x => x.name === m.name).length;
 
+// Lieutenant (X): "If the crew contain a model with Alias (X), this model reduces its funding cost to 0..."
+function getEffectiveModelFunding(m) {
+  const lieutenantTrait = m.traits && m.traits.find(tr => /^Lieutenant \(.+\)$/.test(tr));
+  if (lieutenantTrait) {
+    const requiredName = lieutenantTrait.slice("Lieutenant (".length, -1);
+    if (crew.some(other => other !== m && modelMatchesCharacter(other, requiredName))) {
+      return 0;
+    }
+  }
+  return m.funding || 0;
+}
+
 // Суммарные Rep/Funding отряда (с учётом оборудования каждой модели)
 const getCrewTotalRep = () => crew.reduce((a, m) => a + (m.rep || 0) + m.equipment.reduce((b, eq) => b + (eq.repCost || 0), 0), 0);
-const getCrewUsedFunding = () => crew.reduce((a, m) => a + (m.funding || 0) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
+const getCrewUsedFunding = () => crew.reduce((a, m) => a + getEffectiveModelFunding(m) + m.equipment.reduce((b, eq) => b + (eq.fundingCost || 0), 0), 0);
 
 // ======================== ФУНКЦИИ МЕНЮ ========================
 // Улучшенная функция очистки имени от иконок и лишних символов
@@ -1055,7 +1067,7 @@ ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-cr
   <div class="mini-ranks">
     ${renderRankIconsHTML(ranks)}
   </div>
-  <div class="mini-rep">${item.rep} Rep • $${item.funding || 0}</div>
+  <div class="mini-rep">${item.rep} Rep • $${item.inCrew ? getEffectiveModelFunding(item.instance) : (item.funding || 0)}</div>
 </div>
 ${item.inCrew ? '<div class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[' + item._id + '], this.closest(\'.mini-card\'))">⚙️</div>' : ''}
 `;
@@ -1223,7 +1235,6 @@ const showFullCard = model => {
         </div>
         <div class="official-header-rank">
           ${rankIconsHTML}
-          <span class="official-rank-label">RANK</span>
         </div>
       </div>
 
@@ -1535,7 +1546,7 @@ function bmgRankCount(rank) {
 function bmgCanAddModel(model) {
   // Рассчитываем общую Rep и Funding с учетом оборудования
   let totalRep = getCrewTotalRep() + (model.rep || 0);
-  let usedFunding = getCrewUsedFunding() + (model.funding || 0);
+  let usedFunding = getCrewUsedFunding() + getEffectiveModelFunding(model);
 
   const rank = model.rankUsed;
   if (!rank) {
@@ -1995,6 +2006,17 @@ function isEquipmentRankEligible(eq, crewModel) {
   return crewModel.rankUsed === "Henchman";
 }
 
+// Smuggler: "When this model is recruited, its crew can buy Magazines and Radio
+// equipment at half of the usual $ cost."
+function getEquipmentCost(eq) {
+  const base = eq.fundingCost || 0;
+  const hasSmuggler = crew.some(m => m.traits && m.traits.includes("Smuggler"));
+  if (hasSmuggler && (eq.name === "Magazine" || eq.name === "Radio")) {
+    return Math.round(base / 2);
+  }
+  return base;
+}
+
 function openEquipmentMenu(model, cardElement) {
   event.stopPropagation();
 
@@ -2173,7 +2195,9 @@ function openEquipmentMenu(model, cardElement) {
       </div>
       <div class="rank-select-buttons" style="max-height: 50vh; overflow-y: auto;">
         ${availableEq.length ? availableEq.map(eq => {
-          const canAfford = availableFunding >= (eq.fundingCost || 0);
+          const cost = getEquipmentCost(eq);
+          const isDiscounted = cost !== (eq.fundingCost || 0);
+          const canAfford = availableFunding >= cost;
           const insufficientFundsText = currentLang === 'ru' ? '⚠ Недостаточно средств' : '⚠ Insufficient funds';
           const isSpecial = isCharacterOrTraitGated(eq);
           const specialBadge = isSpecial ? '<span style="color:#ffd700; font-size:11px; margin-left:6px;">⭐ SPECIAL</span>' : '';
@@ -2182,10 +2206,11 @@ function openEquipmentMenu(model, cardElement) {
           const reqText = reqCond
             ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCond.replace('Alias: ', '').replace(' in crew', '')}</small>`
             : '';
+          const priceText = isDiscounted ? `<s style="opacity:.6;">$${eq.fundingCost || 0}</s> $${cost}` : `$${cost}`;
 
           return `
           <button class="rank-select-btn" data-eq-name="${eq.name}" ${!canAfford ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
-            ${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})${specialBadge}
+            ${eq.name} (${priceText}${eq.repCost ? ` +${eq.repCost} Rep` : ''})${specialBadge}
             <small style="display:block; opacity:0.8; font-size:12px;">${replaceIcons(eq.effects.join(" • "))}</small>
             ${!canAfford ? `<span style="color:#ff4444; font-size:11px;">${insufficientFundsText}</span>` : ''}
             ${reqText}
@@ -2203,17 +2228,18 @@ function openEquipmentMenu(model, cardElement) {
       const eq = availableEq.find(e => e.name === eqName);
       if (!eq) return;
 
-      // Проверка бюджета
+      // Проверка бюджета (с учётом скидки Smuggler на Magazine/Radio)
+      const cost = getEquipmentCost(eq);
       const usedFunding = getCrewUsedFunding();
       const availableFunding = bmgFundingLimit() - usedFunding;
-      if (availableFunding < (eq.fundingCost || 0)) {
+      if (availableFunding < cost) {
         alert("Недостаточно Funding для этого equipment!");
         return;
       }
 
-      // Добавляем equipment к модели
+      // Добавляем equipment к модели (с фактически уплаченной стоимостью)
       if (!crewModel.equipment) crewModel.equipment = [];
-      crewModel.equipment.push(eq);
+      crewModel.equipment.push(cost !== (eq.fundingCost || 0) ? { ...eq, fundingCost: cost } : eq);
 
       // Обновляем счётчики и интерфейс
       updateCrewEquipmentCounts();
@@ -2272,10 +2298,11 @@ function exportRoster() {
 
   crew.forEach(m => {
     exportText += `${m.name}`;
-    
-    // Добавляем стоимость модели если есть
-    if (m.funding && m.funding > 0) {
-      exportText += ` ($${m.funding})`;
+
+    // Добавляем стоимость модели если есть (с учётом скидки Lieutenant (X))
+    const effectiveFunding = getEffectiveModelFunding(m);
+    if (effectiveFunding > 0) {
+      exportText += ` ($${effectiveFunding})`;
     }
     
     // Добавляем equipment
