@@ -1152,7 +1152,7 @@ const models = [
         "damage": "★★",
         "rof": "-",
         "ammo": "-",
-        "traits": "Accurate / Red Dots"
+        "traits": "Accurate / Red Dot"
       }
     ]
   },
