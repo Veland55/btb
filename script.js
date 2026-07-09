@@ -486,8 +486,9 @@ function checkModelDependency(model) {
   // Проверяем правила Aversion
   const aversionList = window.modelAversionRules?.[model.name];
   if (aversionList && Array.isArray(aversionList)) {
-    // Если в отряде есть хотя бы одна модель из списка Aversion, эта модель не может быть добавлена
-    if (crew.some(m => aversionList.includes(m.name))) {
+    // Если в отряде есть хотя бы одна модель из списка Aversion, эта модель не может быть добавлена.
+    // Сопоставляем через modelMatchesCharacter, чтобы "Harley Quinn" покрывала все версии персонажа
+    if (crew.some(m => aversionList.some(a => modelMatchesCharacter(m, a)))) {
       return false;
     }
   }
@@ -541,9 +542,10 @@ function getUnmetDependency(model) {
 // Возвращает true, если модель должна быть скрыта (в отряде есть модель, для которой эта модель в списке Aversion)
 function checkAversionHidden(model) {
   // Проверяем каждую модель в отряде: есть ли текущая модель в её списке Aversion
+  // (через modelMatchesCharacter — "Harley Quinn" покрывает все версии персонажа)
   for (const crewModel of crew) {
     const aversionList = window.modelAversionRules?.[crewModel.name];
-    if (aversionList && Array.isArray(aversionList) && aversionList.includes(model.name)) {
+    if (aversionList && Array.isArray(aversionList) && aversionList.some(a => modelMatchesCharacter(model, a))) {
       return true; // Эта модель должна быть скрыта
     }
   }
@@ -734,6 +736,17 @@ function addModelWithRank(model, chosenRank) {
     }
   }
 
+  // Three Jokers: "When you recruit this model you must also recruit any other models that share this trait."
+  // Автоматически добавляем остальных Джокеров (каждый оплачивается своей Reputation)
+  if (cloned.traits.includes("Three Jokers")) {
+    models.forEach(other => {
+      if (other.traits && other.traits.includes("Three Jokers") &&
+          other.name !== cloned.name && !crew.some(c => c.name === other.name)) {
+        crew.push({ ...other, rankUsed: "Leader", uniqueId: Date.now() + Math.random(), equipment: [] });
+      }
+    });
+  }
+
   updateCrewEquipmentCounts();
   modifiers = calculateModifiers();
   updateCrewBar();
@@ -803,7 +816,12 @@ const removeFromCrew = m => {
   const index = crew.findLastIndex(x => x.name === m.name);
   if (index !== -1) {
     crew.splice(index, 1);
-    if (BMG_BOSS && BMG_BOSS.name === m.name) {
+    // Three Jokers: нанимаются только все вместе — при удалении одного удаляем остальных
+    if (m.traits && m.traits.includes("Three Jokers")) {
+      crew = crew.filter(x => !(x.traits && x.traits.includes("Three Jokers")));
+    }
+    // Босс удалён (напрямую или в составе Three Jokers) — отряд расформировывается
+    if (BMG_BOSS && !crew.includes(BMG_BOSS)) {
       BMG_BOSS = null;
       BMG_AFFILIATIONS = null;
       crew = [];  // Полностью очищаем отряд при удалении босса
@@ -1377,11 +1395,11 @@ const renderModelSearch = () => {
 
   const html = results.length ? results.map(m => `
     <div class="comp-entry" style="cursor:pointer" onclick="showFullCard(models[${m._id}])">
-      <div class="comp-title" style="background:#222;padding:16px;font-size:18px">
-        ${m.name}<span style="float:right;color:#e94560;font-weight:bold">${m.rep} Rep</span>
+      <div class="comp-title">
+        ${m.name}<span style="float:right;color:#e94560">${m.rep} Rep</span>
       </div>
-      <div class="comp-text" style="padding:12px;font-size:14px;color:#aaa">
-        ${m.rank||"Free Agent"} • ${Array.isArray(m.faction)?m.faction.join(" • "):m.faction||"—"}
+      <div class="comp-text">
+        ${getRanks(m).join(" / ") || "—"} • ${Array.isArray(m.faction)?m.faction.join(" • "):m.faction||"—"}
       </div>
     </div>`).join("") : `<div style="text-align:center;color:#888;padding:100px;font-size:18px">${t("nothing_found")}</div>`;
 
@@ -1685,13 +1703,22 @@ function bmgCanAddModel(model) {
           !model.traits.includes("Bot") && !model.traits.includes("Cybernetic") &&
           crew.filter(m => m.hireException === "Possessed").length < 3) {
         hireException = "Possessed"; // до 3 Henchman любой аффилиации, если Босс — Possessed
-      } else if (rank === "Henchman" && bossTraits.includes("Corrupt") &&
+      } else if (rank === "Henchman" &&
+          crew.some(cm => cm.traits && cm.traits.includes("Corrupt")) &&
           model.traits.includes("Cop") &&
           crew.filter(m => m.hireException === "Corrupt").length < 3) {
-        hireException = "Corrupt"; // до 3 Henchman с трейтом Cop, если Босс — Corrupt
-      } else if (rank === "Henchman" && bossTraits.includes("Criminal Bonds") &&
+        // Corrupt: "If this model is included your crew..." — носитель может быть любым членом отряда
+        hireException = "Corrupt"; // до 3 Henchman с трейтом Cop
+      } else if (rank === "Henchman" && bossTraits.includes("Absolute Power") &&
+          model.traits.includes("Cop")) {
+        // Absolute Power (Lex Luthor): "If this model is your crew's Boss, you can hire models
+        // with Rank Henchman with the Cop trait, regardless of their Affiliation" — без лимита
+        hireException = "Absolute Power";
+      } else if (rank === "Henchman" &&
+          crew.some(cm => cm.traits && cm.traits.includes("Criminal Bonds")) &&
           modelFactions.includes("Organized Crime") && model.traits.includes("Criminal") &&
           crew.filter(m => m.hireException === "Criminal Bonds").length < 3) {
+        // Criminal Bonds: "If this model is included in your crew..." — носитель любой член отряда
         hireException = "Criminal Bonds"; // до 3 Henchman Organized Crime с трейтом Criminal
       } else if (model.traits.includes("Vocational") &&
           crew.every(m => m.traits.includes("Cop"))) {
@@ -1853,21 +1880,21 @@ function bmgCanAddModel(model) {
       }
     }
 
-    // Hates (X): Нельзя добавлять если X в отряде
+    // Hates (X): Нельзя добавлять если X в отряде (X — фракция, имя или версия персонажа)
     const hatesMatch = modelTrait.match(/^Hates \((.+)\)$/);
     if (hatesMatch) {
       const hated = hatesMatch[1];
-      if (crew.some(m => m.name === hated || getFactions(m).includes(hated))) {
+      if (crew.some(m => modelMatchesCharacter(m, hated) || getFactions(m).includes(hated))) {
         alert(t("hates_cannot_add", { hated }));
         exceeded = true;
       }
     }
 
-    // Aversion (X): Нельзя добавлять если X в отряде
+    // Aversion (X): Нельзя добавлять если X в отряде (X — фракция, имя или версия персонажа)
     const aversionMatch = modelTrait.match(/^Aversion \((.+)\)$/);
     if (aversionMatch) {
       const averted = aversionMatch[1];
-      if (crew.some(m => m.name === averted || getFactions(m).includes(averted))) {
+      if (crew.some(m => modelMatchesCharacter(m, averted) || getFactions(m).includes(averted))) {
         alert(t("avert_cannot_add", { averted }));
         exceeded = true;
       }
@@ -1876,7 +1903,7 @@ function bmgCanAddModel(model) {
     // Проверка правил modelAversionRules: если в отряде есть модель, для которой эта модель в списке Aversion
     const aversionList = window.modelAversionRules?.[model.name];
     if (aversionList && Array.isArray(aversionList)) {
-      const conflictingModel = crew.find(m => aversionList.includes(m.name));
+      const conflictingModel = crew.find(m => aversionList.some(a => modelMatchesCharacter(m, a)));
       if (conflictingModel) {
         const aversionNames = aversionList.join(", ");
         alert(t("avert_cannot_add", { averted: aversionNames }));
@@ -1887,7 +1914,7 @@ function bmgCanAddModel(model) {
     // Обратная проверка: если эта модель в списке Aversion для какой-либо модели в отряде
     for (const crewModel of crew) {
       const crewAversionList = window.modelAversionRules?.[crewModel.name];
-      if (crewAversionList && Array.isArray(crewAversionList) && crewAversionList.includes(model.name)) {
+      if (crewAversionList && Array.isArray(crewAversionList) && crewAversionList.some(a => modelMatchesCharacter(model, a))) {
         alert(t("avert_cannot_add", { averted: crewModel.name }));
         exceeded = true;
         break;
@@ -2005,9 +2032,36 @@ function bmgCanAddModel(model) {
 // из-за чего почти все character-gated предметы были недоступны для покупки. Проверяем и имя
 // карты (с поддержкой версий через префикс "Name " / "Name("), и realname.
 function modelMatchesCharacter(model, characterName) {
-  const name = characterName.trim();
-  if (model.name === name || model.realname === name) return true;
-  if (model.name.startsWith(name + ' ') || model.name.startsWith(name + '(')) return true;
+  const norm = s => String(s || '').replace(/’/g, "'").trim();
+  const name = norm(characterName);
+  const modelName = norm(model.name);
+  // realname иногда содержит служебный суффикс вида "Bruce Wayne / 40mm" — отбрасываем его
+  const realname = norm(model.realname).split('/')[0].trim();
+  if (modelName === name || realname === name) return true;
+  if (modelName.startsWith(name + ' ') || modelName.startsWith(name + '(')) return true;
+  // Имена с пропущенными средними именами/инициалами: "Harleen Quinzel" ⊆ "Dr. Harleen Frances Quinzel",
+  // "Oswald C. Cobblepot" ⊆ "Oswald Chesterfield Cobblepot", "James Gordon" ⊆ "James W. Gordon".
+  // Все слова искомого имени должны идти в realname в том же порядке (инициал с точкой = начало слова).
+  const sought = name.split(/\s+/);
+  if (sought.length >= 2 && realname) {
+    const words = realname.split(/\s+/);
+    let i = 0;
+    let allFound = true;
+    for (const sw of sought) {
+      let found = false;
+      while (i < words.length) {
+        const rw = words[i++];
+        if (rw === sw ||
+            (sw.length > 1 && sw.endsWith('.') && rw.startsWith(sw.slice(0, -1))) ||
+            (rw.length > 1 && rw.endsWith('.') && sw.startsWith(rw.slice(0, -1)))) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) { allFound = false; break; }
+    }
+    if (allFound) return true;
+  }
   return false;
 }
 
@@ -2082,8 +2136,11 @@ function openEquipmentMenu(model, cardElement) {
     return;
   }
 
-  // Модели с трейтом Limited Equipment могут купить только 1 единицу оборудования
-  if (crewModel.traits && crewModel.traits.some(t => t.includes("Limited Equipment"))) {
+  // Трейты, ограничивающие модель 1 единицей оборудования:
+  // Limited Equipment, Mentoring ("This model can only purchase one piece of Equipment"),
+  // Extremely mutated ("This model cannot buy more than one item of Equipment")
+  const oneEquipmentTraits = ["Limited Equipment", "Mentoring", "Extremely mutated"];
+  if (crewModel.traits && crewModel.traits.some(tr => oneEquipmentTraits.some(lim => tr.includes(lim)))) {
     const currentEquipmentCount = (crewModel.equipment || []).length;
     if (currentEquipmentCount >= 1) {
       alert(t("limited_equipment_max_reached"));

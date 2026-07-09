@@ -45,8 +45,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .faction-card.active { border:4px solid #e94560; box-shadow:0 0 18px rgba(233,69,96,.7); }
 .faction-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); height:80px; width:auto; filter:drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
 
-/* СЕТКА/СПИСОК МОДЕЛЕЙ */
-.models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; padding:14px; }
+/* СПИСОК МОДЕЛЕЙ */
 .models-list { display:flex; flex-direction:column; gap:10px; padding:10px; }
 
 /* Мини-карточка модели — общая для разделов "Карточки" и "Билдер":
@@ -140,7 +139,8 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .compendium-modal { position:fixed; inset:0; background:#000; z-index:2000; overflow-y:auto; display:none; flex-direction:column; }
 .compendium-modal.active { display:flex; }
 .compendium-header { background:#111; padding:15px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:10; }
-.compendium-header h2 { color:#e94560; font-size:24px; margin:0; }
+.compendium-header h2 { color:#ffd700; font-size:24px; margin:0; font-weight:700; letter-spacing:1px; }
+.compendium-header h2 span:last-child { color:#888; font-size:14px; }
 .back-btn { position:absolute; left:15px; top:50%; transform:translateY(-50%); background:#e94560; color:#fff; border:none; padding:10px 18px; border-radius:30px; font-weight:bold; font-size:14px; cursor:pointer; }
 
 /* КНОПКИ ДОКУМЕНТОВ (RULEBOOK, FAQS, BATMATCH) */
@@ -182,9 +182,11 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .compendium-search .clear-search { background:#e94560; color:#fff; border:none; width:36px; height:36px; border-radius:50%; font-size:20px; cursor:pointer; margin-right:8px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
 .compendium-search .clear-search:hover { background:#ff3366; }
 .compendium-content { flex:1; padding-bottom:100px; }
-.comp-entry { margin:28px 15px 10px; background:#111; border-radius:16px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,.4); border:1px solid #333; }
-.comp-title { background:#e94560; color:#fff; padding:12px 8px; font-weight:bold; font-size:22px; text-align:center; letter-spacing:1px; }
-.comp-text { background:#f8f9fa; padding:12px 10px; line-height:1.75; color:#000000; font-size:15.5px; border-top:1px solid #ddd; }
+/* Записи справочника/поиска — в едином тёмном стиле попапов */
+.comp-entry { margin:20px 15px 10px; background:#141414; border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.5); border:2px solid #e94560; }
+.comp-title { color:#ffd700; padding:14px 16px 10px; font-weight:700; font-size:18px; letter-spacing:1px; border-bottom:2px solid #e94560; word-break:break-word; }
+.comp-text { padding:14px 16px; line-height:1.65; color:#bbb; font-size:14px; }
+.comp-text .inline-icon { background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
 
 /* ОФИЦИАЛЬНЫЕ КАРТОЧКИ */
 .official-card { background:#f2ede2; color:#000; border-radius:18px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6); margin:10px; font-family:'Oswald',sans-serif; }
@@ -231,7 +233,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .stat-badge.stat-small { padding:7px 6px; clip-path:polygon(6% 0%,94% 6%,100% 50%,92% 100%,8% 94%,0% 50%); }
 .stat-badge.stat-small .stat-num { font-size:clamp(16px,4.5vw,22px); font-weight:700; }
 .stat-badge-icon { width:16px; height:16px; flex-shrink:0; background:#000; border-radius:50%; padding:4px; box-sizing:content-box; }
-.stat-badge.stat-black .stat-badge-icon { invert(1); }
 
 .official-section { padding:4px 8px 8px; background:#f2ede2; }
 .official-section-title { background:#000; color:#ffd700; padding:8px; font-size:15px; font-weight:700; letter-spacing:2px; text-align:center; }
@@ -261,7 +262,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
 /* ВСПОМОГАТЕЛЬНЫЕ ЭЛЕМЕНТЫ */
 .faction-icon-small { height:22px; width:auto; margin:0 4px; vertical-align:middle; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,0.6); }
-.faction-line { text-align:center; padding:8px 0; background:rgba(0,0,0,0.3); border-radius:8px; margin:6px 0; }
 
 /* ЛИМИТ REP */
 #repLimit { width:64px; height:32px; background:#111; color:#fff; border:2px solid #e94560; border-radius:12px; font-family:'Oswald',sans-serif; font-size:16px; font-weight:bold; text-align:center; margin:0 6px; outline:none; transition:all 0.3s ease; box-shadow:0 4px 12px rgba(233,69,96,0.2); }
@@ -341,11 +341,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .equipment-item-warning { color:#ff6b6b; display:block; margin-top:5px; font-size:11.5px; }
 .equipment-item-special { color:#ffd700; font-size:11px; margin-left:6px; }
 
-/* АДАПТИВ */
-@media (max-width:380px) {
-  .tab { min-width:100px; font-size:13px; }
-}
-
 /* МОБИЛЬНАЯ ОПТИМИЗАЦИЯ COMPENDIUM */
 @media (max-width: 480px) {
   .compendium-header { padding: 12px 10px; }
@@ -366,9 +361,9 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   .compendium-search-wrapper { padding: 12px; }
   .compendium-search input { font-size: 14px; padding: 12px 10px 12px 0; }
   
-  .comp-entry { margin: 20px 10px 8px; border-radius: 12px; }
-  .comp-title { font-size: 18px; padding: 10px 8px; }
-  .comp-text { font-size: 14px; padding: 10px 8px; line-height: 1.6; background: #f8f9fa; border-top: 1px solid #ddd; }
+  .comp-entry { margin: 16px 10px 8px; border-radius: 12px; }
+  .comp-title { font-size: 16px; padding: 12px 14px 8px; }
+  .comp-text { font-size: 13.5px; padding: 12px 14px; line-height: 1.6; }
   
   .header-buttons { gap: 8px; }
   .compendium-small-btn { padding: 6px 10px; }
@@ -614,7 +609,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   .top-bar-content,
   .funds,
   .tabs-container .faction-cards,
-  .models-grid,
   .models-list {
     max-width: 900px;
     margin-left: auto;
@@ -642,7 +636,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   .top-bar-content,
   .funds,
   .tabs-container .faction-cards,
-  .models-grid,
   .models-list {
     max-width: 1500px;
   }
@@ -653,7 +646,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   .top-bar-content,
   .funds,
   .tabs-container .faction-cards,
-  .models-grid,
   .models-list {
     max-width: 1900px;
   }

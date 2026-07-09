@@ -45,8 +45,9 @@ const modelDependencyRules = {
   // GCPD / Two-Face
   "Gilda Dent": { requiredModel: "Two-Face" },
   
-  // The Riddler (Jim Carrey / Riddler 1995)
-  "Two-Face": { requiredModel: "The Riddler" },
+  // Batman Forever: киношный Two-Face (Tommy Lee Jones) нанимается только с Риддлером Джима Керри.
+  // Ключ не должен называться просто "Two-Face" — иначе правило блокировало бы и лидера фракции Two-Face
+  "Two-Face Batman Forever": { requiredModel: "The Riddler Jim Carrey" },
   
   // Batman Michael Keaton
   "Catwoman Michelle Pfeiffer": { requiredModel: "Batman Michael Keaton" },
@@ -86,7 +87,7 @@ const modelAversionRules = {
   "The Roman": ["Catwoman"],
 
   // Holiday / The Holiday Killer
-  "The Holiday Killer": ["Maroni"],
+  "The Holiday Killer": ["Sal Maroni"],
 
   // Joker Gang / Gaggy variants and Punchline
   "Gaggy Rebirth": ["Harley Quinn"],
@@ -208,7 +209,7 @@ const equipmentByFaction = {
     { name: "Gas Mask", fundingCost: 150, repCost: 0, maxPerCrew: 3, conditions: [], effects: ["Model gains the Gas Mask rule."] },
     { name: "War Hardened", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Cruel trait."] },
     { name: "Handcuffs", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bane"], effects: ["Model gains the Arrest rule."] },
-    { name: "Venom Laboratory", fundingCost: 100, repCost: 5, maxPerCrew: 1, conditions: ["Bane"], targetModels: ["Leader", "Sidekick"], effects: ["All models can use >1 Titan Dose; Venom Dose cost $50; model removed from play."] },
+    { name: "Venom Laboratory", fundingCost: 100, repCost: 5, maxPerCrew: 1, conditions: ["Bane"], targetModels: ["Leader", "Sidekick"], effects: ["All models can use >1 Titan Dose; Venom Dose cost $50; model removed from play."], isUnaffectedByBroken: true },
     { name: "Venom Applicator", fundingCost: 0, repCost: 2, maxPerCrew: 2, conditions: ["Bane"], effects: ["Can use Titan/Venom on friendly model in contact."] },
     { name: "Military Progress", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Bird"], effects: ["Model gains Veteran rule."] },
     { name: "Dual Handguns", fundingCost: 300, repCost: 7, maxPerCrew: 1, conditions: ["Thomas Wayne"], targetModels: ["Thomas Wayne"], effects: ["Gains Rapid Fire and Dual Handguns weapon."], isUnaffectedByBroken: true },
@@ -248,7 +249,7 @@ const equipmentByFaction = {
     { name: "Gas Mask", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Gas Mask rule."] },
     { name: "Another One!", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Model gains the Drop a Riddle trait."] },
     { name: "Level Up", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler"], targetModels: ["The Riddler"], effects: ["Place up to 2 extra Suspect markers in first 2 turns."] },
-    { name: "It's a Dud", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Quell"], effects: ["Remove 1 Riddle marker at activation start."] },
+    { name: "It's a Dud", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Quelle"], effects: ["Remove 1 Riddle marker at activation start."] },
     { name: "Inspiration", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Echo"], effects: ["Search Objective deck when playing a card."] },
     { name: "Weird Ammo", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Query"], effects: ["Ranged weapons gain Enervating (2) or Anti-Tank."] },
     { name: "Battle Bot", fundingCost: 250, repCost: 3, maxPerCrew: 1, conditions: ["Model has Bot trait"], effects: ["Model gains the Claws rule."] },
@@ -268,7 +269,7 @@ const equipmentByFaction = {
     { name: "Freeze Generator", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Victor Fries"], effects: ["Model gains Shockwave rule."] },
     { name: "Engineer Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Victor Fries"], effects: ["Model gains the Handyman rule."] },
     { name: "Queen's Chosen", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Killer Frost"], effects: ["Model gains the Bodyguard rule."] },
-    { name: "Ivy's Snow Coat", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Poison Ivy (1997)"], targetModels: ["Poison Ivy"], effects: ["Model gains the Cold Acclimation trait."] }
+    { name: "Ivy's Snow Coat", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Poison Ivy 1997"], targetModels: ["Poison Ivy"], effects: ["Model gains the Cold Acclimation trait."] }
   ],
   "League of Shadows": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -300,10 +301,10 @@ const equipmentByFaction = {
     { name: "Luminescent Mutation", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Plants"], effects: ["Model gains the Lantern rule."] },
     { name: "Large Roots", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Only Plants"], effects: ["Models within action radius suffer Impaired Movement."] },
     { name: "Smash 'n Grab", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dr. Harleen Quinzel"], effects: ["Close Combat attacks gain the Steal trait."] },
-    { name: "Corrosive Blood", fundingCost: 50, repCost: 0, maxPerCrew: 3, conditions: ["Dr. Pamela Lilian Isley"], effects: ["On casualty, contact models take 🩸 if fail Endurance."] },
-    { name: "Mutation Serum", fundingCost: 200, repCost: 3, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley", "Model has Plant trait cannot purchase"], effects: ["Model gains Tough Skin and Desensitized traits."] },
-    { name: "Modified Pheromones", fundingCost: 150, repCost: 5, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley", "Model has Plant trait cannot purchase"], targetModels: ["Leader", "Sidekick", "Free Agent"], effects: ["Control Pheromones targets 2 enemies."] },
-    { name: "Ancient Plants", fundingCost: 200, repCost: 40, maxPerCrew: 1, conditions: ["Dr. Pamela Lilian Isley", "Only Plants"], effects: ["Invulnerability (1), Tough Skin, +1 skills (except Endurance), +3 Endurance, 6\" action radius."], isUnaffectedByBroken: true },
+    { name: "Corrosive Blood", fundingCost: 50, repCost: 0, maxPerCrew: 3, conditions: ["Dr. Pamela Lillian Isley"], effects: ["On casualty, contact models take 🩸 if fail Endurance."] },
+    { name: "Mutation Serum", fundingCost: 200, repCost: 3, maxPerCrew: 1, conditions: ["Dr. Pamela Lillian Isley", "Model has Plant trait cannot purchase"], effects: ["Model gains Tough Skin and Desensitized traits."] },
+    { name: "Modified Pheromones", fundingCost: 150, repCost: 5, maxPerCrew: 1, conditions: ["Dr. Pamela Lillian Isley", "Model has Plant trait cannot purchase"], targetModels: ["Leader", "Sidekick", "Free Agent"], effects: ["Control Pheromones targets 2 enemies."] },
+    { name: "Ancient Plants", fundingCost: 200, repCost: 40, maxPerCrew: 1, conditions: ["Dr. Pamela Lillian Isley", "Only Plants"], effects: ["Invulnerability (1), Tough Skin, +1 skills (except Endurance), +3 Endurance, 6\" action radius."], isUnaffectedByBroken: true },
     { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Barbara Gordon"], effects: ["Model gains Exhaustive Planner rule."] },
     { name: "Radio", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], effects: ["Always within Boss's Inspire range."] },
     { name: "Pitch Perfect Vocals", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dinah Lance"], targetModels: ["Dinah Lance"], effects: ["Model gains the Mixed Combat Style trait."] },
@@ -371,8 +372,8 @@ const equipmentByFaction = {
     { name: "Back on Track", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Reset Task counter with Cranial Bomb."] },
     { name: "Right Motivation", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Free Manipulate action if no Task counter."] },
     { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy", "Model has Control Pheromones trait"], effects: ["Enhances Control Pheromones (details in desc)."] },
-    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team)"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
-    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team)"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
+    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke Vanguard Team"], targetModels: ["Deathstroke Vanguard Team"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
+    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager Vanguard Team"], targetModels: ["Ravager Vanguard Team"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
    ]
 
 };
@@ -2898,7 +2899,7 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": ["Sidekick", "Free Agent"],
-    "faction": ["Bat Family", "Free Agent"],
+    "faction": ["Bat Family", "Unknown"],
     "img": "https://veland55.github.io/btb/img/RobinTeenTitans.png",
     "stats": {
       "Attack": 3,
@@ -10298,7 +10299,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "The Riddler",
+    "name": "The Riddler Paul Dano",
     "realname": "Paul Dano Edward Nigma",
     "base": "40mm",
     "rep": 64,
@@ -10609,7 +10610,7 @@ const models = [
     ]
   },
   {
-    "name": "Two-Face",
+    "name": "Two-Face Batman Forever",
     "realname": "Tommy Lee Jones Harvey Dent",
     "base": "40mm",
     "rep": 80,
@@ -10678,7 +10679,7 @@ const models = [
     ]
   },
   {
-    "name": "The Riddler",
+    "name": "The Riddler Jim Carrey",
     "realname": "Jim Carrey Edward Nigma",
     "base": "40mm",
     "rep": 60,
@@ -13279,7 +13280,7 @@ const models = [
   "rep": 75,
   "funding": 100,
   "rank": ["Free Agent"],
-  "faction": ["GCPD", ["Suicide Squad"], "Birds of Prey"],
+  "faction": ["GCPD", "Suicide Squad", "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/Katana_Rebirth.png",
   "stats": {
     "Attack": 4,
@@ -13471,7 +13472,7 @@ const models = [
   "rep": 60,
   "funding": 100,
   "rank": ["Henchman"],
-  "faction": [["Suicide Squad"], "Birds of Prey"],
+  "faction": ["Suicide Squad", "Birds of Prey"],
   "img": "https://veland55.github.io/btb/img/KillerFrost_Rebirth.png",
   "stats": {
     "Attack": 3,
@@ -14560,7 +14561,7 @@ const models = [
     "rep": 65,
     "funding": 0,
     "rank": ["Henchman"],
-    "faction": [["Suicide Squad"], "Court of Owls"],
+    "faction": ["Suicide Squad", "Court of Owls"],
     "img": "https://veland55.github.io/btb/img/TheTalon.png",
     "stats": {
       "Attack": 4,
@@ -15162,7 +15163,7 @@ const models = [
     "base": "40mm",
     "rep": 60,
     "funding": 400,
-    "rank": ["SFree Agent"],
+    "rank": ["Free Agent"],
     "faction": ["Royal Flush"],
     "img": "https://veland55.github.io/btb/img/JackOfSpades.png",
     "stats": {
@@ -19080,7 +19081,7 @@ const models = [
     "base": "30mm",
     "rep": 0,
     "funding": 0,
-    "rank": [],
+    "rank": ["Henchman"],
     "faction": ["Unknown"],
     "img": "https://veland55.github.io/btb/img/SewerSwarm.png",
     "stats": {
