@@ -13,6 +13,17 @@ const factionCrewRules = {
     onlyBossAffiliationOrNoAffiliation: true, // Только персонажи с аффилиацией Босса или без аффилиации
     onlyBossAffiliationObjectives: true, // Только объективы с аффилиацией Босса или без аффилиации
     mustHaveLeaderAsBoss: true // Должен быть Leader как Босс
+  },
+  "Court of Owls": {
+    onlyAffiliationMembers: true // Нельзя нанимать персонажей вне аффилиации (официальное Crew Building Rules)
+  },
+  "Suicide Squad": {
+    onlyAffiliationMembers: true // Нельзя нанимать персонажей вне аффилиации (официальное Crew Building Rules)
+  },
+  "Birds of Prey": {
+    // Официальное Crew Building Rules: модели с Rivals: GCPD и модели с аффилиацией GCPD
+    // взаимоисключаются в одном отряде (в обе стороны)
+    rivalsExclusion: "GCPD"
   }
   // Другие фракции могут иметь стандартные правила (пустой объект или null)
 };
@@ -6791,7 +6802,7 @@ const models = [
       "Endurance": 6
     },
     "traits": [
-      "Genius.",
+      "Genius",
       "Leadership",
       "Medic",
       "Mastermind",

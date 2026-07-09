@@ -196,7 +196,18 @@ const translations = {
     william_cobb_restrict_free_agents: "Если William Cobb в отряде, Free Agent модели должны быть с аффилиацией Bane или Unknown",
     rank_label: "Ранг",
     leader_or_sidekick: "Leader или Sidekick",
-    equipment_insufficient_funds: "Недостаточно Funding для этого equipment!"
+    equipment_insufficient_funds: "Недостаточно Funding для этого equipment!",
+    crew_building_rules: "Правила набора отряда",
+    crew_rules_intro: "У выбранной фракции особые правила набора отряда.",
+    rule_ignore_rank_requirements: "Фракция игнорирует стандартные требования к рангам.",
+    rule_same_name_different_alias: "Можно включать персонажей с одинаковым именем (но разными псевдонимами).",
+    rule_leader_as_boss: "Боссом отряда должен быть Leader.",
+    rule_only_affiliation: "Нельзя нанимать персонажей вне аффилиации.",
+    rule_boss_affiliation_or_none: "Можно нанимать только персонажей с аффилиацией Босса или без аффилиации.",
+    rule_boss_affiliation_objectives: "В колоду можно добавлять только карты целей с аффилиацией Босса или без аффилиации.",
+    rule_rivals_blocks_affiliation: "Наём персонажей с Rivals: {faction} запрещает наём персонажей с аффилиацией {faction} в этом отряде.",
+    rule_affiliation_blocks_rivals: "Наём персонажей с аффилиацией {faction} запрещает наём персонажей с Rivals: {faction} в этом отряде.",
+    rivals_exclusion_cannot_add: "Нельзя добавить: персонажи с Rivals: {faction} и персонажи с аффилиацией {faction} не могут быть в одном отряде"
   },
   en: {
     cards: "CARDS",
@@ -269,7 +280,18 @@ const translations = {
     william_cobb_restrict_free_agents: "If William Cobb is in the crew, Free Agent models must have Bane or Unknown affiliation",
     rank_label: "Rank",
     leader_or_sidekick: "Leader or Sidekick",
-    equipment_insufficient_funds: "Insufficient Funding for this equipment!"
+    equipment_insufficient_funds: "Insufficient Funding for this equipment!",
+    crew_building_rules: "Crew Building Rules",
+    crew_rules_intro: "Your selected affiliation has unique crew building rules.",
+    rule_ignore_rank_requirements: "This affiliation ignores standard rank requirements.",
+    rule_same_name_different_alias: "This affiliation can include characters with the same name (but different alias).",
+    rule_leader_as_boss: "This affiliation must select a Leader as a Boss.",
+    rule_only_affiliation: "This affiliation cannot hire characters that are not in the Affiliation.",
+    rule_boss_affiliation_or_none: "This affiliation can only hire characters that share the chosen Boss Affiliation Keyword, or that have no Affiliation Keywords.",
+    rule_boss_affiliation_objectives: "This affiliation can only add objective cards that share the chosen Boss Affiliation Keyword, or that have no Affiliation Keywords.",
+    rule_rivals_blocks_affiliation: "When creating a crew with this affiliation, hiring characters with Rivals: {faction} will prevent hiring characters with Affiliation: {faction} in the same crew.",
+    rule_affiliation_blocks_rivals: "When creating a crew with this affiliation, hiring characters with Affiliation: {faction} will prevent hiring characters with Rivals: {faction} in the same crew.",
+    rivals_exclusion_cannot_add: "Cannot add: characters with Rivals: {faction} and characters with Affiliation: {faction} cannot be in the same crew"
   }
 };
 
@@ -635,11 +657,38 @@ function closeModelSearch() {
 }
 
 // ======================== ВЫБОР ФРАКЦИИ В БИЛДЕРЕ ========================
+// Тексты особых правил набора отряда выбранной фракции (официальные Crew Building Rules)
+function getFactionRulesLines(faction) {
+  const rules = factionCrewRules[faction];
+  if (!rules) return [];
+  const lines = [];
+  if (rules.ignoreStandardRankRequirements) lines.push(t("rule_ignore_rank_requirements"));
+  if (rules.allowSameNameDifferentAlias) lines.push(t("rule_same_name_different_alias"));
+  if (rules.mustHaveLeaderAsBoss) lines.push(t("rule_leader_as_boss"));
+  if (rules.onlyAffiliationMembers) lines.push(t("rule_only_affiliation"));
+  if (rules.onlyBossAffiliationOrNoAffiliation) lines.push(t("rule_boss_affiliation_or_none"));
+  if (rules.onlyBossAffiliationObjectives) lines.push(t("rule_boss_affiliation_objectives"));
+  if (rules.rivalsExclusion) {
+    lines.push(t("rule_rivals_blocks_affiliation", { faction: rules.rivalsExclusion }));
+    lines.push(t("rule_affiliation_blocks_rivals", { faction: rules.rivalsExclusion }));
+  }
+  return lines;
+}
+
+function showFactionRules() {
+  const lines = getFactionRulesLines(currentFaction);
+  if (!lines.length) return;
+  const body = t("crew_rules_intro") + "<br><br>" + lines.map(l => "• " + l).join("<br><br>");
+  showTraitPopup(t("crew_building_rules"), body);
+}
+
 function selectFaction(faction) {
   currentFaction = faction;
   $('factionSelect').style.display = 'none';
   $('builderFactionCards').classList.add('hidden'); // Скрываем вкладки фракций
   $('builderMain').style.display = 'block';
+  // Кнопка с правилами набора — видна только если у фракции есть особые правила
+  $('factionRulesBtn').style.display = getFactionRulesLines(faction).length ? 'flex' : 'none';
   renderMiniCardsBuilder();
   updateCrewBar();
 }
@@ -1094,6 +1143,28 @@ const renderMiniCardsBuilder = debounce(() => {
     }
   }
 
+  // Фракции с правилом "нельзя нанимать вне аффилиации" (Court of Owls, Suicide Squad,
+  // Batman Who Laughs): скрываем модели, не входящие в саму фракцию (обход через Unknown не работает)
+  {
+    const factionRules = factionCrewRules[currentFaction] || {};
+    if (factionRules.onlyAffiliationMembers) {
+      filteredModels = filteredModels.filter(m => getFactions(m).includes(currentFaction));
+    }
+
+    // Взаимоисключение Rivals/Affiliation (Birds of Prey ↔ GCPD): скрываем модели,
+    // конфликтующие с уже нанятыми по этому правилу
+    if (factionRules.rivalsExclusion) {
+      const rx = factionRules.rivalsExclusion;
+      const crewHasRival = crew.some(m => getRivals(m).includes(rx));
+      const crewHasAff = crew.some(m => getFactions(m).includes(rx));
+      filteredModels = filteredModels.filter(m => {
+        if (crewHasAff && getRivals(m).includes(rx)) return false;
+        if (crewHasRival && getFactions(m).includes(rx)) return false;
+        return true;
+      });
+    }
+  }
+
   // Скрываем модели, которые нельзя нанять из-за нехватки Rep и/или Funding —
   // в списке остаются только реально нанимаемые по бюджету модели
   {
@@ -1359,7 +1430,7 @@ $("compendiumSearch").oninput = function() {
   document.querySelector("#compendiumModal .clear-search").style.display = q ? "flex" : "none";
   if (!q) { $("compendiumList").innerHTML = allCompendiumHTML; return; }
   const html = compendiumKeys.filter(k => k.toLowerCase().includes(q)).map(k => `
-    <div class="comp-entry"><div class="comp-title">${k}</div><div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div></div>`).join("");
+    <div class="comp-entry"><div class="comp-title">${replaceIcons(k)}</div><div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div></div>`).join("");
   $("compendiumList").innerHTML = html || `<div style="text-align:center;color:#888;padding:80px;font-size:18px;">${t("nothing_found")}</div>`;
 };
 
@@ -1532,7 +1603,7 @@ window.addEventListener("load", () => {
     compendiumKeys = Object.keys(window.compendium).sort();
     allCompendiumHTML = compendiumKeys.map(k => `
       <div class="comp-entry">
-        <div class="comp-title">${k}</div>
+        <div class="comp-title">${replaceIcons(k)}</div>
         <div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div>
       </div>`).join("");
     $("compendiumList").innerHTML = allCompendiumHTML;
@@ -1733,6 +1804,20 @@ function bmgCanAddModel(model) {
       }
     }
   }
+  // Взаимоисключение Rivals/Affiliation (Birds of Prey: модели с Rivals: GCPD
+  // и модели с аффилиацией GCPD не могут быть в одном отряде — в обе стороны)
+  if (factionRules.rivalsExclusion) {
+    const rx = factionRules.rivalsExclusion;
+    const modelHasRival = getRivals(model).includes(rx);
+    const modelHasAff = getFactions(model).includes(rx);
+    const crewHasRival = crew.some(m => getRivals(m).includes(rx));
+    const crewHasAff = crew.some(m => getFactions(m).includes(rx));
+    if ((modelHasRival && crewHasAff) || (modelHasAff && crewHasRival)) {
+      alert(t("rivals_exclusion_cannot_add", { faction: rx }));
+      return false;
+    }
+  }
+
     // Специальное правило для Cults: остальные модели должны иметь нужный культист-трейт
   if (currentFaction === "Cults" && BMG_BOSS && BMG_BOSS.name !== model.name) {
     let requiredTrait = null;
