@@ -1070,6 +1070,33 @@ const renderMiniCardsBuilder = debounce(() => {
     }
   }
 
+  // Скрываем модели, которые нельзя нанять из-за нехватки Rep и/или Funding —
+  // в списке остаются только реально нанимаемые по бюджету модели
+  {
+    const currentRep = getCrewTotalRep();
+    const currentFunding = getCrewUsedFunding();
+    const repLimit = BMG_REP_LIMIT;
+    const fundingLimit = bmgFundingLimit();
+    filteredModels = filteredModels.filter(m => {
+      const repIfAdded = currentRep + (m.rep || 0);
+      const fundingIfAdded = currentFunding + getEffectiveModelFunding(m);
+      return repIfAdded <= repLimit && fundingIfAdded <= fundingLimit;
+    });
+  }
+
+  // Скрываем "чистых" Free Agent (единственный доступный ранг — Free Agent), если лимит слотов исчерпан
+  {
+    const faLimit = 1 + bmgExtraSlots() + (modifiers.extraFreeAgents || 0);
+    const faCount = bmgRankCount("Free Agent");
+    if (faCount >= faLimit) {
+      filteredModels = filteredModels.filter(m => {
+        const ranks = getRanks(m);
+        const isFreeAgentOnly = ranks.length === 1 && ranks[0] === "Free Agent";
+        return !isFreeAgentOnly;
+      });
+    }
+  }
+
   // Сортировка: сначала по наивысшему (минимальному по номеру) рангу, затем по имени алфавитно
   sortModelsByRank(filteredModels);
 
