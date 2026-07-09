@@ -171,7 +171,7 @@ const translations = {
     horde_limit_exceeded: "Превышен лимит для Horde",
     hates_cannot_add: "Нельзя добавить: Hates ({hated})",
     avert_cannot_add: "Нельзя добавить: Aversion ({averted})",
-    required_cannot_add: "Требуется: Required ({required})",
+    required_cannot_add: "Нельзя добавить: Required ({required})",
     requires_batman_who_laughs: "Требует The Batman Who Laughs в отряде",
     requires_idol: "Требует модель с Alias: Zur-En-Arrh Batman в отряде",
     requires_goliath: "Требует модель Damian Wayne в отряде",
@@ -193,7 +193,10 @@ const translations = {
     model_requires_other: "Модель {model} требует, чтобы в отряде была модель {required}",
     affinity_requires_model: "Модель {model} требует, чтобы в отряде была модель {target} (Affinity)",
     expendable_penguin_requires_trait: "Модель {model} может быть нанята только если в отряде есть модель с трейтом Penguin Caller или Hidden Penguins",
-    william_cobb_restrict_free_agents: "Если William Cobb в отряде, Free Agent модели должны быть с аффилиацией Bane или Unknown"
+    william_cobb_restrict_free_agents: "Если William Cobb в отряде, Free Agent модели должны быть с аффилиацией Bane или Unknown",
+    rank_label: "Ранг",
+    leader_or_sidekick: "Leader или Sidekick",
+    equipment_insufficient_funds: "Недостаточно Funding для этого equipment!"
   },
   en: {
     cards: "CARDS",
@@ -241,7 +244,7 @@ const translations = {
     horde_limit_exceeded: "Horde limit exceeded",
     hates_cannot_add: "Cannot add: Hates ({hated})",
     avert_cannot_add: "Cannot add: Aversion ({averted})",
-    required_cannot_add: "Required: Required ({required})",
+    required_cannot_add: "Cannot add: Required ({required})",
     requires_batman_who_laughs: "Requires The Batman Who Laughs model in the crew",
     requires_idol: "Requires a model with Alias: Zur-En-Arrh Batman in the crew",
     requires_goliath: "Requires Damian Wayne model in the crew",
@@ -263,7 +266,10 @@ const translations = {
     model_requires_other: "Model {model} requires {required} model in the crew",
     affinity_requires_model: "Model {model} requires {target} model in the crew (Affinity)",
     expendable_penguin_requires_trait: "Model {model} can only be recruited if the crew includes a model with Penguin Caller or Hidden Penguins trait",
-    william_cobb_restrict_free_agents: "If William Cobb is in the crew, Free Agent models must have Bane or Unknown affiliation"
+    william_cobb_restrict_free_agents: "If William Cobb is in the crew, Free Agent models must have Bane or Unknown affiliation",
+    rank_label: "Rank",
+    leader_or_sidekick: "Leader or Sidekick",
+    equipment_insufficient_funds: "Insufficient Funding for this equipment!"
   }
 };
 
@@ -760,7 +766,7 @@ function showRankSelectionModal(model, ranks) {
   overlay.innerHTML = `
     <div class="rank-select-content">
       <div class="rank-select-header">
-        Выберите ранг для <strong>${model.name}</strong>
+        <span>${t('rank_label')}: <strong>${model.name}</strong></span>
         <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
       </div>
       <div class="rank-select-buttons">
@@ -1431,14 +1437,14 @@ function showTraitPopup(name, desc) {
   
   // Создаём overlay (как в showRankSelectionModal)
   const overlay = document.createElement("div");
-  overlay.className = "rank-select-modal"; // Используем существующий класс для стиля
+  overlay.className = "trait-popup";
   overlay.innerHTML = `
-    <div class="rank-select-content">
-      <div class="rank-select-header">
-        ${processedName}   <!-- ← теперь здесь обрабатывается {SPECIAL_ICON} -->
-        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+    <div class="trait-popup-content">
+      <div class="trait-popup-header">
+        <strong>${processedName}</strong>
+        <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
       </div>
-      <div class="rank-select-buttons" style="padding: 24px 20px; font-size: 16px; line-height: 1.8; color: #eee;">
+      <div class="trait-popup-body">
         ${processedDesc}
       </div>
     </div>
@@ -1624,7 +1630,7 @@ function bmgCanAddModel(model) {
   if (!BMG_BOSS) {
     const validBossRanks = factionRules.mustHaveLeaderAsBoss ? ["Leader"] : ["Leader", "Sidekick"];
     if (!getRanks(model).some(r => validBossRanks.includes(r))) {
-      alert(t("leader_required", { rank: factionRules.mustHaveLeaderAsBoss ? "Leader" : "Leader или Sidekick" }));
+      alert(t("leader_required", { rank: factionRules.mustHaveLeaderAsBoss ? "Leader" : t("leader_or_sidekick") }));
       return false;
     }
   }
@@ -1776,9 +1782,11 @@ function bmgCanAddModel(model) {
         }
       }
       // Проверка Elite, Veteran, Minion
+      // ВАЖНО: параметр цикла не "t" — иначе он затеняет глобальную функцию перевода t()
+      // и alert(t("...")) внутри падает с TypeError ("t is not a function")
       let eliteExceeded = false;
-      model.traits.forEach(t => {
-        const eliteMatch = t.match(/^Elite \((.+)\)$/);
+      model.traits.forEach(modelTrait => {
+        const eliteMatch = modelTrait.match(/^Elite \((.+)\)$/);
         if (eliteMatch) {
           const type = eliteMatch[1];
           const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
@@ -1794,8 +1802,8 @@ function bmgCanAddModel(model) {
       if (eliteExceeded) return false;
 
       let veteranExceeded = false;
-      model.traits.forEach(t => {
-        const veteranMatch = t.match(/^Veteran \((.+)\)$/);
+      model.traits.forEach(modelTrait => {
+        const veteranMatch = modelTrait.match(/^Veteran \((.+)\)$/);
         if (veteranMatch) {
           const type = veteranMatch[1];
           const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Veteran \\(${type}\\)$`)))).length;
@@ -1808,8 +1816,8 @@ function bmgCanAddModel(model) {
       if (veteranExceeded) return false;
 
       let minionExceeded = false;
-      model.traits.forEach(t => {
-        const minionMatch = t.match(/^Minion \((.+)\)$/);
+      model.traits.forEach(modelTrait => {
+        const minionMatch = modelTrait.match(/^Minion \((.+)\)$/);
         if (minionMatch) {
           const x = minionMatch[1].trim();
           const parsedX = parseInt(x, 10);
@@ -1826,10 +1834,13 @@ function bmgCanAddModel(model) {
   }
 
   // НОВЫЕ ПРОВЕРКИ НА ТРЕЙТЫ
+  // ВАЖНО: параметр цикла не должен называться "t" — эта буква совпадает с именем
+  // глобальной функции перевода t(), и раньше это её затеняло, из-за чего каждый
+  // alert(t("...")) внутри цикла падал с TypeError ("t is not a function")
   let exceeded = false;
-  model.traits.forEach(t => {
+  model.traits.forEach(modelTrait => {
     // Elite (X): Проверяем с учётом Elite Boss
-    const eliteMatch = t.match(/^Elite \((.+)\)$/);
+    const eliteMatch = modelTrait.match(/^Elite \((.+)\)$/);
     if (eliteMatch) {
       const type = eliteMatch[1];
       const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
@@ -1843,7 +1854,7 @@ function bmgCanAddModel(model) {
     }
 
     // Hates (X): Нельзя добавлять если X в отряде
-    const hatesMatch = t.match(/^Hates \((.+)\)$/);
+    const hatesMatch = modelTrait.match(/^Hates \((.+)\)$/);
     if (hatesMatch) {
       const hated = hatesMatch[1];
       if (crew.some(m => m.name === hated || getFactions(m).includes(hated))) {
@@ -1853,7 +1864,7 @@ function bmgCanAddModel(model) {
     }
 
     // Aversion (X): Нельзя добавлять если X в отряде
-    const aversionMatch = t.match(/^Aversion \((.+)\)$/);
+    const aversionMatch = modelTrait.match(/^Aversion \((.+)\)$/);
     if (aversionMatch) {
       const averted = aversionMatch[1];
       if (crew.some(m => m.name === averted || getFactions(m).includes(averted))) {
@@ -1884,7 +1895,7 @@ function bmgCanAddModel(model) {
     }
 
     // Required (X): Требует X в отряде (поддержка нескольких имён через "or")
-    const requiredMatch = t.match(/^Required \((.+)\)$/);
+    const requiredMatch = modelTrait.match(/^Required \((.+)\)$/);
     if (requiredMatch) {
       const required = requiredMatch[1];
       // Разбиваем на варианты по " or " (например: "Dr. Hugo Strange or SCARECROW")
@@ -1901,13 +1912,13 @@ function bmgCanAddModel(model) {
 
     // Mercenary: "You can only recruit this model in a League of Assassins crew
     // if a model with Name: Bane is also included in the crew."
-    if (t === "Mercenary" && currentFaction === "League of Shadows" && !crew.some(m => m.name === "Bane")) {
+    if (modelTrait === "Mercenary" && currentFaction === "League of Shadows" && !crew.some(m => m.name === "Bane")) {
       alert(t("mercenary_requires_bane"));
       exceeded = true;
     }
 
     // Freed / He Freed Me: "...only be recruited if the crew also includes The Batman Who Laughs model."
-    if (t === "Freed" || t === "He Freed Me") {
+    if (modelTrait === "Freed" || modelTrait === "He Freed Me") {
       if (!crew.some(m => m.name === "The Batman Who Laughs")) {
         alert(t("requires_batman_who_laughs"));
         exceeded = true;
@@ -1915,7 +1926,7 @@ function bmgCanAddModel(model) {
     }
 
     // My Idol!: "...only be recruited if a model with the Alias: Zur-En-Arrh Batman is part of the crew."
-    if (t === "My Idol!") {
+    if (modelTrait === "My Idol!") {
       if (!crew.some(m => m.name.includes("Zur-En-Arrh") || (m.realname && m.realname.includes("Zur-En-Arrh")))) {
         alert(t("requires_idol"));
         exceeded = true;
@@ -1924,7 +1935,7 @@ function bmgCanAddModel(model) {
 
     // Meet Goliath!: "...only be recruited in a crew containing a model (Name: Damian Wayne).
     // However, this model can never be recruited to a Court of Owls crew."
-    if (t === "Meet Goliath!") {
+    if (modelTrait === "Meet Goliath!") {
       if (currentFaction === "Court of Owls") {
         alert(t("requires_goliath_not_owls"));
         exceeded = true;
@@ -1935,7 +1946,7 @@ function bmgCanAddModel(model) {
     }
 
     // The Sidekick: "...only be hired if Batman (Modern Age) is leading the crew."
-    if (t === "The Sidekick") {
+    if (modelTrait === "The Sidekick") {
       if (!BMG_BOSS || BMG_BOSS.rankUsed !== "Leader" || BMG_BOSS.name !== "Batman (Modern Age)") {
         alert(t("leader_required_for_sidekick"));
         exceeded = true;
@@ -1943,7 +1954,7 @@ function bmgCanAddModel(model) {
     }
 
     // Affinity (Model): Проверяем что модель может присоединиться
-    const affinityMatch = t.match(/^Affinity \((.+)\)$/);
+    const affinityMatch = modelTrait.match(/^Affinity \((.+)\)$/);
     if (affinityMatch) {
       const affinityTarget = affinityMatch[1];
       // Модель с Affinity может присоединиться только если в отряде есть целевая модель
@@ -1954,8 +1965,8 @@ function bmgCanAddModel(model) {
     }
 
     // Expendable Penguin X: Требует Penguin Caller или Hidden Penguins
-    if (t.startsWith("Expendable Penguin")) {
-      const hasPenguinTrait = crew.some(m => m.traits && m.traits.some(trait => 
+    if (modelTrait.startsWith("Expendable Penguin")) {
+      const hasPenguinTrait = crew.some(m => m.traits && m.traits.some(trait =>
         trait.includes("Penguin Caller") || trait.includes("Hidden Penguins")
       ));
       if (!hasPenguinTrait) {
@@ -2212,50 +2223,53 @@ function openEquipmentMenu(model, cardElement) {
 
   // Создаём модальное окно
   const overlay = document.createElement("div");
-  overlay.className = "rank-select-modal";
+  overlay.className = "equipment-modal";
 
   // Считаем доступный бюджет
   const usedFunding = getCrewUsedFunding();
   const availableFunding = bmgFundingLimit() - usedFunding;
 
+  const equipmentTitle = currentLang === 'ru' ? 'Equipment для' : 'Equipment for';
+
   overlay.innerHTML = `
-    <div class="rank-select-content">
-      <div class="rank-select-header">
-        Equipment для <strong>${model.name}</strong>
-        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+    <div class="equipment-modal-content">
+      <div class="equipment-modal-header">
+        <span>${equipmentTitle} <strong>${model.name}</strong></span>
+        <div class="equipment-modal-close" onclick="this.closest('.equipment-modal').remove()">×</div>
       </div>
-      <div style="background:#222; padding:10px; text-align:center; border-bottom:2px solid #e94560;">
-        <span style="color:#ffd700; font-weight:bold;">Доступно: $${availableFunding}</span>
-        <span style="color:#aaa; font-size:12px; margin-left:10px;">(из $${bmgFundingLimit()})</span>
+      <div class="equipment-modal-funding">
+        <span class="avail">${currentLang === 'ru' ? 'Доступно' : 'Available'}: $${availableFunding}</span>
+        <span class="total">(${currentLang === 'ru' ? 'из' : 'of'} $${bmgFundingLimit()})</span>
       </div>
-      <div class="rank-select-buttons" style="max-height: 50vh; overflow-y: auto;">
+      <div class="equipment-modal-list">
         ${availableEq.length ? availableEq.map(eq => {
           const cost = getEquipmentCost(eq);
           const isDiscounted = cost !== (eq.fundingCost || 0);
           const canAfford = availableFunding >= cost;
           const insufficientFundsText = currentLang === 'ru' ? '⚠ Недостаточно средств' : '⚠ Insufficient funds';
           const isSpecial = isCharacterOrTraitGated(eq);
-          const specialBadge = isSpecial ? '<span style="color:#ffd700; font-size:11px; margin-left:6px;">⭐ SPECIAL</span>' : '';
+          const specialBadge = isSpecial ? '<span class="equipment-item-special">⭐ SPECIAL</span>' : '';
 
           const reqCond = isSpecial ? (eq.conditions || []).find(c => isCharacterOrTraitGated({ conditions: [c] })) : null;
           const reqText = reqCond
-            ? `<br><small style="color:#ffd700;">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCond.replace('Alias: ', '').replace(' in crew', '')}</small>`
+            ? `<span class="equipment-item-req">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCond.replace('Alias: ', '').replace(' in crew', '')}</span>`
             : '';
           const priceText = isDiscounted ? `<s style="opacity:.6;">$${eq.fundingCost || 0}</s> $${cost}` : `$${cost}`;
 
           return `
-          <button class="rank-select-btn" data-eq-name="${eq.name}" ${!canAfford ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
-            ${eq.name} (${priceText}${eq.repCost ? ` +${eq.repCost} Rep` : ''})${specialBadge}
-            <small style="display:block; opacity:0.8; font-size:12px;">${replaceIcons(eq.effects.join(" • "))}</small>
-            ${!canAfford ? `<span style="color:#ff4444; font-size:11px;">${insufficientFundsText}</span>` : ''}
+          <button class="equipment-item-btn" data-eq-name="${eq.name}" ${!canAfford ? 'disabled' : ''}>
+            <span class="equipment-item-name">${eq.name}</span>
+            <span class="equipment-item-price"> (${priceText}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</span>${specialBadge}
+            <small class="equipment-item-effects">${replaceIcons(eq.effects.join(" • "))}</small>
+            ${!canAfford ? `<span class="equipment-item-warning">${insufficientFundsText}</span>` : ''}
             ${reqText}
           </button>
-        `}).join("") : `<p style='text-align:center; color:#aaa;'>${t("no_available_equipment")}</p>`}
+        `}).join("") : `<p class="equipment-modal-empty">${t("no_available_equipment")}</p>`}
       </div>
     </div>
   `;
 
-  overlay.querySelectorAll(".rank-select-btn").forEach(btn => {
+  overlay.querySelectorAll(".equipment-item-btn").forEach(btn => {
     btn.onclick = () => {
       if (btn.disabled) return;
       
@@ -2268,7 +2282,7 @@ function openEquipmentMenu(model, cardElement) {
       const usedFunding = getCrewUsedFunding();
       const availableFunding = bmgFundingLimit() - usedFunding;
       if (availableFunding < cost) {
-        alert("Недостаточно Funding для этого equipment!");
+        alert(t("equipment_insufficient_funds"));
         return;
       }
 
