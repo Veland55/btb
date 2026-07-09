@@ -8,8 +8,7 @@ let modifiers = {
   extraDuplicates: 0,
   extraElites: {},
   extraVeterans: {},
-  extraMinions: {},
-  charismaticUsed: false // Был ли уже использован слот от Charismatic
+  extraMinions: {}
 };
 let currentFaction = null; // Изменено: null по умолчанию (нет фракции)
 let allCompendiumHTML = "";
@@ -827,14 +826,17 @@ const updateCrewBar = () => {
   $("totalRep").textContent = totalRep;
   $("totalFunding").textContent = `${usedFunding} / ${bmgFundingLimit()}`;
   
-  // Обновляем индикатор Charismatic
+  // Обновляем индикатор Charismatic — пересчитываем динамически по текущему составу отряда,
+  // а не по флагу "уже потрачен" (иначе после удаления модели слот не освобождался — баг)
   const hasCharismatic = crew.some(m => m.traits && m.traits.includes("Charismatic"));
   const indicator = $("charismaticIndicator");
   const status = $("charismaticStatus");
-  
+
   if (hasCharismatic) {
     indicator.style.display = "inline";
-    if (modifiers.charismaticUsed) {
+    const totalFaSlots = 1 + bmgExtraSlots() + (modifiers.extraFreeAgents || 0);
+    const faSlotAvailable = bmgRankCount("Free Agent") < totalFaSlots;
+    if (!faSlotAvailable) {
       status.textContent = t("charismatic_used");
       status.style.color = "#ff4444";
     } else {
@@ -854,15 +856,17 @@ function calculateModifiers() {
     extraDuplicates: 0,
     extraElites: {},
     extraVeterans: {},
-    extraMinions: {},
-    // Сохраняем текущее состояние Charismatic — иначе оно сбрасывалось
-    // при каждом пересчёте модификаторов (после каждого добавления модели)
-    charismaticUsed: modifiers.charismaticUsed || false
+    extraMinions: {}
   };
 
   crew.forEach(m => {
     const isBoss = BMG_BOSS && m === BMG_BOSS;
     m.traits.forEach(t => {
+      // Charismatic: "A crew that includes this model can recruit 1 additional model
+      // with Rank Free Agent, ignoring the usual restrictions." — это просто доп. слот,
+      // пересчитываемый каждый раз заново по текущему составу отряда.
+      if (t === "Charismatic") mods.extraFreeAgents += 1;
+
       // Funding — по тексту компендиума:
       // "Business Agent": +$350, не требует Boss.
       if (t === "Business Agent") mods.extraFunding += 350;
@@ -1696,11 +1700,6 @@ function bmgCanAddModel(model) {
 
   // Проверка лимитов рангов
   if (!factionRules.ignoreStandardRankRequirements) {
-    // Проверяем, есть ли в отряде модель с Charismatic
-    const hasCharismatic = crew.some(m => m.traits && m.traits.includes("Charismatic"));
-    // Charismatic позволяет добавить одного дополнительного Free Agent
-    const canUseCharismatic = hasCharismatic && !modifiers.charismaticUsed && rank === "Free Agent";
-    
     // Стандартные проверки рангов
     if (rank === "Leader") {
       // Если уже есть Leader — нельзя добавить ещё одного
@@ -1725,13 +1724,8 @@ function bmgCanAddModel(model) {
       }
     }
     if (rank === "Free Agent" && bmgRankCount("Free Agent") >= 1 + extras + (modifiers.extraFreeAgents || 0)) {
-      // Charismatic позволяет добавить одного дополнительного Free Agent
-      if (canUseCharismatic) {
-        modifiers.charismaticUsed = true;
-      } else {
-        alert(t("fa_limit_exceeded"));
-        return false;
-      }
+      alert(t("fa_limit_exceeded"));
+      return false;
     }
     if (rank === "Vehicle" && bmgRankCount("Vehicle") >= 1 + extras + (modifiers.extraVehicles || 0)) {
       alert(t("vehicle_limit_exceeded"));
@@ -2283,8 +2277,7 @@ function resetCrew() {
     extraDuplicates: 0,
     extraElites: {},
     extraVeterans: {},
-    extraMinions: {},
-    charismaticUsed: false
+    extraMinions: {}
   };
   updateCrewBar();
   if (currentMode === 'builder') {
