@@ -136,6 +136,12 @@
     .note .note-label { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#e94560; font-weight:bold; display:block; margin-bottom:4px; }
     .example p { font-style:italic; color:#bbb; }
 
+    /* FAQ: вопрос-ответ */
+    p.faq-q { font-weight:bold; font-style:italic; color:#fff; margin:16px 0 4px !important; }
+    p.faq-q::before { content:"Q: "; color:#e94560; font-style:normal; }
+    p.faq-a { margin:0 0 12px !important; }
+    p.faq-a::before { content:"A: "; color:#ffd700; font-weight:bold; }
+
     /* Иконки из проекта */
     img.ico { display:inline-block; height:1.15em; width:auto; vertical-align:-0.2em; margin:0 1px; }
     img.ico.r { background:#fff; border-radius:50%; padding:2px; box-sizing:content-box; height:1.05em; }
@@ -304,6 +310,20 @@
       <a class="sub-link" href="#deploy-crews">Deploy Crews</a>
     </div>
     <div class="toc-group"><a href="#final-thoughts">Final Thoughts</a></div>
+    <div class="toc-group"><a href="#faq">FAQ (Aug 2022 — v01)</a>
+      <a class="sub-link" href="#faq-general">General</a>
+      <a class="sub-link" href="#faq-movement">Movement</a>
+      <a class="sub-link" href="#faq-ranged">Ranged Attacks</a>
+      <a class="sub-link" href="#faq-skill-rolls">Skill Rolls</a>
+      <a class="sub-link" href="#faq-templates">Templates</a>
+      <a class="sub-link" href="#faq-objective-cards">Objective Cards</a>
+      <a class="sub-link" href="#faq-suspect-markers">Suspect Markers</a>
+      <a class="sub-link" href="#faq-forming-crew">Forming the Crew</a>
+      <a class="sub-link" href="#faq-bonus-actions">Bonus Actions</a>
+      <a class="sub-link" href="#faq-traits">Traits</a>
+      <a class="sub-link" href="#faq-scenarios">Scenarios</a>
+      <a class="sub-link" href="#faq-factions">Factions &amp; Characters</a>
+    </div>
   </template>
 
   <div class="legend" aria-label="Обозначения">
@@ -1161,6 +1181,325 @@
       <p>The Batman Miniature Game is living, breathing game, ever-expanding and evolving with new characters, rules and gaming material. It should be remembered that character cards and special rules always take precedent over the ‘standard’ rules presented in this rulebook, never the other way around.</p>
       <p>While every effort is taken to cover every eventuality, in a game with such a wide and varied source of miniatures, characters, and effects, unexpected conflicts can occur, and changes sometimes become necessary. To this end, be sure to visit <strong>knightmodels.com</strong> regularly to find the latest <strong>Frequently Asked Questions</strong> and <strong>Errata</strong> documents, as well as the up-to-date free <strong>Compendium</strong> of special rules.</p>
       <p>With that, you are ready to fight your own battles for Gotham City. Whether you’re on the side of justice, or of villainy, we wish you the very best of luck. May your dice ever roll sixes, and the Dark Knight always answer your call…</p>
+    </article>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="chapter" id="faq" data-title="FAQ August 2022 v01">
+    <header class="chapter-head">
+      <div class="kicker">Официальный FAQ</div>
+      <h2>FAQ — August 2022 (v01)</h2>
+    </header>
+
+    <article class="rule" id="faq-general" data-title="FAQ: General">
+      <h3>General</h3>
+      <p class="faq-q">Secure the Area deployment style, is it optional?</p>
+      <p class="faq-a">No.</p>
+      <p class="faq-q">What are “free” efforts?</p>
+      <p class="faq-a">Efforts that doesn’t incur a ★, but they don’t let you Effort over your limit.</p>
+      <p class="faq-q">Who assigns their Audacity markers first?</p>
+      <p class="faq-a">The player with initiative assigns Audacity first.</p>
+      <p class="faq-q">If I hit someone for more stun damage than is required to KO, are the remainder converted to blood?</p>
+      <p class="faq-a">No. Extra blood damage is only dealt if the target of the attack was already KO before the attack was declared.</p>
+      <p class="faq-q">When splitting your dice for attacking, do you roll all dice simultaneously or can you roll against one target first? E.g. to get around Bodyguard or Protect Me! traits.</p>
+      <p class="faq-a">Simultaneous. Thus traits like Bodyguard, Protect Me!, or Protector (X) can be used.</p>
+      <p class="faq-q">Can you make a ranged attack after going through a sewer?</p>
+      <p class="faq-a">Yes, but the model counts as having moved for purposes of losing attack dice, even with bonus actions/Amphibious. A model going through a sewer always counts as having moved, regardless of whether it performed a move action before going through a sewers.</p>
+    </article>
+
+    <article class="rule" id="faq-movement" data-title="FAQ: Movement">
+      <h3>Movement</h3>
+      <p class="faq-q">If you fall off a building, do you suffer impaired movement?</p>
+      <p class="faq-a">If you choose to fall as part of your movement action you suffer impaired movement. If you fall due to other effects, e.g. being pushed by an opponent, you do not.</p>
+      <p class="faq-q">Can you keep moving after jumping/falling off a building?</p>
+      <p class="faq-a">If your current movement stat is greater than the total distance travelled, yes, but the vertical distance traveled is counted as part of your movement.</p>
+    </article>
+
+    <article class="rule" id="faq-ranged" data-title="FAQ: Ranged Attacks / Dodging">
+      <h3>Ranged Attacks</h3>
+      <p class="faq-q">Can ROF1 weapons that aren’t templates can’t lose all attack dice?</p>
+      <p class="faq-a">Yes. If you have enough negative modifiers, you can be reduced to 0 dice.</p>
+      <p class="faq-q">How does splitting dice work for ranged attacks?</p>
+      <p class="faq-a">Pool dice, assign to targets, apply modifiers, roll dice.</p>
+      <p class="faq-q">Can you block ranged attacks?</p>
+      <p class="faq-a">No.</p>
+      <p class="faq-q">How does Dodging work?</p>
+      <p class="faq-a">If you have an ability that lets you use the Dodging rule, when you’re attacked you can spend effort up to your Effort limit to subtract one ranged attack die for each effort spent.</p>
+      <p class="faq-q">With dodging, can you Effort all of a potential ranged attack’s dice away?</p>
+      <p class="faq-a">Yes (up to your effort limit).</p>
+    </article>
+
+    <article class="rule" id="faq-skill-rolls" data-title="FAQ: Skill Rolls">
+      <h3>Skill Rolls</h3>
+      <p class="faq-q">I know an effort may be made to reduce enemy Special dice when a trait compels them to make a skill roll, but does the enemy get a chance to effort dice back? Same question, but for opposed skill rolls. Do both the attacker and the defender get to make efforts?</p>
+      <p class="faq-a">No to both.</p>
+      <p class="faq-q">By spending effort, can you reduce a target’s skill roll to zero dice?</p>
+      <p class="faq-a">No. It cannot be reduced below 1 die.</p>
+      <p class="faq-q">How does effort work if a skill roll is targeting multiple enemies?</p>
+      <p class="faq-a">When a trait causes multiple enemies to make a skill roll, 1 effort removes 1 die from 1 model (not 1 die from every model affected).</p>
+    </article>
+
+    <article class="rule" id="faq-templates" data-title="FAQ: Templates / Smoke">
+      <h3>Templates</h3>
+      <p class="faq-q">How do Explosive weapons work when moving?</p>
+      <p class="faq-a">Template attacks: if you must subtract a die from the attack then change the strength die into an attack die. No matter how many dice you must subtract you cannot lose that attack dice.</p>
+      <p class="faq-q">How does cover work with Explosive templates?</p>
+      <p class="faq-a">Cover is always determined from the attacker’s point of view. So yes, you can take cover against explosive templates attacks.</p>
+      <p class="faq-q">Can I apply any Effects only if the strength die (or attack die, in case of negative modifiers) is successful?</p>
+      <p class="faq-a">Yes, provided that the attack or ability deals damage. If you are using, say, a grenade that doesn’t deal damage (like a Smoke Grenade), you would simply place the template and apply any Effects to models under the template.</p>
+      <p class="faq-q">With Dodging, can you effort twice to dodge a Spray template? The idea is that the first would change the strength dice to a regular hit dice then would the second effort get rid of the hit dice?</p>
+      <p class="faq-a">You can effort once to change the strength dice into an attack die, and you cannot get rid of the resulting attack die.</p>
+      <p class="faq-q">Does the Blind effect that comes from Smoke persist until the end of the round, or is it removed when exiting Smoke?</p>
+      <p class="faq-a">It is removed when the model is no longer in the smoke. Bear in mind that the Impaired Movement penalty will not retroactively be added back to the model’s movement after exiting the smoke’s area of effect.</p>
+    </article>
+
+    <article class="rule" id="faq-objective-cards" data-title="FAQ: Objective Cards">
+      <h3>Objective Cards</h3>
+      <p class="faq-q">Do you shuffle your objective deck at the end of every recount phase?</p>
+      <p class="faq-a">You must shuffle your deck at the end of the recount phase (even if you did not discard any cards).</p>
+      <p class="faq-q">Is your hand of objective cards secret?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Are the contents of your Objective deck open information?</p>
+      <p class="faq-a">Yes, but when the game starts, you cannot look anymore into the opponent’s deck.</p>
+      <p class="faq-q">What is the timing for objective cards in the recount phase?</p>
+      <p class="faq-a">All recount phase cards are played simultaneously. This means that, for example, you could not score Stick to the plan as a result of your opponent removing their suspects with a card like flanking. The board state at the start of the recount phase is used for all objectives. Cards drawn as a result of scoring in this manner cannot be scored in this recount phase.</p>
+      <p class="faq-q">If you have an objective that has a countdown per activation, like Joker’s teeth, what happens if you roll a number higher than the model activations left in the current round?</p>
+      <p class="faq-a">Continue counting it on the next turn. If it’s the final turn and there are not enough actions to finish the counter, the card is not scored.</p>
+      <p class="faq-q">Some objective cards ask you to nominate something. Like “Die hard” or “Aerie Two”. 1. What happens with the card? You put it in front of you so the opponent knows what is nominated and how to counteract it? 2. Does this count as you playing a card? 3. Do you draw another card after you play so you have 4 in hand and card(s) in play? 4. Can you play multiple different cards this way? (Both “Die hard” and “Aerie two”)</p>
+      <p class="faq-a">1. Yes. 2. Outside of a model’s activation, you can play as many cards as you like (as long as they have different names). 3. Yes. You always have 4 cards in hand. 4. As long as they don’t have the same name and it isn’t in a model’s activation, yes.</p>
+      <p class="faq-q">Can you score multiple copies of the same card at the same time during the Execute the Plan Phase? E.g., if a character has multiple copies of Paying Tribute in play can he score all of them from placing a single suspect?</p>
+      <p class="faq-a">For cards that score off a timer or trigger in the Execute the Plan phase (e.g. Paying Tribute) the same action/effect can only trigger 1 objective card (is the same with cards like Pretty Birds played as a <img class="ico r" src="img/BIRDS_OF_PREY.png" alt="Birds of Prey"> icon). A different thing happens with cards with a timer like Bite the Dust!, if the conditions triggers for both cards at the same time (in the example, both Explosive Teeth markers inflict damage to a model), both cards are scored.</p>
+      <p class="faq-q">For 0 cost resources, do you have to actually use the resource to play the card?</p>
+      <p class="faq-a">No matter the resource cost, you must complete the text on the card, you cannot play it for no effect.</p>
+      <p class="faq-q">Enemy activates Grapple Gun, can I play a card between that and them moving? Such as the resource of the Deathmatch card?</p>
+      <p class="faq-a">Cards can be played between actions (can only Interrupt an action if the card says that directly).</p>
+      <p class="faq-q">Can you play Die Hard on a model which is not currently on the table? (ie a plant that has not yet been placed or Oracle if she’s been removed via her Intel Support ability)</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">If an objective says ‘Remove Suspects’ — can you remove enemies to score this?</p>
+      <p class="faq-a">You can reveal friendly or enemy suspect markers but “remove” effects can only remove your own, unless stated that the Suspect can/must be an enemy Suspect.</p>
+      <p class="faq-q">For the “They Will Know Pain” objective card, the condition says: “Inflict at least 6 damage (of any type) with a single Melee Attack.” Let’s use a Willpower 5, Endurance 5 model as an example. This model would only have 5 stun markers on it when knocked out. Can I feasibly inflict 6 stun or 6 blood damage to this model?</p>
+      <p class="faq-a">Yes. ★ and ♦ markers above a model’s limit are discarded, but they still count as having been inflicted.</p>
+      <p class="faq-q">How works the Lord of the Pits and I’m The Surgeon objective cards?</p>
+      <p class="faq-a">Both are attacks that counts as the Tactical action of the model during its activation, and you cannot declare any effort during these Attacks, unless the free ones.</p>
+    </article>
+
+    <article class="rule" id="faq-suspect-markers" data-title="FAQ: Suspect Markers">
+      <h3>Suspect Markers</h3>
+      <p class="faq-q">Can a model end a move/place on Suspect markers?</p>
+      <p class="faq-a">A model can finish your move on top of Suspect markers (and/or other markers). If it does, any model in contact with that model is also considered to be in contact with the marker.</p>
+      <p class="faq-q">What’s the difference between Reveal and Remove for an Objective card?</p>
+      <p class="faq-a">Reveal can be performed on any Suspect markers, enemy or friendly, requires an action. Remove is a game effect to take away a suspect marker, not requiring an action, can only remove friendly suspect markers unless the card explicitly says otherwise.</p>
+      <p class="faq-q">And is there a difference when cards say to Remove compared to traits?</p>
+      <p class="faq-a">When a card says remove that’s only friendly, if a trait does not specify its any.</p>
+      <p class="faq-q">Can you place a Suspect under a model?</p>
+      <p class="faq-a">No. Suspects must be placed in base contact with the model placing them (unless other traits or rules dictate otherwise).</p>
+    </article>
+
+    <article class="rule" id="faq-forming-crew" data-title="FAQ: Forming the Crew">
+      <h3>Forming the Crew</h3>
+      <p class="faq-q">Can you recruit more than one model with the name “Unknown”?</p>
+      <p class="faq-a">As long as they don’t have the same alias, yes.</p>
+      <p class="faq-q">Can models in teams take upgrades (e.g., Bat-pod, Horse, etc. in Bat Family)</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">If my crew has a character that has more than one objective card related to them (like Batman (Frank Miller) with Back to Arkham and I’m the Surgeon) can I include all of them?</p>
+      <p class="faq-a">Yes, as long as the rank on the card matches the model’s rank. Bear in mind that if an objective card requires a specific model, other models with that name may not be able to take that objective. For example, Batman (Frank Miller) can take Back to Arkham (requiring Bruce Wayne) and I’m the Surgeon (requiring Batman (Frank Miller)), but other versions of Batman cannot take I’m the Surgeon because they are not Batman (Frank Miller).</p>
+    </article>
+
+    <article class="rule" id="faq-bonus-actions" data-title="FAQ: Bonus Actions / Sewers">
+      <h3>Bonus Actions</h3>
+      <p class="faq-q">Is there a difference between the words ‘free’, ‘bonus’, and ‘extra’ when it comes to actions?</p>
+      <p class="faq-a">No. They all mean the same thing.</p>
+      <p class="faq-q">Can a model perform more than one action of the same type in a turn?</p>
+      <p class="faq-a">If it has those actions.</p>
+      <p class="faq-q">Does Handyman + Inspire stack? I.e., two bonus manipulate actions.</p>
+      <p class="faq-a">Unless stated otherwise, yes.</p>
+      <p class="faq-q">Can you manipulate, then move, then manipulate again if you have one or more free manipulate actions?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Can I use a Sewer more than once in the same activation? (E.g., with Inspire and Handyman)</p>
+      <p class="faq-a">No. A model can only use (enter and exit) any sewers once per activation. In addition, a sewer marker counts as being used when a model enters the sewers via that marker, and when a model exits the sewers via that marker.</p>
+    </article>
+    <article class="rule" id="faq-traits" data-title="FAQ: Traits">
+      <h3>Traits</h3>
+      <p class="faq-q">What happens if your Crew Boss have the Intel Support trait, and it is removed from the game area via its Intel Support rule? What happens to the <img class="ico r" src="img/ico/CROWN_ICON.png" alt="Crown"> marker?</p>
+      <p class="faq-a">The Intel Support model is not removed as Casualty as a result of Suspect removal, so it remains the Crew Boss. However, it is not in the gaming area so it does not provide Inspire and similar rules.</p>
+      <p class="faq-q">Is a model considered friendly to itself for the purpose of traits?</p>
+      <p class="faq-a">Yes, a model is always within range of itself.</p>
+      <p class="faq-q">Can you take both of Harley’s hyenas, Bud and Lou, without violating the Affinity trait in a Joker crew? Or not because you treat them as free agents?</p>
+      <p class="faq-a">Yes. Treating a model as a free agent via the Affinity trait is optional, and so you can choose to not treat them as free agents (and instead treat them as their actual rank). Additionally, they are already <img class="ico r" src="img/ico/RANK_HENCHMAN_ICON.png" alt="Henchman"> in the Joker crew.</p>
+      <p class="faq-q">If Commissioner Gordon and Batman are taken in the same crew (via Affinity), can Commissioner Gordon be the boss?</p>
+      <p class="faq-a">No. At the time you hire Gordon via Affinity: Batman, you have already designated Batman as your boss.</p>
+      <p class="faq-q">When attacking a model with the Bat-Armor trait, can a model split attacks to use the strength die against a different target?</p>
+      <p class="faq-a">No. You lose the strength die if you target a model with Bat-Armor (a version of it that removes the attack die) with any attack.</p>
+      <p class="faq-q">When attacked by an attack with the Devastating trait, does Bat-Armor Mk I cancel both strength dice or only one?</p>
+      <p class="faq-a">You cannot roll any strength dice against Bat-Armor Mk I.</p>
+      <p class="faq-q">When someone fires a template against Batman with Bat-Armor Mk I, do you still roll the strength die against him?</p>
+      <p class="faq-a">No. The template attack’s strength die would be replaced with an attack dice.</p>
+      <p class="faq-q">How does Martial Expert or Brutal work against models with Bat-Armor Mk II, do 4s and 5s still count as crits?</p>
+      <p class="faq-a">Mk II stops everything <strong>but</strong> 6s. 4s and 5s do nothing against Mk II, even with Martial Expert or Brutal.</p>
+      <p class="faq-q">Can a model with Climbing Claws be deployed on a wall during setup?</p>
+      <p class="faq-a">No.</p>
+      <p class="faq-q">Do hits on the strength die count as successful attack rolls for the purpose of Combo?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">In the Counter Attack trait, what does “preferred melee weapon” mean?</p>
+      <p class="faq-a">You choose with what melee weapon (if that model has more than one) when you use the Counter Attack trait.</p>
+      <p class="faq-q">Can you defend against hits from Counter Attack?</p>
+      <p class="faq-a">No.</p>
+      <p class="faq-q">Can you use Counter Attack when attacked by a model with Reach while not in base contact?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Can Desensitized models continue to Effort if the ★ would be converted into a ♦, even though that wouldn’t make them KO?</p>
+      <p class="faq-a">No.</p>
+      <p class="faq-q">Does Exploit the Weakness work if the target is not within 8”?</p>
+      <p class="faq-a">Yes, only the attacking model has to be within 8”.</p>
+      <p class="faq-q">How exactly does Greed work?</p>
+      <p class="faq-a">Greed means that during a Greedy model’s activation, if it deals damage or causes a model to become a casualty, and you would normally use this to contribute towards an objective, do not contribute this damage or KO/casualty towards that objective. For example, a model with the Greed trait cannot score e.g. Dirty Job, Catch a Bullet, They Must Know Pain, and so on. And a KO/casualty caused by a model with the Greed trait will not add a ♦ marker on the Psychopaths objective.</p>
+      <p class="faq-q">Can smoke grenades be thrown beyond their effective range? They automatically hit, so would there be any penalty?</p>
+      <p class="faq-a">No. See compendium entry on template weapons. “....place the template completely within the Effective range...”</p>
+      <p class="faq-q">Can the Hacking trait be used to move sewers and lampposts?</p>
+      <p class="faq-a">Yes, because they are markers.</p>
+      <p class="faq-q">Are the extra resource points from the traits Hidden Plans and The Professional just for the round or do they persist?</p>
+      <p class="faq-a">Just for the round.</p>
+      <p class="faq-q">Can you do both attack and manipulate actions with a model Hypnotized model? I.e., while resolving the effect of one failed Willpower roll due to the Hypnotize effect.</p>
+      <p class="faq-a">No. Both of them are tactical actions.</p>
+      <p class="faq-q">Do the actions of a model suffering the Hypnotize effect happen after the turn of the model that inflicts the effect, or do they interrupt the activation?</p>
+      <p class="faq-a">They interrupt the activation. After resolving the actions caused by Hypnotize, the model that caused Hypnotize resumes its activation.</p>
+      <p class="faq-q">How does Incorporeal work with Stun from Effort?</p>
+      <p class="faq-a">Making effort is not taking damage, so Incorporeal does not prevent the stun counters being assigned from taking efforts.</p>
+      <p class="faq-q">Does a Boss inspire themselves, if able?</p>
+      <p class="faq-a">Yes, a crew boss could inspire themselves if they have the Rank: <img class="ico r" src="img/ico/RANK_HENCHMAN_ICON.png" alt="Henchman">, for example.</p>
+      <p class="faq-q">Does a Boss that is KO’ed still grant Inspire?</p>
+      <p class="faq-a">A KO’ed Boss does not inspire.</p>
+      <p class="faq-q">Can a model perform the same action twice if he has a free action (Inspire or Handyman, for example)?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Does the Manipulative trait, to redeploy 2 models, trigger before or after the deployment of models with the Hidden trait?</p>
+      <p class="faq-a">After.</p>
+      <p class="faq-q">If you are playing a scenario where each player has two deployment zones, can Manipulative trait be used to redeploy friendly models into a different deployment zone than where they were?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Does a trait that interacts directly with attack dice (like Master Marksman) affect the strength die?</p>
+      <p class="faq-a">No, because it is not an attack die, even if it is part of the attack roll.</p>
+      <p class="faq-q">Can you target the same model twice with a single action of Modified Pheromones?</p>
+      <p class="faq-a">No.</p>
+      <p class="faq-q">Can a model using One Shot Gun shoot a target outside of 8”, losing a die from the attack?</p>
+      <p class="faq-a">No, because is a trait that has a maximum distance indicated on it.</p>
+      <p class="faq-q">Can you use Order to have a model with the Stupid trait place a suspect marker?</p>
+      <p class="faq-a">Yes, that model is not performing a Manipulate action.</p>
+      <p class="faq-q">When a trait mentions “When a model within 4” scores an Objective” what does that means exactly?</p>
+      <p class="faq-a">If a model’s controller scores an objective during that model’s activation, that model is considered to have scored that objective.</p>
+      <p class="faq-q">When should you place the additional sewer and streetlamp markers granted by a trait?</p>
+      <p class="faq-a">At the same time as you place the regular sewer and streetlamp markers.</p>
+      <p class="faq-q">If you have multiple characters with Scheming, can you move the same counter more than once?</p>
+      <p class="faq-a">Yes. For example, if you have a model with Scheming (3) you cannot move the same Suspect 3 times. If you have 3 models with Scheming (X), all of them can use that trait to move the same Suspect one at a time.</p>
+      <p class="faq-q">Can you move Suspects between different heights (off buildings for example)?</p>
+      <p class="faq-a">Only if you have enough movement to get the marker completely off. Markers cannot ‘fall’.</p>
+      <p class="faq-q">Does Self-Discipline protect you from goad?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Can the Survivor trait save you from being Arrested?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">The Stealth / Master of Stealth traits read that models with these traits that are under the effect of the Night Rule can only be “seen” by models within 8”/6” instead of the usual range. How exactly should this interact with ranged attacks and Blind Firing?</p>
+      <p class="faq-a">They can be shot at when they can’t be seen, but the Firing Blind penalty should be applied if outside the 8”/6” range.</p>
+      <p class="faq-q">Does Terror affect free actions? Example 1: GCPD Cop gets Terror 3 and he’s all alone with no free actions. If you activate him, he cannot perform any actions. Eg 2: Same scenario but GCPD Cop by the crew’s leader, Commissioner Gordon, so he gets a free manipulate action from Inspire, and can perform the Arrest special action for free. Additionally, this Cop has an audacity marker. There are 5 actions he can perform, 2 of which are free. Am I only allowed to perform the free actions? Or do I just pick the 2 actions I want to perform?</p>
+      <p class="faq-a">1: Correct. 2: In that case GCPD Cop has 4 actions. The Commissioner trait says that GCPD Cop CAN Arrest as a free action if he were next to Commissioner Gordon, but that is just if he decides to perform that action. It is not an additional action he gets at the beginning of his activation. GCPD Cop could “sacrifice” any of his 4 actions (he could choose not to use his free manipulate and attack instead).</p>
+      <p class="faq-q">Is 360 Strike a single pool of hits that gets blocked by all targets or you roll once and each set gets blocked individually?</p>
+      <p class="faq-a">Perform the 360 Strike roll once, and count it as a separate attack against all models affected. So, if there are 4 hits, the first model attempts to block, but any hits blocked aren’t removed from the pool for the other targets that need to attempt to block separately.</p>
+      <p class="faq-q">When a model uses the Bullet Time trait does the extra ranged attack have to be made immediately after the first or can they Ranged Attack – Move – Ranged Attack?</p>
+      <p class="faq-a">It can perform those actions in any order, as normal.</p>
+    </article>
+
+    <article class="rule" id="faq-scenarios" data-title="FAQ: Scenarios">
+      <h3>Scenarios</h3>
+      <p class="faq-q">Playing Taking Sides, can I use Secure the Perimeter as a resource to attack an enemy model even though we are on opposite sides of the barrier?</p>
+      <p class="faq-a">Yes, because that resource doesn’t require the active model to have line of sight to the target.</p>
+    </article>
+
+    <article class="rule" id="faq-factions" data-title="FAQ: Specific Factions and Characters">
+      <h3>Specific Factions and Characters</h3>
+
+      <h4>Batman</h4>
+      <p class="faq-q">When the Resource of the Get Them Off the Streets card is used to cancel another card used as a Resource, does the opponent still pay that card’s resource cost?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">When using the Secure the Perimeter card as a resource, can the target benefit from cover?</p>
+      <p class="faq-a">No.</p>
+      <p class="faq-q">When using Secure the Perimeter as a resource, does it also ignore the Protective trait?</p>
+      <p class="faq-a">Protective trait works unless the effect/rule says that ignores the Protective – which the Secure the Perimeter resource does not.</p>
+      <p class="faq-q">Can a KO’d model prevent scoring Snitch?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">With the Wait for Backup card, when you restore a model, does it come with its upgrades or effect tokens such as poison?</p>
+      <p class="faq-a">No damage, no effects but yes to upgrades, equipment, and full ammo. It counts as a new model except it starts with all the same equipment it had when the game started.</p>
+      <p class="faq-q">While using the Tonight, We Are The Law you KO a model you’re removing the blood damage of the KO model? Or off yourself?</p>
+      <p class="faq-a">Off the KO model.</p>
+      <p class="faq-q">When using the Canary Cry trait, does the Special penalty from Sonic apply during the willpower roll for this action, or only after the action is completed?</p>
+      <p class="faq-a">It applies straight away. So, targets take a -1 penalty to their Special during this action.</p>
+      <p class="faq-q">Does count if i Reveal a friendly Suspect for the Unveiling the Truth objective card?</p>
+      <p class="faq-a">No.</p>
+
+      <h4>Birds of Prey</h4>
+      <p class="faq-q">Do plants give a pass marker when they are placed?</p>
+      <p class="faq-a">No, plants are always considered to be in the gaming area for purposes of calculating pass markers and assigning audacity.</p>
+      <p class="faq-q">If I have a model with Primary Target, can I use an opponent’s suspects for placing a plant?</p>
+      <p class="faq-a">During that model’s activation, yes.</p>
+      <p class="faq-q">How do the <img class="ico r" src="img/BIRDS_OF_PREY.png" alt="Birds of Prey"> objectives work?</p>
+      <p class="faq-a">You can play any <img class="ico r" src="img/BIRDS_OF_PREY.png" alt="Birds of Prey"> as a regular objective card and if you fulfill the requirements above bold text, you score it. If at some point during the game the condition in bold is accomplish then you can play face up your <img class="ico r" src="img/BIRDS_OF_PREY.png" alt="Birds of Prey"> icon card and if you fulfill the requirements below bold text you score it. That will be the only objective card you can play during that activation. You have to discard any non-scored card played in the same way (face up because bold condition is accomplished) if you have one on the table.</p>
+      <p class="faq-q">With the Resource of the Sisters in Arms card, do you get to use traits like Master marksman?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">With the Resource of the Sisters in Arms card, can the active model use the attack/traits of a friendly KO/Casualty model? The card doesn’t specify a friendly model “in the list”, nor “in play”.</p>
+      <p class="faq-a">The other friendly model is considered the one attacking for all purposes except those specifically listed on the card. A KO model cannot attack, so cannot be chosen for Sisters in Arms. The same applies to models that are casualties, out of play, etc.</p>
+      <p class="faq-q">Can you use the resource of the In Position card on Poison Ivy to use the same special action (for example Control Pheromones) again this activation?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Can you target the same model twice with Control Pheromones in the same activation?</p>
+      <p class="faq-a">Yes, via separate Control Pheromones actions. You cannot target the same model twice with the same use of Control Pheromones.</p>
+      <p class="faq-q">Will you get a second extra special action from Scientific by using “In position” card as a resource?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">Is Oracle’s rank able to be either rank in both the Batman and Birds of Prey crews, or is it a set rank for each crew?</p>
+      <p class="faq-a">Oracle can be hired as either rank by either crew, and in-game you consider yourself having both.</p>
+      <p class="faq-q">Can Oracle be nominated for Ivy’s Protect Me ability?</p>
+      <p class="faq-a">No. Models with Intel Support cannot be targeted by attacks, and thus cannot have the attack “transferred” to them via abilities or traits like Protect Me.</p>
+      <p class="faq-q">Does Mortal Kiss need 3 hits or 3 unblocked hits?</p>
+      <p class="faq-a">Blocks cancel hits. So, you need to have 3 successful hits after blocks to activate Mortal Kiss.</p>
+
+      <h4>The Court of Owls</h4>
+      <p class="faq-q">Can the extra healing from Reanimated Owl be used while KO, and will this recover the model automatically?</p>
+      <p class="faq-a">Yes, if the model uses it to remove a ★ marker.</p>
+
+      <h4>Doom Patrol</h4>
+      <p class="faq-q">For Doom Patrol rule Losing Control, does this apply to the model who rolled only, or everyone at once the moment any model rolls a double 2?</p>
+      <p class="faq-a">Only the model who rolled the double 2.</p>
+
+      <h4>The Joker</h4>
+      <p class="faq-q">What do you do if there are fewer suspects available than the number rolled when playing the Showtime card?</p>
+      <p class="faq-a">If the enemy player doesn’t have enough suspects to match the die roll, move as many suspects as you are able to.</p>
+      <p class="faq-q">Does the Poison Fish marker get removed or converted to a regular suspect when this card scores?</p>
+      <p class="faq-a">No. It stays in play as a Poison Fish marker and will still cause poison if revealed. Note however that you can only score It Doesn’t Look Fresh with the Poison Fish placed when the card is played during the same round.</p>
+
+      <h4>League of Assassins</h4>
+      <p class="faq-q">With the Lazarus Pit card, if I move a model within range of the Lazarus pit that already has damage on it does the damage I have go to the Pit?</p>
+      <p class="faq-a">The Lazarus pit only receives damage markers by a model in range of the pit at the moment damage is suffered.</p>
+      <p class="faq-q">Are efforts counted as damage for the Lazarus pit?</p>
+      <p class="faq-a">Effort are never counted as damage received.</p>
+
+      <h4>Mr. Freeze</h4>
+      <p class="faq-q">Does Exposure effectively turn freezes gun into double blood for every shot after the first?</p>
+      <p class="faq-a">Yes.</p>
+      <p class="faq-q">If I use an Ice Age card on an enemy objective card, does that card still count as being in my opponent’s hand?</p>
+      <p class="faq-a">No. Your opponent must draw a new card.</p>
+      <p class="faq-q">If I remove a streetlamp using a weapon with the Cryo-Weapon trait, can I also damage a model within 2”?</p>
+      <p class="faq-a">No. To remove a streetlamp you simply have to declare an attack, not perform it. Although bear in mind that if you declare a ranged attack to remove a streetlamp, that ranged attack will still cost ammo as normal.</p>
+
+      <h4>The Penguin</h4>
+      <p class="faq-q">Can Penguin on Duck go through sewers?</p>
+      <p class="faq-a">No, because a model with an upgrade card cannot use sewers.</p>
+
+      <h4>Soldiers of Fortune</h4>
+      <p class="faq-q">If an enemy picks up Osito, is the 4” range from it still in effect from the controller’s base, or is only the controller affected?</p>
+      <p class="faq-a">If the Osito is being carried, Bane only gets his bonus against the model carrying it. The 4” bubble only applies when the Osito is not being carried.</p>
+      <p class="faq-q">For the Deathmatch card, Is the enemy model ‘with the highest reputation cost’ the highest one in their entire list or just the highest on the board when the card is played?</p>
+      <p class="faq-a">The highest one on the board when the card is played.</p>
+
+      <h4>Teen Titans</h4>
+      <p class="faq-q">How does the resource effect on Sisters in Arms card interact with Teamwork traits and Inexperienced?</p>
+      <p class="faq-a">Do not gain any benefit from Teamwork for the attack. If the other friendly model chosen has an Inexperience penalty assigned to it, that penalty will apply.</p>
+
+      <h4>Watchmen</h4>
+      <p class="faq-q">The Bubastis equipment gives Ozymandias the Claws trait. Does this force you to override Reinforced Gloves?</p>
+      <p class="faq-a">No. As with weapons, you can choose what trait is activated for each attack.</p>
     </article>
   </section>
 

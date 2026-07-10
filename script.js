@@ -1387,10 +1387,10 @@ const showFullCard = model => {
           <div class="official-stats-grid">
             <div class="stat-badge stat-big stat-yellow"><span class="stat-num">${model.stats.Willpower || "-"}</span><span class="stat-name">WILLPOWER</span></div>
             <div class="stat-badge stat-big stat-black"><span class="stat-num">${model.stats.Endurance || "-"}</span><span class="stat-name">ENDURANCE</span></div>
-            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Attack.png"><span class="stat-num">${model.stats.Attack || "-"}</span></div>
-            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Defense.png"><span class="stat-num">${model.stats.Defense || "-"}</span></div>
-            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Strength.png"><span class="stat-num">${model.stats.Strength || "-"}</span></div>
-            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/Movement.png"><span class="stat-num">${model.stats.Movement || "-"}</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Attack.png"><span class="stat-num">${model.stats.Attack || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Defense.png"><span class="stat-num">${model.stats.Defense || "-"}</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Strength.png"><span class="stat-num">${model.stats.Strength || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Movement.png"><span class="stat-num">${model.stats.Movement || "-"}</span></div>
           </div>
         </div>
       </div>
