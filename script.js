@@ -615,11 +615,8 @@ function showBuilder() {
 }
 
 function showRules() {
-  currentMode = 'rules';
-  $('mainMenu').style.display = 'none';
-  $('cardsSection').style.display = 'none';
-  $('builderSection').style.display = 'none';
-  openCompendium();
+  // Отдельная вики-страница с правилами игры (конспект рулбука)
+  window.location.href = 'rules.html';
 }
 
 function backToMenu() {

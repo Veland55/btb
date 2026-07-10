@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMG — Правила игры</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#000; color:#ddd;
+      font-family:'Segoe UI', Roboto, Arial, sans-serif;
+      font-size:15.5px; line-height:1.65;
+      min-height:100vh;
+    }
+    h1,h2,h3,h4,.oswald {
+      font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.5px; line-height:1.15;
+    }
+
+    /* ===== ТОП-БАР (как в приложении) ===== */
+    .rules-header {
+      background:linear-gradient(#111,#000); padding:15px; text-align:center;
+      border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100;
+      box-shadow:0 4px 15px rgba(0,0,0,.6);
+    }
+    .rules-header h1 { font-size:20px; color:#ffd700; letter-spacing:3px; text-shadow:0 0 20px rgba(233,69,96,.7); }
+    .rules-header .subtitle { font-size:11px; color:#888; letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+    .back-btn {
+      position:absolute; left:15px; top:50%; transform:translateY(-50%);
+      background:#e94560; color:#fff; border:none; padding:10px 18px; border-radius:30px;
+      font-family:'Oswald',sans-serif; font-weight:bold; font-size:14px; cursor:pointer;
+      box-shadow:0 4px 15px rgba(233,69,96,.5); transition:all .3s; text-decoration:none; display:inline-block;
+    }
+    .back-btn:hover { background:#ff3366; }
+    .rules-docs-buttons { display:flex; justify-content:center; gap:8px; margin-top:8px; flex-wrap:wrap; }
+    .rules-doc-btn {
+      background:#222; color:#ffd700; border:1px solid #e94560; border-radius:20px;
+      padding:4px 14px; font-size:12px; font-weight:bold; text-decoration:none; transition:all .2s;
+    }
+    .rules-doc-btn:hover { background:#e94560; color:#fff; }
+
+    /* ===== ПОИСК (как compendium-search) ===== */
+    .search-wrapper { padding:12px 15px; background:#0a0a0a; position:sticky; top:97px; z-index:90; border-bottom:2px solid #222; }
+    .rules-search {
+      display:flex; align-items:center; background:#222; border:2px solid #e94560; border-radius:50px;
+      overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,.4); max-width:720px; margin:0 auto;
+    }
+    .rules-search .search-icon { width:20px; height:20px; fill:#e94560; margin:0 14px; flex-shrink:0; pointer-events:none; }
+    .rules-search input {
+      flex:1; background:transparent; border:none; outline:none; color:#fff;
+      font-size:15px; padding:10px 0; min-width:0;
+    }
+    .rules-search .clear-search {
+      background:#e94560; color:#fff; border:none; width:32px; height:32px; border-radius:50%;
+      font-size:18px; cursor:pointer; margin-right:8px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .search-meta { text-align:center; font-size:12px; color:#888; margin-top:6px; min-height:14px; }
+    .search-meta b { color:#ffd700; }
+
+    /* ===== РАСКЛАДКА ===== */
+    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); max-width:1200px; margin:0 auto; gap:0 30px; padding:0 15px; }
+
+    /* ===== ОГЛАВЛЕНИЕ ===== */
+    .toc-panel { padding:20px 0 60px; }
+    .toc-sticky { position:sticky; top:170px; max-height:calc(100vh - 190px); overflow-y:auto; padding-right:6px; }
+    .toc-sticky::-webkit-scrollbar { width:5px; }
+    .toc-sticky::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+    .toc-group { margin-bottom:10px; }
+    .toc-group > a {
+      display:block; padding:5px 10px;
+      font-family:'Oswald',sans-serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase;
+      color:#ffd700; text-decoration:none;
+    }
+    .toc a.sub-link {
+      display:block; padding:3px 10px 3px 22px; font-size:12.5px; color:#999; text-decoration:none;
+      border-left:3px solid transparent;
+    }
+    .toc a:hover { color:#e94560; }
+    .toc a.active { color:#fff; border-left-color:#e94560; background:#141414; }
+    .toc a.nav-hidden { display:none; }
+    details.toc-mobile { display:none; }
+
+    /* ===== КОНТЕНТ ===== */
+    main { padding:10px 0 100px; min-width:0; }
+
+    .legend {
+      display:flex; flex-wrap:wrap; gap:8px 22px; align-items:center;
+      background:#141414; border:2px solid #e94560; border-radius:14px;
+      padding:12px 18px; margin:20px 0 0; font-size:13.5px;
+    }
+    .legend span { display:flex; align-items:center; gap:7px; color:#ccc; }
+
+    .chapter { margin-top:50px; }
+    .chapter-head { border-bottom:3px solid #e94560; padding-bottom:8px; }
+    .chapter-head .kicker { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#e94560; font-weight:bold; margin-bottom:4px; }
+    .chapter-head h2 { font-size:32px; color:#ffd700; }
+    .chapter-lede { font-size:17px; font-style:italic; color:#bbb; margin:14px 0 0; }
+
+    article.rule { padding:24px 0 8px; border-bottom:1px solid #222; }
+    article.rule:last-child { border-bottom:none; }
+    article.rule h3 { font-size:21px; color:#fff; margin-bottom:10px; }
+    article.rule h4 { font-size:15.5px; color:#e94560; margin:18px 0 6px; letter-spacing:1px; }
+    article.rule p { margin:0 0 12px; max-width:74ch; }
+    article.rule ul, article.rule ol { margin:0 0 12px; padding-left:24px; max-width:70ch; }
+    article.rule li { margin-bottom:7px; }
+    strong { color:#fff; }
+    em { color:#ccc; }
+
+    /* Врезки-боксы как в рулбуке */
+    .boxed {
+      background:#141414; border:2px solid #e94560; border-radius:16px;
+      box-shadow:0 6px 20px rgba(0,0,0,.5);
+      padding:18px 22px 12px; margin:18px 0 20px;
+    }
+    .boxed .box-title {
+      font-family:'Oswald',sans-serif; text-transform:uppercase; font-weight:700;
+      font-size:18px; color:#ffd700; text-align:center; margin-bottom:4px;
+    }
+    .boxed .box-divider { width:60px; height:3px; background:#e94560; border:none; margin:6px auto 14px; }
+    .boxed p { margin:0 0 12px; max-width:74ch; }
+
+    /* Профиль оружия — тёмная полоса как на карточках */
+    .statline {
+      display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+      background:#000; border:1px solid #333; border-radius:8px;
+      padding:8px 14px; margin:12px 0 14px; font-size:13px;
+    }
+    .statline .w-name { font-family:'Oswald',sans-serif; text-transform:uppercase; font-weight:700; font-size:14px; color:#ffd700; letter-spacing:1px; }
+    .statline .w-tags { margin-left:auto; text-transform:uppercase; letter-spacing:1px; font-size:11.5px; color:#aaa; }
+
+    .note {
+      border-left:3px solid #e94560; background:#141414; border-radius:0 10px 10px 0;
+      padding:10px 16px; margin:12px 0 14px; font-size:14.5px; max-width:74ch;
+    }
+    .note p { margin:0 0 8px; }
+    .note p:last-child { margin-bottom:0; }
+    .note .note-label { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#e94560; font-weight:bold; display:block; margin-bottom:4px; }
+    .example p { font-style:italic; color:#bbb; }
+
+    /* Иконки из проекта */
+    img.ico { display:inline-block; height:1.15em; width:auto; vertical-align:-0.2em; margin:0 1px; }
+    img.ico.r { background:#fff; border-radius:50%; padding:2px; box-sizing:content-box; height:1.05em; }
+    .legend img.ico, .legend img.ico.r { height:20px; }
+
+    mark { background:#ffd700; color:#000; padding:0 1px; border-radius:2px; }
+
+    .no-results { display:none; margin:60px 0; text-align:center; color:#888; font-size:15px; }
+    body.searching .chapter.chapter-hidden { display:none; }
+    body.searching article.rule.rule-hidden { display:none; }
+    body.searching .chapter-lede.rule-hidden { display:none; }
+
+    footer.colophon { margin-top:60px; padding-top:14px; border-top:1px solid #222; font-size:11.5px; color:#666; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns:1fr; padding:0 12px; }
+      .toc-panel { display:none; }
+      details.toc-mobile { display:block; margin:15px 0 0; background:#141414; border:2px solid #e94560; border-radius:14px; overflow:hidden; }
+      details.toc-mobile summary {
+        list-style:none; cursor:pointer; padding:12px 18px;
+        font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:2px; font-weight:700; color:#ffd700; font-size:14px;
+      }
+      details.toc-mobile summary::-webkit-details-marker { display:none; }
+      details.toc-mobile .toc { padding:0 8px 14px; }
+      details.toc-mobile .toc a.sub-link { padding:6px 10px 6px 22px; font-size:14px; }
+      details.toc-mobile .toc-group > a { padding:8px 10px; font-size:14px; }
+
+      /* Шапка: кнопка НАЗАД в потоке, заголовок рядом — ничего не наезжает */
+      .rules-header { position:static; padding:10px 12px 12px; }
+      .header-main { display:flex; align-items:center; gap:12px; text-align:left; }
+      .back-btn { position:static; transform:none; flex-shrink:0; padding:8px 14px; font-size:13px; }
+      .header-titles { min-width:0; }
+      .rules-header h1 { font-size:16px; letter-spacing:1.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .rules-header .subtitle { font-size:9.5px; letter-spacing:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .rules-docs-buttons { justify-content:flex-start; margin-top:10px; }
+      .rules-doc-btn { padding:5px 12px; font-size:11.5px; }
+
+      /* Поиск прилипает к верху экрана */
+      .search-wrapper { position:sticky; top:0; padding:10px 12px; }
+      .rules-search input { font-size:16px; } /* iOS: не зумит поле при фокусе */
+
+      .legend { gap:8px 14px; padding:10px 14px; font-size:12.5px; }
+      .legend img.ico, .legend img.ico.r { height:16px; }
+
+      .chapter { margin-top:36px; }
+      .chapter-head h2 { font-size:24px; }
+      .chapter-lede { font-size:15.5px; }
+      article.rule { padding:20px 0 6px; }
+      article.rule h3 { font-size:19px; }
+      body { font-size:15px; }
+      .boxed { padding:14px 14px 8px; }
+      .note { padding:9px 12px; }
+      .statline { gap:10px; padding:8px 10px; }
+      .statline .w-tags { margin-left:0; width:100%; }
+      footer.colophon { padding-bottom:20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rules-header">
+    <div class="header-main">
+      <a href="index.html" class="back-btn">НАЗАД</a>
+      <div class="header-titles">
+        <h1>ПРАВИЛА ИГРЫ</h1>
+        <div class="subtitle">Batman Miniature Game — Core Rulebook</div>
+      </div>
+    </div>
+    <div class="rules-docs-buttons">
+      <a href="https://app.knightmodels.com/files//rule-document-rulebook-1701448204.pdf" target="_blank" class="rules-doc-btn">Rulebook PDF</a>
+      <a href="https://app.knightmodels.com/files//rule-document-faqs-1701683889.pdf" target="_blank" class="rules-doc-btn">FAQs</a>
+      <a href="https://app.knightmodels.com/files//rule-document-batmatch-1700369985.pdf" target="_blank" class="rules-doc-btn">Batmatch</a>
+    </div>
+  </div>
+
+  <div class="search-wrapper">
+    <div class="rules-search">
+      <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="rulesSearch" placeholder="Поиск по правилам (например: cover, KO, effort)..." autocomplete="off">
+      <button class="clear-search" id="clearSearch">×</button>
+    </div>
+    <div class="search-meta" id="searchMeta"></div>
+  </div>
+
+  <div class="layout">
+
+  <aside class="toc-panel">
+    <div class="toc-sticky">
+      <nav class="toc" id="tocDesktop" aria-label="Оглавление"></nav>
+    </div>
+  </aside>
+
+  <main>
+
+  <details class="toc-mobile">
+    <summary>☰ Оглавление</summary>
+    <nav class="toc" id="tocMobile" aria-label="Оглавление"></nav>
+  </details>
+
+  <!-- Шаблон оглавления (клонируется в десктопную и мобильную панели) -->
+  <template id="tocTemplate">
+    <div class="toc-group"><a href="#introduction">Introduction</a>
+      <a class="sub-link" href="#why-so-serious">Why So Serious?</a>
+    </div>
+    <div class="toc-group"><a href="#the-first-steps">The First Steps</a>
+      <a class="sub-link" href="#what-youll-need">What You’ll Need</a>
+      <a class="sub-link" href="#the-models">The Models</a>
+      <a class="sub-link" href="#the-gaming-area">The Gaming Area</a>
+      <a class="sub-link" href="#markers-and-counters">Markers and Counters</a>
+      <a class="sub-link" href="#measures">Measures</a>
+      <a class="sub-link" href="#dice">Dice</a>
+      <a class="sub-link" href="#randomizing">Randomizing</a>
+    </div>
+    <div class="toc-group"><a href="#character-cards">Character Cards</a>
+      <a class="sub-link" href="#card-elements">Card Elements (1–10)</a>
+      <a class="sub-link" href="#basic-skills">Basic Skills (11–16)</a>
+    </div>
+    <div class="toc-group"><a href="#other-basic-rules">Other Basic Rules</a>
+      <a class="sub-link" href="#line-of-sight">Line of Sight</a>
+      <a class="sub-link" href="#the-night">The Night</a>
+      <a class="sub-link" href="#contact">Contact</a>
+      <a class="sub-link" href="#skill-rolls">Skill Rolls</a>
+    </div>
+    <div class="toc-group"><a href="#the-game-rules">The Game Rules</a>
+      <a class="sub-link" href="#sequence-of-play">Sequence of Play</a>
+      <a class="sub-link" href="#take-the-lead">Take the Lead</a>
+      <a class="sub-link" href="#raise-the-plan">Raise the Plan</a>
+      <a class="sub-link" href="#execute-the-plan">Execute the Plan</a>
+      <a class="sub-link" href="#passing-on-activation">Passing on Activation</a>
+      <a class="sub-link" href="#recount">Recount</a>
+    </div>
+    <div class="toc-group"><a href="#actions">Actions</a>
+      <a class="sub-link" href="#movement-action">Movement Action</a>
+      <a class="sub-link" href="#impaired-movement">Impaired Movement</a>
+      <a class="sub-link" href="#terrain">Terrain &amp; Obstacles</a>
+      <a class="sub-link" href="#jumping">Jumping</a>
+      <a class="sub-link" href="#climbing">Climbing</a>
+      <a class="sub-link" href="#falling">Falling</a>
+      <a class="sub-link" href="#stand-up">Stand Up</a>
+    </div>
+    <div class="toc-group"><a href="#tactical-actions">Tactical Actions</a>
+      <a class="sub-link" href="#attack-actions">Attack Actions</a>
+      <a class="sub-link" href="#melee-attack">Melee Attack</a>
+      <a class="sub-link" href="#melee-weapons">Melee Weapons</a>
+      <a class="sub-link" href="#effort">Effort</a>
+      <a class="sub-link" href="#ranged-attack">Ranged Attack</a>
+      <a class="sub-link" href="#ranged-attack-modifiers">Ranged Attack Modifiers</a>
+      <a class="sub-link" href="#strength-dice">Strength Dice</a>
+      <a class="sub-link" href="#critical-hits">Critical Hits</a>
+      <a class="sub-link" href="#knocked-out">Knocked Out (KO)</a>
+      <a class="sub-link" href="#damage">Damage</a>
+      <a class="sub-link" href="#manipulate-actions">Manipulate Actions</a>
+    </div>
+    <div class="toc-group"><a href="#special-actions">Special Actions &amp; Recovery</a>
+      <a class="sub-link" href="#special-actions-rule">Special Actions</a>
+      <a class="sub-link" href="#extra-actions">Extra Actions</a>
+      <a class="sub-link" href="#recovery">Recovery</a>
+    </div>
+    <div class="toc-group"><a href="#the-road-to-victory">The Road to Victory</a>
+      <a class="sub-link" href="#objective-cards">Objective Cards</a>
+      <a class="sub-link" href="#objective-card-elements">Elements of an Objective Card</a>
+      <a class="sub-link" href="#using-objective-cards">Using Objective Cards</a>
+      <a class="sub-link" href="#end-game">End Game and Victory Points</a>
+    </div>
+    <div class="toc-group"><a href="#forming-the-crew">Forming the Crew</a>
+      <a class="sub-link" href="#reputation-limit">Reputation Limit</a>
+      <a class="sub-link" href="#boss-and-affiliation">The Boss and Affiliation</a>
+      <a class="sub-link" href="#rank">Rank</a>
+      <a class="sub-link" href="#equipment-and-funding">Equipment and Funding ($)</a>
+      <a class="sub-link" href="#forming-objective-decks">Forming Objective Decks</a>
+    </div>
+    <div class="toc-group"><a href="#prepare-the-game">Prepare the Game</a>
+      <a class="sub-link" href="#game-board-and-scenery">Game Board and Scenery</a>
+      <a class="sub-link" href="#urban-furniture">Urban Furniture</a>
+      <a class="sub-link" href="#deployment-zones">Deployment Zones</a>
+      <a class="sub-link" href="#events">Events (Advanced Rule)</a>
+      <a class="sub-link" href="#draw-objective-cards">Draw Objective Cards</a>
+      <a class="sub-link" href="#deploy-crews">Deploy Crews</a>
+    </div>
+    <div class="toc-group"><a href="#final-thoughts">Final Thoughts</a></div>
+  </template>
+
+  <div class="legend" aria-label="Обозначения">
+    <span><img class="ico r" src="img/ico/STUN_ICON.png" alt="★"> Stun Damage</span>
+    <span><img class="ico r" src="img/ico/BLOOD_ICON.png" alt="♦"> Injury Damage</span>
+    <span><img class="ico r" src="img/rof.png" alt="RoF"> Rate of Fire (RoF)</span>
+    <span><img class="ico r" src="img/ammo.png" alt="Ammo"> Ammunition</span>
+    <span><img class="ico r" src="img/ico/SPECIAL_ICON.png" alt="Special"> Special Action</span>
+    <span><img class="ico r" src="img/ico/CROWN_ICON.png" alt="Crown"> Boss (Crown)</span>
+  </div>
+
+  <div id="rulesContent">
+
+  <!-- ============ INTRODUCTION ============ -->
+  <section class="chapter" id="introduction" data-title="Introduction">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Introduction</h2>
+    </header>
+    <p class="chapter-lede">Gotham City, a nightmare in stone and metal, plagued by crime and corruption since its inception, where the forces of evil and anarchy, heroism and order, battle ceaselessly for control of the night.</p>
+
+    <article class="rule" id="introduction-text" data-title="Introduction">
+      <p>In the <em>Batman Miniature Game</em>, you will form a ‘crew’ of characters, represented by finely detailed miniatures, and play through myriad scenarios where you must overcome your opponents through a combination of brains, brawn and chance. Whether you wish to save Gotham from the evil that stalks its streets, or reclaim the night with a force of lawful police officers or vigilantes, the freedom afforded by this game will let you weave your own stories on the path to victory.</p>
+      <p>Whether you’re new to tabletop gaming, or you’re a hardened veteran of Gotham’s sprawling chaos, you’ll find all the information needed to play in this rulebook. Enter the world of the Dark Knight Detective, and bring the tales of the Batman universe to life like never before.</p>
+      <p>In the <em>Batman Miniature Game</em>, <strong>you</strong> control the heroes and the villains. <strong>You</strong> choose their strategies. <strong>You</strong> decide the fate of Gotham City!</p>
+    </article>
+
+    <article class="rule" id="why-so-serious" data-title="Why So Serious?">
+      <div class="boxed">
+        <h3 class="box-title">Why So Serious?</h3>
+        <hr class="box-divider">
+        <p>No matter how much you like the <em>Batman Miniature Game</em>, how often you play, or how competitive you are, you should remember that it’s just a game, and the ultimate goal is to have fun – and that means letting your opponent have fun, too. Of course, everyone wants to win, but it’s not worth it if another person (usually a friend) has a bad time during the game.</p>
+        <p>It’s almost impossible for a set of game rules to account for every conceivable situation that may arise. Therefore, disputes over the rules should always be reasonably discussed and solved in the spirit of cooperation and sportsmanship. If no agreement can be reached, we recommend that you just keep the game flowing, and have one player rolls a die: on a result of 4+ their interpretation of the rule is right this time; on a 1–3, the opposing player is right. When the game is over, you can discuss the rule with cool heads, and work out what to do if it ever arises again. You could say this is the most important rule – that’s why we print it first!</p>
+        <p>Before diving headlong into the game rules, it’s worth spending some time establishing <strong>the basic principles</strong> of the game. Take a moment to familiarize yourself with these concepts, especially if it’s your first foray into tabletop skirmish gaming.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ THE FIRST STEPS ============ -->
+  <section class="chapter" id="the-first-steps" data-title="The First Steps">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>The First Steps</h2>
+    </header>
+
+    <article class="rule" id="what-youll-need" data-title="What You'll Need">
+      <h3>What You’ll Need</h3>
+      <p>Before you can play the <em>Batman Miniature Game</em> for the first time, you will need:</p>
+      <ul>
+        <li>A collection of Knight Models miniatures, to represent your ‘crew’ in the game.</li>
+        <li>The official <strong>Batman Miniature Game App</strong> installed on your device.</li>
+        <li>A city game board, where the action takes place.</li>
+        <li>Counters, markers and templates.</li>
+        <li>A retractable measuring tape, or a ruler marked in inches (&quot;).</li>
+        <li>Several six-sided dice (one or two dice of a different color to the rest will be very useful).</li>
+      </ul>
+    </article>
+
+    <article class="rule" id="the-models" data-title="The Models">
+      <h3>The Models</h3>
+      <p>The most important component of the game are the miniatures, or <strong>models</strong>, as they are often called throughout the rules. These represent your <strong>crew</strong> – a small group of characters belonging to a particular faction, such as the Joker’s clown henchmen, or the Gotham City Police Department.</p>
+      <p>Knight Models produces detailed miniatures representing the diverse characters of the Batman universe. These miniatures come with their corresponding base.</p>
+    </article>
+
+    <article class="rule" id="the-gaming-area" data-title="The Gaming Area">
+      <h3>The Gaming Area</h3>
+      <p>The game is played across a flat surface, such as a tabletop or area of floor, with a minimum size of 36&quot; square. This area is commonly referred to as the ‘board’ or ‘game board’. The board should be populated with model scenery, representing the buildings, streets, alleys, parks and walkways of Gotham City.</p>
+      <p>When setting up a game board ready to play, you and your opponent should try to position the scenery in a mutually agreeable fashion, so that it does not confer an inherent advantage to either side. If you can’t decide, try splitting the scenery pieces between the two players as evenly as possible, and take turns placing them onto the board.</p>
+      <p>Knight Models sells a range of scenic elements for your games, from small items of street furniture to impressive centerpieces like Arkham Asylum. Many gamers also like to scratch-build their own scenery – a rewarding hobby in its own right, which means your setups are limited only by your imagination and skill.</p>
+      <p>Our advice is that you have as much scenery as possible, providing plenty of cover from enemy firepower, and providing a varied cityscape across which your models can run, jump, climb and hide.</p>
+    </article>
+
+    <article class="rule" id="markers-and-counters" data-title="Markers and Counters">
+      <h3>Markers and Counters</h3>
+      <p>Markers and counters are used to keep track of different aspects of the game, from the position of key objectives to the amount of damage accumulated by your characters. They are sometimes placed on the game board, on the App and sometimes at hand where you can remember the effect, to record various effects and conditions. A marker that is placed on the game board can never overlap another marker.</p>
+      <p>If you don’t have the special Knight Models counters to hand, you can use poker chips, coins, or even spare dice (just make sure they’re of a different type to the ones you roll during the game, to avoid confusion). In addition, Knight Models provide a range of premium quality markers, including special markers customized to specific crews, and 3D markers such as lampposts and sewer entrances.</p>
+    </article>
+
+    <article class="rule" id="measures" data-title="Measures / Measuring Distances">
+      <h3>Measures</h3>
+      <p>The movement of models around the gaming area, and the measuring of weapon ranges, require the use of a measure, marked in inches (&quot;). A retractable tape measure will be most useful for getting into the hard-to-reach areas of the gaming table, although a ruler or special <strong>measure stick</strong> will be fine for most situations.</p>
+      <h4>Measuring Distances</h4>
+      <p>Any measurement must be taken between the two closest points of the miniatures or objects involved (such as when measuring between a shooter and his target, for example). For horizontal measurements, this is usually done from the edges of the models’ bases.</p>
+      <p>When determining if something is within the measured range, remember:</p>
+      <ul>
+        <li>‘Within’ means at least part of the object/model/base lies within the measured distance.</li>
+        <li>‘Completely within’ means the entirety of the object/model lies within the measured distance.</li>
+      </ul>
+      <div class="note example">
+        <span class="note-label">Note</span>
+        <p>It’s a common mistake to measure the distance and then place the model on the far side of the tape measure. This is incorrect, as it adds the diameter of the model’s base to the distance moved. As shown in this example, when measuring movement across the ground, the outer edge of the model’s base must not move beyond the limit of the distance measured.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="dice" data-title="Dice / Reading the Dice / Modifying Dice Rolls / Rerolls / Fractions and Rounding">
+      <h3>Dice</h3>
+      <p>The outcome of many game actions is determined by the roll of one or more dice. You will need a number of six-sided dice (or ‘D6’) to play the game – the more dice you can lay your hands on the better. Try to make sure that at least one of them is a different color from the others, as this can be used to easily separate out important rolls from the rest of the batch.</p>
+      <h4>Reading the Dice</h4>
+      <p>As dice are called ‘D6’ for short, if the rules ask you to roll <strong>2D6</strong>, you will have to roll two dice, if they say <strong>3D6</strong>, you will roll three dice, etc. Sometimes, the rules will ask you to roll a <strong>D3</strong>. In this case you need to roll a regular die, and count the score of 1 or 2 as a ‘1’, 3 or 4 as a ‘2’, and 5 or 6 as a ‘3’.</p>
+      <p>You will also notice that sometimes we use expressions like 4+, 5+, etc. These are a common abbreviation for the result that you need to score when rolling a die. For example, if a model needs to score 4+, it simply means the roll will be successful on a score of 4, 5, or 6.</p>
+      <p>Please note that, unless otherwise specified, the results of multiple dice are not added together (there are, however, exceptions). For example, if you need to score a result of 4+, and you are able to roll more than one die to achieve it, one of the dice must score a 4 or more to be successful. If the results of the dice were 2 and 3, you couldn’t add them together to score a 5.</p>
+      <h4>Modifying Dice Rolls</h4>
+      <p>Sometimes you may have to ‘modify’ a dice roll, or ‘apply a modifier’. This is normally denoted in the rules as a plus or minus figure, such as +1, -2 and so on. Roll the dice and add or subtract the number to or from the score to get the final result. So, rolling D6+1 will give you a final score of between 2 and 7, for example.</p>
+      <p>Where several different modifiers are listed, they are applied in this order:</p>
+      <ol>
+        <li>Modifiers that multiply or divide a score;</li>
+        <li>Modifiers that add or subtract.</li>
+      </ol>
+      <h4>Rerolls</h4>
+      <p>In some situations, the rules allow you to ‘reroll’ your dice. This is exactly how it sounds – pick up all the dice you wish to re-roll, and roll them again. The second score always counts, even if it is worse than the first – no dice can be re-rolled more than once.</p>
+      <h4>Fractions and Rounding</h4>
+      <p>In some situations, the rules will instruct you to divide a number, usually by half. If there is a remainder, the result should be always rounded down. For example: a score of 5 needs to be divided by two. As the result would be 2.5, you will need to round it down to 2.</p>
+    </article>
+
+    <article class="rule" id="randomizing" data-title="Randomizing">
+      <h3>Randomizing</h3>
+      <p>Sometimes, you’ll be asked to randomly pick between several models, objectives, items, etc. If randomizing between two items, simply roll a D6, nominating each item odds or evens. If randomizing between three items, roll a D3 to determine which is picked. If randomizing between four items, allocate a D6 score to each item, and then roll the dice, rerolling scores of 5 and 6, and so on.</p>
+      <p>If you’re ever asked to randomize between cards (such as Objective cards in hand), simply shuffle the cards, face down, and pick the specified number without looking.</p>
+    </article>
+  </section>
+
+  <!-- ============ CHARACTER CARDS ============ -->
+  <section class="chapter" id="character-cards" data-title="Character Cards">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Character Cards</h2>
+    </header>
+
+    <article class="rule" id="card-elements" data-title="Character Card Elements: Name, Alias, Base Size, Rank, Affiliation, Rivals, Reputation, Funding, Traits, Weapons">
+      <p>All <em>Batman Miniature Game</em> models have their own unique <strong>character card</strong>, available on the official <strong>Batman Miniature Game App</strong>. This serves two purposes: It shows the profile and abilities of the model, and allows you to keep track of its actions during the game. A character card always displays the following elements:</p>
+
+      <h4>1. Name</h4>
+      <p>This is the true identity of a given character (so Batman is listed as Bruce Wayne, for example). You can’t include more than one model with the same Name in the same crew.</p>
+      <div class="note">
+        <span class="note-label">Note</span>
+        <p>The exception to the rule is when a model has Name ‘Unknown’ or ‘Classified’ (such as Joker). You may include several such characters as long as they all have a different <strong>Alias</strong> (see below).</p>
+      </div>
+
+      <h4>2. Alias</h4>
+      <p>The Character Card will include the most relevant Alias by which the character is known – so Bruce Wayne, for example, has the Alias ‘Batman’.</p>
+
+      <h4>3. Base Size</h4>
+      <p>This section indicates the size (diameter) of the base on which the model must be mounted (the correct base will be supplied with the miniature). Some models allow several options for their base size – simply choose one of the specified bases when assembling the model.</p>
+
+      <h4>4. Rank</h4>
+      <p>Every model fulfils a different role in its crew (some even act as mercenaries of sorts, which can ally with other crews). To represent this, models are assigned one of five different <strong>ranks</strong>: <strong>Leader, Sidekick, Free Agent, Vehicle,</strong> or <strong>Henchman</strong>. These distinctions are important when you create a crew because they determine the number of models of each type you can include. If a character has more than one, the owner can choose the model that he will use during the game.</p>
+      <ul style="list-style:none; padding-left:8px;">
+        <li><img class="ico r" src="img/ico/RANK_LEADER_ICON.png" alt=""> Leader</li>
+        <li><img class="ico r" src="img/ico/RANK_SIDEKICK_ICON.png" alt=""> Sidekick</li>
+        <li><img class="ico r" src="img/ico/RANK_FREEAGENT_ICON.png" alt=""> Free Agent</li>
+        <li><img class="ico r" src="img/ico/RANK_HENCHMAN_ICON.png" alt=""> Henchman</li>
+        <li><img class="ico r" src="img/ico/RANK_VEHICLE_ICON.png" alt=""> Vehicle</li>
+      </ul>
+
+      <h4>5. Affiliation</h4>
+      <p>All models are limited in which crews they are able to join, denoted by one or more Affiliation icons on the character card. All crew members must have the same Affiliation as their Boss – see <a href="#boss-and-affiliation" style="color:#e94560;">The Boss and Affiliation</a> for more on Bosses.</p>
+
+      <h4>6. Rivals</h4>
+      <p>A character’s nemeses! A character may not be included in a crew that also contains models with one of these crew icons.</p>
+
+      <h4>7. Reputation</h4>
+      <p>All games set a Reputation limit for the crews involved, and the sum of the crew members’ Reputation cannot be higher than that limit.</p>
+
+      <h4>8. Funding</h4>
+      <p>Some models are loaded out with powerful weapons and equipment, which cost a premium in your crew. We measure the value of all this gear in Dollars ($). This amount is subtracted from the crew’s <strong>Funding stash</strong> when you choose the model. See <strong>Forming the Crew</strong> for more details.</p>
+
+      <h4>9. Traits</h4>
+      <p>This section shows all of the model’s special rules (known as personal and special <strong>Traits</strong>), as well as any equipment that bestow special rules of their own.</p>
+
+      <h4>10. Weapons</h4>
+      <p>Any weapons that the model has at its disposal are listed here.</p>
+    </article>
+
+    <article class="rule" id="basic-skills" data-title="Basic Skills: Willpower, Endurance, Movement, Attacks, Strength, Defense">
+      <h3>Basic Skills</h3>
+      <p>This portion of the character card is given over to the essential characteristics, or <strong>basic skills</strong>, that each model possesses. Every skill has a numeric value attached to it. Some situations may cause these skills to increase or decrease during a game (either temporarily or permanently), but <strong>with the exception of Movement</strong>, no basic skill can ever be reduced below 1.</p>
+
+      <h4>11. Willpower</h4>
+      <p>Willpower is one of the most important characteristics, representing a model’s mental fortitude and resilience: the higher a model’s Willpower value, the more they will be able to do during the game.</p>
+      <ul>
+        <li>A model can act as long as the number of Stun Damage markers ★ it accumulates does not equal or exceed its Willpower value (then the model becomes KO).</li>
+        <li>A model can improve its chances of success by making an Effort, suffering additional ★ in exchange for extra dice. Effort cannot be made if it would make the number of accumulated ★ equal or exceed the character’s Willpower.</li>
+      </ul>
+
+      <h4>12. Endurance</h4>
+      <p>This skill represents the model’s ability to soak up damage and carry on fighting. Its value represents the maximum Injury Damage markers ♦ a model can accumulate before being removed as a Casualty.</p>
+
+      <h4>13. Movement <img class="ico r" src="img/Movement.png" alt=""></h4>
+      <p>This skill represents the model’s mobility (their ability to run, climb, dodge, etc.). The Movement value is the model’s <strong>Basic Move Distance</strong>, in inches. Unlike other skills, Movement can be reduced to 0 due to modifiers or special rules.</p>
+
+      <h4>14. Attacks <img class="ico r" src="img/Attack.png" alt=""></h4>
+      <p>This skill represents the model’s offensive ability. The higher the model’s Attack, the more times it may Strike in combat. This value also determines the minimum result that the target enemy must score in order to <strong>block</strong> the attack.</p>
+
+      <h4>15. Strength <img class="ico r" src="img/Strength.png" alt=""></h4>
+      <p>Strength is a measure of a character’s physical power. When a model performs an <strong>attack</strong>, in addition to rolling the attack dice, you must roll an extra die of a different color from the rest. This is the <strong>Strength die</strong>. If the Strength die scores a hit on the target, it cannot be blocked.</p>
+
+      <h4>16. Defense <img class="ico r" src="img/Defense.png" alt=""></h4>
+      <p>This skill represents how well the model defends itself against attacks. When a model is attacked, the enemy must score equal to or greater than the target’s Defense value to score a hit.</p>
+    </article>
+  </section>
+
+  <!-- ============ OTHER BASIC RULES ============ -->
+  <section class="chapter" id="other-basic-rules" data-title="Other Basic Rules">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Other Basic Rules</h2>
+    </header>
+
+    <article class="rule" id="line-of-sight" data-title="Line of Sight (LoS)">
+      <h3>Line of Sight</h3>
+      <p>We’re almost ready to learn the main rules of the game – but first, let’s take a look at some of the common situations that will crop up during play.</p>
+      <p>The concept of ‘line of sight’ (LoS) is very important in tabletop gaming, as it allows you to work out what your models can ‘see’ – usually their target! To see another model, you must be able <strong>to draw a straight and unobstructed line</strong> between the two models. The simplest way is to draw an imaginary line between the models using a measure, or even a laser pointer.</p>
+      <p>All models have a <strong>line of sight of 360º</strong>, which means they can see everything around them, unless otherwise specified.</p>
+      <p>Models never block line of sight – they are considered to be in motion at all times, and don’t get in the way. In addition, no decorative element of the model, such as scenic items on a model’s base, can block line of sight – treat it as though those items are not present.</p>
+      <p>When determining LoS from one model to another, we only take into account the <strong>main physical block</strong> of the character or vehicle, defined as follows:</p>
+      <ul>
+        <li><strong>Humanoid or animal</strong> models count only their head, torso and legs for the purposes of line of sight. Ignore arms, protruding weapons, capes, etc.</li>
+        <li><strong>Vehicles</strong> count only the main frame or hull for the purposes of line of sight – ignore weapons, spoilers, and other accessories.</li>
+      </ul>
+    </article>
+
+    <article class="rule" id="the-night" data-title="The Night / Lights">
+      <h3>The Night</h3>
+      <p>In the <em>Batman Miniature Game</em> it is always night time, and the visibility of your models is limited. <strong>No models are able to see more than 12&quot; in any direction</strong>. Models beyond this range are considered <strong>under the cover of the night</strong>. Of course, there are special rules that will let a model see further (or sometimes restrict their vision even more). In addition, some models are able to exploit the darkness, moving unnoticed or launching surprise attacks from the shadows.</p>
+      <h4>Lights</h4>
+      <p>There are various light sources that can be found in the game, such as lampposts, flashlights and spotlights, <strong>which illuminate an area with a 4&quot; radius immediately around them</strong> (measured from the edge of the light source marker, or the base of a model carrying a light source). If a model is partially within the area of effect of any light source, it will become totally visible to any other model that can draw a direct line of sight to it, regardless of the distance.</p>
+      <p>Light does not pass through solid objects – if there is a substantial piece of scenery between a model and the light source, it is not illuminated. Ignore <strong>small obstacles</strong> for this effect, but treat walls, buildings, billboards, large containers, etc., as blocking Light.</p>
+    </article>
+
+    <article class="rule" id="contact" data-title="Contact / Models on Higher Levels">
+      <h3>Contact</h3>
+      <p>When the bases of two models are physically touching, the models are said to be <strong>in contact</strong>. It is very important that, when models move during the game, they can move into contact with each other, but never in such a way that they overlap one another’s bases at the end of the move.</p>
+      <h4>Models on Higher Levels</h4>
+      <p>Models on different elevations of the gaming area can still be in contact with each other, as long as neither model is higher than the other’s head (the fundamental block of the model, as used for line of sight), and there is no substantial scenery between them. Simply take a top-down view of the two models – If their bases would be touching if they were on the same level, they are considered in contact.</p>
+    </article>
+
+    <article class="rule" id="skill-rolls" data-title="Skill Rolls / Opposed Skill Rolls">
+      <h3>Skill Rolls</h3>
+      <p>In order to successfully perform many actions, or to avoid certain effects, models may be required to pass a <strong>skill roll</strong>, comparing the roll against the value of the model’s basic skills.</p>
+      <p>To take a skill roll, simply roll <strong>2D6</strong>. Then, compare their combined result with the specified skill (such as Willpower, for example). <strong>If the sum of the two dice is equal to or less than the skill value, the test is passed.</strong></p>
+      <p>The most common skill rolls you’ll need to make are:</p>
+      <ul>
+        <li><strong>Willpower roll:</strong> These types of rolls are used to ignore adverse psychological effects, such as hypnotism.</li>
+        <li><strong>Endurance roll:</strong> Usually used to recover the model from the <strong>Knocked Out</strong> state (<strong>KO</strong>) or to resist special effects, such as <strong>Poison</strong>.</li>
+      </ul>
+      <div class="note">
+        <span class="note-label">Note</span>
+        <p>Some models do not have a Willpower skill. Any rule that requires such a model to take a Willpower roll is ignored.</p>
+      </div>
+      <h4>Opposed Skill Rolls</h4>
+      <p>Sometimes, when using a special ability, you will be asked to take a skill roll <strong>against the target model’s skill value</strong>. This is called an ‘opposed skill roll’. In this instance, roll the dice as before, but this time the sum of the two dice must be <strong>greater</strong> than the specified skill of the target.</p>
+    </article>
+  </section>
+
+  <!-- ============ THE GAME RULES ============ -->
+  <section class="chapter" id="the-game-rules" data-title="The Game Rules">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>The Game Rules</h2>
+    </header>
+
+    <article class="rule" id="sequence-of-play" data-title="Sequence of Play: Take the Lead, Raise the Plan, Execute the Plan, Recount">
+      <h3>Sequence of Play</h3>
+      <p>If this is your first game, you might find the rules that follow a little daunting – but don’t worry! The rules of play are presented in a logical order, so that you can get playing straight away. The more advanced rules, such as Traits and special Effects, can be found in the free rules Compendium at <strong>knightmodels.com</strong>.</p>
+      <p>Fighting in the winding streets of Gotham, the debris-strewn streets of Arkham City, or within the close confines of Arkham Asylum is chaotic, visceral and confusing. To mitigate the brutal reality of urban combat, we structure the game by breaking it down into a series of ‘rounds’, in which players take it in turns to activate, move and fight with the models in their crew.</p>
+      <p>Each round is broken down into four ‘phases’, which are always resolved in the following order:</p>
+      <ol>
+        <li><strong>TAKE THE LEAD:</strong> The players determine the order in which they will proceed during the rest of the round.</li>
+        <li><strong>RAISE THE PLAN:</strong> All the players decide in secret how and in which way their models will act, distributing activation markers between them. These markers will determine which models have the most impact in the round.</li>
+        <li><strong>EXECUTE THE PLAN:</strong> Players activate their models and resolve actions with them (move, fight, shoot, etc.). Play alternates one model at a time, starting with the player who took the lead, then moving to the opponent, and so on, until all models that can activate have done so.</li>
+        <li><strong>RECOUNT:</strong> This phase provides an opportunity for models to recover from their injuries, and for Knocked Out models to get back into the game. Ongoing effects are resolved, and victory conditions are checked – if the game does not end, the round is over and a new round begins.</li>
+      </ol>
+      <p>When all players have completed the sequence, a new round will start and the process begins again. Rounds will go on until the game ends (this happens automatically at the end of Round 4, but can happen sooner – see <a href="#end-game" style="color:#e94560;">End Game and Victory Points</a>).</p>
+    </article>
+
+    <article class="rule" id="take-the-lead" data-title="Take the Lead / Initiative">
+      <h3>Take the Lead</h3>
+      <p>At the start of each round, before doing anything else, each player must roll 1D6. The player that scores the highest chooses who has the Initiative (they don’t have to take it themselves if they don’t wish to).</p>
+      <p>If the roll is a tie, the player who lost the Initiative roll in the previous round automatically wins it here. If this is the first round of the game, continue rolling until a clear winner is established.</p>
+      <p>The chosen player is referred to throughout these rules simply as ‘the player with Initiative’.</p>
+      <p>The player with Initiative is responsible for:</p>
+      <ul>
+        <li>Performing each step first whenever players are instructed to alternate (for example, when placing scenery or markers, etc.).</li>
+        <li>Starting the activation of models in the Execute the Plan phase.</li>
+      </ul>
+    </article>
+
+    <article class="rule" id="raise-the-plan" data-title="Raise the Plan / Audacity">
+      <h3>Raise the Plan</h3>
+      <p>Now it is time to decide which of your models will have the greatest impact on the round ahead. Note that, in the next phase, all models that are able to activate will be able to perform one action: either a <strong>Movement action</strong>, a <strong>Tactical action</strong>, or a <strong>Special action</strong>. Some, however, can do more.</p>
+      <p>To do this, each player chooses 4 of their models and mark the <strong>Audacity</strong> option on they. Now they have <em>Audacity</em>. Models chosen must be eligible to activate (so they cannot be KO, for example – see <a href="#knocked-out" style="color:#e94560;">Knocked Out</a>). If you have less than four models able to activate, then mark Audacity on as many as you can.</p>
+      <p>A model with <em>Audacity</em> can perform one of each type of action when it their turn to activate in the next phase.</p>
+    </article>
+
+    <article class="rule" id="execute-the-plan" data-title="Execute the Plan / Activate a Model / Passive Skills">
+      <h3>Execute the Plan</h3>
+      <p>When all players have finished allocating their Audacity, it is time for action! Beginning with the player with Initiative, players alternate the activation of the models, choosing one at a time. Each model can be activated once per round, and all its actions must be completed before the other player activates a model. Once all models that can activate have done so, players will move on to the next phase.</p>
+      <h4>Activate a Model</h4>
+      <p>When a model is activated, it can perform one of the following actions: A <strong>Movement</strong> action, a <strong>Tactical</strong> action, or a <strong>Special</strong> action. If the model has Audacity, it may perform one of each type instead (three actions in total). These actions may be performed in any order, but an action must be completed before starting another (you cannot stop halfway through a move, shoot an enemy, and then continue moving, for example). You don’t have to perform all the available actions if you don’t wish to – in fact, you don’t have to perform any actions at all, but the models must still be activated if able.</p>
+      <p>The actions available to models are detailed in the <a href="#actions" style="color:#e94560;">Actions</a> section. Some models have additional actions available to them as a result of their special rules.</p>
+      <p>Once a model has completed its actions, its activation ends. Mark the model on the app as Activated, as a reminder that it may not activate again this round.</p>
+      <h4>Passive Skills</h4>
+      <p>Some skills of the game are passive, which means that the player does not have to declare their use during the activation of the model. They are commonly used during a rival activation, as a response to an attack, or when a special rule is activated. These skills do not usually use up a model’s actions – each skill will provide full instructions for its use.</p>
+    </article>
+
+    <article class="rule" id="passing-on-activation" data-title="Passing on Activation / Pass markers">
+      <div class="boxed">
+        <h3 class="box-title">Passing on Activation</h3>
+        <hr class="box-divider">
+        <p>As play alternates between models from different crews during a round, crews with larger numbers of models gain an advantage over crews with fewer models, as they get to act more frequently and respond better to enemy plans. To balance things out a little, each round the player with the least models in their crew gains a number of ‘passes’.</p>
+        <p>At the beginning of the Execute the Plan stage, players must work out how many <strong>Pass markers</strong> the player with the smallest crew will have. The number of passes is equal to the difference between the number of models in the largest crew, minus the number of models in the smallest (KO models, and models that are off the table for any reason, do not count for this purpose).</p>
+        <p>When one of your models <strong>that has not yet been activated</strong> becomes KO or is removed as casualty, <strong>take a Pass marker immediately</strong>.</p>
+        <p>Each time a player ‘passes’, they discard one Pass marker and defer activation of a model, instead handing the activation to the next player in the sequence. This may mean that a player ends up activating two models consecutively, as their opponent temporarily ‘gives up’ their turn. The player who passes on activation must still activate all of their models during the round – but they get the chance to hang back and see what their opponent does before being forced to act themselves.</p>
+        <p>Pass markers do not carry over to the next round. However, a player who does not use all their Pass markers gains <strong>+1 to the dice roll to Take the Lead</strong> next round for each unused Pass marker.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="recount" data-title="Recount phase sequence">
+      <h3>Recount</h3>
+      <p>During the Recount phase, follow this sequence:</p>
+      <ol>
+        <li>Activate any trait that should be used at the beginning of the Recount phase, starting with the player with Initiative, and alternating between players, until all available traits have been activated.</li>
+        <li>Discard <strong>Spent Resource</strong> cards (see <a href="#using-objective-cards" style="color:#e94560;">Using Objective Cards</a>).</li>
+        <li>Score any number of Objective cards that specify they should be reviewed at the end of the round, whose requirements have been fulfilled. However, you may not score two Objective Cards with the same name at the same time.</li>
+        <li>Perform skill rolls on models that have acquired status effects to see how they are resolved (for example, models that are affected by Poison may attempt to resist it here).</li>
+        <li>All models still in play that are not KO should now eliminate ★ damage. Models that are KO may attempt to recover (see <a href="#recovery" style="color:#e94560;">Recovery</a>).</li>
+        <li>Review the conditions to finish the game and, if these conditions are met, <strong>check the score and establish a winner</strong>. Otherwise:
+          <ol type="a">
+            <li>Untap the Activated state on the app and reset Pass markers;</li>
+            <li>Refill your pool of Resource Points so that you have 3 again.</li>
+            <li>Discard up to one Objective Card from your hand if you wish, shuffle the Objective deck, and draw cards until you have 4 cards in hand.</li>
+            <li>Now start a new round, beginning with phase 1, <strong>Take the Lead</strong>.</li>
+          </ol>
+        </li>
+      </ol>
+    </article>
+  </section>
+
+  <!-- ============ ACTIONS ============ -->
+  <section class="chapter" id="actions" data-title="Actions">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Actions</h2>
+    </header>
+    <p class="chapter-lede">In this section, we look in detail at the various actions that your models can perform during an activation.</p>
+
+    <article class="rule" id="movement-action" data-title="Movement Action / Basic Move Distance / Moving, Placing and Set">
+      <h3>Movement Action</h3>
+      <p>During its activation, a model can perform a single Movement action. Effects and special rules that make a model move are resolved in addition to this action.</p>
+      <p>All models in the game have a <strong>Basic Move Distance</strong>, which is a number of inches equal to the Movement skill value. When performing a Basic Move action, this is the maximum distance the model can move across the game board. Note that some special rules, modify this distance.</p>
+      <p>A model can move in any direction (they may even move directly up or down by jumping and climbing, see below), and it does not have to use all of its Basic Move Distance. The distance is measured from the edge of the model’s base, taking obstacles and scenery into account as you trace the model’s path. No part of the model’s base may move beyond the Basic Move Distance.</p>
+      <p>Models can pass through other models as if they weren’t there. However:</p>
+      <ul>
+        <li>A model cannot pass through a gap in scenery that is too small for their main physical block to fit through;</li>
+        <li>The model must end its move in a position where it will both fit and balance unsupported (that means if you have to support the model with tape, clips, adhesive putty, fingers or anything else not part of the game, it does not fit).</li>
+        <li>The model’s base must not overlap that of another model at the end of the move.</li>
+      </ul>
+      <div class="boxed">
+        <h3 class="box-title">Moving, Placing and Set</h3>
+        <hr class="box-divider">
+        <p>When a rule tells you to ‘place’ a model, this is not the same ‘moving’. ‘Place, represents a jump, or teleport, across the game board. The model is removed from its current position and replaced on the board within the distance indicated by the rule, ignoring intervening terrain. If any other rule or effect prevents a model from moving at all, it also prevents it from being placed. However, rules that reduce or increase the Basic Move Distance do not affect the distance a model is placed. Set term refers ti something that is not in play (Gaming Area) and is going to be placed on it.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="impaired-movement" data-title="Impaired Movement / Small Obstacles">
+      <h3>Impaired Movement</h3>
+      <p>During the game there will be times when a model’s movement may be adversely affected, such as when crossing Difficult Ground or suffering from an impeding effect. This is called Impaired Movement.</p>
+      <p><strong>A model with Impaired Movement reduces its Basic Move Distance by -4&quot;.</strong></p>
+      <p>When a model is affected by a Movement effect that impairs movement, its Basic Move Distance will be reduced by 4&quot;. Thus, a miniature whose Basic Move Distance is 10&quot; that is crossing Difficult Ground cannot advance more than 6&quot;.</p>
+      <p>All effects that prevent movement are cumulative. So, if a model has suffers Impaired Movement from two different sources, its movement will be reduced by 8&quot;, and so on, to a minimum of 0 (at which point it cannot move at all).</p>
+      <h4>Small Obstacles</h4>
+      <p>For the purposes of movement, models ignore any obstacle that is 1&quot; tall or less – these can be easily stepped over or jumped over without penalty. However, taller obstacles may need to be climbed, as described below. Similarly, narrow gaps of less than 1&quot; across or drops of less than 1&quot; deep can be moved across without Jumping.</p>
+    </article>
+
+    <article class="rule" id="terrain" data-title="Difficult Ground / Impassable Terrain">
+      <h3>Terrain &amp; Obstacles</h3>
+      <h4>Difficult Ground</h4>
+      <p>Any area of the game board that is difficult to traverse, such as piles of rubble, deep water or thick vegetation, is considered <strong>Difficult Ground</strong>. A model whose base is even partially within Difficult Ground suffers <strong>Impaired Movement</strong>.</p>
+      <p>Before starting the game, players should agree on the areas of the board that should be considered Difficult Ground.</p>
+      <h4>Impassable Terrain</h4>
+      <p>Scenery elements that are too solid, tall or dangerous to traverse are categorized as ‘impassable’. Impassable terrain cannot ordinarily be moved through – the model must find another way around. Players must decide at the start of the game whether impassable terrain can be landed upon (by a flying or teleporting character, or by grappling up with a batclaw, for instance), or whether they are off limits.</p>
+    </article>
+
+    <article class="rule" id="jumping" data-title="Jumping">
+      <h3>Jumping</h3>
+      <p>If a model’s movement is blocked by a gap of more than 1&quot; (such as the sharp drop between two rooftops), or it want to move in any direction (including vertically) it may continue its movement by Jumping. Immediately apply Impaired Movement to the model. A Movement action that includes a Jumping may ends in a position where the base will fully fit, then nothing more happens and the action ends, but if the Movement is not enough, then the model must <strong>Fall</strong>.</p>
+    </article>
+
+    <article class="rule" id="climbing" data-title="Climbing">
+      <h3>Climbing</h3>
+      <p>If a model contacts an obstacle that is taller than 1&quot;, but potentially traversable (such as a wall, chain-link fence, crashed truck, etc.), or wishes to climb down from a raised position to a lower level, they can attempt to continue moving by Climbing.</p>
+      <p>Immediately apply Impaired Movement to the model. Then, measure both vertically and horizontally to the desired position – if the model can reach a suitable end point without exceeding its Basic Move Distance, move it to the new position. If the model cannot reach the new position, but you wish to Climb anyway, the model automatically Falls – place the model at the foot of the scenery piece, as closely aligned to the point from which it fell as possible, and consult the <strong>Falling</strong> rules, below.</p>
+    </article>
+
+    <article class="rule" id="falling" data-title="Falling">
+      <h3>Falling</h3>
+      <p>A model may fall from an elevated position as a result of a misjudged Climb attempt, or because it is pushed from a ledge by a special rule. A model may also voluntarily fall, by moving off the edge of a platform that is higher than 1&quot; from the level below. Sometimes, given the choice of staying in a safe position or falling, a player may choose to fall after jumping, as it’s the fastest way down!</p>
+      <p>When a model falls, remove the model and place it on the next lowest level, as closely aligned to the position from which it fell as possible. If the area directly below is occupied or impassable, or it is simply too difficult to place the model due to the size of its base, try to move the least possible elements as small a distance as possible to place it, otherwise place it as close as possible to the spot where it should have fallen. If there are several possible positions, the active player should decide between them.</p>
+      <p>Measure the total distance the model has travelled during the action (from the point where it started the Movement action, to the end point of the fall).</p>
+      <ul>
+        <li>If the distance travelled is less than the model’s Basic Move Distance, it will not suffer any damage.</li>
+        <li>If the distance travelled is greater than the model’s Basic Move Distance, it will suffer ♦♦ damage (see <a href="#damage" style="color:#e94560;">Damage</a>).</li>
+        <li>If the distance travelled is at least <strong>double</strong> the model’s Basic Move Distance, remove the model from the game as a Casualty.</li>
+      </ul>
+      <p>Remember that, if the model has suffered Impaired Movement during the activation, its Basic Move Distance will be reduced accordingly.</p>
+      <div class="note example">
+        <span class="note-label">Example</span>
+        <p>This Model has a basic movement of 8&quot;. It wants to jump to the lower floor. Because of the jump he loses 4&quot; because of Impaired Movement. The distance to the yellow arrow is 4&quot;. So then, it starts to fall until the lower floor. That distance (the orange arrow) is 7&quot;. Because it doesn’t double the movement of the model (4&quot; because it suffers Impaired Movement due to being Jumping), it suffers ♦♦ Damage markers. If it continues to the ground level, it is removed as a casualty because the distance is greater than 8&quot;.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="stand-up" data-title="Stand Up / Knocked Down">
+      <h3>Stand Up</h3>
+      <p>If a model has been <strong>knocked down</strong>, it can stand up when performing a Movement action. It may continue its movement as normal, but standing up always counts as an Impaired Movement.</p>
+    </article>
+  </section>
+
+  <!-- ============ TACTICAL ACTIONS ============ -->
+  <section class="chapter" id="tactical-actions" data-title="Tactical Actions">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Tactical Actions</h2>
+    </header>
+
+    <article class="rule" id="attack-actions" data-title="Tactical Actions / Attack Actions / The Rule of 1 and 6">
+      <p>During its activation, a model can perform a single Tactical action from the following:</p>
+      <ul>
+        <li><strong>Attack</strong></li>
+        <li><strong>Manipulate</strong></li>
+      </ul>
+      <p>Tactical actions are mutually exclusive – even a model that can perform more than one action cannot perform both an attack and a Manipulate action in the same activation, unless a special rule permits otherwise (like Inspire).</p>
+      <h3>Attack Actions</h3>
+      <p>There are two main types of attacks a model may perform: a <strong>Melee Attack</strong> (with or without a weapon) or a <strong>Ranged Attack</strong> (performed with a ranged, or ‘missile’, weapon).</p>
+      <p>A model may only attack using one of these types during each activation – it cannot make both a ranged and a close combat attack in the same activation, unless it has a special rule that allows otherwise.</p>
+      <div class="boxed">
+        <h3 class="box-title">The Rule of 1 and 6</h3>
+        <hr class="box-divider">
+        <p>When performing any attack or defense roll, a natural result of 1 on an attack die will always be a failure. On the other hand, a natural result of 6 will always be a success. (‘Natural result’ means the number rolled on the die before any modifiers are applied).</p>
+      </div>
+    </article>
+
+    <article class="rule" id="melee-attack" data-title="Melee Attack / Melee Modifiers / Outnumbered / Defense Roll">
+      <h3>Melee Attack</h3>
+      <p>To attack an enemy in melee, your model must be in contact with the enemy model, unless the weapon has a special rule that specifies otherwise. Then, take a number of D6 equal to the model’s Attacks skill value (these are the attack dice), plus one D6 of a different color (the Strength die).</p>
+      <p>Roll the dice. <strong>Each attack die that scores equal to or greater than the target’s Defense is a Hit.</strong></p>
+      <h4>Melee Modifiers</h4>
+      <p>When performing a Melee Attack, the following modifier may apply. Note that additional modifiers may be imposed by special rules. All modifiers are cumulative unless stated otherwise.</p>
+      <p><strong>Outnumbered:</strong> A model targeted by a Melee Attack that is in contact with more than one enemy model suffers a -1 penalty to its Defense characteristic for each enemy model after the first (so, if the target is in contact with three enemy models, it suffers a -2 Defense penalty and also rolls 2 fewer dice during the Defense Roll).</p>
+      <h4>The Defense Roll</h4>
+      <p>When a model is attacked in melee, it may attempt to defend itself by rolling a number of dice equal to its Defense skill. For each die that <strong>equals or beats</strong> the attacking model’s Attacks skill value, the target cancels one successful hit. The only exception is any hit scored by the Strength die – these cannot be blocked by any means.</p>
+    </article>
+
+    <article class="rule" id="melee-weapons" data-title="Melee Weapons / Unarmed">
+      <div class="boxed">
+        <h3 class="box-title">Melee Weapons</h3>
+        <hr class="box-divider">
+        <p>Most models in the game carry some kind of weapon, whether it’s a knife, a lead pipe or a police nightstick. Melee weapons are easily identified by their lack of ⊕ and ▮ values. Weapons usually provide a model with a higher chance to hit, and/or the chance to inflict more Damage on its target. Whatever combination of weapons the model is using, both the Damage it inflicts and the special rules it confers will be listed on the character card.</p>
+        <p>If a model has a choice of weapons, it must choose one of them when making an attack.</p>
+        <p>Some weapons can modify or replace the Strength characteristic of the bearer. For example, the special rule ‘Heavy’, applied to some melee weapons, grants +1 to the Strength die roll when performing the attack.</p>
+        <p><strong>Unarmed:</strong> Additionally, a model may always choose to attack Unarmed, or be forced to do so by a special rule. <strong>When attacking unarmed, a model can only inflict ★ damage for each successful hit.</strong></p>
+        <div class="statline"><span class="w-name">Poisoned Knife</span><span>♦</span><span>—</span><span>—</span><span class="w-tags">Sharp / Poison</span></div>
+      </div>
+    </article>
+
+    <article class="rule" id="effort" data-title="Effort / Effort Limit">
+      <h3>Effort</h3>
+      <p>Sometimes, the only way to beat the toughest foe, or survive the most punishing attack, a character must dig deep and go beyond their normal limits. In the <em>Batman Miniature Game</em>, this is represented by the Effort rule.</p>
+      <p>A model can make an Effort when attacking or defending in melee, and sometimes to trigger some special traits or actions (see below).</p>
+      <p>To make an Effort, a model voluntarily receives a number of ★ up to their Effort Limit. In exchange, that model may:</p>
+      <ul>
+        <li>Add one attack die per ★ to its Melee Attack.</li>
+        <li>Remove one attack die per ★ from an enemy’s Melee Attack when it is the target of the attack (up to the maximum dice allocated to that model).</li>
+        <li>Perform a special rules or trait that requires Effort as ‘payment’ to activate (such as Power Armor). In this case, simply add ★ to the model and then use the rule. If the model cannot spend the Effort (because its Effort Limit is reached, it has insufficient Willpower, or another rule prevents it), the model will not be able to carry out that action.</li>
+        <li>Roll 1 additional dice during a Skill roll (to a maximum of 3D6). For example, if your model is affected by the Hypnotize trait and it would normally roll 2 dice for its Willpower roll, you may spend 1 Effort to roll 3D6 instead. You must choose 2 of the dice between they.</li>
+      </ul>
+      <p>These Damage count towards the model’s ★ Damage threshold, but making Effort does not count as being Damaged for the other rules purposes. <strong>A model may not receive ★ if it would result in the model becoming KO.</strong> For example, a model with a Willpower value of 7, which already has 6 ★, will not be able to make any more Effort.</p>
+      <div class="note">
+        <span class="note-label">Note</span>
+        <p>To make an Effort during melee, the ★ must be received by both the attacker and defender before any dice are rolled. The defender (target) must declare whether they are making an Effort first; then, the attacker may declare.</p>
+      </div>
+      <h4>Effort Limit</h4>
+      <p>All models start with an Effort Limit of 3 – this is the maximum amount of ★ a model can choose to receive for effort for a single action, ability, attack, or defense improvement. A model reduces its Effort Limit by 1 for every 3 ♦ that the model has. A model that has its Effort Limit reduced to 0 cannot make Effort, even if it has enough Willpower to do so.</p>
+      <div class="note example">
+        <span class="note-label">Example</span>
+        <p>Batman’s attack value is 5 (He rolls 5 attack dice plus a ‘Strength die’). The Thug make 3 Efforts in order to remove three attack dice from the Batman’s roll. Batman also decides to make 2 Efforts to add 2 more dice to his attack. His final roll is 4 attack dice (5-3+2) and a ‘Strength die’.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="ranged-attack" data-title="Ranged Attack / Ranged Weapons / RoF / Ammunition">
+      <h3>Ranged Attack</h3>
+      <p>To attack at range, your model must carry at least one ranged weapon (see below), and meet the following criteria:</p>
+      <ul>
+        <li>The target must be within line of sight.</li>
+        <li>The weapon must have at least 1 Ammo remaining.</li>
+        <li>The attacking model must not be in contact with an enemy that is not KO.</li>
+      </ul>
+      <p>Select one weapon from those available. When a model performs a Ranged Attack, take a number of dice equal to the weapon’s RoF value (the attack dice). In addition, roll a single D6 of a different color (the Strength die).</p>
+      <p>Target a model and roll the dice. <strong>Each attack die that scores equal to or greater than the target’s Defense is a Hit.</strong></p>
+      <div class="boxed">
+        <h3 class="box-title">Ranged Weapons</h3>
+        <hr class="box-divider">
+        <p>These weapons, sometimes called ‘missile weapons’ are used to attack enemies at a distance. They are typified by two characteristics:</p>
+        <p>- <strong>RoF ⊕</strong>: ‘Rate of Fire’ (RoF) is the number of attack dice, or ‘shots’, the weapon grants when performing a ranged attack.</p>
+        <p>- <strong>Ammunition ▮</strong>: A weapon’s Ammo value represents the number of magazines a model carries – this is number of times a weapon may be used during the game. If the Ammo value is ‘-’, the weapon can be used any number of times. Every time a model fires a weapon you must use a <strong>magazine</strong>. A magazine is used for each <strong>attack</strong>, not per shot. Normally, this will mean that you can spend one magazine per activation, even if you fire two, three or more shots thanks to the <strong>RoF</strong> of your weapon. If you spend all the magazines, the weapon cannot be used anymore, unless the model finds more magazines. A model cannot carry more magazines than it began the game with (including any extra magazines purchased when forming the crew). It is recommended to use markers at hand to track the number of ammo magazines expended.</p>
+        <p>In addition, ranged weapons usually replace the Strength characteristic of the model with a Strength value exclusive to the weapon.</p>
+        <p>Unless a special rule limits how far they can shoot, all <strong>ranged weapons</strong> have <strong>unlimited range</strong>.</p>
+        <div class="statline"><span class="w-name">Automatic Gun</span><span>♦★</span><span>3 ⊕</span><span>2 ▮</span><span class="w-tags">S. Range / Firearm / Light</span></div>
+      </div>
+    </article>
+
+    <article class="rule" id="ranged-attack-modifiers" data-title="Ranged Attack Modifiers: Move before attacking, Out of Effective Range, Cover, Firing Blind, Dodging">
+      <h3>Ranged Attack Modifiers</h3>
+      <p>When performing a Ranged Attack, the following modifiers may apply. Note that additional modifiers may be imposed by special rules. All modifiers are cumulative unless stated otherwise.</p>
+      <ul>
+        <li><strong>Move before attacking:</strong> If a model performs a Movement action <em>before</em> performing a ranged attack, subtracts 2 dice from the attack roll.</li>
+        <li><strong>Out of Effective Range:</strong> Some ranged weapons have characteristics that limit their effectiveness depending on the distance to the target, such as the ‘Short Range’ or ‘Medium Range’ weapon special rules. A ranged weapon fired beyond its effective range, subtracts 1 die from the attack roll.</li>
+        <li><strong>Cover:</strong> If the target is partially obscured by scenery, it is in <strong>Cover</strong>. If any part of a model or its base is obscured by intervening scenery (but it can still be seen), the target claims Cover. A ranged weapon fired at a target in Cover subtracts 1 die from the attack roll.</li>
+        <li><strong>Firing Blind:</strong> A model can choose to make a blind attack against a target, ignoring the Night rule. Set Line of sight as though the Night rule was not in effect, but subtract 2 dice from the attack roll.</li>
+        <li><strong>Dodging:</strong> Some special rules such as Dodge or Acrobat, allow the target to evade ranged attacks. These rules typically force an attacker to deduct dice from their attack roll.</li>
+      </ul>
+    </article>
+
+    <article class="rule" id="strength-dice" data-title="Strength Dice">
+      <h3>Strength Dice</h3>
+      <p>Every time you perform an attack (of any type), you must add a <strong>Strength die</strong> to the roll. This is a die of a different color from the attack dice (it is not considered a normal attack die for the purposes of modifiers, Effort, or other effects that reduce the pool of attack dice). The Strength die represents the attack’s natural power, making some weapons or abilities far more effective than others.</p>
+      <p>The Strength die is rolled along with the attack dice, as part of the <strong>attack roll</strong>. However, the Strength die scores a successful hit if it equals or beats the attacker’s Strength value (or the Strength value of the weapon in some cases – see Ranged Weapons, above).</p>
+      <p>A successful hit on the Strength die cannot be avoided in any way, but is otherwise treated as a normal hit. Some special rules prevent an attacker from rolling the Strength die at all but, once rolled, a successful hit cannot be blocked or negated.</p>
+      <p>If any effect nullifies the Strength die in an attack or trait that, by default, <em>only</em> rolls the strength die, it is replaced by an attack die.</p>
+      <div class="note example">
+        <span class="note-label">Example</span>
+        <p>A model attacks with a ‘Sawed-off Shotgun’, which attacks with a template and only rolls the Strength die. The target is wearing the <strong>Bat-Armor MkI</strong>, whose effect is to remove the Strength die when it is attacked, and it is also in Cover. Since the attack is denied by the target’s Armor and the Cover effects, the attacker will roll a normal attack die instead.</p>
+      </div>
+      <p>If a rule requires you to remove dice from the attack roll, the type of dice that is removed depends on the attack type:</p>
+      <ul>
+        <li>For <strong>Ranged Attacks</strong>, the Strength die is always removed first.</li>
+        <li>For <strong>Melee Attacks</strong>, the Strength die cannot be removed unless the rule specifically requires it.</li>
+      </ul>
+    </article>
+
+    <article class="rule" id="critical-hits" data-title="Critical Hits / CRT">
+      <h3>Critical Hits</h3>
+      <p>If, when performing an attack, the Strength die scores a natural result of 6, you have scored a Critical Hit (or CRT for short): in addition to scoring a successful hit, the target suffers the <strong>Knocked Down</strong> effect (see Special Traits on the <strong>Compendium</strong> – available on the BMG App and on our website).</p>
+      <p>Many weapons and/or special actions have different critical effects (represented on the weapon profile with ‘CRT’, followed by the effect name) – for example, the TASER lists the CRT: Stunned special rule. When this happens, the listed effect can be applied <strong>instead</strong> of Knocked Down – the player must choose <strong>one</strong> critical effect to apply the target.</p>
+    </article>
+
+    <article class="rule" id="knocked-out" data-title="Knocked Out (KO)">
+      <h3>Knocked Out (KO)</h3>
+      <p>When a model receives a number of ★ markers equal to or greater than its Willpower value, it is Knocked Out, or KO. The model receives a KO marker – it remains in the KO state until it can Recover.</p>
+      <p>A model that is KO:</p>
+      <ul>
+        <li>Cannot be activated (and therefore cannot perform actions), but it will have a chance to recover during the Recount phase at the end of each round.</li>
+        <li>Cannot defend itself or use special traits.</li>
+        <li>Suffers a -1 penalty to its Attack, and Defense skills.</li>
+        <li>Does not count as being ‘in contact’ for the purposes of effects such as outnumbering, or preventing a model from performing a Ranged Attack, etc.</li>
+      </ul>
+      <p>A model cannot be KO and Knocked Down at the same time. If it is KO, it will lose the Knocked Down state, and cannot be Knocked Down again while it has a KO marker.</p>
+      <p>When a model is <strong>KO</strong>, each time it receives any kind of damage through <strong>attacks</strong> or <strong>effects</strong> received, it must add an additional ♦ damage for each hit.</p>
+      <div class="note example">
+        <span class="note-label">Example</span>
+        <p>A model with <strong>Claws</strong> achieves two <strong>successful hits</strong> against an enemy who is <strong>Knocked Out</strong>. Normally, each hit would cause ♦★, but since the enemy is <strong>KO</strong>, each hit instead causes ♦♦★, meaning the two hits inflict ★★♦♦♦♦ in total.</p>
+      </div>
+      <p>Remember, if at any time a model accumulates an amount of ♦ markers equal to its <strong>Endurance</strong>, the model must be removed from the game immediately as a <strong>Casualty.</strong></p>
+      <div class="note">
+        <span class="note-label">Note</span>
+        <p>A model that was removed from play as Casualty and returns to play, first removes all the Damage and Statuses.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="damage" data-title="Damage: Stun and Injury">
+      <div class="boxed">
+        <h3 class="box-title">Damage</h3>
+        <hr class="box-divider">
+        <p><strong>Each time Damage is inflicted on a model, one or more Damage will be assigned to it, use the App to track it.</strong></p>
+        <p>There are two kinds of Damage: Stun ★ and Injury ♦. One kind or the other (or sometimes both) will be applied depending on the model and/or the weapon which inflicted the Damage.</p>
+        <p>When ★ and/or ♦ Damage are inflicted to a model and it exceeds its Willpower and/or Endurance value, the damage is considered inflicted, but the exceed is discarded.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="manipulate-actions" data-title="Manipulate Actions: Set Suspect Markers, Reveal Suspect Markers, Use Sewers">
+      <h3>Manipulate Actions</h3>
+      <p>Of course, while most of the action in Gotham’s streets will involve moving and fighting, that’s far from all there is to it. The Manipulate action allows you to interact with elements of the game beside other models, and has various uses. Commonly, you’ll use the Manipulate action to:</p>
+      <ul>
+        <li><strong>Set Suspect Markers:</strong> By performing a Manipulate action, a model can place a Suspect marker in contact. Suspect markers are points of interest on the tabletop, such as clues, or strategic positions. You cannot Set a Suspect marker inside or within 2&quot; of your own deployment zones, or within 4&quot; of another friendly Suspect markers.</li>
+      </ul>
+      <div class="note">
+        <span class="note-label">Note</span>
+        <p>A player cannot have more than 8 Suspect markers into the gaming area at the same time. If he wants/is forced to Set a new one, the opponent must target another Suspect of that player that is not targeted by an Objective card, and removes it.</p>
+      </div>
+      <ul>
+        <li><strong>Reveal Suspect Markers:</strong> A Suspect marker can be removed from the gaming area by a model in contact, using the Manipulate action. This action is called Reveal.</li>
+        <li><strong>Use Sewers</strong>: A model can Manipulate a Sewer marker to enter the sewers (more on this later).</li>
+      </ul>
+      <p>Additionally, there are various rules, special traits and scenario conditions that may ask you to use your Manipulate action to activate. In those cases, Manipulate also counts as the model’s Tactical action for the activation (so a model cannot activate a Trait using the Manipulate action, and then attack in the same activation, for example).</p>
+    </article>
+  </section>
+
+  <!-- ============ SPECIAL ACTIONS & RECOVERY ============ -->
+  <section class="chapter" id="special-actions" data-title="Special Actions and Recovery">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Special Actions &amp; Recovery</h2>
+    </header>
+
+    <article class="rule" id="special-actions-rule" data-title="Special Actions">
+      <h3>Special Actions</h3>
+      <p>The third category of action available to your models is the Special action. These do not have standard rules, but instead encompass the many and varies abilities possessed by the heroes and villains of Gotham.</p>
+      <p>A model’s traits may require the expenditure of a Special action to use. These will be marked in the traits compendium and on the character card with the <img class="ico r" src="img/ico/SPECIAL_ICON.png" alt="Special"> icon, to differentiate them from those traits that do not require the expenditure of an action, or which are passive (always in effect).</p>
+    </article>
+
+    <article class="rule" id="extra-actions" data-title="Extra Actions">
+      <div class="boxed">
+        <h3 class="box-title">Extra Actions</h3>
+        <hr class="box-divider">
+        <p>As a result of some effects and traits, your models may receive ‘extra actions’. These are actions that may be taken in addition to those normally permitted during a model’s activation.</p>
+        <p>If a rule specifies the type of extra action (for example, ‘you have an extra Manipulate action’), you must only take the extra action if it of the specified type. If the type isn’t specified, you can choose any type of action, even if the model repeats the same type of action during its activation (by attacking twice, for example).</p>
+      </div>
+    </article>
+
+    <article class="rule" id="recovery" data-title="Recovery / Recovering Earlier in the Round">
+      <h3>Recovery</h3>
+      <p>At the end of each round, during the Recount phase, <strong>all models that are not Knocked Out remove one ★.</strong></p>
+      <p>After recovering your non-KO models, you can try to <strong>recover your Knocked Out models by taking an Endurance roll for each one</strong>. If the roll is unsuccessful, the model will remain KO. If it passes the roll, <strong>remove one ★ from it, and add the Knocked Down Status to it</strong>. The model will remain Knocked Down until it is able to Stand Up in its activation.</p>
+      <div class="boxed">
+        <h3 class="box-title">Recovering Earlier in the Round</h3>
+        <hr class="box-divider">
+        <p>If a model recovers from KO outside the Recount Phase (because of an effect or special trait, for example), it cannot activate in the same round that it recovers. Note that, if a KO model removes Damage markers for any reason (for example, it is healed by a model with the Medic trait), then if the amount of Damage falls below its Willpower value, it automatically recovers – no Endurance roll is required, but the model still may not activate that round.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ THE ROAD TO VICTORY ============ -->
+  <section class="chapter" id="the-road-to-victory" data-title="The Road to Victory">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>The Road to Victory</h2>
+    </header>
+    <p class="chapter-lede">Now that you know how to set up and play the Batman Miniature Game, it’s time to answer the all-important question: How do you win?</p>
+
+    <article class="rule" id="objective-cards" data-title="Objective Cards">
+      <h3>Objective Cards</h3>
+      <p>In this game, the crews of Gotham City fight each other relentlessly, but not aimlessly. Rather than just becoming embroiled in mindless violence, each crew has very specific objectives, and seeks to fulfil them while preventing their rivals from achieving their own goals.</p>
+      <p>In the <em>Batman Miniature Game</em>, this is represented with Objective cards. When forming your crew, you must choose 30 Objective cards (see <a href="#forming-objective-decks" style="color:#e94560;">Forming Objective Decks</a>), and form them into a deck.</p>
+      <p>These cards have a double function:</p>
+      <ul>
+        <li>They can be played as <strong>Objectives</strong> (as the name suggests). Once you meet the requirements for the Objective, these will give you valuable ‘victory points’ (VPs), which determine whether you will win or lose the game.</li>
+        <li>They can be played as a <strong>Resource</strong> – a temporary bonus or tactical boost that can offer an advantage to one or more models in your crew.</li>
+      </ul>
+    </article>
+
+    <article class="rule" id="objective-card-elements" data-title="Elements of an Objective card">
+      <h3>Elements of an Objective Card</h3>
+      <p>The elements of an Objective card are:</p>
+      <ol>
+        <li><strong>Name.</strong> A descriptive title of the card.</li>
+        <li><strong>Crew Icon.</strong> This icon specifies which crew(s) can include the card within its objective deck. If it has no symbol, it is a <strong>general card</strong> and can be included by any crew in its deck.</li>
+        <li><strong>Number of Copies.</strong> Indicates the number of copies of the same card that should be included in your Objective deck. So, a card whose number of copies is (3) indicates that, if you decide to include this Objective card in your deck, you must include 3 copies of the same card, or not include it at all. Thus, we distinguish between single cards (1 single copy) and multiple cards (more than one copy).</li>
+        <li><strong>Objectives.</strong> The Objective Card can be used in two different ways during the game. One of them is, naturally, as an <strong>Objective</strong>. This text represents an Objective to be met by your crew, complete with several requirements. When you complete all of the requirements listed here, play this card and receive its Victory Points.
+          <div class="note">
+            <span class="note-label">Note</span>
+            <p>The text in <em>Italics</em> (if any) is an instruction about how to play the card, while the Regular text is the condition required to score the card.</p>
+          </div>
+        </li>
+        <li><strong>When to Play.</strong> This tells you when the card can be played as an <strong>Objective</strong>: During the Take the Lead phase Ⅰ; during Raise the Plan phase Ⅱ; during the Execute the Plan phase Ⅲ; or during the Recount phase Ⅳ.</li>
+        <li><strong>When to Score.</strong> This specifies the phase in which the card’s Objective requirements must be checked for its scoring requirements: As soon as the requirements are met, instantly ✧; at the end of the current round ◔; or in a special way, expressed in the card’s own text ◆.</li>
+        <li><strong>Resource.</strong> An Objective card can be used in two different ways during the game. One of them is as a Resource. This text represents an extra benefit that you can get by playing this card from your hand. Playing the card in this way doesn’t provide you with Victory Points.</li>
+        <li><strong>Resource Points Cost.</strong> Indicates the amount of Resource Points that it costs to use the card as a Resource.</li>
+        <li><strong>Objective Type</strong>: Not all Objectives are achieved in the same way, and some crews favor one type over another. There are four Objective types represented in the game: <strong>Protection</strong> <img class="ico r" src="img/ico/OT_PROTECTION_ICON.png" alt="">; <strong>Menace</strong> <img class="ico r" src="img/ico/OT_MENACE_ICON.png" alt="">; <strong>Violence</strong> <img class="ico r" src="img/ico/OT_VIOLENCE_ICON.png" alt="">; and <strong>Control</strong> <img class="ico r" src="img/ico/OT_CONTROL_ICON.png" alt="">.</li>
+        <li><strong>Victory Points.</strong> If the card is played as an Objective (after fulfilling the requirements), place the card in your pile of Scored Objectives and, at the end of the game, add this number of Victory Points to your final score.</li>
+      </ol>
+    </article>
+
+    <article class="rule" id="using-objective-cards" data-title="Using Objective Cards: Discard, Remove, Use as Objective, Use as Resource, Resource Points">
+      <h3>Using Objective Cards</h3>
+      <p>At the start of the game, shuffle your Objective cards and form an <strong>Objective deck</strong>, face down, on your side of the table. Leave some space next to the deck for cards that have been played. During the game, you’ll encounter a variety of terms that tell you how to use the cards, as follows:</p>
+      <ul>
+        <li><strong>Discard:</strong> If an effect asks you to discard an Objective Card, choose a card from your hand and place it on the bottom of the Objective deck (face down).</li>
+        <li><strong>Remove:</strong> If an effect asks you to remove an Objective card, remove the card from play completely – it cannot be used for the rest of the game.</li>
+        <li><strong>Use as Objective:</strong> If the card is played from the hand as an Objective, place it next to the board, face up. When it is time to use it (this may be immediately, although some cards will specify when precisely it can be used), and if the Objective requirements are met, the card is left face up in a separate pile called <strong>Scored Objectives</strong>. Any Event marker placed by an Objective are removed from play when the card is scored or discarded.</li>
+        <li><strong>Use as Resource:</strong> In order to play a card from your hand as a Resource, you must be able to pay its Cost in Resource Points. Once a Resource has been resolved, Discard the card and place it on the bottom of the Objective deck (face down).</li>
+      </ul>
+      <p>At the beginning of the game, before deploying your models, draw four <strong>Objective cards</strong> to form your hand. You may <strong>discard</strong> once any number of these, and redraw the same number of cards you discarded until you have four cards in your hand again.</p>
+      <p>Now, take 3 Resources Point markers, and place these near to your Objective deck. These markers are used to pay the cost of using an Objective card as a Resource. Whenever you want to play a card using the effect of its Resource text, you must first expend a number of Resource points equal to the card’s Resource cost. When several Resource cards must be used at the same time, always resolve them in reverse order to how they were played (so the most recent Resource to be played from a hand is resolved first, and the first to be played is resolved last).</p>
+      <p>The effect of a Resource only last the activation in which it was used, unless the card is required to be placed aside. In this case it will have its own instructions. There can only be 1 copy of each card played as a Resource that is placed aside. The effects of a resource card placed aside ceased to effect and any event marker placed by when they are discarded.</p>
+      <p>During the Recount phase, return any spent Resource markers to your pile (so that you have 3 points again, ready for the next round).</p>
+      <p><strong>To play a card as an Objective,</strong> take the card from your hand and show it to your opponent. Unless it must be scored instantly, place the card face up by the side of the game board. Check the When to Score criteria – at the specified time, check if all the requirements of the card have been met. If they have, add the specified number of VPs to your running total, and place the card face up on your <strong>Scored Objectives</strong> pile. If the requirements have not been met, <strong>Discard</strong> the card instead (unless it is ◆).</p>
+      <p>At most, during a model’s activation (yours, or an opponent’s), you can play <strong>a single card</strong> as a <strong>Resource</strong> and <strong>a single card</strong> as an <strong>Objective</strong>. Outside the Execute the Plan phase, you may play as many cards as you like. The only exception is that you may <strong>never</strong> play more than one Objective card with <strong>the same Name simultaneously.</strong></p>
+      <p>If two players play a card at the same time, and their effects collide or negate the effect of the other, the card with a lower number of copies is resolved first. If both are the same, the active player’s card will be resolved, and if not, the card of the player who had the Initiative will be resolved.</p>
+      <p>If an Objective targets a model, while that card is in play, you cannot target the same model with another copy of it.</p>
+      <p>A model that is KO cannot contributes for the requirements of a card (scoring or negates the scoring) that counts models on the Gaming Area near a specific point, marker or model unless instructed otherwise.</p>
+      <p>Each time an Objective card leaves your hand, for whatever reason (whether it’s been played, discarded, etc), after resolving the effect you must draw the same number of cards from the Objective deck until you have the same number of cards you had before the card left your hand. If for any reason, at any time <strong>you have more than 4 cards</strong> in your hand, <strong>Discard</strong> as many cards as needed until you have 4 again.</p>
+      <p>If a card that has already been played cannot be resolved (if its Resource effect can no longer be applied, or the Objective requirements have not been met, for example) <strong>Discard</strong> the card.</p>
+      <p>At the end of the Recount phase you may <strong>Discard</strong> an Objective card from your hand (and, of course, draw a new one). Before drawing the replacement card, shuffle your Objective deck.</p>
+      <p>When you search for whatever reason into a Deck, then you must shuffle it unless instructed otherwise.</p>
+    </article>
+
+    <article class="rule" id="end-game" data-title="End Game and Victory Points">
+      <h3>End Game and Victory Points</h3>
+      <p>The game ends:</p>
+      <ul>
+        <li>At the end of the Recount phase of <strong>round 4</strong>.</li>
+        <li>At the end of any round in which one of the crews has no <strong>models to activate</strong> after the recoveries (because all their miniatures are KO or have been removed as Casualties).</li>
+      </ul>
+      <p>When the game is over, <strong>the player with the highest number of Victory Points is the winner.</strong></p>
+    </article>
+  </section>
+
+  <!-- ============ FORMING THE CREW ============ -->
+  <section class="chapter" id="forming-the-crew" data-title="Forming the Crew">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Forming the Crew</h2>
+    </header>
+    <p class="chapter-lede">So you know how to play, and how to win - all you need now is a hard-bitten crew of Gotham City characters to take to the streets and fight for you! In this section, we show you how to choose a crew and prepare for action.</p>
+
+    <article class="rule" id="reputation-limit" data-title="Reputation Limit">
+      <h3>Reputation Limit</h3>
+      <p>First of all, players must agree on the amount of <strong>Reputation</strong> (or Rep) each of them can spend on their crew. Typically, both crews will be of an equal Reputation value. The ‘standard’ Reputation limit for most games is 350, which offers a balanced game that you can play in less than an hour and a half. For quicker games, try 150 Reputation. For longer games with a larger number of models, we recommend a limit of 450 Reputation.</p>
+      <p>Once you have decided on the size of the game, you can start choosing your crew’s models. Remember that <strong>the sum total of the models’ Reputation values can never exceed the established Reputation limit</strong> (although it can be lower).</p>
+    </article>
+
+    <article class="rule" id="boss-and-affiliation" data-title="The Boss and Affiliation / Boss Special Rules / Inspire">
+      <h3>The Boss and Affiliation</h3>
+      <p>The first model to choose, and the most important, is your Boss. This is the character who will be in overall command of the crew during the scenario. The Boss must be chosen from those models with the Leader rank or, if there are no Leaders, from those with the Sidekick rank. Once the Boss has been selected, place the Crown marker <img class="ico r" src="img/ico/CROWN_ICON.png" alt="Crown"> at hand as a visual reminder.</p>
+      <p>The rest of the models in the crew must be of the same Affiliation as the Boss (at least one of their Affiliation icons must match that of the Boss). A model with the ‘Unknown’ Affiliation can be included in any crew.</p>
+      <div class="boxed">
+        <h3 class="box-title">Boss Special Rules</h3>
+        <hr class="box-divider">
+        <p>The following special trait is automatically applied to the Boss:</p>
+        <p><strong>Inspire:</strong> All models with the Henchman rank that begin their activation within 8&quot; of the Boss gain an extra Manipulate action (not cumulative).</p>
+        <p>When a Boss is removed from the game, you can designate any other model as your new Boss – hand that model the Crown marker <img class="ico r" src="img/ico/CROWN_ICON.png" alt="Crown">. However, the range of the replacement Boss’s Inspire ability is reduced to 4&quot;.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="rank" data-title="Rank: Leader, Sidekick, Free Agent, Henchman, Vehicle">
+      <h3>Rank</h3>
+      <p>All models in the game have one of the following <strong>ranks</strong>:</p>
+      <ul style="list-style:none; padding-left:8px;">
+        <li><img class="ico r" src="img/ico/RANK_LEADER_ICON.png" alt=""> Leader</li>
+        <li><img class="ico r" src="img/ico/RANK_SIDEKICK_ICON.png" alt=""> Sidekick</li>
+        <li><img class="ico r" src="img/ico/RANK_FREEAGENT_ICON.png" alt=""> Free Agent</li>
+        <li><img class="ico r" src="img/ico/RANK_HENCHMAN_ICON.png" alt=""> Henchman</li>
+        <li><img class="ico r" src="img/ico/RANK_VEHICLE_ICON.png" alt=""> Vehicle</li>
+      </ul>
+      <p>The rank affects the configuration of your crew as follows:</p>
+      <ul>
+        <li>You may only include one <strong>Leader</strong>.</li>
+        <li>You may include one <strong>Sidekick</strong>. However, if you don’t select any Leader models, you may choose a second Sidekick.</li>
+        <li>You may include one <strong>Free Agent</strong>.</li>
+        <li>You may include any number of <strong>Henchmen</strong>, but no more than one with the same Name.</li>
+        <li>You may include a single <strong>Vehicle</strong>.</li>
+      </ul>
+      <p>For every 150 points over 350 Rep (and part thereof) your crew may include one additional Free Agent and Vehicle. So, if you play a game of between 351 and 500 Reputation points, you could include 2 Free Agents and 2 Vehicles in your crew.</p>
+      <p>When a model has <strong>more than one rank</strong> listed on its character card, the player chooses which Rank applies when forming the crew. For example, Talia Al Ghul might choose not to occupy the Leader position in a League of Assassins crew, even though she has the Leader rank. Because she has both the Leader and Sidekick ranks, she can be chosen as a Sidekick instead.</p>
+      <p>Note that, during the game, models with more than one rank still count as having all of them for the purposes of any special rules or Objective conditions, even though only one was used during crew formation.</p>
+    </article>
+
+    <article class="rule" id="equipment-and-funding" data-title="Equipment and Funding ($)">
+      <h3>Equipment and Funding ($)</h3>
+      <p>‘Funding’ is the total budget to spend on equipment (and some models) for your crew, usually expressed as a dollar value ($).</p>
+      <p>For <strong>every 150 Reputation</strong> or part thereof, you receive <strong>$500</strong> of Funding. So, in a 100-Rep game, you have $500 to spend; in a 300-Rep game, you have $1000; in a 460-point game, you have $2000, and so on. This total amount of funding is sometimes called a ‘stash’. $ from your stash are spent on equipment (and some models) for your crew.</p>
+      <p>If a model in your crew has a Funding ($) value, then this value is <strong>deducted</strong> from the total amount of Funding available to you. Not all models have a Funding value, and, therefore, not all models reduce the Funding of your crew.</p>
+      <div class="note example">
+        <span class="note-label">Example</span>
+        <p>Agent Barsad is a Henchman with a funding value of $600 and a Reputation of 38. If you choose him in a game of 350 Reputation points, the total available Funding is reduced by $600 ($1500 - $600 = $900).</p>
+      </div>
+      <p>Once you have chosen all the models you can up to the game’s Reputation limit, and deducted their Funding value from the stash, any remaining $ can be spent on additional equipment for the Henchmen of your crew. For the full list of the Equipment available to your crew, check out the free Compendium at <strong>www.knightmodels.com</strong>.</p>
+    </article>
+
+    <article class="rule" id="forming-objective-decks" data-title="Forming Objective Decks / deck-building">
+      <h3>Forming Objective Decks</h3>
+      <p>Just as important as creating a strong crew, establishing the Objective deck can be key to victory. In this section we look at deck-building in the <em>Batman Miniature Game</em>.</p>
+      <p>When building an Objective deck, there are four main rules:</p>
+      <ul>
+        <li>The deck must contain 30 cards.</li>
+        <li>The deck cannot include more general cards (with no Affiliation icon) than cards unique to your crew. These includes the cards that some models adds to the deck. These differ from the rest in that they have a <strong>subtitle</strong> beside the card Name, in addition to a <strong>rank icon</strong>. These cards may be included in the deck, as long as the subtitle <strong>matches the Name or Alias</strong> of a model in your crew, and the <strong>rank icon matches the rank of that model.</strong></li>
+        <li>No more than half the cards in the deck can be single cards (those cards that do not have multiple copies).</li>
+        <li>You may not include multiple cards with the same Name, except where the card clearly instructs you to include several copies. In this case, you must include the number of copies specified, no more or less.</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- ============ PREPARE THE GAME ============ -->
+  <section class="chapter" id="prepare-the-game" data-title="Prepare the Game">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Prepare the Game</h2>
+    </header>
+
+    <article class="rule" id="prepare-intro" data-title="Prepare the Game setup steps">
+      <p>Once you’ve gathered your crew and cards, it’s time to set up a game. In the Batman Miniature Game, play is structured around scenarios – a framework for the game, which provides information on where and how to deploy models, along with any special rules or criteria for the coming battle. Pick a scenario, then follow the setup steps below.</p>
+      <ol>
+        <li><strong>Game Board and Scenery</strong></li>
+        <li><strong>Urban Furniture</strong></li>
+        <li><strong>Deployment Zones</strong></li>
+        <li><strong>Events (Optional)</strong></li>
+        <li><strong>Draw &amp; Mulligan Objective Cards</strong></li>
+        <li><strong>Deploy Crews</strong></li>
+      </ol>
+    </article>
+
+    <article class="rule" id="game-board-and-scenery" data-title="Game Board and Scenery / setup initiative">
+      <h3>Game Board and Scenery</h3>
+      <p>Once the scenario has been selected, players should place their scenery on the game board in a mutually agreeable fashion (or use the alternating placement method). To make an attractive-looking game, consider the theme of the scenario, and the crews involved – for example, your board setup might represent Joker’s Funhouse, the Bowery District, the interior of the Monarch Movie Theater, the graveyard of Gotham Cathedral, and so on.</p>
+      <p>Once the scenery is placed, take a moment to be sure that neither player is disadvantaged by the positioning of scenic elements, and that both players are clear about what every piece of scenery counts as in terms of Difficult Ground, climbable and impassable scenery, small obstacles, and so on.</p>
+      <p>Finally, perform an <strong>Initiative roll</strong> (a D6 roll-off, as described in <a href="#take-the-lead" style="color:#e94560;">Take the Lead</a>). This does not dictate the first round of the game, but instead determines who has ‘setup initiative’ for the remainder of the pre-game sequence.</p>
+    </article>
+
+    <article class="rule" id="urban-furniture" data-title="Urban Furniture: Streetlamps, Sewer Markers">
+      <h3>Urban Furniture</h3>
+      <p>At this step, players place several items of street furniture – streetlamps and Sewer Markers – which not only enhance the look of the gaming area, but also have important in-game effects.</p>
+      <h4>Streetlamps</h4>
+      <p>Each player takes two 30mm Streetlamp markers. Beginning with the player with setup initiative, take it in turns to place these markers on the game board. No Streetlamp marker can be placed within 8&quot; of another Streetlamp, and no closer than 2&quot; to any board edge.</p>
+      <p>Streetlamp markers illuminate an area with a 4&quot; radius from the edge of their base, using the Lights rule (see <a href="#the-night" style="color:#e94560;">The Night</a>). They can be the target of attacks, but it is not necessary to make an attack roll to hit a streetlamp – simply declare an attack following the normal rules (the Streetlamp marker is treated as a model for these purposes, and must be a viable target), then the marker is “Turn-Off” and it no longer illuminate.</p>
+      <h4>Sewer Markers</h4>
+      <p>Each player takes two 30mm Sewer markers. Beginning with the player with setup initiative, take it in turns to place these markers on the game board. No Sewer marker can be placed within 8&quot; of another, and no closer than 2&quot; to any board edge.</p>
+      <p><strong>Enter and Exit the Sewers:</strong> To enter a Sewer, a model in contact with the Sewer marker must perform a Manipulate action. <strong>Remove the model from the gaming area and immediately place it in contact with another Sewer marker.</strong> The model cannot be moved further in this activation. Each model can enter a Sewer only once per round.</p>
+    </article>
+
+    <article class="rule" id="deployment-zones" data-title="Deployment Zones / Encounter cards">
+      <h3>Deployment Zones</h3>
+      <p>The player with initiative collects all the Encounter cards face down in a deck, shuffles them, and draws a card. The card displays a diagram, or setup map, of the game board, including several areas where the players must set up their models (marked A and B, respectively). These are the ‘deployment zones’. The player with the initiative decides in which zone they will deploy their crew (A or B); the opponent takes the other zone.</p>
+      <p>In addition, the Encounter Card may specify additional conditions regarding the deployment of models (see below), which must also be applied.</p>
+    </article>
+
+    <article class="rule" id="events" data-title="Events (Advanced Rule)">
+      <h3>Events (Advanced Rule)</h3>
+      <p>The use of Event cards is an optional step. These cards add an extra dimension to the scenario ahead, making it even more thematic, exciting and tactical.</p>
+      <p>The player with the initiative collects all the Event cards face down in a deck, shuffles them, and draws a card. This card adds a special rule to the scenario, which remains in effect for the entire course of the game.</p>
+      <div class="note example">
+        <span class="note-label">Example — Heavy Rain event card</span>
+        <p>At the start of each Round, the player with Initiative must roll a D6. On a result of 4+, all Ranged Attacks (for all models) roll 1 less die until the end of the Round.</p>
+      </div>
+    </article>
+
+    <article class="rule" id="draw-objective-cards" data-title="Draw Objective Cards">
+      <h3>Draw Objective Cards</h3>
+      <p>Each player now draws their hand of four Objective cards from their Objective deck. Once this is done, players can Discard any number of cards from their hand, and draw that same number of cards until they have four in their hand again. See <a href="#using-objective-cards" style="color:#e94560;">Using Objective Cards</a> for more on the Objective deck.</p>
+    </article>
+
+    <article class="rule" id="deploy-crews" data-title="Deploy Crews">
+      <h3>Deploy Crews</h3>
+      <p>The players should now divide their crews into two groups, with an equal number of models in each group (or as evenly as possible if the crew contains an odd number of models). The player with setup initiative deploys one of their groups in their chosen deployment zone. The opponent then places one of their groups in their deployment zone. Next, the first player deploys their second group, and finally the opponent does the same.</p>
+      <p>Models must be placed wholly within their own deployment zones. If there is more than once friendly deployment zone, models within groups may be separated between them as their player sees fit. In some cases, models are able to deploy after all other deployment is finished (due to traits such as <strong>Hidden</strong>). These models are not counted as part of the crew when dividing up the models into the two groups. If both players have models to place in this manner, alternate their placement, beginning with the model with setup initiative.</p>
+    </article>
+  </section>
+
+  <!-- ============ FINAL THOUGHTS ============ -->
+  <section class="chapter" id="final-thoughts" data-title="Final Thoughts">
+    <header class="chapter-head">
+      <div class="kicker">Глава</div>
+      <h2>Final Thoughts</h2>
+    </header>
+
+    <article class="rule" id="final-thoughts-text" data-title="Final Thoughts">
+      <p>The Batman Miniature Game is living, breathing game, ever-expanding and evolving with new characters, rules and gaming material. It should be remembered that character cards and special rules always take precedent over the ‘standard’ rules presented in this rulebook, never the other way around.</p>
+      <p>While every effort is taken to cover every eventuality, in a game with such a wide and varied source of miniatures, characters, and effects, unexpected conflicts can occur, and changes sometimes become necessary. To this end, be sure to visit <strong>knightmodels.com</strong> regularly to find the latest <strong>Frequently Asked Questions</strong> and <strong>Errata</strong> documents, as well as the up-to-date free <strong>Compendium</strong> of special rules.</p>
+      <p>With that, you are ready to fight your own battles for Gotham City. Whether you’re on the side of justice, or of villainy, we wish you the very best of luck. May your dice ever roll sixes, and the Dark Knight always answer your call…</p>
+    </article>
+  </section>
+
+  </div><!-- /rulesContent -->
+
+  <div class="no-results" id="noResults">Ничего не найдено. Попробуйте другой запрос.</div>
+
+  <footer class="colophon">
+    Справочник составлен по коробочному рулбуку Batman Miniature Game (Knight Models). Текст правил приведён дословно, на языке оригинала.
+  </footer>
+
+  </main>
+  </div><!-- /layout -->
+
+<script>
+(function(){
+  // ===== Оглавление: клонируем шаблон в десктоп и мобилку =====
+  var tpl = document.getElementById('tocTemplate');
+  document.getElementById('tocDesktop').appendChild(tpl.content.cloneNode(true));
+  document.getElementById('tocMobile').appendChild(tpl.content.cloneNode(true));
+
+  // ===== Замена символов правил на иконки проекта (как ICON_MAP в script.js) =====
+  var SYMBOL_ICONS = {
+    '★': { src: 'img/ico/STUN_ICON.png',    round: true },
+    '♦': { src: 'img/ico/BLOOD_ICON.png',   round: true },
+    '⊕': { src: 'img/rof.png',              round: true },
+    '▮': { src: 'img/ammo.png',             round: true }
+  };
+  var symbolRe = /[★♦⊕▮]/;
+
+  function iconizeTextNode(node){
+    var text = node.nodeValue;
+    if (!symbolRe.test(text)) return;
+    var frag = document.createDocumentFragment();
+    var buf = '';
+    for (var i = 0; i < text.length; i++){
+      var ch = text[i];
+      if (SYMBOL_ICONS[ch]){
+        if (buf){ frag.appendChild(document.createTextNode(buf)); buf = ''; }
+        var img = document.createElement('img');
+        img.src = SYMBOL_ICONS[ch].src;
+        img.alt = ch;
+        img.className = SYMBOL_ICONS[ch].round ? 'ico r' : 'ico';
+        frag.appendChild(img);
+      } else {
+        buf += ch;
+      }
+    }
+    if (buf) frag.appendChild(document.createTextNode(buf));
+    node.parentNode.replaceChild(frag, node);
+  }
+  function iconize(root){
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(iconizeTextNode);
+  }
+  iconize(document.getElementById('rulesContent'));
+
+  // ===== Поиск =====
+  var input = document.getElementById('rulesSearch');
+  var meta = document.getElementById('searchMeta');
+  var noResults = document.getElementById('noResults');
+  var articles = Array.prototype.slice.call(document.querySelectorAll('article.rule'));
+  var chapters = Array.prototype.slice.call(document.querySelectorAll('section.chapter'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var timer = null;
+
+  function clearMarks(root){
+    var marks = root.querySelectorAll('mark[data-hl]');
+    for (var i = 0; i < marks.length; i++){
+      var m = marks[i];
+      var parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    }
+  }
+  function markNode(node, query){
+    if (node.nodeType === 3){
+      var text = node.nodeValue;
+      var idx = text.toLowerCase().indexOf(query);
+      if (idx === -1) return;
+      var frag = document.createDocumentFragment();
+      var pos = 0;
+      while (idx !== -1){
+        frag.appendChild(document.createTextNode(text.slice(pos, idx)));
+        var mk = document.createElement('mark');
+        mk.setAttribute('data-hl','1');
+        mk.textContent = text.substr(idx, query.length);
+        frag.appendChild(mk);
+        pos = idx + query.length;
+        idx = text.toLowerCase().indexOf(query, pos);
+      }
+      frag.appendChild(document.createTextNode(text.slice(pos)));
+      node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === 1 && node.nodeName !== 'MARK' && node.nodeName !== 'SCRIPT' && node.nodeName !== 'IMG'){
+      var children = Array.prototype.slice.call(node.childNodes);
+      for (var i = 0; i < children.length; i++) markNode(children[i], query);
+    }
+  }
+
+  function runSearch(){
+    var q = input.value.trim().toLowerCase();
+    articles.forEach(function(a){ clearMarks(a); });
+
+    if (!q){
+      document.body.classList.remove('searching');
+      articles.forEach(function(a){ a.classList.remove('rule-hidden'); });
+      chapters.forEach(function(c){ c.classList.remove('chapter-hidden'); });
+      navLinks.forEach(function(l){ l.classList.remove('nav-hidden'); });
+      noResults.style.display = 'none';
+      meta.textContent = '';
+      return;
+    }
+
+    document.body.classList.add('searching');
+    var hits = 0;
+    articles.forEach(function(a){
+      var hay = (a.textContent + ' ' + (a.getAttribute('data-title') || '')).toLowerCase();
+      var match = hay.indexOf(q) !== -1;
+      a.classList.toggle('rule-hidden', !match);
+      if (match){ hits++; markNode(a, q); }
+    });
+    chapters.forEach(function(c){
+      var visible = c.querySelectorAll('article.rule:not(.rule-hidden)').length > 0;
+      c.classList.toggle('chapter-hidden', !visible);
+    });
+    navLinks.forEach(function(l){
+      var id = (l.getAttribute('href') || '').slice(1);
+      var target = document.getElementById(id);
+      var show = false;
+      if (target){
+        if (target.tagName === 'SECTION'){
+          show = !target.classList.contains('chapter-hidden');
+        } else {
+          var art = target.closest('article.rule');
+          var ch = target.closest('section.chapter');
+          if (art) show = !art.classList.contains('rule-hidden');
+          else if (ch) show = !ch.classList.contains('chapter-hidden');
+        }
+      }
+      l.classList.toggle('nav-hidden', !show);
+    });
+    noResults.style.display = hits ? 'none' : 'block';
+    meta.innerHTML = hits ? 'Найдено разделов: <b>' + hits + '</b>' : 'Ничего не найдено';
+  }
+
+  input.addEventListener('input', function(){
+    clearTimeout(timer);
+    timer = setTimeout(runSearch, 130);
+  });
+  document.getElementById('clearSearch').addEventListener('click', function(){
+    input.value = '';
+    runSearch();
+    input.focus();
+  });
+
+  // ===== Подсветка текущего раздела в оглавлении (только десктопное) =====
+  var desktopLinks = Array.prototype.slice.call(document.querySelectorAll('#tocDesktop a'));
+  var linkById = {};
+  desktopLinks.forEach(function(l){ linkById[(l.getAttribute('href')||'').slice(1)] = l; });
+  if ('IntersectionObserver' in window){
+    var current = null;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          var link = linkById[e.target.id];
+          if (link){
+            if (current) current.classList.remove('active');
+            link.classList.add('active');
+            current = link;
+          }
+        }
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    articles.forEach(function(a){ if (linkById[a.id]) io.observe(a); });
+    chapters.forEach(function(c){ if (linkById[c.id]) io.observe(c); });
+  }
+})();
+</script>
+</body>
+</html>
