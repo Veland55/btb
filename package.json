@@ -1,0 +1,13 @@
+{
+  "name": "bmg-crew-builder",
+  "version": "0.7.0",
+  "description": "Batman Miniature Game Crew Builder — app + zero-dependency Node server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "license": "MIT"
+}

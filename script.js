@@ -152,7 +152,7 @@ const translations = {
     compendium_search: "Поиск по трейтам, оружию, правилам...",
     model_search_placeholder: "Введите имя модели...",
     nothing_found: "Ничего не найдено",
-    subtitle: "Batman: Gotham Chronicles<br>Конструктор отрядов",
+    subtitle: "Batman Miniature Game<br>Конструктор отрядов",
     leader_first: "Первой моделью должен быть Leader для этой фракции!",
     leader_cults: "Для фракции Cults лидером может быть только Deacon Blackfire или Kobra",
     treacherous_cannot_be_boss: "Эта модель не может быть боссом отряда (Treacherous)",
@@ -218,7 +218,50 @@ const translations = {
     rule_boss_affiliation_objectives: "В колоду можно добавлять только карты целей с аффилиацией Босса или без аффилиации.",
     rule_rivals_blocks_affiliation: "Наём персонажей с Rivals: {faction} запрещает наём персонажей с аффилиацией {faction} в этом отряде.",
     rule_affiliation_blocks_rivals: "Наём персонажей с аффилиацией {faction} запрещает наём персонажей с Rivals: {faction} в этом отряде.",
-    rivals_exclusion_cannot_add: "Нельзя добавить: персонажи с Rivals: {faction} и персонажи с аффилиацией {faction} не могут быть в одном отряде"
+    rivals_exclusion_cannot_add: "Нельзя добавить: персонажи с Rivals: {faction} и персонажи с аффилиацией {faction} не могут быть в одном отряде",
+    profile: "ПРОФИЛЬ",
+    login: "ВОЙТИ",
+    register: "РЕГИСТРАЦИЯ",
+    logout: "ВЫЙТИ",
+    username: "Имя пользователя",
+    password: "Пароль",
+    my_crews: "МОИ ОТРЯДЫ",
+    models_word: "моделей",
+    load: "Загрузить",
+    save_crew: "Сохранить отряд",
+    save_name_prompt: "Название сохранения:",
+    save_done: "Отряд сохранён!",
+    saves_limit: "Достигнут лимит сохранений (5). Удалите одно из существующих.",
+    no_saves: "Пока нет сохранённых отрядов",
+    empty_crew_save: "Отряд пуст — нечего сохранять",
+    confirm_delete_save: "Удалить сохранение «{name}»?",
+    models_skipped: "Часть моделей не найдена в базе и пропущена",
+    auth_user_exists: "Пользователь с таким именем уже существует",
+    auth_bad_credentials: "Неверное имя пользователя или пароль",
+    auth_fill_fields: "Введите имя пользователя и пароль",
+    auth_server_note: "Аккаунт хранится на сервере приложения: сохранения доступны с любого устройства после входа.",
+    login_required: "Требуется вход в профиль",
+    server_unreachable: "Сервер недоступен. Приложение должно быть открыто через свой сервер (node server.js).",
+    server_error: "Ошибка сервера, попробуйте ещё раз",
+    game: "ИГРА",
+    game_login_note: "Для игры нужен профиль — войдите или зарегистрируйтесь.",
+    create_game: "СОЗДАТЬ ИГРУ",
+    create_game_hint: "Выберите ростер и получите код для оппонента.",
+    join_game: "ПРИСОЕДИНИТЬСЯ",
+    join_game_hint: "Введите код, полученный от оппонента, и выберите свой ростер.",
+    game_code: "Код игры",
+    game_code_placeholder: "КОД",
+    current_crew: "Текущий отряд из билдера",
+    no_rosters: "Нет доступных ростеров: соберите отряд в билдере или сохраните его в профиле.",
+    share_code_hint: "Передайте этот код оппоненту — он вводит его в разделе ИГРА на своём устройстве.",
+    waiting_opponent: "Ожидание оппонента...",
+    leave_game: "ПОКИНУТЬ ИГРУ",
+    your_roster: "ВАШ РОСТЕР",
+    opponent_roster: "РОСТЕР ОППОНЕНТА",
+    game_not_found: "Игра не найдена или срок её действия истёк",
+    game_full: "В этой игре уже есть второй игрок",
+    game_own: "Нельзя присоединиться к собственной игре",
+    related_rules: "СВЯЗАННЫЕ ПРАВИЛА"
   },
   en: {
     cards: "CARDS",
@@ -236,7 +279,7 @@ const translations = {
     compendium_search: "Search traits, weapons, rules...",
     model_search_placeholder: "Enter model name...",
     nothing_found: "Nothing found",
-    subtitle: "Batman: Gotham Chronicles<br>Crew Builder",
+    subtitle: "Batman Miniature Game<br>Crew Builder",
     leader_first: "Leader must be the first model for this faction!",
     leader_cults: "For Cults faction, only Deacon Blackfire or Kobra can be leader",
     treacherous_cannot_be_boss: "This model cannot be the Boss of your crew (Treacherous)",
@@ -302,7 +345,50 @@ const translations = {
     rule_boss_affiliation_objectives: "This affiliation can only add objective cards that share the chosen Boss Affiliation Keyword, or that have no Affiliation Keywords.",
     rule_rivals_blocks_affiliation: "When creating a crew with this affiliation, hiring characters with Rivals: {faction} will prevent hiring characters with Affiliation: {faction} in the same crew.",
     rule_affiliation_blocks_rivals: "When creating a crew with this affiliation, hiring characters with Affiliation: {faction} will prevent hiring characters with Rivals: {faction} in the same crew.",
-    rivals_exclusion_cannot_add: "Cannot add: characters with Rivals: {faction} and characters with Affiliation: {faction} cannot be in the same crew"
+    rivals_exclusion_cannot_add: "Cannot add: characters with Rivals: {faction} and characters with Affiliation: {faction} cannot be in the same crew",
+    profile: "PROFILE",
+    login: "LOG IN",
+    register: "REGISTER",
+    logout: "LOG OUT",
+    username: "Username",
+    password: "Password",
+    my_crews: "MY CREWS",
+    models_word: "models",
+    load: "Load",
+    save_crew: "Save crew",
+    save_name_prompt: "Save name:",
+    save_done: "Crew saved!",
+    saves_limit: "Save limit reached (5). Delete an existing save first.",
+    no_saves: "No saved crews yet",
+    empty_crew_save: "Crew is empty — nothing to save",
+    confirm_delete_save: "Delete save \"{name}\"?",
+    models_skipped: "Some models were not found in the database and were skipped",
+    auth_user_exists: "A user with this name already exists",
+    auth_bad_credentials: "Wrong username or password",
+    auth_fill_fields: "Enter username and password",
+    auth_server_note: "Your account is stored on the app server: saves are available from any device after logging in.",
+    login_required: "Login required",
+    server_unreachable: "Server unreachable. The app must be opened through its own server (node server.js).",
+    server_error: "Server error, please try again",
+    game: "GAME",
+    game_login_note: "A profile is required to play — log in or register.",
+    create_game: "CREATE GAME",
+    create_game_hint: "Choose a roster and get a code for your opponent.",
+    join_game: "JOIN GAME",
+    join_game_hint: "Enter the code from your opponent and choose your roster.",
+    game_code: "Game code",
+    game_code_placeholder: "CODE",
+    current_crew: "Current crew from the builder",
+    no_rosters: "No rosters available: build a crew in the builder or save one to your profile.",
+    share_code_hint: "Share this code with your opponent — they enter it in the GAME section on their device.",
+    waiting_opponent: "Waiting for opponent...",
+    leave_game: "LEAVE GAME",
+    your_roster: "YOUR ROSTER",
+    opponent_roster: "OPPONENT'S ROSTER",
+    game_not_found: "Game not found or expired",
+    game_full: "This game already has a second player",
+    game_own: "You can't join your own game",
+    related_rules: "RELATED RULES"
   }
 };
 
@@ -349,6 +435,11 @@ function setLanguage(lang) {
   if (document.getElementById('compendiumModal').classList.contains('active')) {
     openCompendium();
   }
+
+  // Динамические разделы (профиль, игра) рендерятся из JS — перерисовываем их,
+  // чтобы перевод применялся сразу, а не после закрытия/открытия
+  if (typeof renderAuthModal === 'function') renderAuthModal();
+  if (typeof renderGame === 'function' && currentMode === 'game') renderGame();
 }
 
 // Загрузка сохранённого языка при старте
@@ -604,12 +695,14 @@ function showCards() {
   $('mainMenu').style.display = 'none';
   $('cardsSection').style.display = 'block';
   $('builderSection').style.display = 'none';
+  if ($('gameSection')) $('gameSection').style.display = 'none';
   $('compendiumModal').classList.remove('active');
 
   // Сбрасываем фракцию и показываем вкладки
   currentFaction = null;
   $('modelsGridCards').innerHTML = '';
   $('cardsTabsContainer').classList.remove('hidden');
+  closeBuilderCardPanel();
   initTabs();
 }
 
@@ -617,6 +710,7 @@ function showBuilder() {
   currentMode = 'builder';
   $('mainMenu').style.display = 'none';
   $('cardsSection').style.display = 'none';
+  if ($('gameSection')) $('gameSection').style.display = 'none';
   $('builderSection').style.display = 'block';
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
@@ -635,6 +729,8 @@ function backToMenu() {
   $('mainMenu').style.display = 'flex';
   $('cardsSection').style.display = 'none';
   $('builderSection').style.display = 'none';
+  if ($('gameSection')) $('gameSection').style.display = 'none';
+  if (typeof stopGamePolling === 'function') stopGamePolling();
   $('compendiumModal').classList.remove('active');
   $('modelSearchModal').classList.remove('active');
   closeBuilderCardPanel();
@@ -1043,7 +1139,7 @@ function renderMiniCardHTML(item, showButtons) {
 
   const equipment = item.inCrew ? (item.instance.equipment || []) : [];
   const equipmentChipsHTML = equipment.map(eq => `
-    <span class="mini-equipment-chip">
+    <span class="mini-equipment-chip" onclick="event.stopPropagation(); showEquipmentInfo('${item.name.replace(/'/g, "\\'")}', '${eq.name.replace(/'/g, "\\'")}')">
       ${eq.name}${eq.fundingCost ? ` <b>$${eq.fundingCost}</b>` : ''}${eq.repCost ? ` +${eq.repCost}Rep` : ''}
       <span class="mini-equipment-remove" onclick="event.stopPropagation(); removeEquipmentFromModel('${item.name}', '${eq.name.replace(/'/g, "\\'")}')">×</span>
     </span>
@@ -1419,29 +1515,32 @@ const buildFullCardHTML = model => {
 };
 
 // ======================== ПОКАЗ КАРТОЧКИ ========================
-// В билдере на широких экранах (ПК/планшет) карточка открывается в боковой
-// панели справа от списка моделей, а не на весь экран. Медиа-условие должно
-// совпадать с @media для .builder-card-panel в style.css.
+// В билдере и в разделе "Карточки" на широких экранах (ПК/планшет) карточка
+// открывается в боковой панели справа от списка моделей, а не на весь экран.
+// Медиа-условие должно совпадать с @media для .builder-card-panel в style.css.
 const BUILDER_PANEL_MEDIA = '(min-width: 768px)';
 let sidePanelModel = null; // модель, открытая сейчас в боковой панели
 
-const useBuilderSidePanel = () =>
-  currentMode === 'builder' &&
-  window.matchMedia(BUILDER_PANEL_MEDIA).matches &&
-  $('builderCardPanel') &&
+// Панель текущего раздела или null, если нужен полноэкранный показ
+function getActiveSidePanel() {
+  if (!window.matchMedia(BUILDER_PANEL_MEDIA).matches) return null;
   // из полноэкранного поиска моделей карточка открывается поверх модалки, а не в панели
-  !$('modelSearchModal').classList.contains('active');
+  if ($('modelSearchModal').classList.contains('active')) return null;
+  if (currentMode === 'builder') return $('builderCardPanel');
+  if (currentMode === 'cards') return $('cardsCardPanel');
+  return null;
+}
 
 const showFullCard = model => {
   const cardHTML = buildFullCardHTML(model);
+  const panel = getActiveSidePanel();
 
-  if (useBuilderSidePanel()) {
-    const panel = $('builderCardPanel');
+  if (panel) {
     sidePanelModel = model;
     const glossaryHTML = buildGlossaryHTML(model);
     // Карточка и глоссарий — колонками внутри .builder-panel-body:
-    // на широких экранах (см. style.css) глоссарий встаёт справа от карточки,
-    // на узких планшетах — под ней
+    // на широких экранах (см. style.css) глоссарий встаёт справа от карточки
+    // и скроллится независимо от неё, на узких планшетах — под ней
     panel.innerHTML = `
       <div class="close-full builder-panel-close" onclick="closeBuilderCardPanel()">X</div>
       <div class="builder-panel-body">
@@ -1450,7 +1549,10 @@ const showFullCard = model => {
       </div>`;
     panel.classList.toggle('has-glossary', !!glossaryHTML);
     panel.classList.add('active');
+    // Сбрасываем прокрутку панели и обеих её колонок
     panel.scrollTop = 0;
+    panel.querySelectorAll('.builder-panel-card, .builder-panel-glossary')
+      .forEach(col => col.scrollTop = 0);
     return;
   }
 
@@ -1461,18 +1563,21 @@ const showFullCard = model => {
 
 const closeFullCard = () => $("fullCard").classList.remove("active");
 
+// Закрывает боковые панели карточки (и в билдере, и в разделе "Карточки")
 function closeBuilderCardPanel() {
-  const panel = $('builderCardPanel');
-  if (panel) {
-    panel.classList.remove('active');
-    panel.innerHTML = '';
-  }
+  ['builderCardPanel', 'cardsCardPanel'].forEach(id => {
+    const panel = $(id);
+    if (panel) {
+      panel.classList.remove('active');
+      panel.innerHTML = '';
+    }
+  });
   sidePanelModel = null;
 }
 
 // Перерисовать боковую панель, если в ней открыта модель с этим именем
 function refreshBuilderCardPanel(modelName) {
-  if (sidePanelModel && sidePanelModel.name === modelName && useBuilderSidePanel()) {
+  if (sidePanelModel && sidePanelModel.name === modelName && getActiveSidePanel()) {
     showFullCard(sidePanelModel);
   }
 }
@@ -1546,6 +1651,65 @@ const renderModelSearch = () => {
 
 $("modelSearchInput").oninput = renderModelSearch;
 
+// ======================== СВЯЗАННЫЕ ПРАВИЛА В ПОПАПАХ ========================
+// Ищет в тексте упоминания известных трейтов/правил из компендиума, чтобы показать
+// их расшифровку прямо в попапе: клик по апгрейду "Model gains the X trait" сразу
+// показывает и сам апгрейд, и что такое X.
+let compendiumKeysByLength = null;
+
+function findRelatedRules(text, excludeName) {
+  if (!window.compendium || !text) return [];
+  if (!compendiumKeysByLength) {
+    compendiumKeysByLength = compendiumKeys
+      .map(k => ({ key: k, clean: getCleanName(k).replace(/\s*\(.*\)\s*$/, '').trim() }))
+      .filter(e => e.clean.length >= 4)
+      // длинные имена раньше — чтобы "Acid Coating" находился прежде, чем "Acid"
+      .sort((a, b) => b.clean.length - a.clean.length);
+  }
+
+  const plain = String(text).replace(/<[^>]*>/g, ' ').replace(/\{[^}]*\}/g, ' ');
+  const exclude = getCleanName(excludeName || '').replace(/\s*\(.*\)\s*$/, '').trim().toLowerCase();
+  const claimed = []; // занятые диапазоны текста — вложенные короткие имена не дублируются
+  const found = [];
+
+  for (const e of compendiumKeysByLength) {
+    if (found.length >= 5) break;
+    if (e.clean.toLowerCase() === exclude) continue;
+    // Поиск с учётом регистра: названия правил в текстах пишутся с заглавных букв
+    let idx = plain.indexOf(e.clean);
+    while (idx !== -1) {
+      const end = idx + e.clean.length;
+      const before = plain[idx - 1] || ' ';
+      const after = plain[end] || ' ';
+      const isWholeWord = !/[A-Za-zА-Яа-я0-9]/.test(before) && !/[A-Za-zА-Яа-я0-9]/.test(after);
+      const overlaps = claimed.some(r => idx < r[1] && end > r[0]);
+      if (isWholeWord && !overlaps) {
+        claimed.push([idx, end]);
+        found.push(e.key);
+        break;
+      }
+      idx = plain.indexOf(e.clean, idx + 1);
+    }
+  }
+  return found;
+}
+
+function relatedRulesHTML(text, excludeName) {
+  const names = findRelatedRules(text, excludeName);
+  const items = names.map(name => {
+    const desc = window.compendium[name] || getTraitDescription(name);
+    if (!desc) return '';
+    return `
+      <div class="popup-related-entry">
+        <div class="popup-related-name">${replaceIcons(name)}</div>
+        <div class="popup-related-desc">${replaceIcons(desc).replace(/\n/g, '<br>')}</div>
+      </div>`;
+  }).join('');
+  return items
+    ? `<div class="popup-related"><div class="popup-related-title">${t('related_rules')}</div>${items}</div>`
+    : '';
+}
+
 // ======================== ТРЕЙТЫ ========================
 function showTraitDesc(traitName) {
   // 1. Твоя родная логика поиска 1 в 1
@@ -1564,7 +1728,7 @@ function showTraitDesc(traitName) {
   overlay.className = "trait-popup";
 
   // Обрабатываем иконки в заголовке и в самом тексте
-  const formattedTitle = replaceIcons(traitName); 
+  const formattedTitle = replaceIcons(traitName);
   const formattedBody = replaceIcons(rawText).replace(/\n/g, "<br>");
 
   overlay.innerHTML = `
@@ -1575,6 +1739,7 @@ function showTraitDesc(traitName) {
       </div>
       <div class="trait-popup-body">
         ${formattedBody}
+        ${relatedRulesHTML(rawText, traitName)}
       </div>
     </div>
   `;
@@ -1590,7 +1755,7 @@ function showTraitPopup(name, desc) {
   // Обрабатываем и название, и описание с заменой иконок
   const processedName = replaceIcons(name || '');
   const processedDesc = replaceIcons(desc || '');
-  
+
   // Создаём overlay (как в showRankSelectionModal)
   const overlay = document.createElement("div");
   overlay.className = "trait-popup";
@@ -1602,6 +1767,7 @@ function showTraitPopup(name, desc) {
       </div>
       <div class="trait-popup-body">
         ${processedDesc}
+        ${relatedRulesHTML(desc || '', name)}
       </div>
     </div>
   `;
@@ -1612,6 +1778,16 @@ function showTraitPopup(name, desc) {
   };
 
   document.body.appendChild(overlay);
+}
+
+// Инфо о купленном апгрейде по клику на чип в списке билдера:
+// показывает эффекты и (через relatedRulesHTML) расшифровку упомянутых в них правил
+function showEquipmentInfo(modelName, eqName) {
+  const crewModel = crew.find(m => m.name === modelName);
+  const eq = crewModel && (crewModel.equipment || []).find(e => e.name === eqName);
+  if (!eq) return;
+  const cost = `($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})`;
+  showTraitPopup(`${eq.name} ${cost}`, (eq.effects || []).join('<br>'));
 }
 
 // Новая функция для показа effects equipment
@@ -1655,6 +1831,7 @@ function initTabs() {
     if (card.closest('#cardsSection')) { // Для cardsSection
       // Скрываем вкладки фракций после выбора
       $('cardsTabsContainer').classList.add('hidden');
+      closeBuilderCardPanel(); // карточка предыдущей фракции в панели больше не актуальна
       renderMiniCardsView(); // Рендерим модели только после выбора
     } else if (card.closest('#factionSelect')) {
       selectFaction(card.dataset.faction);

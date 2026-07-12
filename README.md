@@ -1,8 +1,8 @@
 # BMG Crew Builder
 
-**Batman: Gotham Chronicles Crew Builder** — это интерактивный веб-инструмент для создания и управления отрядами в настольной игре Batman Miniature Game от Knight Models.
+**Batman Miniature Game Crew Builder** — это интерактивный веб-инструмент для создания и управления отрядами в настольной игре Batman Miniature Game от Knight Models.
 
-**Batman: Gotham Chronicles Crew Builder** is an interactive web tool for creating and managing crews in the Batman Miniature Game tabletop game by Knight Models.
+**Batman Miniature Game Crew Builder** is an interactive web tool for creating and managing crews in the Batman Miniature Game tabletop game by Knight Models.
 
 ---
 
@@ -82,9 +82,13 @@ This project helps players quickly build crews by checking all model hiring rule
 
 ```
 btb-main/
-├── index.html          # Приложение: карточки + билдер / App: cards + builder
+├── server.js           # Сервер: статика + API (Node.js, без зависимостей)
+│                       #   Server: static files + API (Node.js, zero-dependency)
+├── index.html          # Приложение: карточки + билдер + игра / App: cards + builder + game
 ├── style.css           # Стили и адаптивный дизайн / Styles and responsive design
 ├── script.js           # Логика приложения / Application logic
+├── auth.js             # Профили и сохранения (клиент API) / Profiles & saves (API client)
+├── game.js             # Раздел ИГРА: обмен ростерами по коду / GAME section: roster sharing
 ├── data.js             # Модели, снаряжение, правила фракций / Models, equipment, faction rules
 ├── data-traits.js      # Единая база трейтов и правил — используется приложением
 │                       #   и compendium.html / Shared traits DB (app + compendium page)
@@ -93,6 +97,7 @@ btb-main/
 ├── img/                # Изображения моделей и иконки / Model images and icons
 │   ├── ico/            # Иконки-токены текстов ({..._ICON}) / Inline text icons
 │   └── menu/           # Иконки и фоны фракций / Faction icons & backgrounds
+├── data/bmg.db         # База сервера: пользователи, сохранения, игры (создаётся сама)
 └── README.md           # Этот файл / This file
 ```
 
@@ -160,22 +165,44 @@ The project supports 20 factions:
 ## 🔧 Установка и запуск / Installation & Running
 
 ### 🇷🇺 Русский
-Проект не требует сборки или установки зависимостей. Просто откройте `index.html` в браузере.
+Проекту нужен только **Node.js 22.5+** — никаких npm-зависимостей и сборки.
 
 ```bash
-# Или используйте локальный сервер
-python -m http.server 8000
-# Откройте http://localhost:8000
+node server.js
+# Откройте http://localhost:8080  (порт меняется через переменную окружения PORT)
 ```
+
+Сервер раздаёт статику приложения и предоставляет API:
+- **Профили** — регистрация/вход (пароли хранятся как scrypt-хэши с солью);
+- **Сохранения отрядов** — до 5 на пользователя, доступны с любого устройства;
+- **Игровые комнаты** — обмен ростерами с оппонентом по 6-значному коду (живут 24 часа).
+
+Все данные — в одном компактном файле `data/bmg.db` (SQLite, встроенный `node:sqlite`).
+Ростеры хранятся в сжатом формате (имена-ссылки на базу моделей, ~200–400 байт на отряд).
+
+**Деплой на свой сервер:** скопируйте папку проекта, запустите `node server.js`
+(или `npm start`) под systemd/pm2; при необходимости поставьте впереди nginx с HTTPS.
+Бэкапится один файл: `data/bmg.db`.
 
 ### 🇬🇧 English
-The project requires no build or dependency installation. Simply open `index.html` in a browser.
+The project only needs **Node.js 22.5+** — no npm dependencies, no build step.
 
 ```bash
-# Or use a local server
-python -m http.server 8000
-# Open http://localhost:8000
+node server.js
+# Open http://localhost:8080  (override the port with the PORT env variable)
 ```
+
+The server serves the app's static files and provides an API:
+- **Profiles** — register/login (passwords stored as salted scrypt hashes);
+- **Crew saves** — up to 5 per user, available from any device;
+- **Game rooms** — share rosters with an opponent via a 6-character code (24h lifetime).
+
+All data lives in a single compact `data/bmg.db` file (SQLite via built-in `node:sqlite`).
+Rosters are stored in a compressed format (name references into the model DB, ~200–400 bytes per crew).
+
+**Deploying to your own server:** copy the project folder, run `node server.js`
+(or `npm start`) under systemd/pm2; optionally put nginx with HTTPS in front.
+Back up a single file: `data/bmg.db`.
 
 ---
 
