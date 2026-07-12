@@ -45,12 +45,12 @@ const FACTION_ICON_MAP = {
 };
 
 function buildFactionCardsHTML() {
-  const base = "https://veland55.github.io/btb/img/menu/";
+  const base = "img/menu/";
   return Object.entries(FACTION_ICON_MAP).map(([faction, iconFile]) => {
     const bgFile = iconFile.replace(/\.png$/, ".jpg");
     return `
         <div class="faction-card" data-faction="${faction}" style="background-image: url('${base}${bgFile}');">
-          <img class="faction-icon" src="${base}${iconFile}" alt="${faction}">
+          <img class="faction-icon" src="${base}${iconFile}" alt="${faction}" loading="lazy" decoding="async">
         </div>`;
   }).join("");
 }
@@ -107,6 +107,17 @@ const ICON_MAP = {
   "{RANK_VEHICLE_ICON}": "img/ico/RANK_VEHICLE_ICON.png",
   "{SPECIAL_ICON}": "img/ico/SPECIAL_ICON.png",
   "{STUN_ICON}": "img/ico/STUN_ICON.png"
+};
+
+// Значки характеристик на полной карточке модели.
+// ВАЖНО: вынесены отдельно от ICON_MAP и берутся из /img/ (а не /img/ico/),
+// чтобы смена источника этих значков не задевала встраиваемые иконки текстов
+// ({...}-токены в трейтах, компендиуме и попапах — они остаются на /img/ico/).
+const STAT_ICONS = {
+  Attack: "img/Attack.png",
+  Defense: "img/Defense.png",
+  Strength: "img/Strength.png",
+  Movement: "img/Movement.png"
 };
 
 function replaceIcons(text) {
@@ -626,6 +637,7 @@ function backToMenu() {
   $('builderSection').style.display = 'none';
   $('compendiumModal').classList.remove('active');
   $('modelSearchModal').classList.remove('active');
+  closeBuilderCardPanel();
   resetCrew();
 
   // Восстанавливаем состояние для cardsSection при повторном входе
@@ -640,6 +652,7 @@ function backToFactionSelect() {
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
   $('builderFactionCards').classList.remove('hidden'); // Показываем вкладки фракций
+  closeBuilderCardPanel();
   resetCrew();
 }
 
@@ -1003,7 +1016,7 @@ function sortModelsByRank(list) {
 
 // HTML иконок рангов модели (используется в шапке полной карточки)
 const renderRankIconsHTML = ranks => ranks.map(rank =>
-  `<img src="https://veland55.github.io/btb/img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='https://veland55.github.io/btb/img/no.png'">`
+  `<img src="img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='img/no.png'">`
 ).join('');
 
 // Общая разметка мини-карточки для разделов "Карточки" и "Билдер":
@@ -1046,7 +1059,7 @@ function renderMiniCardHTML(item, showButtons) {
   return `
 ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 <div class="mini-photo-wrap">
-  <img src="${item.img}" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+  <img src="${item.img}" loading="lazy" decoding="async" onerror="this.src='img/no.png'">
   ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
 </div>
 <div class="mini-right-col">
@@ -1272,22 +1285,26 @@ function renderGlossarySection(title, names) {
   return items ? `<div class="sidebar-section"><div class="sidebar-title">${title}</div>${items}</div>` : '';
 }
 
-function renderFullCardSidebar(model) {
-  const sidebarEl = $('fullCardSidebar');
-  if (!sidebarEl) return;
-
+// HTML глоссария (расшифровка трейтов модели и правил её оружия)
+function buildGlossaryHTML(model) {
   const traitNames = model.traits || [];
   const weaponTraitNames = [...new Set(
     (model.weapons || [])
       .filter(w => w && w.traits)
       .flatMap(w => w.traits.split('/').map(t => t.trim()).filter(Boolean))
   )];
+  return renderGlossarySection('TRAITS', traitNames) + renderGlossarySection('WEAPON RULES', weaponTraitNames);
+}
 
-  const html = renderGlossarySection('TRAITS', traitNames) + renderGlossarySection('WEAPON RULES', weaponTraitNames);
+function renderFullCardSidebar(model) {
+  const sidebarEl = $('fullCardSidebar');
+  if (!sidebarEl) return;
+  const html = buildGlossaryHTML(model);
   sidebarEl.innerHTML = html || `<div class="sidebar-empty">${t("nothing_found")}</div>`;
 }
 
-const showFullCard = model => {
+// Сборка HTML полной карточки модели (общая для полноэкранного показа и боковой панели билдера)
+const buildFullCardHTML = model => {
   const realName = model.realname || "—";
   const base = model.base || "30mm";
 
@@ -1307,7 +1324,7 @@ const showFullCard = model => {
   const renderIcons = arr => arr.length
     ? arr.map(f => {
         const file = FACTION_ICON_MAP[f] || "UNKNOWN.png";
-        return `<img src="https://veland55.github.io/btb/img/${file}" alt="${f}" class="faction-icon-small">`;
+        return `<img src="img/menu/${file}" alt="${f}" class="faction-icon-small">`;
       }).join(" ")
     : "—";
 
@@ -1324,8 +1341,8 @@ const showFullCard = model => {
           <span class="official-weapon-name">${(w.name || "Unnamed").toUpperCase()}</span>
           <span class="official-weapon-stats">
             ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
-            ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="https://veland55.github.io/btb/img/rof.png" class="stat-icon"></span>` : ""}
-            ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="https://veland55.github.io/btb/img/ammo.png" class="stat-icon"></span>` : ""}
+            ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="img/rof.png" class="stat-icon"></span>` : ""}
+            ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="img/ammo.png" class="stat-icon"></span>` : ""}
           </span>
         </div>
         ${traits.length ? `<div class="official-weapon-traits-line">${traits.map(tr => `<span class="weapon-trait-text" onclick="event.stopPropagation(); showTraitDesc('${tr.replace(/'/g, "\\'")}')">${tr.toUpperCase()}</span>`).join(" / ")}</div>` : ""}
@@ -1359,7 +1376,7 @@ const showFullCard = model => {
   const rankIconsHTML = renderRankIconsHTML(getRanks(model));
 
   // --- Финальная сборка карточки ---
-  $("fullCardContent").innerHTML = `
+  return `
     <div class="official-card">
       <div class="official-header">
         <div class="official-header-text">
@@ -1373,7 +1390,7 @@ const showFullCard = model => {
 
       <div class="official-main">
         <div class="official-img-wrapper">
-          <img src="${model.img}" class="official-img" onerror="this.src='https://veland55.github.io/btb/img/no.png'">
+          <img src="${model.img}" class="official-img" decoding="async" onerror="this.src='img/no.png'">
         </div>
         <div class="official-info-col">
           <div class="official-aff-riv-row">
@@ -1387,10 +1404,10 @@ const showFullCard = model => {
           <div class="official-stats-grid">
             <div class="stat-badge stat-big stat-yellow"><span class="stat-num">${model.stats.Willpower || "-"}</span><span class="stat-name">WILLPOWER</span></div>
             <div class="stat-badge stat-big stat-black"><span class="stat-num">${model.stats.Endurance || "-"}</span><span class="stat-name">ENDURANCE</span></div>
-            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Attack.png"><span class="stat-num">${model.stats.Attack || "-"}</span></div>
-            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Defense.png"><span class="stat-num">${model.stats.Defense || "-"}</span></div>
-            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Strength.png"><span class="stat-num">${model.stats.Strength || "-"}</span></div>
-            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="https://veland55.github.io/btb/img/ico/Movement.png"><span class="stat-num">${model.stats.Movement || "-"}</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="${STAT_ICONS.Attack}"><span class="stat-num">${model.stats.Attack || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="${STAT_ICONS.Defense}"><span class="stat-num">${model.stats.Defense || "-"}</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="${STAT_ICONS.Strength}"><span class="stat-num">${model.stats.Strength || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="${STAT_ICONS.Movement}"><span class="stat-num">${model.stats.Movement || "-"}</span></div>
           </div>
         </div>
       </div>
@@ -1399,13 +1416,66 @@ const showFullCard = model => {
       ${traitsHTML}
       ${equipmentHTML}
     </div>`;
+};
 
+// ======================== ПОКАЗ КАРТОЧКИ ========================
+// В билдере на широких экранах (ПК/планшет) карточка открывается в боковой
+// панели справа от списка моделей, а не на весь экран. Медиа-условие должно
+// совпадать с @media для .builder-card-panel в style.css.
+const BUILDER_PANEL_MEDIA = '(min-width: 768px)';
+let sidePanelModel = null; // модель, открытая сейчас в боковой панели
+
+const useBuilderSidePanel = () =>
+  currentMode === 'builder' &&
+  window.matchMedia(BUILDER_PANEL_MEDIA).matches &&
+  $('builderCardPanel') &&
+  // из полноэкранного поиска моделей карточка открывается поверх модалки, а не в панели
+  !$('modelSearchModal').classList.contains('active');
+
+const showFullCard = model => {
+  const cardHTML = buildFullCardHTML(model);
+
+  if (useBuilderSidePanel()) {
+    const panel = $('builderCardPanel');
+    sidePanelModel = model;
+    const glossaryHTML = buildGlossaryHTML(model);
+    // Карточка и глоссарий — колонками внутри .builder-panel-body:
+    // на широких экранах (см. style.css) глоссарий встаёт справа от карточки,
+    // на узких планшетах — под ней
+    panel.innerHTML = `
+      <div class="close-full builder-panel-close" onclick="closeBuilderCardPanel()">X</div>
+      <div class="builder-panel-body">
+        <div class="builder-panel-card">${cardHTML}</div>
+        ${glossaryHTML ? `<div class="builder-panel-glossary">${glossaryHTML}</div>` : ''}
+      </div>`;
+    panel.classList.toggle('has-glossary', !!glossaryHTML);
+    panel.classList.add('active');
+    panel.scrollTop = 0;
+    return;
+  }
+
+  $("fullCardContent").innerHTML = cardHTML;
   renderFullCardSidebar(model);
-
   $("fullCard").classList.add("active");
 };
 
 const closeFullCard = () => $("fullCard").classList.remove("active");
+
+function closeBuilderCardPanel() {
+  const panel = $('builderCardPanel');
+  if (panel) {
+    panel.classList.remove('active');
+    panel.innerHTML = '';
+  }
+  sidePanelModel = null;
+}
+
+// Перерисовать боковую панель, если в ней открыта модель с этим именем
+function refreshBuilderCardPanel(modelName) {
+  if (sidePanelModel && sidePanelModel.name === modelName && useBuilderSidePanel()) {
+    showFullCard(sidePanelModel);
+  }
+}
 
 // ======================== COMPENDIUM ========================
 const openCompendium = () => {
@@ -1560,6 +1630,8 @@ function removeEquipmentFromModel(modelName, eqName) {
       if ($("fullCard").classList.contains("active")) {
         showFullCard(models.find(m => m.name === modelName));
       }
+      // Обновляем боковую панель билдера, если в ней открыта эта модель
+      refreshBuilderCardPanel(modelName);
     }
   }
 }
@@ -2434,6 +2506,7 @@ function openEquipmentMenu(model, cardElement) {
       modifiers = calculateModifiers();
       updateCrewBar();
       renderMiniCardsBuilder();
+      refreshBuilderCardPanel(model.name);
 
       // Закрываем и открываем заново для обновления списка
       overlay.remove();

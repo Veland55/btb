@@ -82,17 +82,26 @@ This project helps players quickly build crews by checking all model hiring rule
 
 ```
 btb-main/
-├── index.html          # Основная HTML-разметка / Main HTML markup
+├── index.html          # Приложение: карточки + билдер / App: cards + builder
 ├── style.css           # Стили и адаптивный дизайн / Styles and responsive design
 ├── script.js           # Логика приложения / Application logic
-├── data.js             # Данные моделей, снаряжения и правила фракций
-├── data_old.js         # Старая версия данных / Old data version
-├── data trait.js       # Данные трейтов / Trait data
+├── data.js             # Модели, снаряжение, правила фракций / Models, equipment, faction rules
+├── data-traits.js      # Единая база трейтов и правил — используется приложением
+│                       #   и compendium.html / Shared traits DB (app + compendium page)
+├── compendium.html     # Справочник (трейты рендерятся из data-traits.js)
+├── rules.html          # Конспект правил игры / Rules wiki
 ├── img/                # Изображения моделей и иконки / Model images and icons
-│   ├── ico/            # Иконки интерфейса / UI icons
-│   └── menu/           # Изображения меню / Menu images
+│   ├── ico/            # Иконки-токены текстов ({..._ICON}) / Inline text icons
+│   └── menu/           # Иконки и фоны фракций / Faction icons & backgrounds
 └── README.md           # Этот файл / This file
 ```
+
+**Примечания по структуре / Structure notes:**
+- Трейты правятся только в `data-traits.js` — раздел The Traits в `compendium.html` и
+  справочник внутри приложения строятся из него автоматически.
+- Все пути к картинкам относительные (`img/...`) — приложение работает локально и на любом хостинге.
+- Значки характеристик полной карточки (Attack/Defense/Strength/Movement) берутся из `img/`
+  и вынесены в константу `STAT_ICONS` в `script.js` отдельно от иконок-токенов (`img/ico/`).
 
 ---
 

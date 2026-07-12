@@ -201,7 +201,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .official-header-rank { display:flex; align-items:center; gap:6px; flex-shrink:0; }
 .official-header-rank .rank-icon { background:#fff; }
 
-.official-main { display:flex; gap:10px; padding:10px; background:url('https://veland55.github.io/btb/img/card-bg.jpg') center/cover no-repeat #f5f5f5; min-height:220px; }
+.official-main { display:flex; gap:10px; padding:10px; background:url('img/card-bg.jpg') center/cover no-repeat #f5f5f5; min-height:220px; }
 .official-img-wrapper { flex:0 0 45%; max-width:200px; display:flex; align-items:stretch; justify-content:center; overflow:hidden; }
 .official-img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
 
@@ -600,6 +600,73 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
   .btn-icon {
     font-size: 24px;
+  }
+}
+
+/* ======================== БОКОВАЯ ПАНЕЛЬ КАРТОЧКИ В БИЛДЕРЕ ======================== */
+/* На мобильных панель не существует — карточка открывается на весь экран (.full-card).
+   На ПК/планшетах (>=768px, см. BUILDER_PANEL_MEDIA в script.js) карточка открывается
+   справа от списка моделей. */
+.builder-card-panel { display: none; }
+
+@media (min-width: 768px) {
+  .builder-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+  .builder-layout .models-list {
+    flex: 1;
+    min-width: 0;
+    max-width: none;   /* внутри flex-строки центрирование не нужно */
+    margin: 0;
+    padding: 10px 0;
+  }
+  .builder-card-panel.active {
+    display: block;
+    width: clamp(340px, 40vw, 480px);
+    flex-shrink: 0;
+    position: sticky;
+    top: 125px;                       /* высота липкого топ-бара билдера */
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    margin-top: 10px;
+    border-radius: 18px;
+    background: #0d0d0d;
+    box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  }
+  .builder-card-panel .official-card { margin: 0; }
+  .builder-panel-close { position: sticky; top: 8px; margin-left: auto; margin-right: 8px; margin-bottom: -38px; }
+  .builder-panel-glossary {
+    background: #141414; color: #eee; border-radius: 0 0 18px 18px;
+    padding: 16px 20px; margin-top: 2px;
+  }
+}
+
+/* На широких экранах расшифровка трейтов — справа от карточки (второй колонкой),
+   а не под ней; панель при этом становится шире */
+@media (min-width: 1200px) {
+  .builder-card-panel.active.has-glossary { width: clamp(720px, 56vw, 940px); }
+  .builder-card-panel.has-glossary .builder-panel-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .builder-card-panel.has-glossary .builder-panel-card {
+    flex: 0 0 clamp(340px, 26vw, 480px);
+    min-width: 0;
+  }
+  .builder-card-panel.has-glossary .builder-panel-glossary {
+    flex: 1;
+    min-width: 240px;
+    margin-top: 0;
+    border-radius: 16px;
+    /* липнет к верху при прокрутке панели, пока карточка длиннее глоссария */
+    position: sticky;
+    top: 0;
   }
 }
 

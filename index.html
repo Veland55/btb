@@ -4,8 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>BMG Crew Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
+  <script src="data.js" defer></script>
+  <script src="data-traits.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
 
@@ -116,7 +122,11 @@
         </div>
       </div>
 
-      <div id="modelsGridBuilder" class="models-list"></div>
+      <!-- Список моделей + боковая панель просмотра карточки (панель видна только на ПК/планшетах) -->
+      <div class="builder-layout">
+        <div id="modelsGridBuilder" class="models-list"></div>
+        <aside id="builderCardPanel" class="builder-card-panel"></aside>
+      </div>
     </div>
   </div>
 
@@ -165,7 +175,5 @@
     <div class="full-card-sidebar" id="fullCardSidebar"></div>
   </div>
 
-  <script src="data.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>
