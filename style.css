@@ -366,6 +366,36 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   background:#000; border:2px dashed #e94560; border-radius:16px; padding:14px 20px 14px 32px;
   user-select:all; /* клик — и код выделен целиком для копирования */
 }
+/* Блок условий игры (Event + Encounter) в настройке */
+.game-cond-block { background:#1a1a1a; border:1px solid #333; border-radius:12px; padding:12px 14px; display:flex; flex-direction:column; gap:10px; }
+.game-cond-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:13px; }
+.game-cond-row { display:flex; align-items:center; gap:8px; }
+.game-cond-label { color:#999; font-size:12px; text-transform:uppercase; letter-spacing:1px; flex:0 0 92px; }
+.game-cond-select { flex:1; min-width:0; padding:8px 10px; font-size:14px; }
+.game-cond-btn {
+  width:36px; height:36px; flex-shrink:0; background:#141414; color:#fff; border:2px solid #333;
+  border-radius:10px; font-size:16px; cursor:pointer; transition:all .2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.game-cond-btn:hover { border-color:#e94560; background:#2a1418; }
+
+/* Блок условий в ожидании и на экране игры — заметные карточки у обоих игроков */
+.game-cond-bar { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:0 0 14px; }
+.game-cond-card {
+  flex:1; min-width:200px; max-width:340px; background:#141414; border:2px solid #e94560;
+  border-radius:14px; padding:10px 14px; cursor:pointer; text-align:center;
+  transition:all .2s; box-shadow:0 4px 14px rgba(0,0,0,.45);
+}
+.game-cond-card:hover { background:#2a1418; transform:translateY(-2px); box-shadow:0 6px 18px rgba(233,69,96,.3); }
+.game-cond-card-label { color:#e94560; font-size:10.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+.game-cond-card-name { color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:17px; letter-spacing:.5px; margin:3px 0; }
+.game-cond-card-hint { color:#777; font-size:10.5px; }
+
+/* Скан карты условия в попапе (см. conditionPopupBody в game.js) */
+.game-cond-popup-img-wrap { text-align:center; }
+.game-cond-popup-img { max-width:100%; height:auto; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,.5); }
+.game-cond-popup-text { color:#bbb; line-height:1.6; font-size:13.5px; }
+
 .game-play-bar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
 .game-play-code { color:#999; font-size:14px; }
 .game-play-code b { color:#ffd700; letter-spacing:3px; }
@@ -385,6 +415,28 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .game-model-name { color:#fff; font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .game-model-meta { color:#888; font-size:11.5px; margin-top:2px; }
 .game-model-missing { opacity:.5; cursor:default; }
+.game-model-ko { opacity:.45; }
+
+/* Панель условий игры в настройке — отдельным блоком над созданием/входом */
+.game-cond-panel { margin-bottom:16px; }
+
+/* Счётчики WIL/END и статусы KD/KO у модели на экране игры */
+.game-model-track { display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap; cursor:default; }
+.gm-counter { display:inline-flex; align-items:center; gap:4px; color:#999; font-size:10.5px; letter-spacing:1px; font-weight:700; font-family:'Oswald',sans-serif; }
+.gm-counter b { color:#ffd700; font-size:15px; min-width:22px; text-align:center; }
+.gm-counter button {
+  width:24px; height:24px; border-radius:7px; background:#222; color:#fff; border:1px solid #383838;
+  cursor:pointer; font-size:14px; line-height:1; display:flex; align-items:center; justify-content:center;
+  transition:border-color .15s;
+}
+.gm-counter button:hover { border-color:#e94560; }
+.gm-status {
+  background:#111; color:#777; border:2px solid #333; border-radius:8px; padding:3px 9px;
+  font-family:'Oswald',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px;
+  cursor:pointer; transition:all .15s;
+}
+.gm-status:hover { border-color:#666; }
+.gm-status.on { background:#ffd700; color:#000; border-color:#ffd700; }
 
 @media (min-width: 700px) {
   .game-setup { flex-direction:row; align-items:stretch; }

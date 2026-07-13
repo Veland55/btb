@@ -55,9 +55,13 @@ db.exec(`
     host_user    TEXT NOT NULL,
     host_roster  TEXT NOT NULL,
     guest_user   TEXT,
-    guest_roster TEXT
+    guest_roster TEXT,
+    conditions   TEXT
   );
 `);
+
+// Миграция для баз, созданных до появления условий игры (Event/Encounter)
+try { db.exec('ALTER TABLE games ADD COLUMN conditions TEXT'); } catch (e) { /* колонка уже есть */ }
 
 // Периодическая чистка протухших сессий и игр — база не разрастается
 function cleanup() {
@@ -146,9 +150,18 @@ function newGameCode() {
 function gameToJSON(g) {
   return {
     code: g.code,
+    conditions: g.conditions ? JSON.parse(g.conditions) : null,
     host: { name: g.host_user, roster: JSON.parse(g.host_roster) },
     guest: g.guest_user ? { name: g.guest_user, roster: JSON.parse(g.guest_roster) } : null
   };
+}
+
+// Условия игры: { ev: "имя Event-карты", en: "имя Encounter-карты" }
+function validConditions(c) {
+  if (c == null) return true;
+  return typeof c === 'object' && !Array.isArray(c)
+    && Object.keys(c).every(k => ['ev', 'en'].includes(k))
+    && ['ev', 'en'].every(k => c[k] == null || (typeof c[k] === 'string' && c[k].length <= 60));
 }
 
 // ======================== API ========================
@@ -213,12 +226,12 @@ async function handleApi(req, res, url) {
 
   // --- Игровые комнаты ---
   if (p === '/api/games' && req.method === 'POST') {
-    const { roster } = await readBody(req);
-    if (!validSave(roster)) return send(res, 400, { error: 'input' });
+    const { roster, conditions } = await readBody(req);
+    if (!validSave(roster) || !validConditions(conditions)) return send(res, 400, { error: 'input' });
     const code = newGameCode();
     if (!code) return send(res, 500, { error: 'server' });
-    db.prepare('INSERT INTO games (code, created, host_user, host_roster) VALUES (?, ?, ?, ?)')
-      .run(code, Date.now(), user, JSON.stringify(roster));
+    db.prepare('INSERT INTO games (code, created, host_user, host_roster, conditions) VALUES (?, ?, ?, ?, ?)')
+      .run(code, Date.now(), user, JSON.stringify(roster), conditions ? JSON.stringify(conditions) : null);
     return send(res, 200, { code });
   }
 

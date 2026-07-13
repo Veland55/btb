@@ -194,11 +194,10 @@ const translations = {
     fully_equipped_no_equipment: "Модель с трейтом Fully Equipped не может покупать оборудование!",
     limited_equipment_max_reached: "Модель с трейтом Limited Equipment уже достигла лимита в 1 единицу оборудования!",
     export_empty_roster: "Отряд пуст! Добавьте модели перед экспортом.",
-    export_copied: "Ростер скопирован в буфер обмена!",
-    export_copy_prompt: "Скопируйте текст ростера:",
+    popup_blocked: "Браузер заблокировал всплывающее окно — разрешите его для экспорта в PDF",
     charismatic_available: "ДОСТУПЕН",
     charismatic_used: "ИСПОЛЬЗОВАН",
-    export_title: "Экспорт ростера",
+    export_title: "Экспорт ростера в PDF",
     no_available_equipment: "Нет доступного оборудования",
     henry_ducard_sidekick_requires_ras: "Henry Ducard может быть нанят как Sidekick только если лидером банды является Ra's al Ghul Decoy!",
     model_requires_other: "Модель {model} требует, чтобы в отряде была модель {required}",
@@ -261,7 +260,14 @@ const translations = {
     game_not_found: "Игра не найдена или срок её действия истёк",
     game_full: "В этой игре уже есть второй игрок",
     game_own: "Нельзя присоединиться к собственной игре",
-    related_rules: "СВЯЗАННЫЕ ПРАВИЛА"
+    related_rules: "СВЯЗАННЫЕ ПРАВИЛА",
+    game_conditions: "УСЛОВИЯ ИГРЫ",
+    game_conditions_hint: "Событие и Столкновение выбраны случайно по правилам. Можно перебросить (🎲), выбрать вручную или прочитать условие (📖).",
+    event_card: "Событие",
+    encounter_card: "Столкновение",
+    reroll_random: "Перебросить случайно",
+    tap_to_read: "нажмите, чтобы прочитать",
+    read_card: "Читать условие"
   },
   en: {
     cards: "CARDS",
@@ -321,11 +327,10 @@ const translations = {
     fully_equipped_no_equipment: "Model with Fully Equipped trait cannot purchase any equipment!",
     limited_equipment_max_reached: "Model with Limited Equipment trait has already reached the limit of 1 equipment!",
     export_empty_roster: "Crew is empty! Add models before exporting.",
-    export_copied: "Roster copied to clipboard!",
-    export_copy_prompt: "Copy the roster text:",
+    popup_blocked: "The browser blocked the pop-up window — allow it to export to PDF",
     charismatic_available: "AVAILABLE",
     charismatic_used: "USED",
-    export_title: "Export Roster",
+    export_title: "Export roster to PDF",
     no_available_equipment: "No available equipment",
     henry_ducard_sidekick_requires_ras: "Henry Ducard can only be recruited as Sidekick if Ra's al Ghul Decoy is the crew leader!",
     model_requires_other: "Model {model} requires {required} model in the crew",
@@ -388,7 +393,14 @@ const translations = {
     game_not_found: "Game not found or expired",
     game_full: "This game already has a second player",
     game_own: "You can't join your own game",
-    related_rules: "RELATED RULES"
+    related_rules: "RELATED RULES",
+    game_conditions: "GAME CONDITIONS",
+    game_conditions_hint: "The Event and the Encounter are picked randomly as per the rules. You can reroll (🎲), pick manually, or read the card (📖).",
+    event_card: "Event",
+    encounter_card: "Encounter",
+    reroll_random: "Reroll randomly",
+    tap_to_read: "tap to read",
+    read_card: "Read the card"
   }
 };
 
@@ -1751,7 +1763,9 @@ function showTraitDesc(traitName) {
 }
 
 // Функция для показа попапа с описанием (для трейтов и equipment) - ИСПРАВЛЕННАЯ ВЕРСИЯ
-function showTraitPopup(name, desc) {
+// showRelated=false отключает блок "Связанные правила" (например, для попапов
+// с картами Event/Encounter в разделе ИГРА — там он не к месту)
+function showTraitPopup(name, desc, showRelated = true) {
   // Обрабатываем и название, и описание с заменой иконок
   const processedName = replaceIcons(name || '');
   const processedDesc = replaceIcons(desc || '');
@@ -1767,7 +1781,7 @@ function showTraitPopup(name, desc) {
       </div>
       <div class="trait-popup-body">
         ${processedDesc}
-        ${relatedRulesHTML(desc || '', name)}
+        ${showRelated ? relatedRulesHTML(desc || '', name) : ''}
       </div>
     </div>
   `;
@@ -2715,50 +2729,181 @@ function resetCrew() {
   }
 }
 
-// ======================== ЭКСПОРТ РОСТЕРА ========================
+// ======================== ЭКСПОРТ РОСТЕРА В PDF ========================
+// Открывает печатную версию ростера, свёрстанную как официальные карточки:
+// на каждую модель — лист A4 (альбомный): слева карточка, справа расшифровка
+// её трейтов, правил оружия и купленного снаряжения в две колонки.
+// Сохранение в PDF — системным диалогом печати браузера ("Сохранить как PDF").
+
+// Секция снаряжения для правой колонки печати
+function buildEquipmentGlossaryHTML(model) {
+  const crewModel = crew.find(m => m.name === model.name);
+  if (!crewModel || !(crewModel.equipment || []).length) return '';
+  const items = crewModel.equipment.map(eq => `
+    <div class="sidebar-entry">
+      <div class="sidebar-entry-name">${eq.name} ($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</div>
+      <div class="sidebar-entry-desc">${replaceIcons((eq.effects || []).join('<br>'))}</div>
+    </div>`).join('');
+  return `<div class="sidebar-section"><div class="sidebar-title">EQUIPMENT</div>${items}</div>`;
+}
+
+// Встроенные стили печатной версии (поверх style.css, который подключается там же)
+const PRINT_CSS = `
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { background: #fff !important; color: #111; margin: 0; }
+  @page { size: A4 landscape; margin: 8mm; }
+
+  .print-page {
+    display: flex; gap: 6mm; height: 193mm; overflow: hidden;
+    page-break-after: always; break-after: page;
+  }
+  .print-page:last-child { page-break-after: auto; break-after: auto; }
+
+  /* Левая колонка: карточка модели (как .official-card из style.css) */
+  .print-card { width: 96mm; flex-shrink: 0; }
+  .print-card .official-card { margin: 0; box-shadow: none; border-radius: 10px; }
+
+  /* Правая колонка: правила, светлая тема для печати.
+     column-fill: auto + фиксированная высота (ставится скриптом по высоте карточки):
+     текст идёт ОДНОЙ колонкой и переходит во вторую только когда первая заполнена */
+  .print-rules { flex: 1; min-width: 0; column-count: 2; column-gap: 6mm; column-fill: auto; font-size: 12px; align-self: flex-start; }
+  .print-rules .sidebar-section { margin: 0 0 4mm; }
+  .print-rules .sidebar-section + .sidebar-section { margin-top: 0; }
+  .print-rules .sidebar-title {
+    color: #000; border-bottom: 2px solid #e94560; font-size: 1.2em;
+    font-weight: 700; letter-spacing: 2px; padding-bottom: 2px; margin-bottom: 2.4mm;
+    break-after: avoid;
+  }
+  .print-rules .sidebar-entry { break-inside: avoid; margin-bottom: 2.6mm; }
+  .print-rules .sidebar-entry-name { color: #000; font-weight: 700; font-size: 1em; text-transform: uppercase; letter-spacing: .4px; margin-bottom: .6mm; }
+  .print-rules .sidebar-entry-desc { color: #222; font-size: .95em; line-height: 1.45; }
+  .print-rules .inline-icon { height: 1.05em; background: #fff; border-radius: 50%; padding: 1px; box-sizing: content-box; }
+
+  /* Сводная страница отряда */
+  .print-summary { display: block; font-family: 'Oswald', sans-serif; }
+  .print-summary-head { background: #ffd700; border-radius: 10px; padding: 6mm 8mm 5mm; margin-bottom: 6mm; }
+  .print-summary-head h1 { margin: 0 0 2mm; font-size: 24px; letter-spacing: 2px; color: #000; }
+  .print-summary-head .sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 1px; }
+  .print-summary table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .print-summary th { background: #000; color: #ffd700; text-align: left; padding: 2.2mm 3mm; letter-spacing: 1px; }
+  .print-summary td { border-bottom: 1px solid #ccc; padding: 2mm 3mm; color: #111; }
+  .print-summary tr:nth-child(even) td { background: #f4f0e6; }
+
+  /* Просмотр на экране до печати */
+  @media screen {
+    body { background: #666 !important; padding: 12px; }
+    .print-page { width: 281mm; margin: 0 auto 14px; background: #fff; box-shadow: 0 4px 16px rgba(0,0,0,.4); padding: 6mm; box-sizing: content-box; }
+  }
+`;
+
+// Скрипт подгонки внутри печатного окна: текст и карточка не должны вылезать за лист
+const PRINT_FIT_JS = `
+  window.addEventListener('load', function () {
+    document.querySelectorAll('.print-page:not(.print-summary)').forEach(function (page) {
+      // Высота листа — берём у растянутой флекс-колонки карточки: она одинакова
+      // и на экране, и в печати (page.clientHeight на экране больше из-за padding)
+      var cardCol = page.querySelector('.print-card');
+      var pageH = (cardCol ? cardCol.clientHeight : page.clientHeight) - 4;
+
+      // 1) Карточка: если выше листа — масштабируем целиком
+      var card = page.querySelector('.print-card > .official-card');
+      var visualH = pageH;
+      if (card) {
+        if (card.offsetHeight > pageH) {
+          var s = pageH / card.offsetHeight;
+          card.style.transform = 'scale(' + s + ')';
+          card.style.transformOrigin = 'top left';
+          visualH = pageH;
+        } else {
+          visualH = card.offsetHeight;
+        }
+      }
+
+      // 2) Правила: высота блока = высоте карточки, текст идёт одной колонкой
+      //    и переходит во вторую только при переполнении первой (column-fill: auto)
+      var rules = page.querySelector('.print-rules');
+      if (!rules) return;
+      rules.style.height = visualH + 'px';
+
+      var overflows = function () {
+        return rules.scrollWidth > rules.clientWidth + 1 || rules.scrollHeight > rules.clientHeight + 1;
+      };
+      // Не влезло в две колонки высотой с карточку — разрешаем высоту всего листа
+      if (overflows() && visualH < pageH) rules.style.height = pageH + 'px';
+      // Всё ещё не влезает — постепенно уменьшаем шрифт (минимум 7px)
+      var fs = 12;
+      while (overflows() && fs > 7) {
+        fs -= 0.5;
+        rules.style.fontSize = fs + 'px';
+      }
+    });
+    // Автовызов диалога печати (в автоматизированных браузерах пропускается)
+    if (!navigator.webdriver) setTimeout(function () { window.print(); }, 500);
+  });
+`;
+
 function exportRoster() {
   if (crew.length === 0) {
     alert(t("export_empty_roster"));
     return;
   }
 
-  const repLimit = document.getElementById('repLimit').value;
-  const fundingLimit = bmgFundingLimit();
-  
-  // Формируем текст экспорта
-  let exportText = `BMG CREW - ${currentFaction || "Unknown"}\n`;
-  exportText += `Rep: ${repLimit} | Funding: $${fundingLimit}\n`;
-  exportText += `════════════════════════════════════════\n\n`;
-  
   const totalRep = getCrewTotalRep();
   const usedFunding = getCrewUsedFunding();
 
-  crew.forEach(m => {
-    exportText += `${m.name}`;
+  // Сводная таблица отряда
+  const summaryRows = crew.map(m => `
+    <tr>
+      <td>${m.name}</td>
+      <td>${m.rankUsed || getRanks(m).join(' / ')}</td>
+      <td>${m.rep || 0}</td>
+      <td>$${getEffectiveModelFunding(m)}</td>
+      <td>${(m.equipment || []).map(eq => `${eq.name} ($${eq.fundingCost || 0})`).join(', ') || '—'}</td>
+    </tr>`).join('');
 
-    // Добавляем стоимость модели если есть (с учётом скидки Lieutenant (X))
-    const effectiveFunding = getEffectiveModelFunding(m);
-    if (effectiveFunding > 0) {
-      exportText += ` ($${effectiveFunding})`;
-    }
-    
-    // Добавляем equipment
-    if (m.equipment && m.equipment.length > 0) {
-      const eqList = m.equipment.map(eq => `${eq.name}$${eq.fundingCost || 0}`).join(", ");
-      exportText += ` + ${eqList}`;
-    }
-    
-    exportText += `\n`;
-  });
-  
-  exportText += `\n════════════════════════════════════════\n`;
-  exportText += `Total: ${totalRep} Rep | $${usedFunding}\n`;
-  
-  // Копируем в буфер обмена
-  navigator.clipboard.writeText(exportText).then(() => {
-    alert(t("export_copied"));
-  }).catch(err => {
-    // Если буфер не доступен, показываем в prompt
-    prompt(t("export_copy_prompt"), exportText);
-  });
+  // Страница на каждую модель: карточка + расшифровка правил
+  const pages = crew.map(m => {
+    const base = models.find(x => x.name === m.name) || m;
+    const rulesHTML = buildGlossaryHTML(base) + buildEquipmentGlossaryHTML(base);
+    return `
+    <section class="print-page">
+      <div class="print-card">${buildFullCardHTML(base)}</div>
+      <div class="print-rules">${rulesHTML}</div>
+    </section>`;
+  }).join('');
+
+  const doc = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="${document.baseURI}">
+  <title>BMG Roster — ${currentFaction || 'Unknown'} — ${totalRep} Rep</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>${PRINT_CSS}</style>
+</head>
+<body>
+  <section class="print-page print-summary">
+    <div class="print-summary-head">
+      <h1>BMG CREW ROSTER — ${currentFaction || 'Unknown'}</h1>
+      <div class="sub">REP: ${totalRep} / ${BMG_REP_LIMIT} &nbsp;•&nbsp; FUNDING: $${usedFunding} / ${bmgFundingLimit()} &nbsp;•&nbsp; MODELS: ${crew.length}</div>
+    </div>
+    <table>
+      <tr><th>MODEL</th><th>RANK</th><th>REP</th><th>$</th><th>EQUIPMENT</th></tr>
+      ${summaryRows}
+    </table>
+  </section>
+  ${pages}
+  <script>${PRINT_FIT_JS}<\/script>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank');
+  if (!win) {
+    alert(t('popup_blocked'));
+    return;
+  }
+  win.document.open();
+  win.document.write(doc);
+  win.document.close();
 }
