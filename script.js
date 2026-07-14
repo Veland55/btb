@@ -198,6 +198,9 @@ const translations = {
     charismatic_available: "ДОСТУПЕН",
     charismatic_used: "ИСПОЛЬЗОВАН",
     export_title: "Экспорт ростера в PDF",
+    roster_preview: "ПРОСМОТР ОТРЯДА",
+    view_roster_title: "Просмотр отряда",
+    crew_empty_preview: "Отряд пуст! Сначала добавьте модели.",
     no_available_equipment: "Нет доступного оборудования",
     henry_ducard_sidekick_requires_ras: "Henry Ducard может быть нанят как Sidekick только если лидером банды является Ra's al Ghul Decoy!",
     model_requires_other: "Модель {model} требует, чтобы в отряде была модель {required}",
@@ -331,6 +334,9 @@ const translations = {
     charismatic_available: "AVAILABLE",
     charismatic_used: "USED",
     export_title: "Export roster to PDF",
+    roster_preview: "ROSTER PREVIEW",
+    view_roster_title: "View roster",
+    crew_empty_preview: "Crew is empty! Add models first.",
     no_available_equipment: "No available equipment",
     henry_ducard_sidekick_requires_ras: "Henry Ducard can only be recruited as Sidekick if Ra's al Ghul Decoy is the crew leader!",
     model_requires_other: "Model {model} requires {required} model in the crew",
@@ -741,6 +747,7 @@ function backToMenu() {
   $('mainMenu').style.display = 'flex';
   $('cardsSection').style.display = 'none';
   $('builderSection').style.display = 'none';
+  if ($('rosterPreviewSection')) $('rosterPreviewSection').style.display = 'none';
   if ($('gameSection')) $('gameSection').style.display = 'none';
   if (typeof stopGamePolling === 'function') stopGamePolling();
   $('compendiumModal').classList.remove('active');
@@ -1310,6 +1317,21 @@ const renderMiniCardsBuilder = debounce(() => {
     }
   }
 
+  // Скрываем модели, единственный доступный ранг которых — Leader (включая расширение
+  // от трейта Contractor через getHireableRanks), если Leader уже нанят — второго всё
+  // равно нельзя добавить. Фракции с ignoreStandardRankRequirements (Batman Who Laughs)
+  // не имеют лимита "один Leader", поэтому там ничего не скрываем.
+  {
+    const factionRules = factionCrewRules[currentFaction] || {};
+    if (!factionRules.ignoreStandardRankRequirements && bmgRankCount("Leader") >= 1) {
+      filteredModels = filteredModels.filter(m => {
+        const hireable = getHireableRanks(m);
+        const isLeaderOnly = hireable.length === 1 && hireable[0] === "Leader";
+        return !isLeaderOnly;
+      });
+    }
+  }
+
   // Сортировка: сначала по наивысшему (минимальному по номеру) рангу, затем по имени алфавитно
   sortModelsByRank(filteredModels);
 
@@ -1540,6 +1562,7 @@ function getActiveSidePanel() {
   if ($('modelSearchModal').classList.contains('active')) return null;
   if (currentMode === 'builder') return $('builderCardPanel');
   if (currentMode === 'cards') return $('cardsCardPanel');
+  if (currentMode === 'rosterView') return $('rosterPreviewCardPanel');
   return null;
 }
 
@@ -1575,9 +1598,9 @@ const showFullCard = model => {
 
 const closeFullCard = () => $("fullCard").classList.remove("active");
 
-// Закрывает боковые панели карточки (и в билдере, и в разделе "Карточки")
+// Закрывает боковые панели карточки (билдер, "Карточки" и "Просмотр отряда")
 function closeBuilderCardPanel() {
-  ['builderCardPanel', 'cardsCardPanel'].forEach(id => {
+  ['builderCardPanel', 'cardsCardPanel', 'rosterPreviewCardPanel'].forEach(id => {
     const panel = $(id);
     if (panel) {
       panel.classList.remove('active');
@@ -1815,6 +1838,7 @@ function removeEquipmentFromModel(modelName, eqName) {
       modifiers = calculateModifiers();
       updateCrewBar();
       renderMiniCardsBuilder();
+      if (currentMode === 'rosterView') renderRosterPreview();
       // Перерендерим полную карточку, только если она сейчас открыта
       // (иначе удаление equipment из списка билдера непреднамеренно открывало модалку)
       if ($("fullCard").classList.contains("active")) {
@@ -2697,6 +2721,7 @@ function openEquipmentMenu(model, cardElement) {
       modifiers = calculateModifiers();
       updateCrewBar();
       renderMiniCardsBuilder();
+      if (currentMode === 'rosterView') renderRosterPreview();
       refreshBuilderCardPanel(model.name);
 
       // Закрываем и открываем заново для обновления списка
@@ -2727,6 +2752,50 @@ function resetCrew() {
   if (currentMode === 'builder') {
     renderMiniCardsBuilder();
   }
+}
+
+// ======================== ПРОСМОТР ОТРЯДА ========================
+// Отдельный экран поверх билдера: удобный список набранной банды с апгрейдами.
+// Сюда перенесены "Сохранить" и "Экспорт в PDF" — в самом билдере их больше нет.
+function openRosterPreview() {
+  if (!crew.length) { alert(t('crew_empty_preview')); return; }
+  currentMode = 'rosterView';
+  $('builderSection').style.display = 'none';
+  $('rosterPreviewSection').style.display = 'block';
+  renderRosterPreview();
+}
+
+function closeRosterPreview() {
+  currentMode = 'builder';
+  closeBuilderCardPanel(); // закрываем боковую панель карточки, если была открыта здесь
+  $('rosterPreviewSection').style.display = 'none';
+  $('builderSection').style.display = 'block';
+}
+
+function renderRosterPreview() {
+  const grid = $('rosterPreviewList');
+  if (!grid) return;
+
+  const summary = $('rosterPreviewSummary');
+  if (summary) {
+    summary.innerHTML = `<span data-i18n="crew">${t('crew')}</span>: <span>${crew.length}</span> | <span data-i18n="rep">${t('rep')}</span>: <span>${getCrewTotalRep()} / ${BMG_REP_LIMIT}</span> | $<span>${getCrewUsedFunding()} / ${bmgFundingLimit()}</span>`;
+  }
+
+  // Сортировка по рангу — на копии массива, чтобы не менять порядок в самом crew
+  // (от него зависят BMG_BOSS.indexOf и сериализация сохранений/экспорта)
+  const sorted = sortModelsByRank(crew.slice());
+  const fragment = document.createDocumentFragment();
+  sorted.forEach(m => {
+    const originalModel = models.find(model => model.name === m.name) || m;
+    const item = { ...originalModel, inCrew: true, count: countInCrew(originalModel), instance: m };
+    const div = document.createElement('div');
+    div.className = 'mini-card';
+    div.innerHTML = renderMiniCardHTML(item, false); // false: без +/- — это просмотр, не найм
+    div.onclick = () => showFullCard(item);
+    fragment.appendChild(div);
+  });
+  grid.innerHTML = '';
+  grid.appendChild(fragment);
 }
 
 // ======================== ЭКСПОРТ РОСТЕРА В PDF ========================
