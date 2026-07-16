@@ -200,6 +200,36 @@ const translations = {
     export_title: "Экспорт ростера в PDF",
     roster_preview: "ПРОСМОТР ОТРЯДА",
     upgrades_flap: "АПГРЕЙДЫ",
+    obj_cards_title: "КАРТЫ ЦЕЛЕЙ",
+    obj_deck: "Колода",
+    obj_deck_general: "Общие",
+    obj_deck_crew: "Банды",
+    obj_deck_single: "Одиночные",
+    obj_deck_rules: "Правила колоды",
+    obj_deck_ok: "Колода собрана по правилам",
+    obj_need_total: "В колоде должно быть ровно {count} карт",
+    obj_need_crew: "Общих карт не больше, чем карт банды, и не больше {max}",
+    obj_need_single: "Одиночных карт не больше {max}",
+    obj_need_full_sets: "Комплекты карт добавляются целиком",
+    obj_need_req: "Не выполнены требования карт",
+    obj_req: "Требования",
+    obj_req_model: "Модель",
+    obj_req_rank: "Ранг",
+    obj_req_trait: "Трейт",
+    obj_req_ok: "Требование выполнено — нужная модель в отряде",
+    obj_req_missing: "Нет требуемой модели/трейта в отряде",
+    obj_card_full_deck: "В колоде нет места — лимит {count} карт",
+    obj_single_limit: "Лимит одиночных карт: {max}",
+    obj_general_limit: "Лимит общих карт: {max}",
+    obj_mandatory: "Обязательные карты банды",
+    obj_mandatory_hint: "Добавляются автоматически и не входят в размер колоды.",
+    obj_mandatory_badge: "ОБЯЗАТЕЛЬНАЯ",
+    obj_catalog: "Каталог карт",
+    obj_rule_size: "Колода целей должна содержать ровно {count} карт.",
+    obj_rule_general: "Общих карт (без значка Affiliation) не может быть больше, чем карт, уникальных для вашей банды, и не больше {max}.",
+    obj_rule_single: "Одиночных карт может быть не больше {max}.",
+    obj_rule_sets: "Карты с указанным числом копий добавляются только полным комплектом: ни больше, ни меньше.",
+    obj_rule_mandatory: "Обязательные карты банды добавляются автоматически и не входят в размер колоды.",
     view_roster_title: "Просмотр отряда",
     crew_empty_preview: "Отряд пуст! Сначала добавьте модели.",
     no_available_equipment: "Нет доступного оборудования",
@@ -343,6 +373,36 @@ const translations = {
     export_title: "Export roster to PDF",
     roster_preview: "ROSTER PREVIEW",
     upgrades_flap: "UPGRADES",
+    obj_cards_title: "OBJECTIVE CARDS",
+    obj_deck: "Deck",
+    obj_deck_general: "General",
+    obj_deck_crew: "Crew",
+    obj_deck_single: "Single",
+    obj_deck_rules: "Deck rules",
+    obj_deck_ok: "Deck is legal",
+    obj_need_total: "The deck must contain exactly {count} cards",
+    obj_need_crew: "General cards cannot outnumber crew cards (max {max})",
+    obj_need_single: "No more than {max} single cards",
+    obj_need_full_sets: "Card sets must be complete",
+    obj_need_req: "Card requirements are not met",
+    obj_req: "Requirements",
+    obj_req_model: "Model",
+    obj_req_rank: "Rank",
+    obj_req_trait: "Trait",
+    obj_req_ok: "Requirement met — the model is in the crew",
+    obj_req_missing: "Required model/trait is not in the crew",
+    obj_card_full_deck: "No room in the deck — {count} cards limit",
+    obj_single_limit: "Single cards limit: {max}",
+    obj_general_limit: "General cards limit: {max}",
+    obj_mandatory: "Mandatory crew cards",
+    obj_mandatory_hint: "Added automatically; they do not count towards the deck size.",
+    obj_mandatory_badge: "MANDATORY",
+    obj_catalog: "Card catalog",
+    obj_rule_size: "The Objective deck must contain exactly {count} cards.",
+    obj_rule_general: "General cards (no Affiliation icon) cannot outnumber cards unique to your crew, and no more than {max}.",
+    obj_rule_single: "No more than {max} cards can be single cards.",
+    obj_rule_sets: "Cards with a printed number of copies must be included as that full set: no more and no less.",
+    obj_rule_mandatory: "Mandatory crew cards are added automatically and do not count towards the deck size.",
     view_roster_title: "View roster",
     crew_empty_preview: "Crew is empty! Add models first.",
     no_available_equipment: "No available equipment",
@@ -734,6 +794,8 @@ function showCards() {
   currentFaction = null;
   $('modelsGridCards').innerHTML = '';
   $('cardsTabsContainer').classList.remove('hidden');
+  if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'none'; // до выбора фракции
+  if ($('cardsMissionsPage')) { $('cardsMissionsPage').style.display = 'none'; $('cardsMain').style.display = 'block'; }
   closeBuilderCardPanel();
   initTabs();
 }
@@ -746,6 +808,7 @@ function showBuilder() {
   $('builderSection').style.display = 'block';
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
+  if ($('builderCardsPage')) $('builderCardsPage').style.display = 'none';
   $('compendiumModal').classList.remove('active');
   $('builderFactionCards').classList.remove('hidden'); // Показываем вкладки фракций
   initTabs(); // Инициализация табов для выбора фракции
@@ -780,6 +843,7 @@ function backToMenu() {
 function backToFactionSelect() {
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
+  if ($('builderCardsPage')) $('builderCardsPage').style.display = 'none';
   $('builderFactionCards').classList.remove('hidden'); // Показываем вкладки фракций
   closeBuilderCardPanel();
   resetCrew();
@@ -830,6 +894,7 @@ function selectFaction(faction) {
   $('factionRulesBtn').style.display = getFactionRulesLines(faction).length ? 'flex' : 'none';
   renderMiniCardsBuilder();
   updateCrewBar();
+  if (typeof updateDeckBadge === 'function') updateDeckBadge();
 }
 
 // ======================== ОТРЯД (ТОЛЬКО ДЛЯ БИЛДЕРА) ========================
@@ -1913,6 +1978,7 @@ function initTabs() {
       // Скрываем вкладки фракций после выбора
       $('cardsTabsContainer').classList.add('hidden');
       closeBuilderCardPanel(); // карточка предыдущей фракции в панели больше не актуальна
+      if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'flex'; // карты миссий банды
       renderMiniCardsView(); // Рендерим модели только после выбора
     } else if (card.closest('#factionSelect')) {
       selectFaction(card.dataset.faction);
@@ -2220,26 +2286,10 @@ function bmgCanAddModel(model) {
           return false;
         }
       }
-      // Проверка Elite, Veteran, Minion
+      // Проверка Veteran и Minion. Elite здесь не проверяется — общий цикл
+      // трейтов ниже делает это для моделей ЛЮБОГО ранга (и любой фракции).
       // ВАЖНО: параметр цикла не "t" — иначе он затеняет глобальную функцию перевода t()
       // и alert(t("...")) внутри падает с TypeError ("t is not a function")
-      let eliteExceeded = false;
-      model.traits.forEach(modelTrait => {
-        const eliteMatch = modelTrait.match(/^Elite \((.+)\)$/);
-        if (eliteMatch) {
-          const type = eliteMatch[1];
-          const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
-          // Проверяем, есть ли в отряде Elite Boss этого типа
-          const hasEliteBoss = crew.some(m => m.traits.some(u => u === `Elite Boss (${type})`));
-          const limit = hasEliteBoss ? 99 : 1 + (modifiers.extraElites[type] || 0);
-          if (count >= limit) {
-            alert(t("elite_limit_exceeded", { type }));
-            eliteExceeded = true;
-          }
-        }
-      });
-      if (eliteExceeded) return false;
-
       let veteranExceeded = false;
       model.traits.forEach(modelTrait => {
         const veteranMatch = modelTrait.match(/^Veteran \((.+)\)$/);
@@ -2782,6 +2832,7 @@ function resetCrew() {
   BMG_BOSS = null;
   BMG_AFFILIATIONS = null;
   crewEquipmentCounts = {};
+  if (typeof resetObjectiveDeck === 'function') resetObjectiveDeck(); // колода карт целей
   modifiers = {
     extraFreeAgents: 0,
     extraVehicles: 0,
@@ -2815,9 +2866,38 @@ function closeRosterPreview() {
   $('builderSection').style.display = 'block';
 }
 
+// Колода карт целей в просмотре ростера — компактным списком названий;
+// клик по названию открывает скан карты
+function renderRosterPreviewCards() {
+  const box = $('rosterPreviewCards');
+  if (!box) return;
+  if (typeof objDeckList !== 'function') { box.innerHTML = ''; return; }
+
+  const deck = objDeckList();
+  const mandatory = mandatoryCardsForFaction();
+  if (!deck.length && !mandatory.length) { box.innerHTML = ''; return; }
+
+  const total = deck.reduce((sum, e) => sum + e.count, 0);
+  const chip = (card, count, isMandatory) => `
+    <span class="roster-card-chip${isMandatory ? ' is-mandatory' : ''}"
+          onclick="showObjectiveCardPreview('${card.id}', ${isMandatory})">
+      ${card.name}${count > 1 ? ` <b>x${count}</b>` : ''}
+    </span>`;
+  box.innerHTML = `
+    <div class="roster-cards-panel">
+      <div class="obj-section-title">${t('obj_cards_title')} (${total}/${OBJECTIVE_DECK.size})</div>
+      <div class="roster-cards-chips">
+        ${mandatory.map(c => chip(c, 1, true)).join('')}
+        ${deck.map(e => chip(e.card, e.count, false)).join('')}
+      </div>
+    </div>`;
+}
+
 function renderRosterPreview() {
   const grid = $('rosterPreviewList');
   if (!grid) return;
+
+  renderRosterPreviewCards();
 
   const summary = $('rosterPreviewSummary');
   if (summary) {
@@ -2902,6 +2982,13 @@ const PRINT_CSS = `
   .print-summary td { border-bottom: 1px solid #ccc; padding: 2mm 3mm; color: #111; }
   .print-summary tr:nth-child(even) td { background: #f4f0e6; }
 
+  /* Страницы карт целей: сканы в размере печатной карты (63×88мм), по 6 на лист */
+  .print-cards {
+    display: grid; grid-template-columns: repeat(3, 63mm); grid-auto-rows: 88mm;
+    gap: 5mm; justify-content: center; align-content: start;
+  }
+  .print-cards img { width: 63mm; height: 88mm; object-fit: contain; border-radius: 3mm; }
+
   /* Просмотр на экране до печати */
   @media screen {
     body { background: #666 !important; padding: 12px; }
@@ -2985,6 +3072,23 @@ function exportRoster() {
     </section>`;
   }).join('');
 
+  // Страницы карт целей: сканы в размере печатной карты, по 6 на лист
+  // (обязательные карты банды + каждая копия карты из колоды)
+  let cardPages = '';
+  if (typeof objDeckList === 'function') {
+    const cardImgs = [
+      ...mandatoryCardsForFaction().map(c => c.img),
+      ...objDeckList().flatMap(e => Array(e.count).fill(e.card.img))
+    ];
+    const perPage = 6;
+    for (let i = 0; i < cardImgs.length; i += perPage) {
+      cardPages += `
+    <section class="print-page print-cards">
+      ${cardImgs.slice(i, i + perPage).map(src => `<img src="${src}">`).join('')}
+    </section>`;
+    }
+  }
+
   const doc = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3007,6 +3111,7 @@ function exportRoster() {
     </table>
   </section>
   ${pages}
+  ${cardPages}
   <script>${PRINT_FIT_JS}<\/script>
 </body>
 </html>`;

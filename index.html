@@ -16,6 +16,8 @@
   <script src="auth.js?v=1.3" defer></script>
   <script src="data-game.js?v=1.3" defer></script>
   <script src="game.js?v=1.3" defer></script>
+  <script src="data-cards.js?v=1.3" defer></script>
+  <script src="cards.js?v=1.3" defer></script>
 </head>
 <body>
 
@@ -65,27 +67,49 @@
 
   <!-- РАЗДЕЛ КАРТОЧКИ (ПРОСМОТР) -->
   <div id="cardsSection" style="display:none;">
-    <!-- ТОП-БАР (УПРОЩЁННЫЙ, БЕЗ ОТРЯДА) -->
-    <div class="top-bar">
-      <div class="top-bar-content">
-        <h1>BMG</h1>
-        <div class="header-buttons">
-          <button class="compendium-small-btn" onclick="backToMenu()">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> <!-- Иконка назад -->
-          </button>
+    <div id="cardsMain">
+      <!-- ТОП-БАР (УПРОЩЁННЫЙ, БЕЗ ОТРЯДА) -->
+      <div class="top-bar">
+        <div class="top-bar-content">
+          <h1>BMG</h1>
+          <div class="header-buttons">
+            <!-- Карты миссий выбранной банды — виден только после выбора фракции -->
+            <button class="compendium-small-btn" id="cardsMissionsBtn" style="display:none;" onclick="showCardsMissions()" data-i18n-title="obj_cards_title" title="Карты целей">
+              <svg viewBox="0 0 24 24"><path d="M4 4h9c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2.2 3.5 4.3 2.5-4.3 2.5v-5zM17 3.3l4.1 1.1c1.06.28 1.7 1.38 1.41 2.44l-3.1 11.6-2.41-13.4V3.3z"/></svg>
+            </button>
+            <button class="compendium-small-btn" onclick="backToMenu()">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> <!-- Иконка назад -->
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- ВКЛАДКИ ФРАКЦИЙ (генерируются в script.js из FACTION_ICON_MAP, см. renderFactionCards()) -->
+      <div class="tabs-container hidden" id="cardsTabsContainer">
+        <div class="faction-cards"></div>
+      </div>
+
+      <!-- Список моделей + боковая панель просмотра карточки (как в билдере, видна на ПК/планшетах) -->
+      <div class="builder-layout">
+        <div id="modelsGridCards" class="models-list"></div>
+        <aside id="cardsCardPanel" class="builder-card-panel"></aside>
       </div>
     </div>
 
-    <!-- ВКЛАДКИ ФРАКЦИЙ (генерируются в script.js из FACTION_ICON_MAP, см. renderFactionCards()) -->
-    <div class="tabs-container hidden" id="cardsTabsContainer">
-      <div class="faction-cards"></div>
-    </div>
-
-    <!-- Список моделей + боковая панель просмотра карточки (как в билдере, видна на ПК/планшетах) -->
-    <div class="builder-layout">
-      <div id="modelsGridCards" class="models-list"></div>
-      <aside id="cardsCardPanel" class="builder-card-panel"></aside>
+    <!-- КАРТЫ МИССИЙ ВЫБРАННОЙ БАНДЫ: просмотр каталога без набора колоды (см. cards.js) -->
+    <div id="cardsMissionsPage" style="display:none;">
+      <div class="top-bar">
+        <div class="top-bar-content">
+          <h1 data-i18n="obj_cards_title">КАРТЫ ЦЕЛЕЙ</h1>
+          <div class="header-buttons">
+            <button class="compendium-small-btn" onclick="closeCardsMissions()">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="funds" id="cardsMissionsSummary"></div>
+      </div>
+      <div id="cardsMissionsContent" class="obj-cards-page"></div>
     </div>
   </div>
 
@@ -117,14 +141,12 @@
             <button class="compendium-small-btn" id="factionRulesBtn" style="display:none;" onclick="showFactionRules()">
               <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <!-- Иконка "i" — правила набора фракции -->
             </button>
-            <button class="compendium-small-btn" onclick="openModelSearch()">
-              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            </button>
-            <button class="compendium-small-btn" onclick="openCompendium()">
-              <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6V4h12v16zm-4-8H10v-1h4v1zm0-3H10V8h4v1zm0-3H10V6h4v1z"/></svg>
-            </button>
             <button class="compendium-small-btn" onclick="openRosterPreview()" data-i18n-title="view_roster_title" title="Просмотр отряда">
               <svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 7.61 17 4.5 12 4.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+            <button class="compendium-small-btn builder-deck-btn" onclick="showBuilderCards()" data-i18n-title="obj_cards_title" title="Карты целей">
+              <svg viewBox="0 0 24 24"><path d="M4 4h9c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2.2 3.5 4.3 2.5-4.3 2.5v-5zM17 3.3l4.1 1.1c1.06.28 1.7 1.38 1.41 2.44l-3.1 11.6-2.41-13.4V3.3z"/></svg>
+              <span class="builder-deck-badge" id="builderDeckBadge">0</span>
             </button>
             <button class="compendium-small-btn" onclick="resetCrew(); backToFactionSelect()">
               <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
@@ -132,8 +154,8 @@
           </div>
         </div>
         <div class="funds">
-          <span data-i18n="crew">ОТРЯД</span>: <span id="crewCount">0</span> | <span data-i18n="rep">REP</span>: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350" style="width:50px; background:#222; color:#fff; border:1px solid #e94560;"> | $<span id="totalFunding">0 / 1500</span>
-          <span id="charismaticIndicator" style="margin-left:15px; color:#ffd700; font-weight:bold; display:none;">✨ CHARISMATIC: <span id="charismaticStatus">AVAILABLE</span></span>
+          <span data-i18n="crew">ОТРЯД</span>: <span id="crewCount">0</span> | <span data-i18n="rep">REP</span>: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350"> | $<span id="totalFunding">0 / 1500</span>
+          <span id="charismaticIndicator">✨ CHARISMATIC: <span id="charismaticStatus">AVAILABLE</span></span>
         </div>
       </div>
 
@@ -142,6 +164,24 @@
         <div id="modelsGridBuilder" class="models-list"></div>
         <aside id="builderCardPanel" class="builder-card-panel"></aside>
       </div>
+    </div>
+
+    <!-- СТРАНИЦА КАРТ ЦЕЛЕЙ: набор Objective-колоды банды (см. cards.js).
+         Переход: свайп вправо с основной страницы билдера или кнопка 🃏,
+         обратно — свайп влево или кнопка назад -->
+    <div id="builderCardsPage" style="display:none;">
+      <div class="top-bar">
+        <div class="top-bar-content">
+          <h1 data-i18n="obj_cards_title">КАРТЫ ЦЕЛЕЙ</h1>
+          <div class="header-buttons">
+            <button class="compendium-small-btn" onclick="closeBuilderCards()">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="funds" id="builderCardsSummary"></div>
+      </div>
+      <div id="builderCardsContent" class="obj-cards-page"></div>
     </div>
   </div>
 
@@ -165,6 +205,9 @@
       </div>
       <div class="funds" id="rosterPreviewSummary"></div>
     </div>
+
+    <!-- Набранная колода карт целей — списком названий (см. renderRosterPreviewCards) -->
+    <div id="rosterPreviewCards"></div>
 
     <div class="builder-layout">
       <div id="rosterPreviewList" class="models-list"></div>

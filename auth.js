@@ -93,8 +93,9 @@ async function pushSaves() {
 
 // ======================== СОХРАНЕНИЯ ========================
 // Компактная сериализация текущего отряда билдера
+// (o — колода карт целей: [[id, копий], ...], поле есть только если колода не пуста)
 function serializeCrew(name) {
-  return {
+  const record = {
     n: name,
     f: currentFaction,
     r: BMG_REP_LIMIT,
@@ -107,6 +108,10 @@ function serializeCrew(name) {
       return entry;
     })
   };
+  if (typeof crewCards !== 'undefined' && Object.keys(crewCards).length) {
+    record.o = Object.entries(crewCards).map(([id, count]) => [id, count]);
+  }
+  return record;
 }
 
 async function saveCurrentCrew() {
@@ -192,6 +197,15 @@ function restoreCrewFromSave(s) {
     BMG_AFFILIATIONS = (BMG_BOSS.rankUsed === 'Leader' && BMG_BOSS.traits.includes('Contractor'))
       ? ['Bane']
       : getFactions(BMG_BOSS);
+  }
+
+  // Колода карт целей (карты, исчезнувшие из каталога, тихо пропускаются)
+  if (typeof crewCards !== 'undefined') {
+    crewCards = {};
+    (s.o || []).forEach(([id, count]) => {
+      if (objCardById(id)) crewCards[id] = count;
+    });
+    updateDeckBadge();
   }
 
   updateCrewEquipmentCounts();
