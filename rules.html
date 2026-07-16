@@ -31,12 +31,13 @@
       border-bottom:2px solid #222; box-shadow:0 4px 15px rgba(0,0,0,.6);
     }
     .search-row { display:flex; align-items:center; gap:10px; max-width:760px; margin:0 auto; }
+    /* Единая кнопка «назад» — красный круг 40×40 со стрелкой, как во всех разделах */
     .back-btn {
-      background:#e94560; color:#fff; border:none; padding:8px 16px; border-radius:30px;
-      font-family:'Oswald',sans-serif; font-weight:bold; font-size:13px; cursor:pointer;
-      box-shadow:0 3px 10px rgba(233,69,96,.5); transition:all .3s; text-decoration:none;
-      display:inline-flex; align-items:center; flex-shrink:0; white-space:nowrap;
+      background:#e94560; color:#fff; border:none; width:40px; height:40px; border-radius:50%;
+      cursor:pointer; box-shadow:0 4px 15px rgba(233,69,96,.5); transition:background .3s; text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
     }
+    .back-btn svg { width:24px; height:24px; fill:#fff; }
     .back-btn:hover { background:#ff3366; }
     .rules-search {
       flex:1; display:flex; align-items:center; background:#222; border:2px solid #e94560; border-radius:50px;
@@ -174,8 +175,7 @@
       .rules-header h1 { font-size:16px; letter-spacing:1.5px; }
       .rules-header .subtitle { font-size:9.5px; letter-spacing:1px; }
 
-      /* Липкая панель: НАЗАД + поиск */
-      .back-btn { padding:7px 13px; font-size:12.5px; }
+      /* Липкая панель: кнопка «назад» всегда 40×40, размер не трогаем */
       .rules-search input { font-size:16px; padding:6px 0; } /* iOS: не зумит поле при фокусе */
 
       .legend { gap:8px 14px; padding:10px 14px; font-size:12.5px; }
@@ -204,7 +204,9 @@
 
   <div class="search-wrapper">
     <div class="search-row">
-      <a href="index.html" class="back-btn">BACK</a>
+      <a href="index.html" class="back-btn" title="BACK" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
       <div class="rules-search">
         <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input type="text" id="rulesSearch" placeholder="Search the rules..." autocomplete="off">
