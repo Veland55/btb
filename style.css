@@ -48,12 +48,13 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* СПИСОК МОДЕЛЕЙ */
 .models-list { display:flex; flex-direction:column; gap:10px; padding:10px; }
 
-/* Мини-карточка модели — общая для разделов "Карточки" и "Билдер":
-   фото слева, справа построчно — имя, ранг текстом, Rep/Funding, купленное снаряжение. */
+/* Мини-карточка модели — общая для разделов "Карточки", "Билдер" и просмотра
+   ростера: фото слева, справа построчно — имя, ранг, Rep/Funding и основные
+   характеристики модели (компактный вид, полную карточку можно не открывать). */
 .mini-card {
   background:#1a1a1a; border-radius:14px; overflow:hidden; position:relative; cursor:pointer;
   border:2px solid transparent; box-shadow:0 4px 12px rgba(0,0,0,.5); transition:all .3s;
-  display:flex; align-items:stretch; gap:12px; padding:10px;
+  display:flex; align-items:stretch; gap:10px; padding:8px;
 }
 .mini-card:hover { transform:translateY(-4px); box-shadow:0 10px 20px rgba(233,69,96,.4); }
 .mini-card.in-crew { border:4px solid #e94560; box-shadow:0 0 30px rgba(233,69,96,.8); }
@@ -68,14 +69,14 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .mini-card-corner .count { background:rgba(0,0,0,0.7); color:#fff; font-size:12px; font-weight:bold; padding:3px 8px; border-radius:12px; min-width:20px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.78); text-shadow:1px 1px 2px #000; pointer-events:none; }
 
 .mini-photo-wrap { position:relative; flex-shrink:0; }
-.mini-photo-wrap img { width:100px; height:126px; object-fit:cover; border-radius:10px; display:block; }
+.mini-photo-wrap img { width:74px; height:94px; object-fit:cover; border-radius:10px; display:block; }
 .boss-crown { position:absolute; top:-8px; left:-8px; font-size:22px; filter:drop-shadow(0 2px 4px rgba(0,0,0,.8)); }
 
-.mini-right-col { flex:1; display:flex; flex-direction:column; justify-content:center; gap:5px; min-width:0; }
-.models-list .mini-right-col { padding-right:40px; } /* место под угловую кнопку в билдере */
-.mini-name { font-weight:bold; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.mini-rank-text { color:#bbb; font-size:12.5px; text-transform:uppercase; letter-spacing:.5px; }
-.mini-rep { color:#e94560; font-weight:bold; font-size:14px; }
+.mini-right-col { flex:1; display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:0; }
+#modelsGridBuilder .mini-right-col { padding-right:40px; } /* место под угловую кнопку найма в билдере */
+.mini-name { font-weight:bold; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mini-rank-text { color:#bbb; font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+.mini-rep { color:#e94560; font-weight:bold; font-size:12.5px; }
 
 /* ПАНЕЛЬ АПГРЕЙДОВ: жёлтый «язычок», выглядывающий из-под нижнего края
    карточки. Есть у КАЖДОЙ модели отряда (билдер и просмотр ростера):
@@ -115,13 +116,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
 .rank-icon { height:24px !important; width:auto !important; max-width:60px; object-fit:contain; background:#ffffff; padding:2px; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; }
 
-/* ПРОСМОТР РОСТЕРА: компактные карточки с основными характеристиками модели */
-#rosterPreviewList .rp-card { padding:8px; gap:10px; }
-#rosterPreviewList .rp-card .mini-photo-wrap img { width:74px; height:94px; }
-#rosterPreviewList .rp-card .mini-right-col { padding-right:0; gap:3px; }
-#rosterPreviewList .rp-card .mini-name { font-size:14px; }
-#rosterPreviewList .rp-card .mini-rank-text { font-size:11px; }
-#rosterPreviewList .rp-card .mini-rep { font-size:12.5px; }
+/* Строка характеристик в мини-карточке (Movement/Attack/Defense/Strength + WIL/END) */
 .rp-stats { display:flex; flex-wrap:wrap; gap:4px; margin-top:2px; }
 .rp-stat {
   display:inline-flex; align-items:center; gap:3px; background:#000; color:#fff;
@@ -790,16 +785,14 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   }
   .faction-card { height: 150px; }
 
-  /* Список банды в билдере — несколько колонок вместо одной узкой полосы */
+  /* Списки моделей (карточки, билдер, просмотр ростера) — несколько колонок
+     вместо одной узкой полосы; карточки компактные, колонок помещается больше */
   .models-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     align-items: start;
-    gap: 12px;
+    gap: 10px;
   }
-
-  /* Просмотр ростера: карточки компактнее — колонок помещается больше */
-  #rosterPreviewList { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
 }
 
 @media (min-width: 1100px) {
@@ -819,6 +812,5 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   .models-list {
     max-width: 1900px;
   }
-  .models-list { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-  #rosterPreviewList { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+  .models-list { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
 }

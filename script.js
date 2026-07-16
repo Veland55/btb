@@ -1151,9 +1151,20 @@ const renderRankIconsHTML = ranks => ranks.map(rank =>
 // Общая разметка мини-карточки для разделов "Карточки" и "Билдер":
 // фото слева, справа построчно — имя, ранг текстом, Rep/Funding, купленное снаряжение.
 // showButtons включает кнопку добавить/удалить в правом верхнем углу (только билдер).
-function renderMiniCardHTML(item, showButtons) {
+function renderMiniCardHTML(item, showButtons, showStats) {
   const ranks = getRanks(item);
   const rankText = ranks.length ? ranks.join(' / ') : '—';
+
+  // Основные характеристики модели прямо в мини-карточке — только в просмотре
+  // ростера (showStats), чтобы карточку можно было не открывать
+  const s = item.stats;
+  const statChip = key => `<span class="rp-stat"><img src="${STAT_ICONS[key]}" alt="${key}">${s[key] || '-'}</span>`;
+  const statsHTML = showStats && s ? `
+    <div class="rp-stats">
+      ${statChip('Movement')}${statChip('Attack')}${statChip('Defense')}${statChip('Strength')}
+      <span class="rp-stat rp-stat-wil">WIL ${s.Willpower || '-'}</span>
+      <span class="rp-stat rp-stat-end">END ${s.Endurance || '-'}</span>
+    </div>` : '';
 
   let cornerHTML = '';
   if (showButtons) {
@@ -1180,6 +1191,7 @@ ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
   <div class="mini-name">${item.name}</div>
   <div class="mini-rank-text">${rankText}</div>
   <div class="mini-rep">${item.rep} Rep • $${item.inCrew ? getEffectiveModelFunding(item.instance) : (item.funding || 0)}</div>
+  ${statsHTML}
 </div>
 `;
 }
@@ -2803,31 +2815,6 @@ function closeRosterPreview() {
   $('builderSection').style.display = 'block';
 }
 
-// Компактная карточка для просмотра ростера: основные характеристики модели
-// прямо в списке — полную карточку можно не открывать
-function renderRosterPreviewCardHTML(item) {
-  const ranks = getRanks(item);
-  const s = item.stats || {};
-  const stat = key => `<span class="rp-stat"><img src="${STAT_ICONS[key]}" alt="${key}">${s[key] || '-'}</span>`;
-  const statsHTML = item.stats ? `
-    <div class="rp-stats">
-      ${stat('Movement')}${stat('Attack')}${stat('Defense')}${stat('Strength')}
-      <span class="rp-stat rp-stat-wil">WIL ${s.Willpower || '-'}</span>
-      <span class="rp-stat rp-stat-end">END ${s.Endurance || '-'}</span>
-    </div>` : '';
-  return `
-<div class="mini-photo-wrap">
-  <img src="${item.img}" loading="lazy" decoding="async" onerror="this.src='img/no.png'">
-  ${BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
-</div>
-<div class="mini-right-col">
-  <div class="mini-name">${item.name}</div>
-  <div class="mini-rank-text">${ranks.length ? ranks.join(' / ') : '—'}</div>
-  <div class="mini-rep">${item.rep} Rep • $${getEffectiveModelFunding(item.instance)}</div>
-  ${statsHTML}
-</div>`;
-}
-
 function renderRosterPreview() {
   const grid = $('rosterPreviewList');
   if (!grid) return;
@@ -2845,8 +2832,8 @@ function renderRosterPreview() {
     const originalModel = models.find(model => model.name === m.name) || m;
     const item = { ...originalModel, inCrew: true, count: countInCrew(originalModel), instance: m };
     const div = document.createElement('div');
-    div.className = 'mini-card rp-card';
-    div.innerHTML = renderRosterPreviewCardHTML(item);
+    div.className = 'mini-card';
+    div.innerHTML = renderMiniCardHTML(item, false, true); // без +/- (просмотр, не найм), с характеристиками
     div.onclick = () => showFullCard(item);
     // Та же панель апгрейдов под карточкой, что и в билдере
     fragment.appendChild(wrapCardWithUpgrades(div, item));
