@@ -199,6 +199,7 @@ const translations = {
     charismatic_used: "ИСПОЛЬЗОВАН",
     export_title: "Экспорт ростера в PDF",
     roster_preview: "ПРОСМОТР ОТРЯДА",
+    upgrades_flap: "АПГРЕЙДЫ",
     view_roster_title: "Просмотр отряда",
     crew_empty_preview: "Отряд пуст! Сначала добавьте модели.",
     no_available_equipment: "Нет доступного оборудования",
@@ -210,6 +211,12 @@ const translations = {
     rank_label: "Ранг",
     leader_or_sidekick: "Leader или Sidekick",
     equipment_insufficient_funds: "Недостаточно Funding для этого equipment!",
+    equipment_for: "Equipment для",
+    equipment_available: "Доступно",
+    equipment_of_total: "из",
+    equipment_insufficient_short: "⚠ Недостаточно средств",
+    equipment_requires: "Требует:",
+    leader_no_equipment: "Leader не может покупать оборудование!",
     crew_building_rules: "Правила набора отряда",
     crew_rules_intro: "У выбранной фракции особые правила набора отряда.",
     rule_ignore_rank_requirements: "Фракция игнорирует стандартные требования к рангам.",
@@ -335,6 +342,7 @@ const translations = {
     charismatic_used: "USED",
     export_title: "Export roster to PDF",
     roster_preview: "ROSTER PREVIEW",
+    upgrades_flap: "UPGRADES",
     view_roster_title: "View roster",
     crew_empty_preview: "Crew is empty! Add models first.",
     no_available_equipment: "No available equipment",
@@ -346,6 +354,12 @@ const translations = {
     rank_label: "Rank",
     leader_or_sidekick: "Leader or Sidekick",
     equipment_insufficient_funds: "Insufficient Funding for this equipment!",
+    equipment_for: "Equipment for",
+    equipment_available: "Available",
+    equipment_of_total: "of",
+    equipment_insufficient_short: "⚠ Insufficient funds",
+    equipment_requires: "Requires:",
+    leader_no_equipment: "Leader cannot purchase equipment!",
     crew_building_rules: "Crew Building Rules",
     crew_rules_intro: "Your selected affiliation has unique crew building rules.",
     rule_ignore_rank_requirements: "This affiliation ignores standard rank requirements.",
@@ -1156,21 +1170,6 @@ function renderMiniCardHTML(item, showButtons) {
     }
   }
 
-  const equipment = item.inCrew ? (item.instance.equipment || []) : [];
-  const equipmentChipsHTML = equipment.map(eq => `
-    <span class="mini-equipment-chip" onclick="event.stopPropagation(); showEquipmentInfo('${item.name.replace(/'/g, "\\'")}', '${eq.name.replace(/'/g, "\\'")}')">
-      ${eq.name}${eq.fundingCost ? ` <b>$${eq.fundingCost}</b>` : ''}${eq.repCost ? ` +${eq.repCost}Rep` : ''}
-      <span class="mini-equipment-remove" onclick="event.stopPropagation(); removeEquipmentFromModel('${item.name}', '${eq.name.replace(/'/g, "\\'")}')">×</span>
-    </span>
-  `).join('');
-
-  const equipmentRowHTML = item.inCrew ? `
-    <div class="mini-equipment-row">
-      ${equipmentChipsHTML}
-      <span class="equipment-icon" onclick="event.stopPropagation(); openEquipmentMenu(models[${item._id}], this.closest('.mini-card'))">⚙️</span>
-    </div>
-  ` : '';
-
   return `
 ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 <div class="mini-photo-wrap">
@@ -1181,9 +1180,40 @@ ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
   <div class="mini-name">${item.name}</div>
   <div class="mini-rank-text">${rankText}</div>
   <div class="mini-rep">${item.rep} Rep • $${item.inCrew ? getEffectiveModelFunding(item.instance) : (item.funding || 0)}</div>
-  ${equipmentRowHTML}
 </div>
 `;
+}
+
+// Жёлтая панель апгрейдов, «выглядывающая» из-под карточки модели: все
+// купленные апгрейды и управление ими (просмотр, удаление, докупка).
+// Панель есть у КАЖДОЙ модели отряда — и в билдере, и в просмотре ростера.
+function renderUpgradeFlapHTML(item, equipment) {
+  const safeName = item.name.replace(/'/g, "\\'");
+  const chips = equipment.map(eq => {
+    const safeEq = eq.name.replace(/'/g, "\\'");
+    return `
+    <span class="flap-chip" onclick="event.stopPropagation(); showEquipmentInfo('${safeName}', '${safeEq}')">
+      <span class="flap-chip-name">${eq.name}</span>
+      ${eq.fundingCost ? `<b>$${eq.fundingCost}</b>` : ''}${eq.repCost ? `<b>+${eq.repCost}R</b>` : ''}
+      <span class="flap-chip-remove" onclick="event.stopPropagation(); removeEquipmentFromModel('${safeName}', '${safeEq}')">×</span>
+    </span>`;
+  }).join('');
+  return `
+    <span class="flap-title">${t('upgrades_flap')}</span>
+    ${chips}
+    <button class="flap-add" title="Equipment" onclick="event.stopPropagation(); openEquipmentMenu(models[${item._id}], this.closest('.mini-card-wrap'))">+</button>`;
+}
+
+// Обёртка «карточка + панель апгрейдов снизу» — общая для билдера и просмотра ростера
+function wrapCardWithUpgrades(cardDiv, item) {
+  const wrap = document.createElement("div");
+  wrap.className = "mini-card-wrap";
+  wrap.appendChild(cardDiv);
+  const flap = document.createElement("div");
+  flap.className = "mini-upgrades-flap";
+  flap.innerHTML = renderUpgradeFlapHTML(item, (item.instance && item.instance.equipment) || []);
+  wrap.appendChild(flap);
+  return wrap;
 }
 
 // Версия для просмотра (без +/-)
@@ -1349,7 +1379,8 @@ const renderMiniCardsBuilder = debounce(() => {
     div.className = `mini-card ${item.inCrew ? "in-crew" : ""}`;
     div.innerHTML = renderMiniCardHTML(item, true);
     div.onclick = () => showFullCard(item);
-    fragment.appendChild(div);
+    // У каждой модели отряда — жёлтая панель апгрейдов под карточкой
+    fragment.appendChild(item.inCrew ? wrapCardWithUpgrades(div, item) : div);
   });
 
   grid.innerHTML = "";
@@ -2523,7 +2554,7 @@ function openEquipmentMenu(model, cardElement) {
   if (crewModel.rankUsed === "Leader") {
     const hasLeaderPermission = (equipmentByFaction[faction] || []).some(eq => isEquipmentRankEligible(eq, crewModel));
     if (!hasLeaderPermission) {
-      alert(currentLang === 'ru' ? "Leader не может покупать оборудование!" : "Leader cannot purchase equipment!");
+      alert(t('leader_no_equipment'));
       return;
     }
   }
@@ -2655,7 +2686,7 @@ function openEquipmentMenu(model, cardElement) {
   const usedFunding = getCrewUsedFunding();
   const availableFunding = bmgFundingLimit() - usedFunding;
 
-  const equipmentTitle = currentLang === 'ru' ? 'Equipment для' : 'Equipment for';
+  const equipmentTitle = t('equipment_for');
 
   overlay.innerHTML = `
     <div class="equipment-modal-content">
@@ -2664,21 +2695,21 @@ function openEquipmentMenu(model, cardElement) {
         <div class="equipment-modal-close" onclick="this.closest('.equipment-modal').remove()">×</div>
       </div>
       <div class="equipment-modal-funding">
-        <span class="avail">${currentLang === 'ru' ? 'Доступно' : 'Available'}: $${availableFunding}</span>
-        <span class="total">(${currentLang === 'ru' ? 'из' : 'of'} $${bmgFundingLimit()})</span>
+        <span class="avail">${t('equipment_available')}: $${availableFunding}</span>
+        <span class="total">(${t('equipment_of_total')} $${bmgFundingLimit()})</span>
       </div>
       <div class="equipment-modal-list">
         ${availableEq.length ? availableEq.map(eq => {
           const cost = getEquipmentCost(eq);
           const isDiscounted = cost !== (eq.fundingCost || 0);
           const canAfford = availableFunding >= cost;
-          const insufficientFundsText = currentLang === 'ru' ? '⚠ Недостаточно средств' : '⚠ Insufficient funds';
+          const insufficientFundsText = t('equipment_insufficient_short');
           const isSpecial = isCharacterOrTraitGated(eq);
           const specialBadge = isSpecial ? '<span class="equipment-item-special">⭐ SPECIAL</span>' : '';
 
           const reqCond = isSpecial ? (eq.conditions || []).find(c => isCharacterOrTraitGated({ conditions: [c] })) : null;
           const reqText = reqCond
-            ? `<span class="equipment-item-req">${currentLang === 'ru' ? 'Требует:' : 'Requires:'} ${reqCond.replace('Alias: ', '').replace(' in crew', '')}</span>`
+            ? `<span class="equipment-item-req">${t('equipment_requires')} ${reqCond.replace('Alias: ', '').replace(' in crew', '')}</span>`
             : '';
           const priceText = isDiscounted ? `<s style="opacity:.6;">$${eq.fundingCost || 0}</s> $${cost}` : `$${cost}`;
 
@@ -2772,6 +2803,31 @@ function closeRosterPreview() {
   $('builderSection').style.display = 'block';
 }
 
+// Компактная карточка для просмотра ростера: основные характеристики модели
+// прямо в списке — полную карточку можно не открывать
+function renderRosterPreviewCardHTML(item) {
+  const ranks = getRanks(item);
+  const s = item.stats || {};
+  const stat = key => `<span class="rp-stat"><img src="${STAT_ICONS[key]}" alt="${key}">${s[key] || '-'}</span>`;
+  const statsHTML = item.stats ? `
+    <div class="rp-stats">
+      ${stat('Movement')}${stat('Attack')}${stat('Defense')}${stat('Strength')}
+      <span class="rp-stat rp-stat-wil">WIL ${s.Willpower || '-'}</span>
+      <span class="rp-stat rp-stat-end">END ${s.Endurance || '-'}</span>
+    </div>` : '';
+  return `
+<div class="mini-photo-wrap">
+  <img src="${item.img}" loading="lazy" decoding="async" onerror="this.src='img/no.png'">
+  ${BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
+</div>
+<div class="mini-right-col">
+  <div class="mini-name">${item.name}</div>
+  <div class="mini-rank-text">${ranks.length ? ranks.join(' / ') : '—'}</div>
+  <div class="mini-rep">${item.rep} Rep • $${getEffectiveModelFunding(item.instance)}</div>
+  ${statsHTML}
+</div>`;
+}
+
 function renderRosterPreview() {
   const grid = $('rosterPreviewList');
   if (!grid) return;
@@ -2789,10 +2845,11 @@ function renderRosterPreview() {
     const originalModel = models.find(model => model.name === m.name) || m;
     const item = { ...originalModel, inCrew: true, count: countInCrew(originalModel), instance: m };
     const div = document.createElement('div');
-    div.className = 'mini-card';
-    div.innerHTML = renderMiniCardHTML(item, false); // false: без +/- — это просмотр, не найм
+    div.className = 'mini-card rp-card';
+    div.innerHTML = renderRosterPreviewCardHTML(item);
     div.onclick = () => showFullCard(item);
-    fragment.appendChild(div);
+    // Та же панель апгрейдов под карточкой, что и в билдере
+    fragment.appendChild(wrapCardWithUpgrades(div, item));
   });
   grid.innerHTML = '';
   grid.appendChild(fragment);

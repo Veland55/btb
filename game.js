@@ -286,24 +286,27 @@ function saveGameTrack() {
   if (activeGame) localStorage.setItem(GAME_STATE_PREFIX + activeGame.code, JSON.stringify(gameTrack));
 }
 
-// Запись трекинга модели; при первом обращении инициализируется значениями с карточки
+// Запись трекинга модели; при первом обращении инициализируется значениями с карточки.
+// Максимумы (wm/em) пересчитываются при каждом рендере — на случай состояния,
+// сохранённого старой версией без максимумов.
 function trackEntry(side, index, model) {
   const key = side + ':' + index;
+  const wMax = model && model.stats ? parseInt(model.stats.Willpower, 10) || 0 : 0;
+  const eMax = model && model.stats ? parseInt(model.stats.Endurance, 10) || 0 : 0;
   if (!gameTrack[key]) {
-    gameTrack[key] = {
-      w: model && model.stats ? parseInt(model.stats.Willpower, 10) || 0 : 0,
-      e: model && model.stats ? parseInt(model.stats.Endurance, 10) || 0 : 0,
-      kd: 0,
-      ko: 0
-    };
+    gameTrack[key] = { w: wMax, e: eMax, kd: 0, ko: 0 };
   }
+  gameTrack[key].wm = wMax;
+  gameTrack[key].em = eMax;
   return gameTrack[key];
 }
 
 function gmAdjust(side, index, field, delta) {
   const st = gameTrack[side + ':' + index];
   if (!st) return;
-  st[field] = Math.max(0, Math.min(99, (st[field] || 0) + delta));
+  // WIL/END нельзя поднять выше значения с карточки модели
+  const max = field === 'w' ? (st.wm || 99) : field === 'e' ? (st.em || 99) : 99;
+  st[field] = Math.max(0, Math.min(max, (st[field] || 0) + delta));
   const el = $(`gm-${side}-${index}-${field}`);
   if (el) el.textContent = st[field];
   saveGameTrack();
