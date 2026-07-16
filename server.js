@@ -21,7 +21,7 @@ const { DatabaseSync } = require('node:sqlite');
 
 const PORT = parseInt(process.env.PORT, 10) || 8080;
 const ROOT = __dirname;
-const DATA_DIR = path.join(ROOT, 'data');
+const DATA_DIR = process.env.BMG_DATA_DIR || path.join(ROOT, 'data');
 
 const MAX_SAVES = 5;                            // лимит сохранений на пользователя
 const MAX_BODY = 32 * 1024;                     // лимит тела запроса
@@ -58,10 +58,25 @@ db.exec(`
     guest_roster TEXT,
     conditions   TEXT
   );
+  CREATE TABLE IF NOT EXISTS counters (
+    name  TEXT PRIMARY KEY,
+    value INTEGER NOT NULL
+  );
 `);
 
 // Миграция для баз, созданных до появления условий игры (Event/Encounter)
 try { db.exec('ALTER TABLE games ADD COLUMN conditions TEXT'); } catch (e) { /* колонка уже есть */ }
+// Миграция: страна пользователя (ISO 3166-1 alpha-2) — для раздела статистики
+try { db.exec('ALTER TABLE users ADD COLUMN country TEXT'); } catch (e) { /* колонка уже есть */ }
+
+// Постоянные счётчики (игры живут в базе сутки, а статистике нужен итог за всё время)
+function bumpCounter(name) {
+  db.prepare('INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT(name) DO UPDATE SET value = value + 1').run(name);
+}
+function getCounter(name) {
+  const row = db.prepare('SELECT value FROM counters WHERE name = ?').get(name);
+  return row ? row.value : 0;
+}
 
 // Периодическая чистка протухших сессий и игр — база не разрастается
 function cleanup() {
@@ -121,6 +136,20 @@ function createSession(user) {
 const validName = n => typeof n === 'string' && /^[\w\-. А-Яа-яЁё]{3,20}$/.test(n);
 const validPass = p => typeof p === 'string' && p.length >= 4 && p.length <= 64;
 
+// Имя как его ввёл пользователь → каноничный вид для проверок:
+// без пробелов по краям (визуально неотличимы) — храним и показываем как есть
+const normName = n => typeof n === 'string' ? n.trim() : n;
+
+// Занято ли имя БЕЗ учёта регистра: "TestUser"/"testuser"/"ТестЮзер"/"тестюзер" —
+// один пользователь. Сравнение в JS, т.к. SQLite NOCASE/lower() не сворачивают
+// регистр не-ASCII символов (кириллицы); таблица пользователей небольшая
+function userNameTaken(name) {
+  const lc = name.toLowerCase();
+  return db.prepare('SELECT name FROM users').all().some(r => r.name.toLowerCase() === lc);
+}
+// Страна профиля: ISO 3166-1 alpha-2 либо null (не указана)
+const validCountry = c => c == null || (typeof c === 'string' && /^[A-Z]{2}$/.test(c));
+
 // Валидация ростера/сохранения (компактный формат из auth.js)
 function validSave(s) {
   return s && typeof s === 'object'
@@ -170,19 +199,21 @@ async function handleApi(req, res, url) {
 
   // --- Аутентификация ---
   if (p === '/api/register' && req.method === 'POST') {
-    const { name, pass } = await readBody(req);
+    const body = await readBody(req);
+    const name = normName(body.name), pass = body.pass;
     if (!validName(name) || !validPass(pass)) return send(res, 400, { error: 'input' });
-    if (db.prepare('SELECT name FROM users WHERE name = ?').get(name)) return send(res, 409, { error: 'exists' });
+    if (userNameTaken(name)) return send(res, 409, { error: 'exists' });
     const salt = crypto.randomBytes(8).toString('hex');
     db.prepare('INSERT INTO users (name, salt, hash, created) VALUES (?, ?, ?, ?)')
       .run(name, salt, hashPassword(salt, pass), Date.now());
-    return send(res, 200, { token: createSession(name), name });
+    return send(res, 200, { token: createSession(name), name, country: null });
   }
 
   if (p === '/api/login' && req.method === 'POST') {
-    const { name, pass } = await readBody(req);
+    const body = await readBody(req);
+    const name = normName(body.name), pass = body.pass;
     const row = validName(name) && validPass(pass)
-      ? db.prepare('SELECT salt, hash FROM users WHERE name = ?').get(name) : null;
+      ? db.prepare('SELECT salt, hash, country FROM users WHERE name = ?').get(name) : null;
     if (!row) return send(res, 401, { error: 'badcred' });
     // timingSafeEqual — сравнение хэшей без утечки по времени ответа
     const given = Buffer.from(hashPassword(row.salt, pass), 'hex');
@@ -190,7 +221,7 @@ async function handleApi(req, res, url) {
     if (given.length !== stored.length || !crypto.timingSafeEqual(given, stored)) {
       return send(res, 401, { error: 'badcred' });
     }
-    return send(res, 200, { token: createSession(name), name });
+    return send(res, 200, { token: createSession(name), name, country: row.country || null });
   }
 
   if (p === '/api/logout' && req.method === 'POST') {
@@ -199,14 +230,68 @@ async function handleApi(req, res, url) {
     return send(res, 200, { ok: true });
   }
 
+  // --- Публичная статистика (агрегаты без личных данных, см. stats.js) ---
+  if (p === '/api/stats' && req.method === 'GET') {
+    const usersTotal = db.prepare('SELECT COUNT(*) AS c FROM users').get().c;
+    const countries = db.prepare(
+      "SELECT country, COUNT(*) AS c FROM users WHERE country IS NOT NULL AND country != '' GROUP BY country ORDER BY c DESC, country LIMIT 10"
+    ).all().map(r => [r.country, r.c]);
+
+    // Агрегаты по всем сохранённым ростерам (имена пользователей не раскрываются)
+    const factions = new Map(), modelNames = new Map(), bosses = new Map();
+    let rosters = 0, modelsTotal = 0, repSum = 0;
+    for (const row of db.prepare('SELECT data FROM saves').all()) {
+      let arr;
+      try { arr = JSON.parse(row.data); } catch (e) { continue; }
+      if (!Array.isArray(arr)) continue;
+      for (const s of arr) {
+        if (!s || !Array.isArray(s.m)) continue;
+        rosters++;
+        modelsTotal += s.m.length;
+        repSum += s.r || 0;
+        if (s.f) factions.set(s.f, (factions.get(s.f) || 0) + 1);
+        for (const entry of s.m) {
+          const n = entry && entry[0];
+          if (n) modelNames.set(n, (modelNames.get(n) || 0) + 1);
+        }
+        const boss = s.m[s.b];
+        if (boss && boss[0]) bosses.set(boss[0], (bosses.get(boss[0]) || 0) + 1);
+      }
+    }
+    const top = (map, n) => [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, n);
+
+    return send(res, 200, {
+      users: usersTotal,
+      rosters,
+      games: getCounter('games_created'),
+      avgCrewSize: rosters ? Math.round(modelsTotal / rosters * 10) / 10 : 0,
+      avgRepLimit: rosters ? Math.round(repSum / rosters) : 0,
+      modelsUsed: modelNames.size,
+      factions: top(factions, 10),
+      models: top(modelNames, 10),
+      bosses: top(bosses, 5),
+      countries
+    });
+  }
+
   // --- Всё ниже требует входа ---
   const user = authUser(req);
 
   if (p === '/api/me' && req.method === 'GET') {
-    return user ? send(res, 200, { name: user }) : send(res, 401, { error: 'auth' });
+    if (!user) return send(res, 401, { error: 'auth' });
+    const row = db.prepare('SELECT country FROM users WHERE name = ?').get(user);
+    return send(res, 200, { name: user, country: (row && row.country) || null });
   }
 
   if (!user) return send(res, 401, { error: 'auth' });
+
+  // --- Профиль: страна пользователя (для статистики географии) ---
+  if (p === '/api/profile' && req.method === 'PUT') {
+    const { country } = await readBody(req);
+    if (!validCountry(country)) return send(res, 400, { error: 'input' });
+    db.prepare('UPDATE users SET country = ? WHERE name = ?').run(country || null, user);
+    return send(res, 200, { ok: true });
+  }
 
   // --- Сохранения отрядов ---
   if (p === '/api/saves' && req.method === 'GET') {
@@ -232,6 +317,7 @@ async function handleApi(req, res, url) {
     if (!code) return send(res, 500, { error: 'server' });
     db.prepare('INSERT INTO games (code, created, host_user, host_roster, conditions) VALUES (?, ?, ?, ?, ?)')
       .run(code, Date.now(), user, JSON.stringify(roster), conditions ? JSON.stringify(conditions) : null);
+    bumpCounter('games_created'); // игры чистятся через сутки, а статистике нужен итог за всё время
     return send(res, 200, { code });
   }
 

@@ -12,12 +12,13 @@
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
   <script src="data.js?v=1.3" defer></script>
   <script src="data-traits.js?v=1.3" defer></script>
-  <script src="script.js?v=1.3" defer></script>
-  <script src="auth.js?v=1.3" defer></script>
+  <script src="script.js?v=1.4" defer></script>
+  <script src="auth.js?v=1.4" defer></script>
   <script src="data-game.js?v=1.3" defer></script>
   <script src="game.js?v=1.3" defer></script>
   <script src="data-cards.js?v=1.3" defer></script>
   <script src="cards.js?v=1.3" defer></script>
+  <script src="stats.js?v=1.4" defer></script>
 </head>
 <body>
 
@@ -53,6 +54,10 @@
         <button class="menu-btn" onclick="window.location.href='compendium.html'">
           <span class="btn-icon">📚</span>
           <span class="btn-text" data-i18n="compendium">СПРАВОЧНИК</span>
+        </button>
+        <button class="menu-btn" onclick="showStats()">
+          <span class="btn-icon">📊</span>
+          <span class="btn-text" data-i18n="stats">СТАТИСТИКА</span>
         </button>
         <button class="menu-btn" onclick="openAuthModal()">
           <span class="btn-icon">👤</span>
@@ -269,6 +274,21 @@
       </div>
     </div>
     <div id="gameContent" class="game-content"></div>
+  </div>
+
+  <!-- РАЗДЕЛ СТАТИСТИКА: агрегаты по всем игрокам (см. stats.js и GET /api/stats) -->
+  <div id="statsSection" style="display:none;">
+    <div class="top-bar">
+      <div class="top-bar-content">
+        <h1 data-i18n="stats">СТАТИСТИКА</h1>
+        <div class="header-buttons">
+          <button class="compendium-small-btn" onclick="backToMenu()">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="statsContent" class="stats-content"></div>
   </div>
 
   <!-- ПРОФИЛЬ: ВХОД / РЕГИСТРАЦИЯ / СОХРАНЁННЫЕ ОТРЯДЫ (см. auth.js) -->

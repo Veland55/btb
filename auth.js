@@ -17,6 +17,7 @@ const RANK_TO_CODE = { "Leader": "L", "Sidekick": "S", "Henchman": "H", "Free Ag
 const CODE_TO_RANK = { L: "Leader", S: "Sidekick", H: "Henchman", F: "Free Agent", V: "Vehicle" };
 
 let currentUser = null;
+let currentUserCountry = null; // ISO-код страны из профиля (для статистики)
 let authToken = localStorage.getItem(AUTH_TOKEN_KEY) || null;
 let mySaves = [];        // локальный кэш сохранений текущего пользователя
 
@@ -61,6 +62,7 @@ async function authRegister(name, pass) {
   const data = await api('/api/register', 'POST', { name, pass });
   authToken = data.token;
   currentUser = data.name;
+  currentUserCountry = data.country || null;
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   mySaves = [];
 }
@@ -69,6 +71,7 @@ async function authLogin(name, pass) {
   const data = await api('/api/login', 'POST', { name, pass });
   authToken = data.token;
   currentUser = data.name;
+  currentUserCountry = data.country || null;
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   await refreshSaves();
 }
@@ -77,9 +80,23 @@ function authLogout() {
   if (authToken) api('/api/logout', 'POST', {}).catch(() => {});
   authToken = null;
   currentUser = null;
+  currentUserCountry = null;
   mySaves = [];
   localStorage.removeItem(AUTH_TOKEN_KEY);
   renderAuthModal();
+}
+
+// Страна профиля: селект в модалке профиля, учитывается в разделе СТАТИСТИКА
+async function setUserCountry(code) {
+  const prev = currentUserCountry;
+  currentUserCountry = code || null;
+  try {
+    await api('/api/profile', 'PUT', { country: currentUserCountry });
+  } catch (e) {
+    currentUserCountry = prev; // сервер отказал — откатываем
+    alert(apiErrorText(e));
+    renderAuthModal();
+  }
 }
 
 async function refreshSaves() {
@@ -272,6 +289,13 @@ function renderAuthModal() {
       <span class="auth-slots">${mySaves.length} / ${MAX_SAVES}</span>
       <button class="save-btn" onclick="authLogout()">${t('logout')}</button>
     </div>
+    <div class="auth-country-row">
+      <span class="auth-country-label">${t('your_country')}</span>
+      <select class="game-select auth-country-select" onchange="setUserCountry(this.value)">
+        ${countryOptionsHTML(currentUserCountry)}
+      </select>
+    </div>
+    <p class="auth-note">${t('country_stats_hint')}</p>
     <div class="saves-title">${t('my_crews')}</div>
     ${rows || `<p class="auth-note">${t('no_saves')}</p>`}`;
 }
@@ -296,7 +320,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!authToken) return;
   try {
-    currentUser = (await api('/api/me')).name;
+    const me = await api('/api/me');
+    currentUser = me.name;
+    currentUserCountry = me.country || null;
     await refreshSaves();
   } catch (e) {
     if (e.status === 401) { // токен протух

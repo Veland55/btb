@@ -130,6 +130,7 @@ function showGame() {
   $('mainMenu').style.display = 'none';
   $('cardsSection').style.display = 'none';
   $('builderSection').style.display = 'none';
+  if ($('statsSection')) $('statsSection').style.display = 'none';
   $('gameSection').style.display = 'block';
   $('compendiumModal').classList.remove('active');
   renderGame();

@@ -307,7 +307,26 @@ const translations = {
     encounter_card: "Столкновение",
     reroll_random: "Перебросить случайно",
     tap_to_read: "нажмите, чтобы прочитать",
-    read_card: "Читать условие"
+    read_card: "Читать условие",
+    stats: "СТАТИСТИКА",
+    stats_loading: "Загрузка статистики...",
+    stats_empty: "Пока нет данных — сохраните первый отряд в профиле!",
+    stats_total_users: "Игроков",
+    stats_total_rosters: "Сохранённых отрядов",
+    stats_total_games: "Создано игр",
+    stats_models_used: "Разных моделей в отрядах",
+    stats_avg_crew: "Средний размер отряда",
+    stats_avg_rep: "Средний лимит Rep",
+    stats_top_factions: "САМЫЕ ПОПУЛЯРНЫЕ БАНДЫ",
+    stats_top_models: "САМЫЕ ПОПУЛЯРНЫЕ МОДЕЛИ",
+    stats_top_bosses: "САМЫЕ ПОПУЛЯРНЫЕ БОССЫ",
+    stats_geography: "ГЕОГРАФИЯ ИГРОКОВ",
+    stats_source_note: "По сохранённым ростерам всех игроков.",
+    stats_bosses_note: "Кто чаще всего возглавляет отряды.",
+    stats_geo_note: "Страна указывается в профиле.",
+    your_country: "Ваша страна",
+    country_not_set: "Не указана",
+    country_stats_hint: "Страна учитывается в разделе СТАТИСТИКА — география игроков."
   },
   en: {
     cards: "CARDS",
@@ -480,7 +499,26 @@ const translations = {
     encounter_card: "Encounter",
     reroll_random: "Reroll randomly",
     tap_to_read: "tap to read",
-    read_card: "Read the card"
+    read_card: "Read the card",
+    stats: "STATISTICS",
+    stats_loading: "Loading statistics...",
+    stats_empty: "No data yet — save your first crew in the profile!",
+    stats_total_users: "Players",
+    stats_total_rosters: "Saved crews",
+    stats_total_games: "Games created",
+    stats_models_used: "Unique models in crews",
+    stats_avg_crew: "Average crew size",
+    stats_avg_rep: "Average Rep limit",
+    stats_top_factions: "MOST POPULAR CREWS",
+    stats_top_models: "MOST POPULAR MODELS",
+    stats_top_bosses: "MOST POPULAR BOSSES",
+    stats_geography: "PLAYER GEOGRAPHY",
+    stats_source_note: "Based on all players' saved rosters.",
+    stats_bosses_note: "Who leads crews most often.",
+    stats_geo_note: "Set your country in the profile.",
+    your_country: "Your country",
+    country_not_set: "Not set",
+    country_stats_hint: "Your country is counted in the STATISTICS section — player geography."
   }
 };
 
@@ -532,6 +570,7 @@ function setLanguage(lang) {
   // чтобы перевод применялся сразу, а не после закрытия/открытия
   if (typeof renderAuthModal === 'function') renderAuthModal();
   if (typeof renderGame === 'function' && currentMode === 'game') renderGame();
+  if (typeof renderStats === 'function' && currentMode === 'stats') renderStats();
 }
 
 // Загрузка сохранённого языка при старте
@@ -788,6 +827,7 @@ function showCards() {
   $('cardsSection').style.display = 'block';
   $('builderSection').style.display = 'none';
   if ($('gameSection')) $('gameSection').style.display = 'none';
+  if ($('statsSection')) $('statsSection').style.display = 'none';
   $('compendiumModal').classList.remove('active');
 
   // Сбрасываем фракцию и показываем вкладки
@@ -805,6 +845,7 @@ function showBuilder() {
   $('mainMenu').style.display = 'none';
   $('cardsSection').style.display = 'none';
   if ($('gameSection')) $('gameSection').style.display = 'none';
+  if ($('statsSection')) $('statsSection').style.display = 'none';
   $('builderSection').style.display = 'block';
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
@@ -826,6 +867,7 @@ function backToMenu() {
   $('builderSection').style.display = 'none';
   if ($('rosterPreviewSection')) $('rosterPreviewSection').style.display = 'none';
   if ($('gameSection')) $('gameSection').style.display = 'none';
+  if ($('statsSection')) $('statsSection').style.display = 'none';
   if (typeof stopGamePolling === 'function') stopGamePolling();
   $('compendiumModal').classList.remove('active');
   $('modelSearchModal').classList.remove('active');

@@ -544,6 +544,56 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   .game-play .game-roster { flex:1; min-width:0; }
 }
 
+/* ======================== РАЗДЕЛ СТАТИСТИКА (stats.js) ======================== */
+.stats-content { padding:16px 12px 80px; max-width:900px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+.stats-loading { text-align:center; color:#999; padding:40px 0; letter-spacing:1px; }
+
+/* Плитки общих счётчиков */
+.stats-tiles { display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; }
+.stats-tile {
+  background:#141414; border:2px solid #2a2a2a; border-radius:14px; padding:14px 8px 12px;
+  display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.45);
+}
+.stats-tile-icon { font-size:20px; line-height:1; margin-bottom:4px; }
+.stats-tile-value { font-family:'Oswald',sans-serif; font-weight:700; font-size:26px; line-height:1; color:#ffd700; }
+.stats-tile-label { color:#999; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
+
+/* Панели-рейтинги: место, картинка, название + полоса, число */
+.stats-panel { gap:8px; }
+.stats-rows { display:flex; flex-direction:column; gap:10px; margin-top:4px; }
+.stats-row { display:flex; align-items:center; gap:10px; min-width:0; }
+.stats-row-place {
+  font-family:'Oswald',sans-serif; font-weight:700; font-size:14px; color:#777;
+  width:20px; text-align:center; flex-shrink:0;
+}
+.stats-row.is-top .stats-row-place { color:#ffd700; }
+.stats-row-img { flex-shrink:0; }
+.stats-row-faction { width:32px; height:32px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,.6)); }
+.stats-row-photo { width:34px; height:42px; object-fit:cover; object-position:center top; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.5); }
+.stats-row-flag { font-size:24px; line-height:1; flex-shrink:0; width:32px; text-align:center; }
+.stats-row-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:5px; }
+.stats-row-name { color:#fff; font-weight:700; font-size:13px; letter-spacing:.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.stats-row.is-top .stats-row-name { color:#ffd700; }
+.stats-row-bar { height:8px; background:#000; border:1px solid #333; border-radius:6px; overflow:hidden; }
+.stats-row-fill { height:100%; background:linear-gradient(90deg, #e94560, #ff3366); border-radius:6px; }
+.stats-row.is-top .stats-row-fill { background:linear-gradient(90deg, #ffd700, #ffaa00); }
+.stats-row-count { font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; color:#e94560; flex-shrink:0; min-width:26px; text-align:right; }
+.stats-row.is-top .stats-row-count { color:#ffd700; }
+
+/* Планшет/ПК: плитки в одну строку */
+@media (min-width: 700px) {
+  .stats-tiles { grid-template-columns:repeat(3, 1fr); }
+}
+@media (min-width: 1100px) {
+  .stats-tiles { grid-template-columns:repeat(6, 1fr); }
+}
+
+/* Строка выбора страны в профиле */
+.auth-country-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.auth-country-label { color:#999; font-size:12px; text-transform:uppercase; letter-spacing:1px; flex-shrink:0; }
+.auth-country-select { flex:1; min-width:0; padding:9px 12px; font-size:14px; }
+
 /* СВЯЗАННЫЕ ПРАВИЛА В ПОПАПАХ (расшифровка трейтов, упомянутых в апгрейде/трейте) */
 .popup-related { margin-top:16px; border-top:2px solid #e94560; padding-top:12px; }
 .popup-related-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:12px; margin-bottom:10px; }
@@ -700,6 +750,8 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
 /* КНОПКИ РАЗДЕЛОВ */
 .menu-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+/* При нечётном числе кнопок последняя занимает всю строку — без «дырки» в сетке */
+.menu-buttons .menu-btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .menu-btn {
   display: flex;
   flex-direction: column;
