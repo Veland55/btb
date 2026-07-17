@@ -131,6 +131,7 @@ function showGame() {
   $('cardsSection').style.display = 'none';
   $('builderSection').style.display = 'none';
   if ($('statsSection')) $('statsSection').style.display = 'none';
+  if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
   $('gameSection').style.display = 'block';
   $('compendiumModal').classList.remove('active');
   renderGame();
@@ -393,6 +394,85 @@ function rosterColumnHTML(player, titleKey, side) {
     </div>`;
 }
 
+// ======================== СЧЁТ ПАРТИИ И РЕЗУЛЬТАТ ========================
+// Очки побед (VP) считаются локально на устройстве (как WIL/END), а финальный
+// итог — победитель + счёт — записывается на сервер и виден обоим игрокам.
+// Из результатов строится «Рейтинг побед» в разделе СТАТИСТИКА.
+let gameResultEditing = false; // игрок исправляет итог — поллинг не возвращает баннер
+
+function vpValue(side) {
+  return (gameTrack['vp:' + side] && gameTrack['vp:' + side].v) || 0;
+}
+
+function vpAdjust(side, delta) {
+  const key = 'vp:' + side;
+  if (!gameTrack[key]) gameTrack[key] = { v: 0 };
+  gameTrack[key].v = Math.max(0, Math.min(200, gameTrack[key].v + delta));
+  const el = $('game-vp-' + side);
+  if (el) el.textContent = gameTrack[key].v;
+  saveGameTrack();
+}
+
+function gameResultPanelHTML() {
+  const names = { host: activeGame.host.name, guest: activeGame.guest.name };
+
+  // Итог уже записан (мной или оппонентом) — показываем баннер
+  if (activeGame.result) {
+    const r = activeGame.result;
+    return `
+      <div class="game-panel game-center game-result-panel">
+        <div class="game-panel-title">${t('game_result')}</div>
+        <div class="game-result-winner">🏆 ${names[r.winner]}</div>
+        <div class="game-result-score">${names.host} <b>${r.hostVp}</b> : <b>${r.guestVp}</b> ${names.guest}</div>
+        <button class="save-btn" onclick="editGameResult()">${t('change_result')}</button>
+      </div>`;
+  }
+
+  const counter = side => `
+    <div class="game-vp-box">
+      <div class="game-vp-name">${names[side]}</div>
+      <span class="gm-counter">VP
+        <button onclick="vpAdjust('${side}',-1)">−</button>
+        <b id="game-vp-${side}">${vpValue(side)}</b>
+        <button onclick="vpAdjust('${side}',1)">+</button>
+      </span>
+    </div>`;
+  return `
+    <div class="game-panel game-result-panel">
+      <div class="game-panel-title">${t('game_score')}</div>
+      <p class="game-note">${t('game_score_hint')}</p>
+      <div class="game-vp-row">${counter('host')}${counter('guest')}</div>
+      <p class="game-note">${t('game_finish_hint')}</p>
+      <div class="game-finish-row">
+        <button class="rank-select-btn" onclick="recordGameResult('host')">🏆 ${names.host}</button>
+        <button class="rank-select-btn" onclick="recordGameResult('guest')">🏆 ${names.guest}</button>
+      </div>
+    </div>`;
+}
+
+async function recordGameResult(winner) {
+  const names = { host: activeGame.host.name, guest: activeGame.guest.name };
+  if (!confirm(t('confirm_winner', { name: names[winner] }))) return;
+  try {
+    const data = await api('/api/games/' + activeGame.code + '/result', 'POST', {
+      winner, hostVp: vpValue('host'), guestVp: vpValue('guest')
+    });
+    activeGame.result = data.result;
+    gameResultEditing = false;
+    renderGamePlay();
+  } catch (e) {
+    alert(apiErrorText(e));
+  }
+}
+
+// Исправление ошибочно записанного итога: возвращаем счётчики (сервер хранит
+// прежний результат, пока не будет записан новый)
+function editGameResult() {
+  activeGame.result = null;
+  gameResultEditing = true;
+  renderGamePlay();
+}
+
 function renderGamePlay() {
   const box = $('gameContent');
   const meIsHost = activeGame.host.name === currentUser;
@@ -407,11 +487,24 @@ function renderGamePlay() {
       <button class="save-btn save-btn-del" onclick="leaveGame()">${t('leave_game')}</button>
     </div>
     ${conditionsBarHTML(activeGame.conditions)}
+    ${gameResultPanelHTML()}
     <div class="game-play">
       ${rosterColumnHTML(me, 'your_roster', meIsHost ? 'host' : 'guest')}
       ${rosterColumnHTML(opp, 'opponent_roster', meIsHost ? 'guest' : 'host')}
     </div>`;
   saveGameTrack(); // фиксируем инициализированные значения
+
+  // Лёгкий поллинг: подтягиваем результат, записанный оппонентом со своего устройства
+  stopGamePolling();
+  gamePollTimer = setInterval(async () => {
+    try {
+      const g = await api('/api/games/' + activeGame.code);
+      if (!gameResultEditing && JSON.stringify(g.result) !== JSON.stringify(activeGame.result)) {
+        activeGame = g;
+        renderGamePlay();
+      }
+    } catch (e) { /* игра могла истечь — экран не трогаем */ }
+  }, 5000);
 }
 
 // ======================== ДЕЙСТВИЯ ========================
@@ -459,5 +552,6 @@ function leaveGame() {
   activeGame = null;
   gameTrack = {};
   gameConditions = null; // при следующей настройке условия перебросятся заново
+  gameResultEditing = false;
   renderGameSetup();
 }

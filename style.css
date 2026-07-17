@@ -518,6 +518,112 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* Панель условий игры в настройке — отдельным блоком над созданием/входом */
 .game-cond-panel { margin-bottom:16px; }
 
+/* СЧЁТ ПАРТИИ И РЕЗУЛЬТАТ (очки побед + фиксация победителя) */
+.game-result-panel { margin-bottom:14px; }
+.game-vp-row { display:flex; gap:12px; flex-wrap:wrap; }
+.game-vp-box {
+  flex:1; min-width:140px; background:#1a1a1a; border:1px solid #333; border-radius:12px;
+  padding:10px 12px; display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.game-vp-name { color:#fff; font-weight:700; font-size:13px; letter-spacing:.5px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.game-vp-box .gm-counter b { color:#ffd700; font-size:24px; min-width:34px; }
+.game-finish-row { display:flex; gap:10px; flex-wrap:wrap; }
+.game-finish-row .rank-select-btn { flex:1; min-width:140px; padding:11px; font-size:14px; }
+.game-result-winner { color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; letter-spacing:1px; }
+.game-result-score { color:#ccc; font-size:15px; }
+.game-result-score b { color:#e94560; font-size:18px; }
+
+/* ======================== РАЗДЕЛ ТУРНИРЫ (tournaments.js) ======================== */
+/* Экран выбора роли: две крупные карточки */
+.tn-role-choice { display:flex; flex-direction:column; gap:16px; }
+.tn-role-card { cursor:pointer; transition:all .2s; }
+.tn-role-card:hover { background:#2a1418; transform:translateY(-2px); box-shadow:0 6px 18px rgba(233,69,96,.3); }
+.tn-role-icon { font-size:38px; line-height:1; }
+@media (min-width: 700px) {
+  .tn-role-choice { flex-direction:row; }
+  .tn-role-card { flex:1; }
+}
+
+.tn-roles-back { align-self:flex-start; margin-bottom:14px; background:#333; }
+.tn-roles-back:hover { background:#444; }
+.tn-list-title { margin-top:20px; }
+
+/* Форма создания турнира */
+.tn-form-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.tn-form-label { color:#999; font-size:12px; text-transform:uppercase; letter-spacing:1px; flex:0 0 92px; }
+.tn-num { width:80px; flex:0 0 auto; }
+.tn-textarea { resize:vertical; font-family:'Oswald',sans-serif; }
+
+/* Карточка турнира */
+.tn-card { margin-bottom:16px; }
+.tn-card-title { word-break:break-word; }
+.tn-card-meta { color:#999; font-size:13px; }
+.tn-card-slots { color:#ccc; font-size:14px; }
+.tn-card-slots b { color:#ffd700; }
+.tn-card-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.tn-card-actions .rank-select-btn { padding:10px 16px; font-size:14px; }
+
+/* Список участников */
+.tn-players { display:flex; flex-direction:column; gap:6px; }
+.tn-player-row {
+  display:flex; align-items:center; gap:8px; background:#1a1a1a; border:1px solid #2a2a2a;
+  border-radius:10px; padding:7px 10px; min-width:0;
+}
+.tn-player-clickable { cursor:pointer; transition:border-color .15s; }
+.tn-player-clickable:hover { border-color:#e94560; }
+.tn-player-num { color:#777; font-family:'Oswald',sans-serif; font-weight:700; font-size:12px; width:18px; text-align:center; flex-shrink:0; }
+.tn-player-name { color:#fff; font-weight:700; font-size:13px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.tn-player-name b { color:#ffd700; font-weight:700; }
+.tn-badge {
+  flex-shrink:0; font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+  border-radius:8px; padding:3px 7px; border:1px solid #333; color:#999;
+}
+.tn-badge-ok { color:#7ddf7d; border-color:#2e5a2e; }
+.tn-badge-wait { color:#ffb84d; border-color:#5a4d00; }
+.tn-badge-reserve { color:#ffd700; border-color:#5a4d00; }
+
+/* Статусы турнира */
+.tn-badge-open { color:#7ddf7d; border-color:#2e5a2e; }
+.tn-badge-live { color:#ff3366; border-color:#5a1a26; animation:tnLivePulse 1.6s ease-in-out infinite; }
+.tn-badge-done { color:#999; border-color:#333; }
+@keyframes tnLivePulse { 0%,100% { opacity:1; } 50% { opacity:.55; } }
+
+/* Пары тура */
+.tn-pair-row {
+  display:flex; align-items:center; gap:8px; background:#1a1a1a; border:1px solid #2a2a2a;
+  border-radius:10px; padding:7px 10px; flex-wrap:wrap;
+}
+.tn-pair-side { color:#fff; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:6px; min-width:0; }
+.tn-pair-vs { color:#e94560; font-family:'Oswald',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; }
+.tn-pair-pending { color:#777; }
+.tn-pair-win { color:#7ddf7d; font-size:11.5px; }
+.tn-pair-loss { color:#ff6b6b; font-size:11.5px; }
+
+/* Таблица турнира и победитель */
+.tn-st-row { cursor:default; }
+.tn-st-cell { flex-shrink:0; color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:12.5px; min-width:48px; text-align:right; }
+.tn-st-winner { border-color:#ffd700; box-shadow:0 0 12px rgba(255,215,0,.25); }
+.tn-winner-banner {
+  background:linear-gradient(90deg, rgba(255,215,0,.12), transparent); border-left:3px solid #ffd700;
+  border-radius:0 10px 10px 0; padding:10px 14px; color:#fff; font-size:15px;
+}
+.tn-winner-banner b { color:#ffd700; font-family:'Oswald',sans-serif; letter-spacing:1px; }
+
+/* Запись своего результата тура */
+.tn-report-form { display:flex; flex-direction:column; gap:10px; border-top:2px solid #e94560; padding-top:12px; }
+.tn-report-done { display:flex; align-items:center; gap:10px; flex-wrap:wrap; color:#7ddf7d; font-weight:700; font-size:13.5px; }
+
+/* Кнопки управления ходом турнира (организатор) */
+.tn-org-btn { border-color:#5a4d00; color:#ffd700; }
+.tn-org-btn:hover { border-color:#ffd700; background:#2a2414; }
+
+/* Форма подачи турнирных ростеров + чек-лист правил */
+.tn-rosters-form { display:flex; flex-direction:column; gap:10px; border-top:2px solid #e94560; padding-top:12px; }
+.tn-checklist { display:flex; flex-direction:column; gap:4px; background:#1a1a1a; border-radius:10px; padding:10px 12px; }
+.tn-check { font-size:12.5px; font-weight:700; letter-spacing:.3px; }
+.tn-check.is-ok { color:#7ddf7d; }
+.tn-check.is-bad { color:#ff6b6b; }
+
 /* Счётчики WIL/END и статусы KD/KO у модели на экране игры.
    Размеры рассчитаны на палец на телефоне: кнопки ~34px и крупные цифры. */
 .game-model-track { display:flex; align-items:center; gap:12px; margin-top:7px; flex-wrap:wrap; cursor:default; }
@@ -581,12 +687,9 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .stats-row-count { font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; color:#e94560; flex-shrink:0; min-width:26px; text-align:right; }
 .stats-row.is-top .stats-row-count { color:#ffd700; }
 
-/* Планшет/ПК: плитки в одну строку */
+/* Планшет/ПК: плитки шире (8 плиток: 2→4 колонки) */
 @media (min-width: 700px) {
-  .stats-tiles { grid-template-columns:repeat(3, 1fr); }
-}
-@media (min-width: 1100px) {
-  .stats-tiles { grid-template-columns:repeat(6, 1fr); }
+  .stats-tiles { grid-template-columns:repeat(4, 1fr); }
 }
 
 /* Строка выбора страны в профиле */

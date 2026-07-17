@@ -47,6 +47,7 @@ function showStats() {
   $('cardsSection').style.display = 'none';
   $('builderSection').style.display = 'none';
   if ($('gameSection')) $('gameSection').style.display = 'none';
+  if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
   $('statsSection').style.display = 'block';
   $('compendiumModal').classList.remove('active');
   renderStats();
@@ -74,6 +75,8 @@ function statsHTML(d) {
       ${statTile('👤', d.users, 'stats_total_users')}
       ${statTile('💾', d.rosters, 'stats_total_rosters')}
       ${statTile('🎲', d.games, 'stats_total_games')}
+      ${statTile('🏆', d.resultsTotal || 0, 'stats_total_results')}
+      ${statTile('📅', d.tournamentsTotal || 0, 'stats_total_tournaments')}
       ${statTile('🃏', d.modelsUsed || 0, 'stats_models_used')}
       ${statTile('👥', d.avgCrewSize || 0, 'stats_avg_crew')}
       ${statTile('⭐', d.avgRepLimit || 0, 'stats_avg_rep')}
@@ -83,10 +86,21 @@ function statsHTML(d) {
     return tiles + `<div class="game-panel game-center"><p class="game-note">${t('stats_empty')}</p></div>`;
   }
 
+  // Победители турниров: [имя, побед, странаISO] — флаг страны рядом с именем
+  const playerCountry = new Map((d.topPlayers || []).map(e => [e[0], e[2]]));
+  const playerFlagLeftHTML = name => {
+    const c = playerCountry.get(name);
+    return `<span class="stats-row-flag">${c ? countryFlag(c) : '👤'}</span>`;
+  };
+
   return tiles
+    + rankPanelHTML(t('stats_top_players'), t('stats_top_players_note'),
+        (d.topPlayers || []).map(e => [e[0], e[1]]), playerFlagLeftHTML)
+    + rankPanelHTML(t('stats_win_rating'), t('stats_wins_note'), d.winners || [], modelRowLeftHTML)
     + rankPanelHTML(t('stats_top_factions'), t('stats_source_note'), d.factions, factionRowLeftHTML)
     + rankPanelHTML(t('stats_top_models'), t('stats_source_note'), d.models, modelRowLeftHTML)
     + rankPanelHTML(t('stats_top_bosses'), t('stats_bosses_note'), d.bosses, modelRowLeftHTML)
+    + rankPanelHTML(t('stats_tournament_geo'), t('stats_tournament_geo_note'), d.locations || [], locationRowLeftHTML)
     + rankPanelHTML(t('stats_geography'), t('stats_geo_note'), d.countries, countryRowLeftHTML, countryName);
 }
 
@@ -136,4 +150,8 @@ function modelRowLeftHTML(name) {
 
 function countryRowLeftHTML(code) {
   return `<span class="stats-row-flag">${countryFlag(code)}</span>`;
+}
+
+function locationRowLeftHTML() {
+  return `<span class="stats-row-flag">📍</span>`;
 }

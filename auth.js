@@ -52,7 +52,12 @@ function apiErrorText(e) {
     auth: 'login_required',
     notfound: 'game_not_found',
     full: 'game_full',
-    own_game: 'game_own'
+    own_game: 'game_own',
+    tn_joined: 'tn_already_joined',
+    tn_full: 'tn_full_msg',
+    tn_limit: 'tn_limit_msg',
+    tn_started: 'tn_started_msg',
+    tn_few: 'tn_need_players'
   };
   return t(map[e && e.error] || 'server_error');
 }
