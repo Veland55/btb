@@ -415,7 +415,17 @@ const translations = {
     tn_started_msg: "Турнир уже начался — регистрация и выход закрыты",
     tn_need_players: "Для старта нужно минимум 2 участника",
     stats_top_players: "ЛУЧШИЕ ИГРОКИ",
-    stats_top_players_note: "Победители турниров; флаг — страна игрока из профиля."
+    stats_top_players_note: "Победители турниров; флаг — страна игрока из профиля.",
+    game_round: "РАУНД",
+    game_next_round: "НОВЫЙ РАУНД",
+    game_confirm_next_round: "Начать новый раунд? Отметки активации (ACT) и Audacity (AUD) будут сняты, пасс-маркеры сброшены, статусы «до конца раунда» удалены.",
+    game_initiative: "Инициатива",
+    game_pass_markers: "Пасс-маркеры",
+    game_status_add: "статус",
+    game_kd_title: "Knocked Down — модель сбита с ног",
+    game_ko_title: "Knocked Out — модель без сознания",
+    game_act_title: "Активирована в этом раунде",
+    game_aud_title: "Audacity — три действия в этом раунде"
   },
   en: {
     cards: "CARDS",
@@ -696,7 +706,17 @@ const translations = {
     tn_started_msg: "The tournament has already started — registration and leaving are closed",
     tn_need_players: "At least 2 players are required to start",
     stats_top_players: "TOP PLAYERS",
-    stats_top_players_note: "Tournament winners; the flag is the player's profile country."
+    stats_top_players_note: "Tournament winners; the flag is the player's profile country.",
+    game_round: "ROUND",
+    game_next_round: "NEW ROUND",
+    game_confirm_next_round: "Start a new round? Activated (ACT) and Audacity (AUD) marks will be cleared, Pass markers reset, and end-of-round statuses removed.",
+    game_initiative: "Initiative",
+    game_pass_markers: "Pass markers",
+    game_status_add: "status",
+    game_kd_title: "Knocked Down",
+    game_ko_title: "Knocked Out",
+    game_act_title: "Activated this round",
+    game_aud_title: "Audacity — three actions this round"
   }
 };
 

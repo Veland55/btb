@@ -5,7 +5,7 @@
 // Что делает:
 //   1. Раздаёт статику проекта (index.html, data.js, img/ и т.д.)
 //   2. API: регистрация/вход, сохранения отрядов (макс. 5 на пользователя),
-//      игровые комнаты для обмена ростерами по короткому коду
+//      игровые комнаты, результаты партий, турниры, статистика
 // Хранилище:         data/bmg.db (SQLite, встроенный node:sqlite) — один
 //                    компактный файл, ростеры хранятся в сжатом JSON-формате
 // Пароли:            scrypt-хэш с индивидуальной солью, в открытом виде не хранятся
@@ -38,7 +38,8 @@ db.exec(`
     name    TEXT PRIMARY KEY,
     salt    TEXT NOT NULL,
     hash    TEXT NOT NULL,
-    created INTEGER NOT NULL
+    created INTEGER NOT NULL,
+    country TEXT
   );
   CREATE TABLE IF NOT EXISTS saves (
     user TEXT PRIMARY KEY,
@@ -56,7 +57,8 @@ db.exec(`
     host_roster  TEXT NOT NULL,
     guest_user   TEXT,
     guest_roster TEXT,
-    conditions   TEXT
+    conditions   TEXT,
+    result       TEXT
   );
   CREATE TABLE IF NOT EXISTS counters (
     name  TEXT PRIMARY KEY,
@@ -84,7 +86,11 @@ db.exec(`
     date_end    TEXT,
     max_players INTEGER NOT NULL,
     reserve     INTEGER NOT NULL DEFAULT 0,
-    info        TEXT
+    info        TEXT,
+    status      TEXT NOT NULL DEFAULT 'open',
+    round       INTEGER NOT NULL DEFAULT 0,
+    rounds      TEXT,
+    winner      TEXT
   );
   CREATE TABLE IF NOT EXISTS tournament_players (
     tid     TEXT NOT NULL,
@@ -97,17 +103,20 @@ db.exec(`
   );
 `);
 
-// Миграция для баз, созданных до появления условий игры (Event/Encounter)
-try { db.exec('ALTER TABLE games ADD COLUMN conditions TEXT'); } catch (e) { /* колонка уже есть */ }
-// Миграция: страна пользователя (ISO 3166-1 alpha-2) — для раздела статистики
-try { db.exec('ALTER TABLE users ADD COLUMN country TEXT'); } catch (e) { /* колонка уже есть */ }
-// Миграция: результат партии (JSON { winner, hostVp, guestVp }) — виден обоим игрокам
-try { db.exec('ALTER TABLE games ADD COLUMN result TEXT'); } catch (e) { /* колонка уже есть */ }
-// Миграции: ход турнира — статус, номер тура, туры с парами и результатами, победитель
-try { db.exec("ALTER TABLE tournaments ADD COLUMN status TEXT NOT NULL DEFAULT 'open'"); } catch (e) { /* есть */ }
-try { db.exec('ALTER TABLE tournaments ADD COLUMN round INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* есть */ }
-try { db.exec('ALTER TABLE tournaments ADD COLUMN rounds TEXT'); } catch (e) { /* есть */ }
-try { db.exec('ALTER TABLE tournaments ADD COLUMN winner TEXT'); } catch (e) { /* есть */ }
+// Миграции для баз, созданных старыми версиями (колонки, добавленные позже;
+// в свежих базах они уже в CREATE TABLE — попытка добавить тихо провалится)
+const MIGRATIONS = [
+  'ALTER TABLE games ADD COLUMN conditions TEXT',
+  'ALTER TABLE users ADD COLUMN country TEXT',
+  'ALTER TABLE games ADD COLUMN result TEXT',
+  "ALTER TABLE tournaments ADD COLUMN status TEXT NOT NULL DEFAULT 'open'",
+  'ALTER TABLE tournaments ADD COLUMN round INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE tournaments ADD COLUMN rounds TEXT',
+  'ALTER TABLE tournaments ADD COLUMN winner TEXT'
+];
+for (const stmt of MIGRATIONS) {
+  try { db.exec(stmt); } catch (e) { /* колонка уже есть */ }
+}
 
 // Постоянные счётчики (игры живут в базе сутки, а статистике нужен итог за всё время)
 function bumpCounter(name) {
@@ -442,7 +451,7 @@ async function handleApi(req, res, url) {
     const topPlayers = db.prepare(
       `SELECT t.winner AS name, COUNT(*) AS c, u.country AS country
        FROM tournaments t LEFT JOIN users u ON u.name = t.winner
-       WHERE t.winner IS NOT NULL GROUP BY t.winner ORDER BY c DESC, t.winner LIMIT 10`
+       WHERE t.winner IS NOT NULL GROUP BY t.winner, u.country ORDER BY c DESC, t.winner LIMIT 10`
     ).all().map(r => [r.name, r.c, r.country || null]);
 
     return send(res, 200, {
@@ -748,7 +757,7 @@ const MIME = {
 };
 
 // Что не отдаём наружу никогда
-const DENY = [/^\/data(\/|$)/i, /^\/server\.js$/i, /^\/\.git(\/|$)/i, /\.db(-|$)/i];
+const DENY = [/^\/data(\/|$)/i, /^\/server\.js$/i, /^\/\.git(\/|$)/i, /\.db(-|$)/i, /^\/node_modules(\/|$)/i, /^\/\.env$/i];
 
 function serveStatic(req, res, url) {
   let pathname = decodeURIComponent(url.pathname);

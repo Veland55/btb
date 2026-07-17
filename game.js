@@ -298,9 +298,103 @@ function trackEntry(side, index, model) {
   if (!gameTrack[key]) {
     gameTrack[key] = { w: wMax, e: eMax, kd: 0, ko: 0 };
   }
-  gameTrack[key].wm = wMax;
-  gameTrack[key].em = eMax;
-  return gameTrack[key];
+  const st = gameTrack[key];
+  st.wm = wMax;
+  st.em = eMax;
+  if (!st.am) st.am = {};   // патроны по оружию: индекс оружия -> осталось магазинов
+  if (!st.fx) st.fx = {};   // статусы: имя -> счётчик (Poison копится до 4)
+  return st;
+}
+
+// ======================== РАУНД, ИНИЦИАТИВА, ПАСС-МАРКЕРЫ ========================
+// Общеигровые счётчики раунда (по правилам: Take the Lead / Passing on Activation).
+// Как и трекеры моделей — локально на устройстве игрока (localStorage на код игры).
+function gameMeta() {
+  if (!gameTrack.meta) gameTrack.meta = { round: 1, init: null, pass: { host: 0, guest: 0 } };
+  if (!gameTrack.meta.pass) gameTrack.meta.pass = { host: 0, guest: 0 };
+  return gameTrack.meta;
+}
+
+function gmRound(delta) {
+  const m = gameMeta();
+  m.round = Math.max(1, Math.min(99, m.round + delta));
+  const el = $('game-round-num');
+  if (el) el.textContent = m.round;
+  saveGameTrack();
+}
+
+// Инициатива раунда: чей ход первый (повторный тап — снять отметку)
+function gmInitiative(side) {
+  const m = gameMeta();
+  m.init = m.init === side ? null : side;
+  ['host', 'guest'].forEach(s => {
+    const btn = $('game-init-' + s);
+    if (btn) btn.classList.toggle('on', m.init === s);
+  });
+  saveGameTrack();
+}
+
+function gmPass(side, delta) {
+  const m = gameMeta();
+  m.pass[side] = Math.max(0, Math.min(20, (m.pass[side] || 0) + delta));
+  const el = $('game-pass-' + side);
+  if (el) el.textContent = m.pass[side];
+  saveGameTrack();
+}
+
+// Статусы, действующие «до конца раунда» — снимаются автоматически при новом раунде
+const END_OF_ROUND_STATUSES = ['Acid', 'Blind', 'Paralyze', 'Scared', 'Stunned'];
+
+// Новый раунд — шаг Recount по правилам: снять отметки Activated и Audacity,
+// сбросить пасс-маркеры, убрать статусы «до конца раунда»
+function gmNextRound() {
+  if (!confirm(t('game_confirm_next_round'))) return;
+  const m = gameMeta();
+  m.round = Math.min(99, m.round + 1);
+  m.init = null;
+  m.pass = { host: 0, guest: 0 };
+  Object.keys(gameTrack).forEach(key => {
+    if (!/^(host|guest):\d+$/.test(key)) return;
+    const st = gameTrack[key];
+    st.act = 0;
+    st.aud = 0;
+    if (st.fx) END_OF_ROUND_STATUSES.forEach(fx => delete st.fx[fx]);
+  });
+  saveGameTrack();
+  renderGamePlay();
+}
+
+function gameRoundPanelHTML() {
+  const m = gameMeta();
+  const names = { host: activeGame.host.name, guest: activeGame.guest.name };
+  const initChip = side => `
+    <button class="gm-status game-init-chip${m.init === side ? ' on' : ''}" id="game-init-${side}"
+            onclick="gmInitiative('${side}')">${names[side]}</button>`;
+  const passCounter = side => `
+    <span class="gm-counter">${names[side]}
+      <button onclick="gmPass('${side}',-1)">−</button>
+      <b id="game-pass-${side}">${m.pass[side] || 0}</b>
+      <button onclick="gmPass('${side}',1)">+</button>
+    </span>`;
+  return `
+    <div class="game-panel game-round-panel">
+      <div class="game-round-head">
+        <span class="gm-counter game-round-counter">${t('game_round')}
+          <button onclick="gmRound(-1)">−</button>
+          <b id="game-round-num">${m.round}</b>
+          <button onclick="gmRound(1)">+</button>
+        </span>
+        <button class="rank-select-btn game-next-round-btn" onclick="gmNextRound()">⏭ ${t('game_next_round')}</button>
+      </div>
+      <div class="game-round-row">
+        <span class="game-round-label">${t('game_initiative')}</span>
+        ${initChip('host')}${initChip('guest')}
+      </div>
+      <div class="game-round-row">
+        <span class="game-round-label">${t('game_pass_markers')}</span>
+        ${passCounter('host')}${passCounter('guest')}
+      </div>
+    </div>`;
 }
 
 function gmAdjust(side, index, field, delta) {
@@ -320,12 +414,88 @@ function gmToggle(side, index, field) {
   st[field] = st[field] ? 0 : 1;
   const btn = $(`gm-${side}-${index}-${field}`);
   if (btn) btn.classList.toggle('on', !!st[field]);
-  // KO дополнительно приглушает всю строку модели
-  if (field === 'ko') {
+  // KO и Activated дополнительно приглушают всю строку модели
+  if (field === 'ko' || field === 'act') {
     const row = $(`gm-row-${side}-${index}`);
-    if (row) row.classList.toggle('game-model-ko', !!st[field]);
+    if (row) row.classList.toggle(field === 'ko' ? 'game-model-ko' : 'game-model-activated', !!st[field]);
   }
   saveGameTrack();
+}
+
+// ======================== ПАТРОНЫ И СТАТУСЫ МОДЕЛИ ========================
+// Официальные статусы из базы трейтов (data-traits.js, помечены "Status.") —
+// тап по чипу открывает текст правила, Poison копится до 4 по правилам
+const GAME_STATUSES = ['Acid', 'Blind', 'Enervating', 'Fire', 'Freeze', 'Hypnotize',
+  'Paralyze', 'Poison', 'Quarry', 'Scared', 'Slow', 'Sonic', 'Stunned', 'Terror'];
+
+// Магазины: по правилам Ammo — число использований оружия за игру
+function gmAmmo(side, index, wIdx, delta) {
+  const st = gameTrack[side + ':' + index];
+  if (!st || !st.am) return;
+  const max = (st.amx && st.amx[wIdx]) || 9;
+  st.am[wIdx] = Math.max(0, Math.min(max, (st.am[wIdx] || 0) + delta));
+  const el = $(`gm-${side}-${index}-am${wIdx}`);
+  if (el) el.textContent = st.am[wIdx];
+  saveGameTrack();
+}
+
+function gmAddFx(side, index, name) {
+  if (!name) return;
+  const st = gameTrack[side + ':' + index];
+  if (!st) return;
+  // повторное добавление копит счётчик (Poison — до 4, остальные практично до 9)
+  st.fx[name] = Math.min((st.fx[name] || 0) + 1, name === 'Poison' ? 4 : 9);
+  saveGameTrack();
+  gmRenderFxRow(side, index);
+}
+
+function gmRemoveFx(side, index, name) {
+  const st = gameTrack[side + ':' + index];
+  if (!st || !st.fx) return;
+  delete st.fx[name];
+  saveGameTrack();
+  gmRenderFxRow(side, index);
+}
+
+function gmFxInfo(name) {
+  showTraitPopup(name, getTraitDescription(name) || '');
+}
+
+function gmFxRowInnerHTML(side, index) {
+  const st = gameTrack[side + ':' + index] || { fx: {} };
+  const chips = Object.entries(st.fx || {}).map(([name, count]) => `
+    <span class="gm-fx-chip" onclick="gmFxInfo('${name}')">
+      ${name}${count > 1 ? ' ×' + count : ''}
+      <b onclick="event.stopPropagation();gmRemoveFx('${side}',${index},'${name}')">×</b>
+    </span>`).join('');
+  const options = GAME_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
+  return `${chips}
+    <select class="gm-fx-add" onchange="gmAddFx('${side}',${index},this.value);this.value=''">
+      <option value="">+ ${t('game_status_add')}</option>${options}
+    </select>`;
+}
+
+function gmRenderFxRow(side, index) {
+  const row = $(`gm-fx-${side}-${index}`);
+  if (row) row.innerHTML = gmFxRowInnerHTML(side, index);
+}
+
+// Счётчики магазинов — по каждому оружию модели с числовым Ammo
+function ammoControlsHTML(side, index, model, st) {
+  if (!model || !model.weapons) return '';
+  st.amx = st.amx || {};
+  return model.weapons.map((w, wi) => {
+    const max = parseInt(w.ammo, 10);
+    if (!max) return '';
+    st.amx[wi] = max;
+    if (st.am[wi] == null) st.am[wi] = max;
+    return `
+      <span class="gm-counter gm-ammo"><img src="img/ammo.png" alt="ammo">${w.name}
+        <button onclick="gmAmmo('${side}',${index},${wi},-1)">−</button>
+        <b id="gm-${side}-${index}-am${wi}">${st.am[wi]}</b>
+        <button onclick="gmAmmo('${side}',${index},${wi},1)">+</button>
+      </span>`;
+  }).join('');
 }
 
 // Панель счётчиков и статусов под строкой модели
@@ -337,15 +507,21 @@ function trackControlsHTML(side, index, model) {
       <b id="gm-${side}-${index}-${field}">${st[field]}</b>
       <button onclick="gmAdjust('${side}',${index},'${field}',1)">+</button>
     </span>`;
-  const status = field => `
+  const status = (field, label, title) => `
     <button class="gm-status${st[field] ? ' on' : ''}" id="gm-${side}-${index}-${field}"
-            onclick="gmToggle('${side}',${index},'${field}')">${field.toUpperCase()}</button>`;
+            title="${title}" onclick="gmToggle('${side}',${index},'${field}')">${label}</button>`;
   return `
     <div class="game-model-track" onclick="event.stopPropagation()">
       ${counter('w', 'WIL')}
       ${counter('e', 'END')}
-      ${status('kd')}
-      ${status('ko')}
+      ${status('kd', 'KD', t('game_kd_title'))}
+      ${status('ko', 'KO', t('game_ko_title'))}
+      ${status('act', 'ACT', t('game_act_title'))}
+      ${status('aud', 'AUD', t('game_aud_title'))}
+    </div>
+    <div class="game-model-track gm-fx-wrap" onclick="event.stopPropagation()">
+      ${ammoControlsHTML(side, index, model, st)}
+      <span class="gm-fx-row" id="gm-fx-${side}-${index}">${gmFxRowInnerHTML(side, index)}</span>
     </div>`;
 }
 
@@ -379,7 +555,7 @@ function rosterColumnHTML(player, titleKey, side) {
       ${rows.map((r, i) => {
         const st = trackEntry(side, i, r.model);
         return `
-        <div class="game-model-row${r.model ? '' : ' game-model-missing'}${st.ko ? ' game-model-ko' : ''}"
+        <div class="game-model-row${r.model ? '' : ' game-model-missing'}${st.ko ? ' game-model-ko' : ''}${st.act ? ' game-model-activated' : ''}"
              id="gm-row-${side}-${i}"
              ${r.model ? `onclick="showFullCard(models[${r.model._id}])"` : ''}>
           <img src="${r.model ? r.model.img : 'img/no.png'}" loading="lazy" decoding="async"
@@ -487,6 +663,7 @@ function renderGamePlay() {
       <button class="save-btn save-btn-del" onclick="leaveGame()">${t('leave_game')}</button>
     </div>
     ${conditionsBarHTML(activeGame.conditions)}
+    ${gameRoundPanelHTML()}
     ${gameResultPanelHTML()}
     <div class="game-play">
       ${rosterColumnHTML(me, 'your_roster', meIsHost ? 'host' : 'guest')}

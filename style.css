@@ -518,6 +518,44 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* Панель условий игры в настройке — отдельным блоком над созданием/входом */
 .game-cond-panel { margin-bottom:16px; }
 
+/* ПАНЕЛЬ РАУНДА: раунд, инициатива, пасс-маркеры (Take the Lead / Passing) */
+.game-round-panel { margin-bottom:14px; gap:10px; }
+.game-round-head { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.game-round-counter b { font-size:24px; min-width:34px; }
+.game-next-round-btn { padding:10px 16px; font-size:14px; flex-shrink:0; }
+.game-round-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.game-round-label { color:#999; font-size:12px; text-transform:uppercase; letter-spacing:1px; flex:0 0 108px; }
+.game-init-chip { max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Модель активирована в этом раунде — приглушаем фото и имя, счётчики читаемы */
+.game-model-activated img,
+.game-model-activated .game-model-name,
+.game-model-activated .game-model-meta { opacity:.45; }
+
+/* Патроны и статусы модели */
+.gm-fx-wrap { margin-top:5px; }
+.gm-ammo { font-size:11px; }
+.gm-ammo img { width:12px; height:12px; background:#fff; border-radius:50%; padding:1px; }
+.gm-ammo b { font-size:16px; min-width:20px; }
+.gm-ammo button { width:26px; height:26px; font-size:15px; }
+.gm-fx-row { display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.gm-fx-chip {
+  display:inline-flex; align-items:center; gap:5px; background:#2a1418; color:#ff9db0;
+  border:1px solid #5a1a26; border-radius:9px; padding:4px 8px;
+  font-size:11px; font-weight:700; letter-spacing:.3px; cursor:pointer; transition:border-color .15s;
+}
+.gm-fx-chip:hover { border-color:#e94560; }
+.gm-fx-chip b {
+  display:flex; align-items:center; justify-content:center; width:15px; height:15px;
+  background:#c00; color:#fff; border-radius:50%; font-size:10px; line-height:1; cursor:pointer;
+}
+.gm-fx-add {
+  background:#111; color:#999; border:1px solid #383838; border-radius:9px; padding:5px 6px;
+  font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:.5px;
+  cursor:pointer; outline:none; max-width:110px;
+}
+.gm-fx-add:hover { border-color:#e94560; color:#fff; }
+
 /* СЧЁТ ПАРТИИ И РЕЗУЛЬТАТ (очки побед + фиксация победителя) */
 .game-result-panel { margin-bottom:14px; }
 .game-vp-row { display:flex; gap:12px; flex-wrap:wrap; }
