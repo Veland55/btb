@@ -57,7 +57,8 @@ function apiErrorText(e) {
     tn_full: 'tn_full_msg',
     tn_limit: 'tn_limit_msg',
     tn_started: 'tn_started_msg',
-    tn_few: 'tn_need_players'
+    tn_few: 'tn_need_players',
+    tn_locked: 'tn_locked_msg'
   };
   return t(map[e && e.error] || 'server_error');
 }

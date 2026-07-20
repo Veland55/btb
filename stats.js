@@ -77,9 +77,7 @@ function statsHTML(d) {
       ${statTile('🎲', d.games, 'stats_total_games')}
       ${statTile('🏆', d.resultsTotal || 0, 'stats_total_results')}
       ${statTile('📅', d.tournamentsTotal || 0, 'stats_total_tournaments')}
-      ${statTile('🃏', d.modelsUsed || 0, 'stats_models_used')}
       ${statTile('👥', d.avgCrewSize || 0, 'stats_avg_crew')}
-      ${statTile('⭐', d.avgRepLimit || 0, 'stats_avg_rep')}
     </div>`;
 
   if (!d.rosters && !d.countries.length) {

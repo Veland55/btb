@@ -275,7 +275,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   transform: translateY(0);
 }
 .compendium-search-wrapper { padding:16px; background:#111; }
-.compendium-search { display:flex; align-items:center; background:#222; border:2px solid #e94560; border-radius:50px; overflow:hidden; transition:all .3s ease; box-shadow:0 4px 15px rgba(0,0,0,.4); }
+.compendium-search { display:flex; align-items:center; background:#222; border:2px solid #333; border-radius:50px; overflow:hidden; transition:all .3s ease; box-shadow:0 4px 15px rgba(0,0,0,.4); }
 .compendium-search:focus-within { border-color:#ff3366; box-shadow:0 0 25px rgba(233,69,96,.8); }
 .compendium-search .search-icon { width:20px; height:20px; fill:#e94560; margin:0 14px; pointer-events:none; }
 .compendium-search input { flex:1; background:transparent; border:none; outline:none; color:#fff; font-size:16px; padding:14px 10px 14px 0; }
@@ -284,7 +284,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .compendium-search .clear-search:hover { background:#ff3366; }
 .compendium-content { flex:1; padding-bottom:100px; }
 /* Записи справочника/поиска — в едином тёмном стиле попапов */
-.comp-entry { margin:20px 15px 10px; background:#141414; border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.5); border:2px solid #e94560; }
+.comp-entry { margin:20px 15px 10px; background:#141414; border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.5); }
 .comp-title { color:#ffd700; padding:14px 16px 10px; font-weight:700; font-size:18px; letter-spacing:1px; border-bottom:2px solid #e94560; word-break:break-word; }
 .comp-text { padding:14px 16px; line-height:1.65; color:#bbb; font-size:14px; }
 .comp-title .inline-icon, .comp-text .inline-icon { background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
@@ -372,7 +372,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* МОДАЛЬНОЕ ОКНО ВЫБОРА РАНГА (в стиле trait-popup) */
 .rank-select-modal { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); z-index:10000; display:flex; align-items:center; justify-content:center; padding:20px; }
 .rank-select-content {
-  background:#141414; width:100%; max-width:400px; max-height:90vh; border-radius:16px; border:2px solid #e94560;
+  background:#141414; width:100%; max-width:400px; max-height:90vh; border-radius:16px;
   display:flex; flex-direction:column; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6), 0 0 25px rgba(233,69,96,0.3);
 }
 .rank-select-header {
@@ -397,7 +397,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* ПОПАП ТРЕЙТОВ (в стиле панели-глоссария рядом с карточкой) */
 .trait-popup { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); z-index:10000; display:flex; align-items:center; justify-content:center; padding:20px; }
 .trait-popup-content {
-  background:#141414; width:100%; max-width:450px; border-radius:16px; border:2px solid #e94560;
+  background:#141414; width:100%; max-width:450px; border-radius:16px;
   overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6), 0 0 25px rgba(233,69,96,0.3);
 }
 .trait-popup-header {
@@ -428,10 +428,10 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .auth-slots { color:#ffd700; font-weight:700; font-size:13px; }
 .saves-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:13px; border-bottom:2px solid #e94560; padding-bottom:6px; margin-bottom:10px; }
 .save-row {
-  display:flex; align-items:center; gap:10px; background:#1e1e1e; border:2px solid #333;
-  border-radius:12px; padding:10px 12px; margin-bottom:8px; transition:border-color .2s;
+  display:flex; align-items:center; gap:10px; background:#1e1e1e;
+  border-radius:12px; padding:10px 12px; margin-bottom:8px; transition:background .2s;
 }
-.save-row:hover { border-color:#e94560; }
+.save-row:hover { background:#2a1418; }
 .save-info { flex:1; min-width:0; }
 .save-name { color:#fff; font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .save-meta { color:#888; font-size:11.5px; margin-top:2px; }
@@ -448,7 +448,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .game-content { padding:16px 12px 80px; max-width:1100px; margin:0 auto; }
 .game-setup { display:flex; flex-direction:column; gap:16px; }
 .game-panel {
-  background:#141414; border:2px solid #e94560; border-radius:16px; padding:18px 20px;
+  background:#141414; border-radius:16px; padding:18px 20px;
   display:flex; flex-direction:column; gap:12px; box-shadow:0 6px 20px rgba(0,0,0,.5);
 }
 .game-center { align-items:center; text-align:center; }
@@ -463,7 +463,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .game-code-input { text-transform:uppercase; letter-spacing:6px; text-align:center; font-weight:700; }
 .game-code-display {
   font-size:44px; font-weight:700; letter-spacing:12px; color:#ffd700;
-  background:#000; border:2px dashed #e94560; border-radius:16px; padding:14px 20px 14px 32px;
+  background:#000; border-radius:16px; padding:14px 20px 14px 32px;
   user-select:all; /* клик — и код выделен целиком для копирования */
 }
 /* Блок условий игры (Event + Encounter) в настройке */
@@ -480,7 +480,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* Блок условий в ожидании и на экране игры — заметные карточки у обоих игроков */
 .game-cond-bar { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:0 0 14px; }
 .game-cond-card {
-  flex:1; min-width:200px; max-width:340px; background:#141414; border:2px solid #e94560;
+  flex:1; min-width:200px; max-width:340px; background:#141414;
   border-radius:14px; padding:10px 14px; cursor:pointer; text-align:center;
   transition:all .2s; box-shadow:0 4px 14px rgba(0,0,0,.45);
 }
@@ -560,7 +560,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .game-result-panel { margin-bottom:14px; }
 .game-vp-row { display:flex; gap:12px; flex-wrap:wrap; }
 .game-vp-box {
-  flex:1; min-width:140px; background:#1a1a1a; border:1px solid #333; border-radius:12px;
+  flex:1; min-width:140px; background:#1a1a1a; border-radius:12px;
   padding:10px 12px; display:flex; flex-direction:column; align-items:center; gap:6px;
 }
 .game-vp-name { color:#fff; font-weight:700; font-size:13px; letter-spacing:.5px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -604,11 +604,11 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* Список участников */
 .tn-players { display:flex; flex-direction:column; gap:6px; }
 .tn-player-row {
-  display:flex; align-items:center; gap:8px; background:#1a1a1a; border:1px solid #2a2a2a;
+  display:flex; align-items:center; gap:8px; background:#1a1a1a;
   border-radius:10px; padding:7px 10px; min-width:0;
 }
 .tn-player-clickable { cursor:pointer; transition:border-color .15s; }
-.tn-player-clickable:hover { border-color:#e94560; }
+.tn-player-clickable:hover { background:#2a1418; }
 .tn-player-num { color:#777; font-family:'Oswald',sans-serif; font-weight:700; font-size:12px; width:18px; text-align:center; flex-shrink:0; }
 .tn-player-name { color:#fff; font-weight:700; font-size:13px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .tn-player-name b { color:#ffd700; font-weight:700; }
@@ -628,7 +628,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
 /* Пары тура */
 .tn-pair-row {
-  display:flex; align-items:center; gap:8px; background:#1a1a1a; border:1px solid #2a2a2a;
+  display:flex; align-items:center; gap:8px; background:#1a1a1a;
   border-radius:10px; padding:7px 10px; flex-wrap:wrap;
 }
 .tn-pair-side { color:#fff; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:6px; min-width:0; }
@@ -640,7 +640,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* Таблица турнира и победитель */
 .tn-st-row { cursor:default; }
 .tn-st-cell { flex-shrink:0; color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:12.5px; min-width:48px; text-align:right; }
-.tn-st-winner { border-color:#ffd700; box-shadow:0 0 12px rgba(255,215,0,.25); }
+.tn-st-winner { background:#1f1a0a; box-shadow:0 0 12px rgba(255,215,0,.25); }
 .tn-winner-banner {
   background:linear-gradient(90deg, rgba(255,215,0,.12), transparent); border-left:3px solid #ffd700;
   border-radius:0 10px 10px 0; padding:10px 14px; color:#fff; font-size:15px;
@@ -695,7 +695,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* Плитки общих счётчиков */
 .stats-tiles { display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; }
 .stats-tile {
-  background:#141414; border:2px solid #2a2a2a; border-radius:14px; padding:14px 8px 12px;
+  background:#141414; border-radius:14px; padding:14px 8px 12px;
   display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center;
   box-shadow:0 4px 12px rgba(0,0,0,.45);
 }
@@ -725,9 +725,12 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .stats-row-count { font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; color:#e94560; flex-shrink:0; min-width:26px; text-align:right; }
 .stats-row.is-top .stats-row-count { color:#ffd700; }
 
-/* Планшет/ПК: плитки шире (8 плиток: 2→4 колонки) */
+/* Планшет/ПК: плитки шире (6 плиток: 2→3→6 колонок) */
 @media (min-width: 700px) {
-  .stats-tiles { grid-template-columns:repeat(4, 1fr); }
+  .stats-tiles { grid-template-columns:repeat(3, 1fr); }
+}
+@media (min-width: 1100px) {
+  .stats-tiles { grid-template-columns:repeat(6, 1fr); }
 }
 
 /* Строка выбора страны в профиле */
@@ -747,7 +750,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 /* ОКНО ПОКУПКИ EQUIPMENT (в стиле trait-popup) */
 .equipment-modal { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); z-index:10000; display:flex; align-items:center; justify-content:center; padding:20px; }
 .equipment-modal-content {
-  background:#141414; width:100%; max-width:480px; max-height:90vh; border-radius:16px; border:2px solid #e94560;
+  background:#141414; width:100%; max-width:480px; max-height:90vh; border-radius:16px;
   display:flex; flex-direction:column; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6), 0 0 25px rgba(233,69,96,0.3);
 }
 .equipment-modal-header {
@@ -923,6 +926,9 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
 .main-menu-footer { margin-top: 14px; text-align: center; }
 .version { color: #555; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+.footer-note { color: #555; font-size: 10.5px; margin-top: 6px; letter-spacing: .3px; line-height: 1.6; }
+.footer-note a { color: #777; text-decoration: none; border-bottom: 1px dotted #555; }
+.footer-note a:hover { color: #e94560; border-bottom-color: #e94560; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(14px); }

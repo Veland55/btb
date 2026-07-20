@@ -314,9 +314,7 @@ const translations = {
     stats_total_users: "Игроков",
     stats_total_rosters: "Сохранённых отрядов",
     stats_total_games: "Создано игр",
-    stats_models_used: "Разных моделей в отрядах",
     stats_avg_crew: "Средний размер отряда",
-    stats_avg_rep: "Средний лимит Rep",
     stats_top_factions: "САМЫЕ ПОПУЛЯРНЫЕ БАНДЫ",
     stats_top_models: "САМЫЕ ПОПУЛЯРНЫЕ МОДЕЛИ",
     stats_top_bosses: "САМЫЕ ПОПУЛЯРНЫЕ БОССЫ",
@@ -414,6 +412,13 @@ const translations = {
     tn_kick_title: "Убрать участника",
     tn_started_msg: "Турнир уже начался — регистрация и выход закрыты",
     tn_need_players: "Для старта нужно минимум 2 участника",
+    tn_finished_title: "ЗАВЕРШЁННЫЕ ТУРНИРЫ",
+    tn_lock_label: "Блок ростеров (дней)",
+    tn_lock_help: "За сколько дней до начала турнира закрывается подача и изменение ростеров (0 — не закрывается до самого начала).",
+    tn_lock_meta: "ростеры закрываются за {days} дн. до начала",
+    tn_rosters_closed: "приём ростеров закрыт",
+    tn_locked_msg: "Изменение ростеров закрыто — до начала турнира осталось меньше установленного организатором срока",
+    footer_opensource: "Проект с открытым исходным кодом",
     stats_top_players: "ЛУЧШИЕ ИГРОКИ",
     stats_top_players_note: "Победители турниров; флаг — страна игрока из профиля.",
     game_round: "РАУНД",
@@ -605,9 +610,7 @@ const translations = {
     stats_total_users: "Players",
     stats_total_rosters: "Saved crews",
     stats_total_games: "Games created",
-    stats_models_used: "Unique models in crews",
     stats_avg_crew: "Average crew size",
-    stats_avg_rep: "Average Rep limit",
     stats_top_factions: "MOST POPULAR CREWS",
     stats_top_models: "MOST POPULAR MODELS",
     stats_top_bosses: "MOST POPULAR BOSSES",
@@ -705,6 +708,13 @@ const translations = {
     tn_kick_title: "Remove player",
     tn_started_msg: "The tournament has already started — registration and leaving are closed",
     tn_need_players: "At least 2 players are required to start",
+    tn_finished_title: "FINISHED TOURNAMENTS",
+    tn_lock_label: "Roster lock (days)",
+    tn_lock_help: "How many days before the tournament start roster submission and changes are closed (0 — open until the start).",
+    tn_lock_meta: "rosters lock {days} days before the start",
+    tn_rosters_closed: "roster submission closed",
+    tn_locked_msg: "Roster changes are closed — the organizer's deadline before the tournament has passed",
+    footer_opensource: "Open source project",
     stats_top_players: "TOP PLAYERS",
     stats_top_players_note: "Tournament winners; the flag is the player's profile country.",
     game_round: "ROUND",
@@ -1656,33 +1666,9 @@ const renderMiniCardsBuilder = debounce(() => {
     });
   }
 
-  // Скрываем "чистых" Free Agent (единственный доступный ранг — Free Agent), если лимит слотов исчерпан
-  {
-    const faLimit = 1 + bmgExtraSlots() + (modifiers.extraFreeAgents || 0);
-    const faCount = bmgRankCount("Free Agent");
-    if (faCount >= faLimit) {
-      filteredModels = filteredModels.filter(m => {
-        const ranks = getRanks(m);
-        const isFreeAgentOnly = ranks.length === 1 && ranks[0] === "Free Agent";
-        return !isFreeAgentOnly;
-      });
-    }
-  }
-
-  // Скрываем модели, единственный доступный ранг которых — Leader (включая расширение
-  // от трейта Contractor через getHireableRanks), если Leader уже нанят — второго всё
-  // равно нельзя добавить. Фракции с ignoreStandardRankRequirements (Batman Who Laughs)
-  // не имеют лимита "один Leader", поэтому там ничего не скрываем.
-  {
-    const factionRules = factionCrewRules[currentFaction] || {};
-    if (!factionRules.ignoreStandardRankRequirements && bmgRankCount("Leader") >= 1) {
-      filteredModels = filteredModels.filter(m => {
-        const hireable = getHireableRanks(m);
-        const isLeaderOnly = hireable.length === 1 && hireable[0] === "Leader";
-        return !isLeaderOnly;
-      });
-    }
-  }
+  // Скрываем модели, у которых заполнены слоты ВСЕХ доступных им рангов —
+  // как это делалось для Leader (см. hasFreeRankSlot)
+  filteredModels = filteredModels.filter(hasFreeRankSlot);
 
   // Сортировка: сначала по наивысшему (минимальному по номеру) рангу, затем по имени алфавитно
   sortModelsByRank(filteredModels);
@@ -2319,6 +2305,28 @@ function bmgExtraSlots() {
 
 function bmgRankCount(rank) {
   return crew.filter(m => m.rankUsed === rank).length;
+}
+
+// Есть ли у модели хоть один свободный слот ранга — иначе она скрывается из
+// списка найма. Лимиты те же, что при найме (см. bmgCanAddModel):
+//   Leader — 1; Sidekick — 1 при живом Leader, иначе 2;
+//   Free Agent / Vehicle — 1 + слоты за Rep-лимит + модификаторы.
+// Henchman не ограничен общим слотом (его лимиты — по именам), поэтому модель
+// с рангом Henchman видна всегда. Фракции с ignoreStandardRankRequirements
+// (Batman Who Laughs) лимитов рангов не имеют — там всё видно.
+function hasFreeRankSlot(model) {
+  const factionRules = factionCrewRules[currentFaction] || {};
+  if (factionRules.ignoreStandardRankRequirements) return true;
+  const extras = bmgExtraSlots();
+  const rankFull = {
+    "Leader": bmgRankCount("Leader") >= 1,
+    "Sidekick": bmgRankCount("Leader") >= 1
+      ? bmgRankCount("Sidekick") >= 1
+      : bmgRankCount("Sidekick") >= 2,
+    "Free Agent": bmgRankCount("Free Agent") >= 1 + extras + (modifiers.extraFreeAgents || 0),
+    "Vehicle": bmgRankCount("Vehicle") >= 1 + extras + (modifiers.extraVehicles || 0)
+  };
+  return getHireableRanks(model).some(r => !(r in rankFull) || !rankFull[r]);
 }
 
 function bmgCanAddModel(model) {

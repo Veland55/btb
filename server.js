@@ -90,7 +90,8 @@ db.exec(`
     status      TEXT NOT NULL DEFAULT 'open',
     round       INTEGER NOT NULL DEFAULT 0,
     rounds      TEXT,
-    winner      TEXT
+    winner      TEXT,
+    roster_lock_days INTEGER NOT NULL DEFAULT 0
   );
   CREATE TABLE IF NOT EXISTS tournament_players (
     tid     TEXT NOT NULL,
@@ -112,7 +113,8 @@ const MIGRATIONS = [
   "ALTER TABLE tournaments ADD COLUMN status TEXT NOT NULL DEFAULT 'open'",
   'ALTER TABLE tournaments ADD COLUMN round INTEGER NOT NULL DEFAULT 0',
   'ALTER TABLE tournaments ADD COLUMN rounds TEXT',
-  'ALTER TABLE tournaments ADD COLUMN winner TEXT'
+  'ALTER TABLE tournaments ADD COLUMN winner TEXT',
+  'ALTER TABLE tournaments ADD COLUMN roster_lock_days INTEGER NOT NULL DEFAULT 0'
 ];
 for (const stmt of MIGRATIONS) {
   try { db.exec(stmt); } catch (e) { /* колонка уже есть */ }
@@ -264,8 +266,19 @@ function validTournament(tn) {
     && optStr(tn.dateEnd, 40)
     && Number.isInteger(tn.maxPlayers) && tn.maxPlayers >= 2 && tn.maxPlayers <= 128
     && Number.isInteger(tn.reserve) && tn.reserve >= 0 && tn.reserve <= 64
+    && Number.isInteger(tn.rosterLockDays) && tn.rosterLockDays >= 0 && tn.rosterLockDays <= 60
     && reqStr(tn.orgNick, 30)
     && optStr(tn.info, 600);
+}
+
+// Блокировка ростеров: за roster_lock_days дней до начала турнира изменение
+// поданных листов закрывается (0 — не закрывается до самого начала)
+function rostersLocked(tn) {
+  const days = tn.roster_lock_days || 0;
+  if (!days) return false;
+  const start = Date.parse(tn.date_start);
+  if (isNaN(start)) return false;
+  return Date.now() >= start - days * 86400000;
 }
 
 // ---- Ход турнира: туры, пары, таблица ----
@@ -348,6 +361,8 @@ function tournamentToJSON(tn, user) {
     status: tn.status || 'open',
     round: tn.round || 0,
     winner: tn.winner || null,
+    rosterLockDays: tn.roster_lock_days || 0,
+    rostersLocked: rostersLocked(tn),
     rounds: tnRounds(tn),
     standings: tn.status !== 'open' ? tournamentStandings(tn, names) : [],
     isOrganizer,
@@ -414,7 +429,7 @@ async function handleApi(req, res, url) {
 
     // Агрегаты по всем сохранённым ростерам (имена пользователей не раскрываются)
     const factions = new Map(), modelNames = new Map(), bosses = new Map();
-    let rosters = 0, modelsTotal = 0, repSum = 0;
+    let rosters = 0, modelsTotal = 0;
     for (const row of db.prepare('SELECT data FROM saves').all()) {
       let arr;
       try { arr = JSON.parse(row.data); } catch (e) { continue; }
@@ -423,11 +438,16 @@ async function handleApi(req, res, url) {
         if (!s || !Array.isArray(s.m)) continue;
         rosters++;
         modelsTotal += s.m.length;
-        repSum += s.r || 0;
         if (s.f) factions.set(s.f, (factions.get(s.f) || 0) + 1);
+        // Модель считается один раз на ростер: иначе хенчмены, которых можно
+        // брать по несколько копий, всегда обгоняли бы одиночные модели
+        const seen = new Set();
         for (const entry of s.m) {
           const n = entry && entry[0];
-          if (n) modelNames.set(n, (modelNames.get(n) || 0) + 1);
+          if (n && !seen.has(n)) {
+            seen.add(n);
+            modelNames.set(n, (modelNames.get(n) || 0) + 1);
+          }
         }
         const boss = s.m[s.b];
         if (boss && boss[0]) bosses.set(boss[0], (bosses.get(boss[0]) || 0) + 1);
@@ -461,8 +481,6 @@ async function handleApi(req, res, url) {
       resultsTotal,
       tournamentsTotal,
       avgCrewSize: rosters ? Math.round(modelsTotal / rosters * 10) / 10 : 0,
-      avgRepLimit: rosters ? Math.round(repSum / rosters) : 0,
-      modelsUsed: modelNames.size,
       factions: top(factions, 10),
       models: top(modelNames, 10),
       bosses: top(bosses, 5),
@@ -595,9 +613,10 @@ async function handleApi(req, res, url) {
     const id = newGameCode();
     if (!id) return send(res, 500, { error: 'server' });
     db.prepare(`INSERT INTO tournaments (id, created, organizer, org_nick, address, date_start,
-                  date_end, max_players, reserve, info) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+                  date_end, max_players, reserve, info, roster_lock_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
       .run(id, Date.now(), user, tn.orgNick.trim(), tn.address.trim(), tn.dateStart.trim(),
-           tn.dateEnd ? tn.dateEnd.trim() : null, tn.maxPlayers, tn.reserve, tn.info ? tn.info.trim() : null);
+           tn.dateEnd ? tn.dateEnd.trim() : null, tn.maxPlayers, tn.reserve,
+           tn.info ? tn.info.trim() : null, tn.rosterLockDays);
     return send(res, 200, { id });
   }
 
@@ -632,6 +651,7 @@ async function handleApi(req, res, url) {
     if (!db.prepare('SELECT user FROM tournament_players WHERE tid = ? AND user = ?').get(tn.id, user)) {
       return send(res, 403, { error: 'auth' });
     }
+    if (rostersLocked(tn)) return send(res, 409, { error: 'tn_locked' }); // дедлайн организатора прошёл
     if (!validSave(roster1) || !validSave(roster2) || !optStr(notes, 400)) return send(res, 400, { error: 'input' });
     if (roster1.f !== roster2.f) return send(res, 400, { error: 'input' }); // одна банда для обоих листов
     db.prepare('UPDATE tournament_players SET roster1 = ?, roster2 = ?, notes = ? WHERE tid = ? AND user = ?')

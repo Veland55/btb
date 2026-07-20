@@ -207,11 +207,9 @@ node server.js
 
 Все данные — в одном компактном файле `data/bmg.db` (SQLite, встроенный `node:sqlite`).
 Ростеры хранятся в сжатом формате (имена-ссылки на базу моделей, ~200–400 байт на отряд).
-
-**Деплой на свой сервер:** скопируйте папку проекта, запустите `node server.js`
-(или `npm start`) под systemd/pm2; при необходимости поставьте впереди nginx с HTTPS.
-Бэкапится один файл: `data/bmg.db`. Переменные окружения: `PORT` — порт сервера,
-`BMG_DATA_DIR` — каталог базы данных (по умолчанию `data/` рядом с server.js).
+Переменные окружения: `PORT` — порт сервера, `BMG_DATA_DIR` — каталог базы данных
+(по умолчанию `data/` рядом с server.js). Как развернуть на боевом сервере —
+см. раздел «Деплой на VPS» ниже.
 
 ### 🇬🇧 English
 The project only needs **Node.js 22.5+** — no npm dependencies, no build step.
@@ -233,11 +231,106 @@ The server serves the app's static files and provides an API:
 
 All data lives in a single compact `data/bmg.db` file (SQLite via built-in `node:sqlite`).
 Rosters are stored in a compressed format (name references into the model DB, ~200–400 bytes per crew).
+Environment variables: `PORT` — server port, `BMG_DATA_DIR` — database directory
+(defaults to `data/` next to server.js). For production deployment see the
+"VPS Deployment" section below.
 
-**Deploying to your own server:** copy the project folder, run `node server.js`
-(or `npm start`) under systemd/pm2; optionally put nginx with HTTPS in front.
-Back up a single file: `data/bmg.db`. Environment variables: `PORT` — server port,
-`BMG_DATA_DIR` — database directory (defaults to `data/` next to server.js).
+---
+
+## 🖥 Деплой на VPS / VPS Deployment (Ubuntu 24.04)
+
+Полный путь от чистого сервера до работающего сайта с HTTPS. Команды одинаковы
+для любого VPS-провайдера. / Full path from a clean server to a live site with
+HTTPS; the commands work on any VPS provider.
+
+### 1. Node.js 22
+
+В Ubuntu 24.04 из коробки Node 18 — проекту нужен 22+ (встроенный `node:sqlite`).
+/ Ubuntu 24.04 ships Node 18; the project needs 22+ (built-in `node:sqlite`).
+
+```bash
+ssh root@ВАШ_IP
+apt update && apt upgrade -y
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+apt install -y nodejs git
+node -v   # должно быть v22.x / should print v22.x
+```
+
+### 2. Пользователь и файлы / User & files
+
+```bash
+adduser --system --group --home /opt/bmg bmg
+# загрузите проект: git clone или scp с вашего компьютера
+# upload the project: git clone or scp from your machine
+git clone https://github.com/Veland55/btb.git /opt/bmg/app
+chown -R bmg:bmg /opt/bmg
+```
+
+### 3. Служба systemd / systemd service
+
+Авто-запуск при загрузке и перезапуск при сбоях. Создайте
+`/etc/systemd/system/bmg.service`: / Auto-start on boot and restart on crashes.
+Create `/etc/systemd/system/bmg.service`:
+
+```ini
+[Unit]
+Description=BMG Crew Builder
+After=network.target
+
+[Service]
+User=bmg
+WorkingDirectory=/opt/bmg/app
+ExecStart=/usr/bin/node server.js
+Environment=PORT=8080
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+systemctl daemon-reload && systemctl enable --now bmg
+systemctl status bmg            # проверка / check
+journalctl -u bmg -f            # логи / logs
+```
+
+### 4. Nginx + HTTPS
+
+Домен должен указывать A-записью на IP сервера. / The domain's A record must
+point to the server IP.
+
+```bash
+apt install -y nginx certbot python3-certbot-nginx
+cat > /etc/nginx/sites-available/bmg <<'EOF'
+server {
+    server_name your-domain.com;
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+EOF
+ln -s /etc/nginx/sites-available/bmg /etc/nginx/sites-enabled/
+nginx -t && systemctl reload nginx
+certbot --nginx -d your-domain.com   # сертификат + редирект на HTTPS
+```
+
+### 5. Файрвол и бэкап / Firewall & backup
+
+```bash
+apt install -y ufw && ufw allow OpenSSH && ufw allow "Nginx Full" && ufw enable
+# ежедневный бэкап базы (один файл), хранится неделя по дням
+# daily DB backup (a single file), one week of rotation
+echo '0 3 * * * root cp /opt/bmg/app/data/bmg.db /opt/bmg/backup-$(date +\%u).db' > /etc/cron.d/bmg-backup
+```
+
+### Обновление / Updating
+
+```bash
+cd /opt/bmg/app && sudo -u bmg git pull && systemctl restart bmg
+# база data/bmg.db при обновлении не затрагивается / data/bmg.db is untouched
+```
 
 ---
 

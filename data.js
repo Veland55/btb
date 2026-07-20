@@ -2910,7 +2910,7 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": ["Sidekick", "Free Agent"],
-    "faction": ["Bat Family", "Unknown"],
+    "faction": ["Bat Family"],
     "img": "img/RobinTeenTitans.png",
     "stats": {
       "Attack": 3,
