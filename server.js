@@ -17,6 +17,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const net = require('net');
+const tls = require('tls');
 const { DatabaseSync } = require('node:sqlite');
 
 const PORT = parseInt(process.env.PORT, 10) || 8080;
@@ -28,6 +30,9 @@ const MAX_BODY = 32 * 1024;                     // лимит тела запр�
 const MAX_SAVES_JSON = 20 * 1024;               // лимит суммарного размера сохранений
 const GAME_TTL_MS = 24 * 3600 * 1000;           // игры живут сутки
 const SESSION_TTL_MS = 30 * 24 * 3600 * 1000;   // сессии — 30 дней
+const RESET_CODE_TTL_MS = 15 * 60 * 1000;       // код восстановления пароля — 15 минут
+const RESET_MAX_ATTEMPTS = 5;                   // попыток ввода кода, дальше нужен новый
+const RESET_MIN_INTERVAL_MS = 60 * 1000;        // не чаще одного запроса кода в минуту
 
 // ======================== БАЗА ДАННЫХ ========================
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -39,7 +44,14 @@ db.exec(`
     salt    TEXT NOT NULL,
     hash    TEXT NOT NULL,
     created INTEGER NOT NULL,
-    country TEXT
+    country TEXT,
+    email   TEXT
+  );
+  CREATE TABLE IF NOT EXISTS password_resets (
+    user     TEXT PRIMARY KEY,
+    code_hash TEXT NOT NULL,
+    created  INTEGER NOT NULL,
+    attempts INTEGER NOT NULL DEFAULT 0
   );
   CREATE TABLE IF NOT EXISTS saves (
     user TEXT PRIMARY KEY,
@@ -114,7 +126,8 @@ const MIGRATIONS = [
   'ALTER TABLE tournaments ADD COLUMN round INTEGER NOT NULL DEFAULT 0',
   'ALTER TABLE tournaments ADD COLUMN rounds TEXT',
   'ALTER TABLE tournaments ADD COLUMN winner TEXT',
-  'ALTER TABLE tournaments ADD COLUMN roster_lock_days INTEGER NOT NULL DEFAULT 0'
+  'ALTER TABLE tournaments ADD COLUMN roster_lock_days INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE users ADD COLUMN email TEXT'
 ];
 for (const stmt of MIGRATIONS) {
   try { db.exec(stmt); } catch (e) { /* колонка уже есть */ }
@@ -129,14 +142,146 @@ function getCounter(name) {
   return row ? row.value : 0;
 }
 
-// Периодическая чистка протухших сессий и игр — база не разрастается
+// Запросы кода восстановления пароля: user -> время последнего запроса.
+// В памяти (не в базе) — переживать перезапуск сервера не обязано, это просто
+// анти-спам троттлинг, а не источник истины
+const resetRequestTimes = new Map();
+
+// Периодическая чистка протухших сессий, игр и кодов восстановления — база не разрастается
 function cleanup() {
   const now = Date.now();
   db.prepare('DELETE FROM sessions WHERE created < ?').run(now - SESSION_TTL_MS);
   db.prepare('DELETE FROM games WHERE created < ?').run(now - GAME_TTL_MS);
+  db.prepare('DELETE FROM password_resets WHERE created < ?').run(now - RESET_CODE_TTL_MS);
+  for (const [name, ts] of resetRequestTimes) {
+    if (now - ts > 3600 * 1000) resetRequestTimes.delete(name);
+  }
 }
 cleanup();
 setInterval(cleanup, 3600 * 1000).unref();
+
+// ======================== ПОЧТА (SMTP, без npm-зависимостей) ========================
+// Восстановление пароля отправляет код на email пользователя. Без настройки
+// переменных окружения письма не уходят — код просто попадает в лог сервера,
+// что удобно для локальной разработки без реального почтового ящика.
+//   SMTP_HOST     — обязателен, чтобы отправка вообще была включена
+//   SMTP_PORT     — 587 (STARTTLS) по умолчанию; 465 — неявный TLS
+//   SMTP_SECURE   — "true" форсирует неявный TLS на нестандартном порту
+//   SMTP_USER / SMTP_PASS — логин на SMTP-сервере (AUTH LOGIN); можно не указывать
+//   SMTP_FROM     — обратный адрес письма (по умолчанию SMTP_USER)
+function smtpConfig() {
+  if (!process.env.SMTP_HOST) return null;
+  const port = parseInt(process.env.SMTP_PORT, 10) || 587;
+  return {
+    host: process.env.SMTP_HOST,
+    port,
+    secure: process.env.SMTP_SECURE === 'true' || port === 465,
+    user: process.env.SMTP_USER || null,
+    pass: process.env.SMTP_PASS || null,
+    from: process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@localhost'
+  };
+}
+
+// Ждёт одну (возможно многострочную) SMTP-реакцию сервера. Строки-продолжения
+// многострочного ответа имеют дефис на 4-й позиции ("250-STARTTLS"),
+// последняя строка ответа — пробел ("250 OK")
+function smtpWait(socket) {
+  return new Promise((resolve, reject) => {
+    let buffer = '';
+    const onData = chunk => {
+      buffer += chunk.toString('utf8');
+      const lines = buffer.split('\r\n').filter(Boolean);
+      const last = lines[lines.length - 1];
+      if (last && /^\d{3} /.test(last)) {
+        cleanup();
+        resolve({ code: parseInt(last.slice(0, 3), 10), text: buffer });
+      }
+    };
+    const onError = e => { cleanup(); reject(e); };
+    function cleanup() { socket.removeListener('data', onData); socket.removeListener('error', onError); }
+    socket.on('data', onData);
+    socket.on('error', onError);
+  });
+}
+
+// Отправляет одну команду (или ждёт ответ, если line === null — приветствие
+// сервера) и проверяет код ответа, если он ожидаем
+async function smtpCmd(socket, line, expectCode) {
+  const wait = smtpWait(socket);
+  if (line != null) socket.write(line + '\r\n');
+  const res = await wait;
+  if (expectCode && res.code !== expectCode) {
+    throw new Error(`SMTP: ожидали код ${expectCode}, получили ${res.code} (${res.text.trim()})`);
+  }
+  return res;
+}
+
+// Отправка письма (MAIL FROM/RCPT TO/DATA по протоколу SMTP напрямую через
+// net/tls — без nodemailer). Возвращает true, если письмо ушло, false — если
+// SMTP не настроен (тогда вызывающий код сам логирует код в консоль)
+function sendMail({ to, subject, text }) {
+  const cfg = smtpConfig();
+  if (!cfg) return Promise.resolve(false);
+  // SNI (servername) обязан быть доменным именем — Node отклоняет IP-адрес
+  // в этом поле, поэтому опускаем его, если SMTP_HOST задан как IP
+  const sni = net.isIP(cfg.host) ? {} : { servername: cfg.host };
+
+  return new Promise((resolve, reject) => {
+    let socket = cfg.secure
+      ? tls.connect({ host: cfg.host, port: cfg.port, ...sni })
+      : net.connect({ host: cfg.host, port: cfg.port });
+    const timer = setTimeout(() => { socket.destroy(); reject(new Error('smtp_timeout')); }, 15000);
+    socket.once('error', e => { clearTimeout(timer); reject(e); });
+
+    (async () => {
+      await smtpWait(socket); // приветствие сервера (220 ...)
+      await smtpCmd(socket, `EHLO ${cfg.host}`, 250);
+      if (!cfg.secure) {
+        await smtpCmd(socket, 'STARTTLS', 220);
+        const plainSocket = socket;
+        socket = tls.connect({ socket: plainSocket, ...sni });
+        socket.once('error', e => { clearTimeout(timer); reject(e); });
+        await new Promise((res, rej) => { socket.once('secureConnect', res); socket.once('error', rej); });
+        await smtpCmd(socket, `EHLO ${cfg.host}`, 250);
+      }
+      if (cfg.user) {
+        await smtpCmd(socket, 'AUTH LOGIN', 334);
+        await smtpCmd(socket, Buffer.from(cfg.user).toString('base64'), 334);
+        await smtpCmd(socket, Buffer.from(cfg.pass || '').toString('base64'), 235);
+      }
+      await smtpCmd(socket, `MAIL FROM:<${cfg.from}>`, 250);
+      await smtpCmd(socket, `RCPT TO:<${to}>`, 250);
+      await smtpCmd(socket, 'DATA', 354);
+      // Точка в начале строки экранируется удвоением — иначе SMTP считает её концом письма
+      const message = [
+        `From: BMG Crew Builder <${cfg.from}>`,
+        `To: <${to}>`,
+        `Subject: ${subject}`,
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=utf-8',
+        '',
+        text.replace(/^\./gm, '..'),
+        '.'
+      ].join('\r\n');
+      await smtpCmd(socket, message, 250);
+      await smtpCmd(socket, 'QUIT').catch(() => {});
+      clearTimeout(timer);
+      socket.end();
+      resolve(true);
+    })().catch(e => { clearTimeout(timer); try { socket.destroy(); } catch (_) { /* уже закрыт */ } reject(e); });
+  });
+}
+
+function generateResetCode() {
+  return String(crypto.randomInt(0, 1000000)).padStart(6, '0');
+}
+function hashResetCode(code) {
+  return crypto.createHash('sha256').update(code).digest('hex');
+}
+function resetRateLimited(name) {
+  const last = resetRequestTimes.get(name);
+  return !!last && Date.now() - last < RESET_MIN_INTERVAL_MS;
+}
 
 // ======================== ХЕЛПЕРЫ ========================
 function hashPassword(salt, password) {
@@ -200,6 +345,8 @@ function userNameTaken(name) {
 }
 // Страна профиля: ISO 3166-1 alpha-2 либо null (не указана)
 const validCountry = c => c == null || (typeof c === 'string' && /^[A-Z]{2}$/.test(c));
+// Email профиля: простая проверка формата, длина как у большинства почтовых систем
+const validEmail = e => typeof e === 'string' && e.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
 // Валидация ростера/сохранения (компактный формат из auth.js)
 function validSave(s) {
@@ -392,18 +539,22 @@ async function handleApi(req, res, url) {
     const body = await readBody(req);
     const name = normName(body.name), pass = body.pass;
     if (!validName(name) || !validPass(pass)) return send(res, 400, { error: 'input' });
+    // Email при регистрации необязателен (можно указать позже в профиле) —
+    // но если прислан, должен быть валидного формата
+    const email = body.email ? String(body.email).trim() : null;
+    if (email != null && !validEmail(email)) return send(res, 400, { error: 'input' });
     if (userNameTaken(name)) return send(res, 409, { error: 'exists' });
     const salt = crypto.randomBytes(8).toString('hex');
-    db.prepare('INSERT INTO users (name, salt, hash, created) VALUES (?, ?, ?, ?)')
-      .run(name, salt, hashPassword(salt, pass), Date.now());
-    return send(res, 200, { token: createSession(name), name, country: null });
+    db.prepare('INSERT INTO users (name, salt, hash, created, email) VALUES (?, ?, ?, ?, ?)')
+      .run(name, salt, hashPassword(salt, pass), Date.now(), email);
+    return send(res, 200, { token: createSession(name), name, country: null, email });
   }
 
   if (p === '/api/login' && req.method === 'POST') {
     const body = await readBody(req);
     const name = normName(body.name), pass = body.pass;
     const row = validName(name) && validPass(pass)
-      ? db.prepare('SELECT salt, hash, country FROM users WHERE name = ?').get(name) : null;
+      ? db.prepare('SELECT salt, hash, country, email FROM users WHERE name = ?').get(name) : null;
     if (!row) return send(res, 401, { error: 'badcred' });
     // timingSafeEqual — сравнение хэшей без утечки по времени ответа
     const given = Buffer.from(hashPassword(row.salt, pass), 'hex');
@@ -411,12 +562,67 @@ async function handleApi(req, res, url) {
     if (given.length !== stored.length || !crypto.timingSafeEqual(given, stored)) {
       return send(res, 401, { error: 'badcred' });
     }
-    return send(res, 200, { token: createSession(name), name, country: row.country || null });
+    return send(res, 200, { token: createSession(name), name, country: row.country || null, email: row.email || null });
   }
 
   if (p === '/api/logout' && req.method === 'POST') {
     const m = /^Bearer\s+(.+)$/.exec(req.headers.authorization || '');
     if (m) db.prepare('DELETE FROM sessions WHERE token = ?').run(m[1]);
+    return send(res, 200, { ok: true });
+  }
+
+  // --- Восстановление пароля по коду, отправленному на email аккаунта ---
+  if (p === '/api/forgot-password' && req.method === 'POST') {
+    const body = await readBody(req);
+    const name = normName(body.name);
+    if (!validName(name)) return send(res, 400, { error: 'input' });
+    const row = db.prepare('SELECT email FROM users WHERE name = ?').get(name);
+    if (!row) return send(res, 404, { error: 'reset_user_notfound' });
+    if (!row.email) return send(res, 400, { error: 'reset_no_email' });
+    if (resetRateLimited(name)) return send(res, 429, { error: 'reset_rate_limited' });
+    resetRequestTimes.set(name, Date.now());
+
+    const code = generateResetCode();
+    db.prepare(`INSERT INTO password_resets (user, code_hash, created, attempts) VALUES (?, ?, ?, 0)
+                ON CONFLICT(user) DO UPDATE SET code_hash = excluded.code_hash, created = excluded.created, attempts = 0`)
+      .run(name, hashResetCode(code), Date.now());
+
+    try {
+      const sent = await sendMail({
+        to: row.email,
+        subject: 'BMG Crew Builder — код восстановления пароля',
+        text: `Код для сброса пароля аккаунта "${name}": ${code}\n\n`
+          + `Код действителен 15 минут. Если вы не запрашивали сброс пароля — просто проигнорируйте это письмо.`
+      });
+      if (!sent) console.log(`[mail] SMTP не настроен — код восстановления для "${name}" (${row.email}): ${code}`);
+    } catch (e) {
+      console.error('Ошибка отправки письма восстановления пароля:', e.message);
+      return send(res, 500, { error: 'reset_mail_failed' });
+    }
+    return send(res, 200, { ok: true });
+  }
+
+  if (p === '/api/reset-password' && req.method === 'POST') {
+    const body = await readBody(req);
+    const name = normName(body.name);
+    const code = body.code, newPass = body.newPass;
+    if (!validName(name) || typeof code !== 'string' || !validPass(newPass)) {
+      return send(res, 400, { error: 'input' });
+    }
+    const row = db.prepare('SELECT * FROM password_resets WHERE user = ?').get(name);
+    if (!row || row.created < Date.now() - RESET_CODE_TTL_MS || row.attempts >= RESET_MAX_ATTEMPTS) {
+      return send(res, 400, { error: 'reset_code_expired' });
+    }
+    const given = Buffer.from(hashResetCode(code), 'hex');
+    const stored = Buffer.from(row.code_hash, 'hex');
+    if (given.length !== stored.length || !crypto.timingSafeEqual(given, stored)) {
+      db.prepare('UPDATE password_resets SET attempts = attempts + 1 WHERE user = ?').run(name);
+      return send(res, 400, { error: 'reset_bad_code' });
+    }
+    const salt = crypto.randomBytes(8).toString('hex');
+    db.prepare('UPDATE users SET salt = ?, hash = ? WHERE name = ?').run(salt, hashPassword(salt, newPass), name);
+    db.prepare('DELETE FROM password_resets WHERE user = ?').run(name);
+    db.prepare('DELETE FROM sessions WHERE user = ?').run(name); // сброс пароля — разлогиниваем все устройства
     return send(res, 200, { ok: true });
   }
 
@@ -496,17 +702,44 @@ async function handleApi(req, res, url) {
 
   if (p === '/api/me' && req.method === 'GET') {
     if (!user) return send(res, 401, { error: 'auth' });
-    const row = db.prepare('SELECT country FROM users WHERE name = ?').get(user);
-    return send(res, 200, { name: user, country: (row && row.country) || null });
+    const row = db.prepare('SELECT country, email FROM users WHERE name = ?').get(user);
+    return send(res, 200, { name: user, country: (row && row.country) || null, email: (row && row.email) || null });
   }
 
   if (!user) return send(res, 401, { error: 'auth' });
 
-  // --- Профиль: страна пользователя (для статистики географии) ---
+  // --- Профиль: страна (для статистики) и email (для восстановления пароля).
+  // Поля независимы — присылайте только то, что меняете
   if (p === '/api/profile' && req.method === 'PUT') {
-    const { country } = await readBody(req);
-    if (!validCountry(country)) return send(res, 400, { error: 'input' });
-    db.prepare('UPDATE users SET country = ? WHERE name = ?').run(country || null, user);
+    const body = await readBody(req);
+    if ('country' in body) {
+      if (!validCountry(body.country)) return send(res, 400, { error: 'input' });
+      db.prepare('UPDATE users SET country = ? WHERE name = ?').run(body.country || null, user);
+    }
+    if ('email' in body) {
+      const email = body.email ? String(body.email).trim() : null;
+      if (email != null && !validEmail(email)) return send(res, 400, { error: 'input' });
+      db.prepare('UPDATE users SET email = ? WHERE name = ?').run(email, user);
+    }
+    return send(res, 200, { ok: true });
+  }
+
+  // --- Смена пароля из профиля (пользователь знает текущий пароль) ---
+  if (p === '/api/change-password' && req.method === 'POST') {
+    const { oldPass, newPass } = await readBody(req);
+    if (!validPass(oldPass) || !validPass(newPass)) return send(res, 400, { error: 'input' });
+    const row = db.prepare('SELECT salt, hash FROM users WHERE name = ?').get(user);
+    const given = Buffer.from(hashPassword(row.salt, oldPass), 'hex');
+    const stored = Buffer.from(row.hash, 'hex');
+    if (given.length !== stored.length || !crypto.timingSafeEqual(given, stored)) {
+      return send(res, 401, { error: 'badcred' });
+    }
+    const salt = crypto.randomBytes(8).toString('hex');
+    db.prepare('UPDATE users SET salt = ?, hash = ? WHERE name = ?').run(salt, hashPassword(salt, newPass), user);
+    // Оставляем текущую сессию активной, но выходим из остальных устройств
+    const m = /^Bearer\s+(.+)$/.exec(req.headers.authorization || '');
+    const currentToken = m ? m[1] : null;
+    if (currentToken) db.prepare('DELETE FROM sessions WHERE user = ? AND token != ?').run(user, currentToken);
     return send(res, 200, { ok: true });
   }
 

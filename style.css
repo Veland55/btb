@@ -738,6 +738,25 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .auth-country-label { color:#999; font-size:12px; text-transform:uppercase; letter-spacing:1px; flex-shrink:0; }
 .auth-country-select { flex:1; min-width:0; padding:9px 12px; font-size:14px; }
 
+/* Email профиля (восстановление пароля) — поле + кнопка сохранить, как страна */
+.auth-email-row { display:flex; align-items:center; gap:10px; margin:14px 0 8px; }
+.auth-email-row input { flex:1; min-width:0; padding:9px 12px; font-size:14px; }
+
+/* Ссылка "Забыли пароль?" под кнопками входа */
+.auth-forgot-link { color:#e94560; font-size:12.5px; text-align:center; cursor:pointer; margin:-4px 0 0; }
+.auth-forgot-link:hover { text-decoration:underline; }
+
+/* Смена пароля — сворачиваемый блок в профиле, как остальные тёмные панели */
+.auth-change-pass { margin:16px 0; border-top:1px solid #2a2a2a; padding-top:12px; }
+.auth-change-pass summary {
+  color:#ffd700; font-weight:700; letter-spacing:1px; font-size:12.5px; cursor:pointer;
+  list-style:none; text-transform:uppercase;
+}
+.auth-change-pass summary::-webkit-details-marker { display:none; }
+.auth-change-pass summary::before { content:"▸ "; }
+.auth-change-pass[open] summary::before { content:"▾ "; }
+.auth-change-pass .auth-form { margin-top:12px; }
+
 /* СВЯЗАННЫЕ ПРАВИЛА В ПОПАПАХ (расшифровка трейтов, упомянутых в апгрейде/трейте) */
 .popup-related { margin-top:16px; border-top:2px solid #e94560; padding-top:12px; }
 .popup-related-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:12px; margin-bottom:10px; }

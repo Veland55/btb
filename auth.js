@@ -18,8 +18,14 @@ const CODE_TO_RANK = { L: "Leader", S: "Sidekick", H: "Henchman", F: "Free Agent
 
 let currentUser = null;
 let currentUserCountry = null; // ISO-код страны из профиля (для статистики)
+let currentUserEmail = null;   // email из профиля (нужен для восстановления пароля)
 let authToken = localStorage.getItem(AUTH_TOKEN_KEY) || null;
 let mySaves = [];        // локальный кэш сохранений текущего пользователя
+
+// Экран модалки для незалогиненного пользователя: обычный вход/регистрация
+// или один из двух шагов восстановления пароля по коду с почты
+let authView = 'login';   // 'login' | 'forgot-request' | 'forgot-code'
+let authResetName = '';   // имя аккаунта, для которого запрошен код (шаг 2)
 
 // ======================== API-КЛИЕНТ ========================
 async function api(pathname, method = 'GET', body) {
@@ -58,17 +64,24 @@ function apiErrorText(e) {
     tn_limit: 'tn_limit_msg',
     tn_started: 'tn_started_msg',
     tn_few: 'tn_need_players',
-    tn_locked: 'tn_locked_msg'
+    tn_locked: 'tn_locked_msg',
+    reset_user_notfound: 'reset_user_notfound',
+    reset_no_email: 'reset_no_email',
+    reset_rate_limited: 'reset_rate_limited',
+    reset_mail_failed: 'reset_mail_failed',
+    reset_code_expired: 'reset_code_expired',
+    reset_bad_code: 'reset_bad_code'
   };
   return t(map[e && e.error] || 'server_error');
 }
 
 // ======================== АУТЕНТИФИКАЦИЯ ========================
-async function authRegister(name, pass) {
-  const data = await api('/api/register', 'POST', { name, pass });
+async function authRegister(name, pass, email) {
+  const data = await api('/api/register', 'POST', { name, pass, email: email || null });
   authToken = data.token;
   currentUser = data.name;
   currentUserCountry = data.country || null;
+  currentUserEmail = data.email || null;
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   mySaves = [];
 }
@@ -78,6 +91,7 @@ async function authLogin(name, pass) {
   authToken = data.token;
   currentUser = data.name;
   currentUserCountry = data.country || null;
+  currentUserEmail = data.email || null;
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   await refreshSaves();
 }
@@ -87,9 +101,68 @@ function authLogout() {
   authToken = null;
   currentUser = null;
   currentUserCountry = null;
+  currentUserEmail = null;
   mySaves = [];
   localStorage.removeItem(AUTH_TOKEN_KEY);
   renderAuthModal();
+}
+
+// Email профиля: используется для восстановления пароля, нигде не публикуется
+async function setUserEmail() {
+  const input = document.getElementById('authEmailInput');
+  const email = (input.value || '').trim();
+  try {
+    await api('/api/profile', 'PUT', { email: email || null });
+    currentUserEmail = email || null;
+    alert(t('email_saved'));
+  } catch (e) {
+    alert(apiErrorText(e));
+  }
+}
+
+// ======================== ВОССТАНОВЛЕНИЕ И СМЕНА ПАРОЛЯ ========================
+async function requestPasswordReset() {
+  const name = (document.getElementById('resetName').value || '').trim();
+  if (!name) { alert(t('auth_fill_fields')); return; }
+  try {
+    await api('/api/forgot-password', 'POST', { name });
+    authResetName = name;
+    authView = 'forgot-code';
+    renderAuthModal();
+    alert(t('forgot_code_sent'));
+  } catch (e) {
+    alert(apiErrorText(e));
+  }
+}
+
+async function submitPasswordReset() {
+  const code = (document.getElementById('resetCode').value || '').trim();
+  const newPass = document.getElementById('resetNewPass').value;
+  if (!code || !newPass) { alert(t('auth_fill_fields')); return; }
+  try {
+    await api('/api/reset-password', 'POST', { name: authResetName, code, newPass });
+    alert(t('forgot_reset_done'));
+    authView = 'login';
+    renderAuthModal();
+  } catch (e) {
+    alert(apiErrorText(e));
+  }
+}
+
+// Смена пароля из профиля (пользователь уже вошёл и знает текущий пароль)
+async function submitChangePassword() {
+  const oldPass = document.getElementById('cpOld').value;
+  const newPass = document.getElementById('cpNew').value;
+  const confirmPass = document.getElementById('cpConfirm').value;
+  if (!oldPass || !newPass) { alert(t('auth_fill_fields')); return; }
+  if (newPass !== confirmPass) { alert(t('password_mismatch')); return; }
+  try {
+    await api('/api/change-password', 'POST', { oldPass, newPass });
+    alert(t('password_changed'));
+    ['cpOld', 'cpNew', 'cpConfirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  } catch (e) {
+    alert(apiErrorText(e));
+  }
 }
 
 // Страна профиля: селект в модалке профиля, учитывается в разделе СТАТИСТИКА
@@ -253,8 +326,63 @@ function openAuthModal() {
 }
 function closeAuthModal() {
   document.getElementById('authModal').classList.remove('active');
+  // Следующее открытие модалки для незалогиненного — снова обычный вход,
+  // а не середина прерванного восстановления пароля
+  authView = 'login';
   // Если модалку открывали из раздела ИГРА — после входа перерисовываем его
   if (typeof renderGame === 'function' && currentMode === 'game') renderGame();
+}
+
+// Экранирование для вставки пользовательского текста в HTML-атрибуты/разметку
+function authEsc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Форма для незалогиненного пользователя: вход/регистрация или один из двух
+// шагов восстановления пароля (см. authView)
+function renderAuthLoggedOutHTML() {
+  if (authView === 'forgot-request') {
+    return `
+      <div class="auth-form">
+        <p class="auth-note">${t('forgot_request_hint')}</p>
+        <input type="text" id="resetName" maxlength="20" autocomplete="username" placeholder="${t('username')}">
+        <div class="auth-buttons">
+          <button class="rank-select-btn" onclick="requestPasswordReset()">${t('forgot_send_code')}</button>
+          <button class="save-btn" onclick="authView='login';renderAuthModal()">${t('back')}</button>
+        </div>
+      </div>`;
+  }
+  if (authView === 'forgot-code') {
+    return `
+      <div class="auth-form">
+        <p class="auth-note">${t('forgot_code_hint', { name: authResetName })}</p>
+        <input type="text" id="resetCode" maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+               placeholder="${t('forgot_code_placeholder')}">
+        <input type="password" id="resetNewPass" maxlength="64" autocomplete="new-password"
+               placeholder="${t('forgot_new_password')}">
+        <div class="auth-buttons">
+          <button class="rank-select-btn" onclick="submitPasswordReset()">${t('forgot_reset_btn')}</button>
+          <button class="save-btn" onclick="authView='forgot-request';renderAuthModal()">${t('back')}</button>
+        </div>
+      </div>`;
+  }
+  return `
+    <div class="auth-form">
+      <input type="text" id="authName" maxlength="20" autocomplete="username"
+             placeholder="${t('username')}">
+      <input type="password" id="authPass" maxlength="64" autocomplete="current-password"
+             placeholder="${t('password')}">
+      <input type="email" id="authEmail" maxlength="254" autocomplete="email"
+             placeholder="${t('email_placeholder_optional')}">
+      <p class="auth-note">${t('register_email_hint')}</p>
+      <div class="auth-buttons">
+        <button class="rank-select-btn" onclick="authSubmit(false)">${t('login')}</button>
+        <button class="rank-select-btn" onclick="authSubmit(true)">${t('register')}</button>
+      </div>
+      <p class="auth-forgot-link" onclick="authView='forgot-request';renderAuthModal()">${t('forgot_password_link')}</p>
+      <p class="auth-note">${t('auth_server_note')}</p>
+    </div>`;
 }
 
 function renderAuthModal() {
@@ -262,18 +390,7 @@ function renderAuthModal() {
   if (!box) return;
 
   if (!currentUser) {
-    box.innerHTML = `
-      <div class="auth-form">
-        <input type="text" id="authName" maxlength="20" autocomplete="username"
-               placeholder="${t('username')}">
-        <input type="password" id="authPass" maxlength="64" autocomplete="current-password"
-               placeholder="${t('password')}">
-        <div class="auth-buttons">
-          <button class="rank-select-btn" onclick="authSubmit(false)">${t('login')}</button>
-          <button class="rank-select-btn" onclick="authSubmit(true)">${t('register')}</button>
-        </div>
-        <p class="auth-note">${t('auth_server_note')}</p>
-      </div>`;
+    box.innerHTML = renderAuthLoggedOutHTML();
     return;
   }
 
@@ -302,6 +419,24 @@ function renderAuthModal() {
       </select>
     </div>
     <p class="auth-note">${t('country_stats_hint')}</p>
+
+    <div class="auth-email-row">
+      <input type="email" id="authEmailInput" class="game-select" maxlength="254"
+             placeholder="${t('email_placeholder')}" value="${authEsc(currentUserEmail)}">
+      <button class="save-btn" onclick="setUserEmail()">${t('email_save_btn')}</button>
+    </div>
+    <p class="auth-note">${t('email_hint')}</p>
+
+    <details class="auth-change-pass">
+      <summary>${t('change_password_title')}</summary>
+      <div class="auth-form">
+        <input type="password" id="cpOld" maxlength="64" autocomplete="current-password" placeholder="${t('current_password')}">
+        <input type="password" id="cpNew" maxlength="64" autocomplete="new-password" placeholder="${t('new_password')}">
+        <input type="password" id="cpConfirm" maxlength="64" autocomplete="new-password" placeholder="${t('confirm_password')}">
+        <button class="rank-select-btn" onclick="submitChangePassword()">${t('change_password_btn')}</button>
+      </div>
+    </details>
+
     <div class="saves-title">${t('my_crews')}</div>
     ${rows || `<p class="auth-note">${t('no_saves')}</p>`}`;
 }
@@ -311,8 +446,14 @@ async function authSubmit(isRegister) {
   const pass = document.getElementById('authPass').value;
   if (!name || !pass) { alert(t('auth_fill_fields')); return; }
   try {
-    if (isRegister) await authRegister(name, pass);
-    else await authLogin(name, pass);
+    if (isRegister) {
+      // Email при регистрации необязателен — только для восстановления пароля
+      const emailInput = document.getElementById('authEmail');
+      const email = emailInput ? emailInput.value.trim() : '';
+      await authRegister(name, pass, email || null);
+    } else {
+      await authLogin(name, pass);
+    }
     renderAuthModal();
   } catch (e) {
     alert(apiErrorText(e));
@@ -329,6 +470,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const me = await api('/api/me');
     currentUser = me.name;
     currentUserCountry = me.country || null;
+    currentUserEmail = me.email || null;
     await refreshSaves();
   } catch (e) {
     if (e.status === 401) { // токен протух

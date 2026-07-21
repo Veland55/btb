@@ -24,7 +24,8 @@ This project helps players quickly build crews by checking all model hiring rule
 - **Раздел ИГРА** — обмен ростерами по коду, условия игры (Event/Encounter), счётчики WIL/END/KD/KO, очки побед (VP) и запись победителя партии
 - **Турниры** — организация мероприятий (адрес, даты, лимит мест + резерв), регистрация участников, подача двух ростеров по правилам Batmatch, туры со швейцарскими парами, таблица и победитель
 - **Статистика** — популярные банды, модели и боссы, рейтинг побед, лучшие игроки, география игроков и турниров
-- **Профили** — сохранения отрядов (до 5), страна игрока, доступ с любого устройства
+- **Профили** — сохранения отрядов (до 5), страна игрока, доступ с любого устройства,
+  смена пароля и его восстановление по коду на email
 - **Справочник (Compendium)** — поиск по трейтам, оружию и правилам
 - **PDF документы** — быстрый доступ к Rulebook, FAQ и Batmatch
 - **Экспорт отряда в PDF** — печатный ростер из просмотра отряда
@@ -39,7 +40,8 @@ This project helps players quickly build crews by checking all model hiring rule
 - **GAME section** — share rosters via a code, game conditions (Event/Encounter), WIL/END/KD/KO trackers, victory points (VP) and recording the game winner
 - **Tournaments** — organize events (address, dates, player limit + reserve slots), player registration, submitting two rosters per Batmatch rules, rounds with Swiss pairings, standings and a winner
 - **Statistics** — popular crews, models and bosses, win rating, top players, player and tournament geography
-- **Profiles** — crew saves (up to 5), player country, available from any device
+- **Profiles** — crew saves (up to 5), player country, available from any device,
+  password change and email-code recovery
 - **Compendium** — search traits, weapons, and rules
 - **PDF documents** — quick access to Rulebook, FAQ, and Batmatch
 - **Roster PDF export** — printable roster from the crew preview
@@ -203,13 +205,23 @@ node server.js
   результат партии (победитель + VP) сохраняется в постоянную таблицу побед;
 - **Турниры** — создание мероприятий, регистрация с резервными местами, туры со
   швейцарскими парами, самозапись результатов участниками, таблица и победитель;
-- **Статистика** — публичные агрегаты без личных данных (`GET /api/stats`).
+- **Статистика** — публичные агрегаты без личных данных (`GET /api/stats`);
+- **Восстановление и смена пароля** — код на email (без npm-зависимостей: сервер
+  говорит по протоколу SMTP напрямую через встроенные `net`/`tls`).
 
 Все данные — в одном компактном файле `data/bmg.db` (SQLite, встроенный `node:sqlite`).
 Ростеры хранятся в сжатом формате (имена-ссылки на базу моделей, ~200–400 байт на отряд).
-Переменные окружения: `PORT` — порт сервера, `BMG_DATA_DIR` — каталог базы данных
-(по умолчанию `data/` рядом с server.js). Как развернуть на боевом сервере —
-см. раздел «Деплой на VPS» ниже.
+
+Переменные окружения:
+- `PORT` — порт сервера;
+- `BMG_DATA_DIR` — каталог базы данных (по умолчанию `data/` рядом с server.js);
+- `SMTP_HOST` — адрес SMTP-сервера; без него письма не отправляются, а код
+  восстановления пароля просто пишется в лог сервера (удобно для разработки);
+- `SMTP_PORT` — порт (587 по умолчанию — STARTTLS; 465 — неявный TLS);
+- `SMTP_USER` / `SMTP_PASS` — логин и пароль (или app-пароль) на SMTP-сервере;
+- `SMTP_FROM` — обратный адрес письма (по умолчанию — `SMTP_USER`).
+
+Как развернуть на боевом сервере — см. раздел «Деплой на VPS» ниже.
 
 ### 🇬🇧 English
 The project only needs **Node.js 22.5+** — no npm dependencies, no build step.
@@ -227,13 +239,23 @@ The server serves the app's static files and provides an API:
   the game result (winner + VP) is saved into a permanent wins table;
 - **Tournaments** — create events, registration with reserve slots, rounds with Swiss
   pairings, self-reported results, standings and a winner;
-- **Statistics** — public aggregates with no personal data (`GET /api/stats`).
+- **Statistics** — public aggregates with no personal data (`GET /api/stats`);
+- **Password reset and change** — an email code (zero-dependency: the server speaks
+  raw SMTP over the built-in `net`/`tls` modules).
 
 All data lives in a single compact `data/bmg.db` file (SQLite via built-in `node:sqlite`).
 Rosters are stored in a compressed format (name references into the model DB, ~200–400 bytes per crew).
-Environment variables: `PORT` — server port, `BMG_DATA_DIR` — database directory
-(defaults to `data/` next to server.js). For production deployment see the
-"VPS Deployment" section below.
+
+Environment variables:
+- `PORT` — server port;
+- `BMG_DATA_DIR` — database directory (defaults to `data/` next to server.js);
+- `SMTP_HOST` — SMTP server address; without it no emails are sent and the
+  password-reset code is simply logged to the server console (handy for development);
+- `SMTP_PORT` — port (587 by default — STARTTLS; 465 — implicit TLS);
+- `SMTP_USER` / `SMTP_PASS` — SMTP login and password (or app password);
+- `SMTP_FROM` — the email's From address (defaults to `SMTP_USER`).
+
+For production deployment see the "VPS Deployment" section below.
 
 ---
 
