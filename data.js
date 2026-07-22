@@ -392,7 +392,7 @@ const equipmentByFaction = {
 const models = [
   {
     "name": "Batman Bushi",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 105,
     "funding": 0,
@@ -2020,7 +2020,7 @@ const models = [
 
   {
     "name": "The Drifter Robert Pattinson",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 112,
     "funding": 0,
@@ -2051,7 +2051,7 @@ const models = [
   },
   {
     "name": "Batman Year One",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 121,
     "funding": 0,
@@ -2097,7 +2097,7 @@ const models = [
   },
   {
     "name": "Batman Robert Pattinson",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 112,
     "funding": 0,
@@ -2143,7 +2143,7 @@ const models = [
   },
   {
     "name": "Batman on Bike Robert Pattinson",
-    "realname": "Bruce Wayne / 42x75mm",
+    "realname": "Bruce Wayne",
     "base": "42x75mm",
     "rep": 112,
     "funding": 0,
@@ -2183,7 +2183,7 @@ const models = [
   },
   {
     "name": "Batman 1997",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 105,
     "funding": 0,
@@ -2228,7 +2228,7 @@ const models = [
   },
   {
     "name": "Batman Michael Keaton",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 125,
     "funding": 0,
@@ -2274,7 +2274,7 @@ const models = [
   },
   {
     "name": "Batman Red Rain",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 150,
     "funding": 0,
@@ -2314,7 +2314,7 @@ const models = [
   },
   {
     "name": "Batman Adam West",
-    "realname": "Bruce Wayne / 30mm",
+    "realname": "Bruce Wayne",
     "base": "30mm",
     "rep": 75,
     "funding": 0,
@@ -2358,7 +2358,7 @@ const models = [
   },
   {
     "name": "The White Knight",
-    "realname": "Harvey Dent / 30mm",
+    "realname": "Harvey Dent",
     "base": "30mm",
     "rep": 50,
     "funding": 0,
@@ -2385,7 +2385,7 @@ const models = [
   },
   {
     "name": "Aaron Cash",
-    "realname": "Aaron Cash / 30mm",
+    "realname": "Aaron Cash",
     "base": "30mm",
     "rep": 58,
     "funding": 150,
@@ -2429,7 +2429,7 @@ const models = [
   },
   {
     "name": "Green Arrow Rebirth",
-    "realname": "Oliver Queen / 40mm",
+    "realname": "Oliver Queen",
     "base": "40mm",
     "rep": 95,
     "funding": 300,
@@ -2466,7 +2466,7 @@ const models = [
   },
   {
     "name": "Batman Gaslight",
-    "realname": "Bruce Wayne / 40mm",
+    "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 92,
     "funding": 0,
@@ -2507,7 +2507,7 @@ const models = [
 
   {
     "name": "Commissioner Gordon",
-    "realname": "James W. Gordon / 40mm / 60mm",
+    "realname": "James W. Gordon",
     "base": "40mm / 60mm",
     "rep": 70,
     "funding": 0,
@@ -2547,7 +2547,7 @@ const models = [
   },
   {
     "name": "Robin Burt Ward",
-    "realname": "Dick Grayson / 30mm",
+    "realname": "Dick Grayson",
     "base": "30mm",
     "rep": 38,
     "funding": 100,
@@ -2585,7 +2585,7 @@ const models = [
 
   {
     "name": "Batman Dark Knight Rises Batpod",
-    "realname": "Bruce Wayne / 42x75mm",
+    "realname": "Bruce Wayne",
     "base": "42x75mm",
     "rep": 120,
     "funding": 0,
@@ -2630,7 +2630,7 @@ const models = [
   },
   {
     "name": "Chief Mackenzie",
-    "realname": "Mackenzie Bock / 30mm",
+    "realname": "Mackenzie Bock",
     "base": "30mm",
     "rep": 40,
     "funding": 200,
@@ -2664,7 +2664,7 @@ const models = [
   },
   {
     "name": "Robin 1997",
-    "realname": "Dick Grayson / 40mm",
+    "realname": "Dick Grayson",
     "base": "40mm",
     "rep": 45,
     "funding": 0,

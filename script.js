@@ -1464,6 +1464,8 @@ function calculateModifiers() {
       // "Public Resources" / "Millionaire": не требуют Boss.
       if (t === "Public Resources") mods.extraFunding += 300;
       if (t === "Millionaire") mods.extraFunding += 400;
+      // "Never Do It For Free" (Joker Dark Knight Rises): не требует Boss.
+      if (t === "Never Do It For Free") mods.extraFunding += 400;
 
       const eliteBossMatch = t.match(/^Elite Boss \((.+)\)$/);
       if (eliteBossMatch) {

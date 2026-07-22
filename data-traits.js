@@ -794,7 +794,8 @@ const traitDescriptions = {
     "No More Lies": "During the activation of a friendly model with the Riddler Followers keyword, you may remove a friendly Suspect within 4\" of that model. If you do, during this and the subsequent activation, the opponent cannot play Objectives as Resources.",
     "Non-Lethal Ammo": "When this model attacks non-Vehicle models with its ranged weapons, all {BLOOD_ICON} damage becomes {STUN_ICON} damage.",
     "Not Him": "When this model suffers Damage that causes it to suffer KO or be removed as a Casualty, you may place it in contact with a friendly model within 8\" that share a Keyword with this model. The friendly model suffers that damage instead.",
-    
+    "Never Do It For Free": "This model's crew gains an additional $400 Funding.",
+
     //O
 
     "Objective Keyword - Burn X": "You can play this Resource by paying X Resource points to discard this card from your hand, placing it at the bottom of your Objective deck.",
