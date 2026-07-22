@@ -2613,6 +2613,11 @@ function bmgCanAddModel(model) {
       });
       if (veteranExceeded) return false;
 
+      // Minion (X): "This model can be hired up to X times in a crew, regardless
+      // of its Name" — лимит X относится к ЭТОЙ конкретной модели (по имени), это
+      // расширение обычного лимита "1 Henchman с одинаковым именем" (как у Horde
+      // с фиксированным X=4), а не общий пул на несколько разных моделей с одним X
+      // (в отличие от Elite (Type) / Veteran (Type), где лимит именно по типу).
       let minionExceeded = false;
       model.traits.forEach(modelTrait => {
         const minionMatch = modelTrait.match(/^Minion \((.+)\)$/);
@@ -2620,7 +2625,7 @@ function bmgCanAddModel(model) {
           const x = minionMatch[1].trim();
           const parsedX = parseInt(x, 10);
           const limit = isNaN(parsedX) ? 1 + (modifiers.extraMinions[x] || 0) : parsedX;
-          const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Minion \\(${x}\\)$`)))).length;
+          const count = crew.filter(m => m.name === model.name && m.rankUsed === "Henchman").length;
           if (count >= limit) {
             alert(t("minion_limit_exceeded", { type: x }));
             minionExceeded = true;
