@@ -1665,9 +1665,14 @@ const renderMiniCardsBuilder = debounce(() => {
   // Скрываем модели из-за правил Aversion (если в отряде есть модель, для которой эта модель в списке Aversion)
   filteredModels = filteredModels.filter(m => !checkAversionHidden(m));
 
-  // Скрываем модели с Affinity, если требуемая модель отсутствует в отряде
+  // Скрываем модели с Affinity, если требуемая модель отсутствует в отряде.
+  // Affinity — это ДОПОЛНИТЕЛЬНОЕ право наняться в чужую фракцию ("even if they
+  // would not ordinarily be permitted to join that crew"), а не ограничение
+  // найма в свою родную фракцию. Проверяем требование только тогда, когда модель
+  // используется как раз ради этого — т.е. её родная фракция не совпадает с текущей.
   filteredModels = filteredModels.filter(m => {
     if (!m.traits || !Array.isArray(m.traits)) return true;
+    if (getFactions(m).includes(currentFaction)) return true;
     const affinityTraits = m.traits.filter(t => t.startsWith("Affinity (") && t.endsWith(")"));
     for (const trait of affinityTraits) {
       const targetModelName = trait.replace("Affinity (", "").replace(")", "");
@@ -2758,9 +2763,11 @@ function bmgCanAddModel(model) {
       }
     }
 
-    // Affinity (Model): Проверяем что модель может присоединиться
+    // Affinity (Model): это ДОПОЛНИТЕЛЬНОЕ право наняться в чужую фракцию
+    // ("even if they would not ordinarily be permitted to join that crew"),
+    // а не ограничение найма в свою родную фракцию — там требование не действует.
     const affinityMatch = modelTrait.match(/^Affinity \((.+)\)$/);
-    if (affinityMatch) {
+    if (affinityMatch && !getFactions(model).includes(currentFaction)) {
       const affinityTarget = affinityMatch[1];
       // Модель с Affinity может присоединиться только если в отряде есть целевая модель
       if (!crew.some(m => m.name === affinityTarget)) {

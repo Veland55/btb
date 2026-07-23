@@ -13840,6 +13840,66 @@ const models = [
   },
 
   {
+    "name": "Lou",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 10,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "img/Lou.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Affinity (Harley Quinn)",
+      "Animal",
+      "Claws",
+      "Death Pack",
+      "Harley's Best Friends",
+      "Mobster",
+      "Stupid",
+      "Trickster"
+    ],
+    "weapons": []
+  },
+
+  {
+    "name": "Bud",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 10,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "img/Bud.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Affinity (Harley Quinn)",
+      "Animal",
+      "Claws",
+      "Death Pack",
+      "Harley's Best Friends",
+      "Mobster",
+      "Stupid",
+      "Trickster"
+    ],
+    "weapons": []
+  },
+
+  {
     "name": "Bruce the Hyena",
     "realname": "Unknown",
     "base": "30mm",
