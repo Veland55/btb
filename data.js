@@ -13863,8 +13863,7 @@ const models = [
       "Death Pack",
       "Harley's Best Friends",
       "Mobster",
-      "Stupid",
-      "Trickster"
+      "Stupid"
     ],
     "weapons": []
   },
@@ -13893,8 +13892,7 @@ const models = [
       "Death Pack",
       "Harley's Best Friends",
       "Mobster",
-      "Stupid",
-      "Trickster"
+      "Stupid"
     ],
     "weapons": []
   },
