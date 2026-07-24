@@ -1780,7 +1780,7 @@ const models = [
         "damage": "🩸",
         "rof": 2,
         "ammo": 3,
-        "traits": "Devastating / Magic / Ranged / Terror / Throwing"
+        "traits": "Devastating / Magic / S. Range / Terror / Throwing"
       }
     ]
   },
@@ -3378,7 +3378,7 @@ const models = [
         "damage": "★★",
         "rof": "-",
         "ammo": "-",
-        "traits": "Blunt 2 / Devastating / Handy / Heavy"
+        "traits": "Blunt (2) / Devastating / Handy / Heavy"
       }
     ]
   },
@@ -3741,7 +3741,7 @@ const models = [
       "Bat Family",
       "Batclaw",
       "Charismatic",
-      "Combo: Sticks",
+      "Combo (Sticks)",
       "Martial Artist",
       "Searcher",
       "Shadowed Nightmare",
@@ -6841,7 +6841,7 @@ const models = [
       "Extended Limbs",
       "Performance",
       "Regeneration",
-      "Resident",
+      "Resilient",
       "Stretching",
       "True Love (Beast Boy)",
       "Undercover"
@@ -6867,7 +6867,7 @@ const models = [
     },
     "traits": [
       "Bipolar (Mental Disorder)",
-      "Personality",
+      "Personalities",
       "Self-Discipline",
       "Sturdy"
     ],
@@ -7655,7 +7655,6 @@ const models = [
     },
     "traits": [
       "Medium Armor",
-      "Reinforced Armor",
       "Reinforced Gloves",
       "Tough Guy",
       "Veteran",
@@ -7981,7 +7980,7 @@ const models = [
       "Endurance": 4
     },
     "traits": [
-      "Aggressive Schizophrenia",
+      "Aggressive Schizophrenia (Mental Disorder)",
       "Aversion (Harley Quinn)",
       "Demotivate",
       "Provoke",
@@ -8397,7 +8396,7 @@ const models = [
       "Endurance": 4
     },
     "traits": [
-      "Aggressive Schizophrenia",
+      "Aggressive Schizophrenia (Mental Disorder)",
       "Electric Storm"
     ],
     "weapons": [
@@ -8937,7 +8936,7 @@ const models = [
       "Endurance": 4
     },
     "traits": [
-      "Aggressive Schizophrenia",
+      "Aggressive Schizophrenia (Mental Disorder)",
       "Criminal"
     ],
     "weapons": [
@@ -9276,7 +9275,7 @@ const models = [
         "damage": "★★",
         "rof": "-",
         "ammo": "-",
-        "traits": "Blunt 2 / Devastating / Handy / Heavy"
+        "traits": "Blunt (2) / Devastating / Handy / Heavy"
       }
     ]
   },
@@ -9395,7 +9394,7 @@ const models = [
       "Willpower": 8,
       "Endurance": 8
     },
-    "traits": ["Explosive Arrival", "Explosive Personality", "Explosive Teeths", "Kaos Agent", "Leading From Shadows", "Luck", "Psycho", "Trickster"],
+    "traits": ["Explosive Arrival", "Explosive Personality", "Explosive Teeth", "Kaos Agent", "Leading from the Shadows", "Luck", "Psycho", "Trickster"],
     "weapons": [
       {
         "name": "Bam!",
@@ -9494,7 +9493,7 @@ const models = [
       "Willpower": 6,
       "Endurance": 5
     },
-    "traits": ["Luck", "Sad Life", "Small", "Trully Immortal"],
+    "traits": ["Luck", "Sad Life", "Small", "Truly Immortal"],
     "weapons": []
   },
   {
@@ -15860,7 +15859,7 @@ const models = [
       "Amphibious",
       "Bloodthirsty (Mental Disorder)",
       "Cannibal",
-      "Handi!",
+      "Hand!!",
       "Huge",
       "Blood Scent",
       "Brutal",
@@ -18936,7 +18935,6 @@ const models = [
       "Criminal",
       "Escape Artist",
       "Hypnotic Radio Waves",
-      "Hypnotic",
       "Lantern",
       "Stalker"
     ],

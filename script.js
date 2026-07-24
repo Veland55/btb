@@ -148,9 +148,7 @@ const translations = {
     rulebook: "Правила",
     faqs: "FAQ",
     batmatch: "Batmatch",
-    model_search: "ПОИСК МОДЕЛЕЙ",
     compendium_search: "Поиск по трейтам, оружию, правилам...",
-    model_search_placeholder: "Введите имя модели...",
     nothing_found: "Ничего не найдено",
     subtitle: "Batman Miniature Game<br>Конструктор отрядов",
     leader_first: "Первой моделью должен быть Leader для этой фракции!",
@@ -472,9 +470,7 @@ const translations = {
     rulebook: "Rulebook",
     faqs: "FAQs",
     batmatch: "Batmatch",
-    model_search: "MODEL SEARCH",
     compendium_search: "Search traits, weapons, rules...",
-    model_search_placeholder: "Enter model name...",
     nothing_found: "Nothing found",
     subtitle: "Batman Miniature Game<br>Crew Builder",
     leader_first: "Leader must be the first model for this faction!",
@@ -906,6 +902,30 @@ function findCompendiumEntry(searchTerm) {
     }
   }
 
+  // 5. Сравнение без пунктуации: "360 Strike" == "360° Strike",
+  // "Sewer's Nightmare" == "Sewers Nightmare", "Bipolar Mental Disorder" == "Bipolar (Mental Disorder)"
+  const punctNorm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const normSearch = punctNorm(cleanSearch);
+  if (normSearch) {
+    for (let key of keys) {
+      if (punctNorm(getCleanName(key)) === normSearch) {
+        return window.compendium[key];
+      }
+    }
+  }
+
+  // 6. Числовой параметр без скобок: "Expendable Penguin 2" -> "Expendable Penguin X"
+  const numMatch = cleanSearch.match(/^(.*\S)\s+\d+$/);
+  if (numMatch) {
+    const baseName = numMatch[1].toLowerCase();
+    for (let key of keys) {
+      const cleanKey = getCleanName(key).replace(/\s+X$/i, '').trim().toLowerCase();
+      if (cleanKey === baseName) {
+        return window.compendium[key];
+      }
+    }
+  }
+
   return null;
 }
 
@@ -1139,7 +1159,6 @@ function backToMenu() {
   if (typeof stopGamePolling === 'function') stopGamePolling();
   if (typeof stopTnPolling === 'function') stopTnPolling();
   $('compendiumModal').classList.remove('active');
-  $('modelSearchModal').classList.remove('active');
   closeBuilderCardPanel();
   resetCrew();
 
@@ -1164,10 +1183,6 @@ function backToFactionSelect() {
 function closeCompendium() {
   $('compendiumModal').classList.remove('active');
   if (currentMode === 'rules') backToMenu(); // ПРАВКА: Возврат в меню для "Правила"
-}
-
-function closeModelSearch() {
-  $('modelSearchModal').classList.remove('active');
 }
 
 // ======================== ВЫБОР ФРАКЦИИ В БИЛДЕРЕ ========================
@@ -1466,6 +1481,8 @@ function calculateModifiers() {
       if (t === "Millionaire") mods.extraFunding += 400;
       // "Never Do It For Free" (Joker Dark Knight Rises): не требует Boss.
       if (t === "Never Do It For Free") mods.extraFunding += 400;
+      // "Bat Credit Card" (Batman 1997): не требует Boss.
+      if (t === "Bat Credit Card") mods.extraFunding += 350;
 
       const eliteBossMatch = t.match(/^Elite Boss \((.+)\)$/);
       if (eliteBossMatch) {
@@ -1960,8 +1977,6 @@ let sidePanelModel = null; // модель, открытая сейчас в б�
 // Панель текущего раздела или null, если нужен полноэкранный показ
 function getActiveSidePanel() {
   if (!window.matchMedia(BUILDER_PANEL_MEDIA).matches) return null;
-  // из полноэкранного поиска моделей карточка открывается поверх модалки, а не в панели
-  if ($('modelSearchModal').classList.contains('active')) return null;
   if (currentMode === 'builder') return $('builderCardPanel');
   if (currentMode === 'cards') return $('cardsCardPanel');
   if (currentMode === 'rosterView') return $('rosterPreviewCardPanel');
@@ -2042,51 +2057,6 @@ $("compendiumSearch").oninput = function() {
     <div class="comp-entry"><div class="comp-title">${replaceIcons(k)}</div><div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div></div>`).join("");
   $("compendiumList").innerHTML = html || `<div style="text-align:center;color:#888;padding:80px;font-size:18px;">${t("nothing_found")}</div>`;
 };
-
-// ======================== ПОИСК МОДЕЛЕЙ ========================
-const openModelSearch = () => {
-  $("modelSearchModal").classList.add("active");
-  setTimeout(() => $("modelSearchInput").focus(), 300);
-  renderModelSearch();
-};
-
-const renderModelSearch = () => {
-  const query = $("modelSearchInput").value.toLowerCase().trim();
-  document.querySelector("#modelSearchModal .clear-search").style.display = query ? "flex" : "none";
-
-  const results = models
-    .filter(m => {
-      const factions = Array.isArray(m.faction)
-        ? m.faction
-        : typeof m.faction === "string"
-          ? m.faction.replace(/ *& */gi,",").replace(/ *\/ */g,",").split(",").map(s=>s.trim())
-          : [];
-      // Проверяем фракцию и поиск по имени
-      if (!factions.includes(currentFaction) || !m.name.toLowerCase().includes(query)) {
-        return false;
-      }
-      // Проверяем зависимости модели - скрываем если зависимость не выполнена
-      if (!checkModelDependency(m)) {
-        return false;
-      }
-      return true;
-    })
-    .sort((a,b) => a.name.localeCompare(b.name));
-
-  const html = results.length ? results.map(m => `
-    <div class="comp-entry" style="cursor:pointer" onclick="showFullCard(models[${m._id}])">
-      <div class="comp-title">
-        ${m.name}<span style="float:right;color:#e94560">${m.rep} Rep</span>
-      </div>
-      <div class="comp-text">
-        ${getRanks(m).join(" / ") || "—"} • ${Array.isArray(m.faction)?m.faction.join(" • "):m.faction||"—"}
-      </div>
-    </div>`).join("") : `<div style="text-align:center;color:#888;padding:100px;font-size:18px">${t("nothing_found")}</div>`;
-
-  $("modelSearchResults").innerHTML = html;
-};
-
-$("modelSearchInput").oninput = renderModelSearch;
 
 // ======================== СВЯЗАННЫЕ ПРАВИЛА В ПОПАПАХ ========================
 // Ищет в тексте упоминания известных трейтов/правил из компендиума, чтобы показать
