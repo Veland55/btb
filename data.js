@@ -19423,6 +19423,99 @@ const models = [
       "traits": "Mechanical / Reach (3) / Crt (Stunned)"
     }
   ]
+},
+{
+  "name": "Absolute Batman",
+  "realname": "Bruce Wayne",
+  "base": "40mm",
+  "rep": 130,
+  "funding": 0,
+  "rank": [
+    "Leader"
+  ],
+  "faction": [
+    "Bat Family",
+    "GCPD"
+  ],
+  "img": "img/AbsoluteBatman.png",
+  "stats": {
+    "Attack": 5,
+    "Defense": 5,
+    "Strength": "3+",
+    "Movement": 10,
+    "Willpower": 8,
+    "Endurance": 10
+  },
+  "traits": [
+    "Bat Cape",
+    "Bat Family",
+    "Bat Hooks",
+    "Engineer",
+    "Life-altering Injuries",
+    "Obstinate",
+    "Reinforced Gloves",
+    "Savage Fighter",
+    "Spiked Bat-armor",
+    "Sturdy",
+    "Tough Guy"
+  ],
+  "weapons": [
+    {
+      "name": "Bat-Symbol",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Heavy / Handy / Concealed"
+    },
+    {
+      "name": "Bat-Ears",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Handy / Sharp / Concealed"
+    }
+  ]
+},
+{
+  "name": "Sofia Gigante (The Penguin)",
+  "realname": "Sofia Falcone Gigante",
+  "base": "40mm",
+  "rep": 80,
+  "funding": 0,
+  "rank": [
+    "Leader"
+  ],
+  "faction": [
+    "Organized Crime"
+  ],
+  "img": "img/SofiaGigante.png",
+  "stats": {
+    "Attack": 3,
+    "Defense": 3,
+    "Strength": "5+",
+    "Movement": 8,
+    "Willpower": 7,
+    "Endurance": 6
+  },
+  "traits": [
+    "Arkham's Scars",
+    "Bliss Distribution",
+    "Business Agent",
+    "Drop It!",
+    "Family Dinner",
+    "Manipulative",
+    "Protect Me!",
+    "The Hangman's Stare"
+  ],
+  "weapons": [
+    {
+      "name": "Automatic Gun",
+      "damage": "🩸★",
+      "rof": 3,
+      "ammo": 3,
+      "traits": "S. Range / Firearm / Light"
+    }
+  ]
 }
 ];
 
