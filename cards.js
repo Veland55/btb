@@ -59,12 +59,20 @@ function crewHasAnyTrait(traits) {
   return crew.some(m => (m.traits || []).some(tr => traits.some(req => tr.includes(req))));
 }
 
+// Имя модели на карточке цели и имя в базе моделей могут отличаться только
+// пунктуацией варианта: карты пишут "The Riddler (Paul Dano)", а модель зовётся
+// "The Riddler Paul Dano". Приводим обе стороны к общему виду (скобки → пробел,
+// регистр и лишние пробелы убираем) и сравниваем точно. Прежнее сравнение по
+// вхождению подстроки давало ложные совпадения ("The Riddler" ловил хенчменов
+// "The Riddler's Follower", "Penny" — Alfred Pennyworth) и пропускало варианты
+// в скобках, из-за которых персональные карты не находили свою модель.
+function normalizeModelName(s) {
+  return String(s).toLowerCase().replace(/[()\[\]]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 function modelMatchesCardName(m, reqName) {
-  const rq = reqName.toLowerCase();
-  return [m.name, m.realname].filter(Boolean).some(n => {
-    const nl = n.toLowerCase();
-    return nl === rq || nl.includes(rq) || rq.includes(nl);
-  });
+  const rq = normalizeModelName(reqName);
+  return [m.name, m.realname].filter(Boolean).some(n => normalizeModelName(n) === rq);
 }
 
 // Персональная карта: в отряде есть модель с нужным именем/псевдонимом и рангом
