@@ -125,7 +125,7 @@ const traitDescriptions = {
     "Bionic Eye": "This model ignores the Night rule, and may spend a Special Action while making a Ranged Attack to gain a +1 to Hit.",
     "Bipolar (Mental Disorder)": "At the beginning of this model’s activation, roll a die or flip a coin. If the result is even/heads, this model may make 1 Effort this round without taking a {STUN_ICON} marker. If the result is odd/tails, this model suffers the Enervating (1) Status.",
     "Biting": "Enemies within 6” that wish to perform an Action must first suffer the Enervating (1) Status. If they already have Enervating, they must instead increase their Enervating value by 1.",
-    "Bliss Distribution {SPECIAL_ICON}": "Target a friendly model within 8\" and LoS. The target model gains Audacity +4 and 2 Effort. However, at the end of its activation it suffers {BLOOD_ICON}{BLOOD_ICON}.",
+    "Bliss Distribution {SPECIAL_ICON}": "Target a friendly model within 8\" and LoS. The target model gains {MOV+4_ICON} and +2 {+ATT_ICON}. However, at the end of its activation it suffers {BLOOD_ICON}{BLOOD_ICON}.",
     "Black Bats Trail": "At the end of this model's Move Action or the use of the Super Speed trait, this model may take a free Black Bats Attack action.",
     "Black Ops": "Model gains the Commando Tactics trait.",
     "Blackfire Cultist": "When this model is removed as a Casualty, add 1 Faith to your pool.",
