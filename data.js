@@ -16949,6 +16949,31 @@ const models = [
     ],
     "weapons": []
   },
+    {
+    "name": "Underworlder 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 11,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Cults"],
+    "img": "img/Underworlder3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Blackfire Cultist",
+      "Don't Mind Me",
+      "Death Pack",
+      "Horde"
+    ],
+    "weapons": []
+  },
   {
     "name": "Kobra Hybrid",
     "realname": "Unknown",

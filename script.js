@@ -1783,11 +1783,16 @@ function renderTraits(traits) {
 
   return traitsArray.map(trait => {
     const traitText = String(trait);
-    const isSpecial = isSpecialTrait(traitText);
-    const content = replaceIcons(traitText);
+    // Спецтрейты помечаются иконкой {SPECIAL_ICON} сразу после названия:
+    // либо она уже записана токеном в самом названии, либо дорисовываем её сами
+    const baseText = traitText.replace(/\{S\}/g, "").replace(/\s+/g, " ").trim();
+    const suffix = (!baseText.includes("{SPECIAL_ICON}") && isSpecialTrait(traitText))
+      ? " {SPECIAL_ICON}"
+      : "";
+    const content = replaceIcons(baseText + suffix);
 
     return `
-      <div class="official-trait-item${isSpecial ? ' is-special' : ''}"
+      <div class="official-trait-item"
            onclick="event.stopPropagation(); showTraitDesc('${traitText.replace(/'/g, "\\'")}')">
         ${content}.
       </div>
@@ -1900,7 +1905,7 @@ const buildFullCardHTML = model => {
 
   // Используем renderTraits для отображения трейтов плоским списком с маркером спецтрейтов
   const traitsHTML = model.traits?.length
-    ? `<div class="official-section yellow"><div class="official-section-title">TRAITS</div><div class="official-traits-list">${renderTraits(model.traits)}</div></div>`
+    ? `<div class="official-section yellow no-title"><div class="official-traits-list">${renderTraits(model.traits)}</div></div>`
     : "";
 
   // Новый блок: equipment (только если есть в crewModel)
@@ -1933,7 +1938,8 @@ const buildFullCardHTML = model => {
           <div class="official-subtitle">${realName} / ${base.toUpperCase()}</div>
         </div>
         <div class="official-header-rank">
-          ${rankIconsHTML}
+          ${rankIconsHTML ? `<span class="official-rank-label">RANK</span>` : ""}
+          <div class="official-rank-icons">${rankIconsHTML}</div>
         </div>
       </div>
 
@@ -1961,7 +1967,7 @@ const buildFullCardHTML = model => {
         </div>
       </div>
 
-      ${model.weapons?.length ? `<div class="official-section"><div class="official-section-title">WEAPONS</div>${weaponsHTML}</div>` : ""}
+      ${model.weapons?.length ? `<div class="official-section no-title">${weaponsHTML}</div>` : ""}
       ${traitsHTML}
       ${equipmentHTML}
     </div>`;
