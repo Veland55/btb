@@ -397,7 +397,6 @@ function gmNextRound() {
   Object.keys(gameTrack).forEach(key => {
     if (!/^(host|guest):\d+$/.test(key)) return;
     const st = gameTrack[key];
-    st.act = 0;
     st.aud = 0;
     if (st.fx) END_OF_ROUND_STATUSES.forEach(fx => delete st.fx[fx]);
   });
@@ -420,22 +419,23 @@ function gameRoundPanelHTML() {
       <b id="game-pass-${side}">${m.pass[side] || 0}</b>
       <button onclick="gmPass('${side}',1)">+</button>
     </span>`;
+  // Компактно: раунд и инициатива в одной строке, пасс-маркеры во второй.
+  // Подписи короткие, кнопка нового раунда — иконкой с подсказкой
   return `
     <div class="game-panel game-round-panel">
-      <div class="game-round-head">
-        <span class="gm-counter game-round-counter">${t('game_round')}
+      <div class="game-round-row">
+        <span class="gm-counter game-round-counter">${t('game_round_short')}
           <button onclick="gmRound(-1)">−</button>
           <b id="game-round-num">${m.round}</b>
           <button onclick="gmRound(1)">+</button>
         </span>
-        <button class="rank-select-btn game-next-round-btn" onclick="gmNextRound()">⏭ ${t('game_next_round')}</button>
-      </div>
-      <div class="game-round-row">
-        <span class="game-round-label">${t('game_initiative')}</span>
+        <span class="game-round-label">${t('game_initiative_short')}</span>
         ${initChip('host')}${initChip('guest')}
+        <button class="game-cond-btn game-next-round-btn" title="${t('game_next_round')}"
+                onclick="gmNextRound()">⏭</button>
       </div>
       <div class="game-round-row">
-        <span class="game-round-label">${t('game_pass_markers')}</span>
+        <span class="game-round-label">${t('game_pass_short')}</span>
         ${passCounter('host')}${passCounter('guest')}
       </div>
     </div>`;
@@ -458,10 +458,10 @@ function gmToggle(side, index, field) {
   st[field] = st[field] ? 0 : 1;
   const btn = $(`gm-${side}-${index}-${field}`);
   if (btn) btn.classList.toggle('on', !!st[field]);
-  // KO и Activated дополнительно приглушают всю строку модели
-  if (field === 'ko' || field === 'act') {
+  // KO дополнительно приглушает всю строку модели
+  if (field === 'ko') {
     const row = $(`gm-row-${side}-${index}`);
-    if (row) row.classList.toggle(field === 'ko' ? 'game-model-ko' : 'game-model-activated', !!st[field]);
+    if (row) row.classList.toggle('game-model-ko', !!st.ko);
   }
   saveGameTrack();
 }
@@ -542,30 +542,35 @@ function ammoControlsHTML(side, index, model, st) {
   }).join('');
 }
 
-// Панель счётчиков и статусов под строкой модели
-function trackControlsHTML(side, index, model) {
-  const st = trackEntry(side, index, model);
+// Строка модели разбита на две части:
+//   верхняя — имя, ранг и Rep, справа счётчики WIL и END;
+//   нижняя — всё остальное: статусы, патроны, эффекты, снаряжение.
+// Так ростер занимает вдвое меньше высоты и ровно выглядит в две колонки на ПК.
+function trackCountersHTML(side, index, st) {
   const counter = (field, label) => `
     <span class="gm-counter">${label}
       <button onclick="gmAdjust('${side}',${index},'${field}',-1)">−</button>
       <b id="gm-${side}-${index}-${field}">${st[field]}</b>
       <button onclick="gmAdjust('${side}',${index},'${field}',1)">+</button>
     </span>`;
+  return `
+    <span class="game-model-counters" onclick="event.stopPropagation()">
+      ${counter('w', 'WIL')}${counter('e', 'END')}
+    </span>`;
+}
+
+function trackExtrasHTML(side, index, model, st, eqNames) {
   const status = (field, label, title) => `
     <button class="gm-status${st[field] ? ' on' : ''}" id="gm-${side}-${index}-${field}"
             title="${title}" onclick="gmToggle('${side}',${index},'${field}')">${label}</button>`;
   return `
     <div class="game-model-track" onclick="event.stopPropagation()">
-      ${counter('w', 'WIL')}
-      ${counter('e', 'END')}
       ${status('kd', 'KD', t('game_kd_title'))}
       ${status('ko', 'KO', t('game_ko_title'))}
-      ${status('act', 'ACT', t('game_act_title'))}
       ${status('aud', 'AUD', t('game_aud_title'))}
-    </div>
-    <div class="game-model-track gm-fx-wrap" onclick="event.stopPropagation()">
       ${ammoControlsHTML(side, index, model, st)}
       <span class="gm-fx-row" id="gm-fx-${side}-${index}">${gmFxRowInnerHTML(side, index)}</span>
+      ${eqNames && eqNames.length ? `<span class="game-model-eq">${eqNames.join(', ')}</span>` : ''}
     </div>`;
 }
 
@@ -599,15 +604,18 @@ function rosterColumnHTML(player, titleKey, side) {
       ${rows.map((r, i) => {
         const st = trackEntry(side, i, r.model);
         return `
-        <div class="game-model-row${r.model ? '' : ' game-model-missing'}${st.ko ? ' game-model-ko' : ''}${st.act ? ' game-model-activated' : ''}"
+        <div class="game-model-row${r.model ? '' : ' game-model-missing'}${st.ko ? ' game-model-ko' : ''}"
              id="gm-row-${side}-${i}"
              ${r.model ? `onclick="showFullCard(models[${r.model._id}])"` : ''}>
           <img src="${r.model ? r.model.img : 'img/no.png'}" loading="lazy" decoding="async"
                onerror="this.src='img/no.png'">
           <div class="game-model-info">
-            <div class="game-model-name">${r.name}</div>
-            <div class="game-model-meta">${r.rank} • ${r.rep} Rep${r.eqNames.length ? ` • ${r.eqNames.join(', ')}` : ''}</div>
-            ${trackControlsHTML(side, i, r.model)}
+            <div class="game-model-line1">
+              <span class="game-model-name">${r.name}</span>
+              <span class="game-model-meta">${r.rank} • ${r.rep} Rep</span>
+              ${trackCountersHTML(side, i, st)}
+            </div>
+            ${trackExtrasHTML(side, i, r.model, st, r.eqNames)}
           </div>
         </div>`;
       }).join('')}

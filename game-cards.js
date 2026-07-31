@@ -80,7 +80,6 @@ function gcState() {
   });
   if (typeof d.rp !== 'number') d.rp = OBJ_START_RP;
   if (typeof d.mull !== 'number') d.mull = 0;
-  if (!d.act || typeof d.act !== 'object') d.act = { obj: 0, res: 0 };
   if (!d.tok || typeof d.tok !== 'object') d.tok = {};
   return d;
 }
@@ -119,7 +118,7 @@ function gcStart(roster) {
   gameTrack.deck = {
     draw: gcShuffle(ids.slice()),
     hand: [], play: [], scored: [], removed: [],
-    rp: OBJ_START_RP, mull: 0, act: { obj: 0, res: 0 }, tok: {},
+    rp: OBJ_START_RP, mull: 0, tok: {},
     // список трейтов-напоминаний считаем один раз: состав отряда за партию
     // не меняется, а разбор описаний трейтов на каждый тап заметно тормозит
     tr: gcRosterTraits(roster)
@@ -191,8 +190,6 @@ function gcPlayObjective(handIdx) {
   const id = d.hand[handIdx];
   if (d.play.some(pid => gcCardName(pid) === gcCardName(id)) &&
       !confirm(t('gc_same_name', { name: gcCardName(id) }))) return;
-  if (d.act.obj >= 1 && !confirm(t('gc_act_limit_obj'))) return;
-  d.act.obj++;
   d.play.push(id);
   d.hand.splice(handIdx, 1);
   gcRefill();
@@ -206,8 +203,6 @@ function gcPlayResource(handIdx) {
   const d = gcState();
   if (!d || !d.hand[handIdx]) return;
   if (!d.rp && !confirm(t('gc_no_rp'))) return;
-  if (d.act.res >= 1 && !confirm(t('gc_act_limit_res'))) return;
-  d.act.res++;
   // Ресурс после розыгрыша уходит под низ колоды
   d.draw.push(d.hand.splice(handIdx, 1)[0]);
   gcRefill();
@@ -266,15 +261,6 @@ function gcToken(key, delta) {
   gcRender();
 }
 
-// Новая активация модели: обнуляем «1 Цель + 1 Ресурс за активацию»
-function gcNewActivation() {
-  const d = gcState();
-  if (!d) return;
-  d.act = { obj: 0, res: 0 };
-  saveGameTrack();
-  gcRender();
-}
-
 // Перетасовать колоду и добрать руку. Отдельная кнопка нужна и по ходу раунда:
 // правила требуют тасовать колоду каждый раз, когда в ней что-то искали
 function gcShuffleDeck() {
@@ -291,12 +277,10 @@ function gcShuffleDeck() {
 //   • колода тасуется ОБЯЗАТЕЛЬНО — по FAQ даже если карту не сбрасывали;
 //   • рука добирается до 4.
 // Необязательный сброс одной карты игрок делает кнопкой ♻ до перехода раунда.
-// Лимит «1 Цель + 1 Ресурс за активацию» с новым раундом тоже обнуляется.
 function gcEndOfRound() {
   const d = gcState();
   if (!d) return;
   d.rp = OBJ_START_RP;
-  d.act = { obj: 0, res: 0 };
   gcShuffle(d.draw);
   gcDrawUpTo(OBJ_HAND_SIZE);
   saveGameTrack();
@@ -517,8 +501,6 @@ function gcPanelHTML(roster, side) {
       ${gcTokensHTML(d, roster.f)}
 
       <div class="gc-actions-row">
-        <span class="gc-act-chip">${t('gc_activation')}: 🎯 ${d.act.obj}/1 · ⚡ ${d.act.res}/1</span>
-        <button class="game-cond-btn" title="${t('gc_new_activation')}" onclick="gcNewActivation()">↻</button>
         <button class="game-cond-btn" title="${t('gc_shuffle')}" onclick="gcShuffleDeck()">🔀</button>
         <button class="game-cond-btn" title="${t('gc_apply_vp')}" onclick="gcApplyVp('${side}')">🏆</button>
         <button class="game-cond-btn" title="${t('gc_reset')}" onclick="gcReset(gcActiveRoster())">🗑</button>
