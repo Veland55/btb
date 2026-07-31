@@ -328,7 +328,8 @@ function gcApplyVp(side) {
   if (!gameTrack['vp:' + side]) gameTrack['vp:' + side] = { v: 0 };
   gameTrack['vp:' + side].v = Math.min(200, total);
   saveGameTrack();
-  renderGamePlay();
+  // Перерисовываем только блок счёта — экран целиком трогать незачем
+  if (typeof renderScorePanel === 'function') renderScorePanel(); else renderGamePlay();
 }
 
 // ======================== ВСПОМОГАТЕЛЬНОЕ ========================

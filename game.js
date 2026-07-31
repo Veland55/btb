@@ -9,6 +9,25 @@
 const GAME_CODE_KEY = 'bmg_game_code';
 let gamePollTimer = null;
 let activeGame = null; // последнее полученное состояние игры
+let gamePlayTab = 'cards'; // активная вкладка экрана партии: cards | me | opp
+
+// Переключение вкладок — без полной перерисовки экрана, чтобы не терять
+// прокрутку и состояние открытых элементов
+function setGameTab(id) {
+  gamePlayTab = id;
+  // Запоминаем вместе с остальным состоянием партии, чтобы вкладка пережила
+  // перезагрузку страницы, как раунд, счётчики и колода
+  if (typeof gameTrack !== 'undefined' && activeGame) {
+    gameMeta().tab = id;
+    saveGameTrack();
+  }
+  ['cards', 'me', 'opp'].forEach(k => {
+    const paneEl = document.getElementById('game-pane-' + k);
+    const tabEl = document.getElementById('game-tab-' + k);
+    if (paneEl) paneEl.classList.toggle('on', k === id);
+    if (tabEl) tabEl.classList.toggle('on', k === id);
+  });
+}
 
 // ======================== УСЛОВИЯ ИГРЫ (Event + Encounter) ========================
 // По правилам обе карты выбираются случайно и независимо друг от друга.
@@ -110,6 +129,19 @@ function conditionRowHTML(type) {
     </div>`;
 }
 
+// Компактные чипы условий для экрана партии: на телефоне крупные карточки
+// съедали целый экран, а по ходу игры условия нужны только «подсмотреть».
+// Клик открывает тот же скан карты, что и большая карточка.
+function conditionsChipsHTML(conditions) {
+  if (!conditions || (!conditions.ev && !conditions.en)) return '';
+  const chip = (type, name) => name ? `
+    <span class="game-cond-chip" onclick="showGameCondition('${type}', '${name.replace(/'/g, "\\'")}')"
+          title="${t(type === 'ev' ? 'event_card' : 'encounter_card')}: ${name}">
+      <b>${t(type === 'ev' ? 'game_chip_ev' : 'game_chip_en')}</b><span class="game-cond-chip-name">${name}</span>
+    </span>` : '';
+  return chip('ev', conditions.ev) + chip('en', conditions.en);
+}
+
 // Блок условий текущей игры (ожидание и экран игры). Условия хранятся на сервере
 // вместе с игрой и приходят обоим игрокам — блок одинаково виден хосту и гостю.
 // Клик по карточке открывает полный текст условия.
@@ -134,6 +166,7 @@ function showGame() {
   if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
   $('gameSection').style.display = 'block';
   $('compendiumModal').classList.remove('active');
+  gameFinishing = false; // вернулись в раздел — выбор победителя снова скрыт
   renderGame();
 }
 
@@ -586,6 +619,8 @@ function rosterColumnHTML(player, titleKey, side) {
 // итог — победитель + счёт — записывается на сервер и виден обоим игрокам.
 // Из результатов строится «Рейтинг побед» в разделе СТАТИСТИКА.
 let gameResultEditing = false; // игрок исправляет итог — поллинг не возвращает баннер
+let gameFinishing = false;     // нажата «завершить игру» — показан выбор победителя
+let gameResultBackup = null;   // итог до начала исправления — на случай отмены
 
 function vpValue(side) {
   return (gameTrack['vp:' + side] && gameTrack['vp:' + side].v) || 0;
@@ -600,21 +635,26 @@ function vpAdjust(side, delta) {
   saveGameTrack();
 }
 
-function gameResultPanelHTML() {
+// Записанный итог партии — виден всегда, независимо от выбранной вкладки
+function gameResultBannerHTML() {
+  if (!activeGame.result) return '';
   const names = { host: activeGame.host.name, guest: activeGame.guest.name };
+  const r = activeGame.result;
+  return `
+    <div class="game-panel game-center game-result-panel">
+      <div class="game-panel-title">${t('game_result')}</div>
+      <div class="game-result-winner">🏆 ${names[r.winner]}</div>
+      <div class="game-result-score">${names.host} <b>${r.hostVp}</b> : <b>${r.guestVp}</b> ${names.guest}</div>
+      <button class="save-btn" onclick="editGameResult()">${t('change_result')}</button>
+    </div>`;
+}
 
-  // Итог уже записан (мной или оппонентом) — показываем баннер
-  if (activeGame.result) {
-    const r = activeGame.result;
-    return `
-      <div class="game-panel game-center game-result-panel">
-        <div class="game-panel-title">${t('game_result')}</div>
-        <div class="game-result-winner">🏆 ${names[r.winner]}</div>
-        <div class="game-result-score">${names.host} <b>${r.hostVp}</b> : <b>${r.guestVp}</b> ${names.guest}</div>
-        <button class="save-btn" onclick="editGameResult()">${t('change_result')}</button>
-      </div>`;
-  }
-
+// Счёт партии живёт во вкладке карт целей: VP набираются именно там.
+// Выбор победителя не висит на экране всю партию — он появляется только после
+// нажатия «завершить игру», то есть в последнем раунде.
+function gameScorePanelHTML() {
+  if (activeGame.result) return '';
+  const names = { host: activeGame.host.name, guest: activeGame.guest.name };
   const counter = side => `
     <div class="game-vp-box">
       <div class="game-vp-name">${names[side]}</div>
@@ -624,17 +664,49 @@ function gameResultPanelHTML() {
         <button onclick="vpAdjust('${side}',1)">+</button>
       </span>
     </div>`;
+  const finish = gameFinishing
+    ? `<p class="game-note">${t('game_finish_hint')}</p>
+       <div class="game-finish-row">
+         <button class="rank-select-btn" onclick="recordGameResult('host')">🏆 ${names.host}</button>
+         <button class="rank-select-btn" onclick="recordGameResult('guest')">🏆 ${names.guest}</button>
+       </div>
+       <button class="save-btn game-finish-cancel" onclick="cancelFinishGame()">${t('game_finish_cancel')}</button>`
+    : `<button class="rank-select-btn game-finish-btn" onclick="startFinishGame()">🏁 ${t('game_finish')}</button>`;
   return `
-    <div class="game-panel game-result-panel">
+    <div class="game-panel game-score-panel" id="gameScorePanelBody">
       <div class="game-panel-title">${t('game_score')}</div>
-      <p class="game-note">${t('game_score_hint')}</p>
       <div class="game-vp-row">${counter('host')}${counter('guest')}</div>
-      <p class="game-note">${t('game_finish_hint')}</p>
-      <div class="game-finish-row">
-        <button class="rank-select-btn" onclick="recordGameResult('host')">🏆 ${names.host}</button>
-        <button class="rank-select-btn" onclick="recordGameResult('guest')">🏆 ${names.guest}</button>
-      </div>
+      <p class="game-note">${t('game_score_hint')}</p>
+      ${finish}
     </div>`;
+}
+
+// Выбор победителя показываем по кнопке и прячем обратно по отмене.
+// Перерисовываем только блок счёта — перерисовка всего экрана сбрасывала бы
+// прокрутку и пересобирала ростеры с панелью колоды
+function startFinishGame() {
+  gameFinishing = true;
+  renderScorePanel();
+}
+
+// Отмена во время исправления итога возвращает записанный результат на место
+function cancelFinishGame() {
+  gameFinishing = false;
+  if (gameResultEditing) {
+    activeGame.result = gameResultBackup;
+    gameResultEditing = false;
+    gameResultBackup = null;
+    renderGamePlay(); // вернулся баннер итога — нужна полная перерисовка
+    return;
+  }
+  renderScorePanel();
+}
+
+// Точечная перерисовка блока счёта (кнопка «завершить игру» / выбор победителя)
+function renderScorePanel() {
+  const box = document.getElementById('gameScorePanel');
+  if (box) box.innerHTML = gameScorePanelHTML();
+  else renderGamePlay(); // блока нет (например показан баннер итога)
 }
 
 async function recordGameResult(winner) {
@@ -646,6 +718,8 @@ async function recordGameResult(winner) {
     });
     activeGame.result = data.result;
     gameResultEditing = false;
+    gameFinishing = false;
+    gameResultBackup = null;
     renderGamePlay();
   } catch (e) {
     alert(apiErrorText(e));
@@ -653,10 +727,15 @@ async function recordGameResult(winner) {
 }
 
 // Исправление ошибочно записанного итога: возвращаем счётчики (сервер хранит
-// прежний результат, пока не будет записан новый)
+// прежний результат, пока не будет записан новый). Прежний итог запоминаем —
+// если игрок передумает и нажмёт «Отмена», баннер должен вернуться, а поллинг
+// снова начать подтягивать результат оппонента
 function editGameResult() {
+  gameResultBackup = activeGame.result;
   activeGame.result = null;
   gameResultEditing = true;
+  gameFinishing = true; // сразу показываем выбор победителя, счётчики VP рядом
+  setGameTab('cards');
   renderGamePlay();
 }
 
@@ -667,20 +746,38 @@ function renderGamePlay() {
   const opp = meIsHost ? activeGame.guest : activeGame.host;
 
   loadGameTrack(); // счётчики и статусы этой игры (пережили перезагрузку страницы)
+  const savedTab = gameMeta().tab;
+  if (savedTab) gamePlayTab = savedTab;
+
+  // Экран разбит на три вкладки: карты целей, свой ростер, ростер оппонента —
+  // на телефоне листать один длинный список неудобно. На широких экранах вкладки
+  // прячутся стилями и все три блока видны сразу, как было раньше (см. style.css)
+  const tab = (id, label) => `
+    <button class="game-tab${gamePlayTab === id ? ' on' : ''}" id="game-tab-${id}"
+            onclick="setGameTab('${id}')">${label}</button>`;
+  const pane = (id, content) => `
+    <div class="game-pane${gamePlayTab === id ? ' on' : ''}" id="game-pane-${id}">${content}</div>`;
 
   box.innerHTML = `
     <div class="game-play-bar">
       <span class="game-play-code">${t('game_code')}: <b>${activeGame.code}</b></span>
-      <button class="save-btn save-btn-del" onclick="leaveGame()">${t('leave_game')}</button>
+      ${conditionsChipsHTML(activeGame.conditions)}
+      <button class="save-btn save-btn-del game-leave-btn" onclick="leaveGame()">${t('leave_game')}</button>
     </div>
-    ${conditionsBarHTML(activeGame.conditions)}
+    ${gameResultBannerHTML()}
     ${gameRoundPanelHTML()}
-    ${gameResultPanelHTML()}
-    <div id="gameCardsPanel">${typeof gcPanelHTML === 'function'
-      ? gcPanelHTML(me.roster, meIsHost ? 'host' : 'guest') : ''}</div>
-    <div class="game-play">
-      ${rosterColumnHTML(me, 'your_roster', meIsHost ? 'host' : 'guest')}
-      ${rosterColumnHTML(opp, 'opponent_roster', meIsHost ? 'guest' : 'host')}
+    <div class="game-tabs">
+      ${tab('cards', '🎯 ' + t('game_tab_cards'))}
+      ${tab('me', '👤 ' + t('game_tab_me'))}
+      ${tab('opp', '⚔ ' + t('game_tab_opp'))}
+    </div>
+    <div class="game-panes">
+      ${pane('cards', `
+        <div id="gameScorePanel">${gameScorePanelHTML()}</div>
+        <div id="gameCardsPanel">${typeof gcPanelHTML === 'function'
+          ? gcPanelHTML(me.roster, meIsHost ? 'host' : 'guest') : ''}</div>`)}
+      ${pane('me', rosterColumnHTML(me, 'your_roster', meIsHost ? 'host' : 'guest'))}
+      ${pane('opp', rosterColumnHTML(opp, 'opponent_roster', meIsHost ? 'guest' : 'host'))}
     </div>`;
   saveGameTrack(); // фиксируем инициализированные значения
 
@@ -743,5 +840,7 @@ function leaveGame() {
   gameTrack = {};
   gameConditions = null; // при следующей настройке условия перебросятся заново
   gameResultEditing = false;
+  gameFinishing = false;
+  gamePlayTab = 'cards';
   renderGameSetup();
 }
