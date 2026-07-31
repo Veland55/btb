@@ -456,7 +456,51 @@ const translations = {
     game_kd_title: "Knocked Down — модель сбита с ног",
     game_ko_title: "Knocked Out — модель без сознания",
     game_act_title: "Активирована в этом раунде",
-    game_aud_title: "Audacity — три действия в этом раунде"
+    game_aud_title: "Audacity — три действия в этом раунде",
+    beta: "БЕТА-ТЕСТ",
+    beta_title: "Раздел в бета-тестировании — возможны ошибки и изменения",
+    gc_title: "КОЛОДА ЦЕЛЕЙ",
+    gc_start: "РАЗДАТЬ КОЛОДУ",
+    gc_start_hint: "Колода из ростера будет перемешана, вы возьмёте 4 карты и один раз сможете сделать мулиган.",
+    gc_no_deck: "В этом ростере нет набранной колоды целей. Соберите её в билдере (кнопка 🃏) и сохраните отряд.",
+    gc_deck: "Колода",
+    gc_hand: "Рука",
+    gc_in_play: "В игре",
+    gc_scored: "Забито",
+    gc_removed: "Удалено",
+    gc_hand_empty: "Рука пуста.",
+    gc_play_empty: "Нет карт, разыгранных как Цель.",
+    gc_scored_empty: "Пока ничего не забито.",
+    gc_mulligan_hint: "Мулиган: сбросьте (♻) любое число карт, затем подтвердите — рука доберётся до 4.",
+    gc_mulligan_done: "МУЛИГАН ЗАВЕРШЁН",
+    gc_mulligan_drop: "Сбросить при мулигане",
+    gc_as_objective: "Разыграть как Цель",
+    gc_as_resource: "Разыграть как Ресурс",
+    gc_discard: "Discard — под низ колоды",
+    gc_remove: "Remove — убрать из партии",
+    gc_score: "Требования выполнены — забить",
+    gc_unplay: "Требования не выполнены — сбросить",
+    gc_unscore: "Вернуть в зону «в игре»",
+    gc_rp: "Resource Points",
+    gc_activation: "Активация",
+    gc_new_activation: "Новая активация — сбросить лимит 1 Цель + 1 Ресурс",
+    gc_shuffle: "Перемешать колоду и добрать (конец Recount)",
+    gc_apply_vp: "Записать VP забитых целей в счёт партии",
+    gc_reset: "Пересдать колоду заново",
+    gc_confirm_reset: "Пересдать колоду? Рука, разыгранные и забитые цели будут сброшены.",
+    gc_confirm_remove: "Убрать «{name}» из партии совсем? Карта больше не вернётся в колоду.",
+    gc_same_name: "Копия карты «{name}» уже в игре. Держать несколько копий можно, но разыграть две одноимённые карты ОДНОВРЕМЕННО нельзя. Разыграть?",
+    gc_score_same_name: "В игре есть вторая карта «{name}». Забить две одноимённые цели одновременно нельзя — забиваете только эту?",
+    gc_deck_size_warn: "В колоде {count} карт вместо {need}. По правилам колода должна быть ровно из {need} карт — раздать как есть?",
+    gc_apply_vp_confirm: "Счёт партии будет перезаписан: {from} → {to}. Очки, набитые вручную, пропадут. Продолжить?",
+    gc_mandatory: "ОБЯЗАТЕЛЬНЫЕ КАРТЫ БАНДЫ",
+    gc_mandatory_hint: "В колоду не тасуются и в 30 карт не входят — лежат отдельно и работают по своим правилам. Тап — открыть скан.",
+    gc_act_limit_obj: "За активацию модели можно разыграть только 1 Цель. Вне фазы Execute the Plan лимита нет — продолжить?",
+    gc_act_limit_res: "За активацию модели можно разыграть только 1 Ресурс. Вне фазы Execute the Plan лимита нет — продолжить?",
+    gc_no_rp: "Resource Points закончились. Стоимость печатается на карте — продолжить всё равно?",
+    gc_suspect_limit: "⚠ Больше 8 Suspect-маркеров одного игрока на столе быть не может.",
+    gc_traits: "ТРЕЙТЫ ОТРЯДА ПО КАРТАМ ЦЕЛЕЙ",
+    gc_traits_hint: "Эти трейты ваших моделей влияют на колоду, руку или фишки. Тап — полный текст правила."
   },
   en: {
     cards: "CARDS",
@@ -778,7 +822,51 @@ const translations = {
     game_kd_title: "Knocked Down",
     game_ko_title: "Knocked Out",
     game_act_title: "Activated this round",
-    game_aud_title: "Audacity — three actions this round"
+    game_aud_title: "Audacity — three actions this round",
+    beta: "BETA",
+    beta_title: "This section is in beta testing — bugs and changes are expected",
+    gc_title: "OBJECTIVE DECK",
+    gc_start: "DEAL THE DECK",
+    gc_start_hint: "The deck from your roster will be shuffled, you draw 4 cards and may mulligan once.",
+    gc_no_deck: "This roster has no Objective deck. Build one in the crew builder (🃏 button) and save the crew.",
+    gc_deck: "Deck",
+    gc_hand: "Hand",
+    gc_in_play: "In play",
+    gc_scored: "Scored",
+    gc_removed: "Removed",
+    gc_hand_empty: "Your hand is empty.",
+    gc_play_empty: "No cards played as Objectives.",
+    gc_scored_empty: "Nothing scored yet.",
+    gc_mulligan_hint: "Mulligan: discard (♻) any number of cards, then confirm — your hand is refilled to 4.",
+    gc_mulligan_done: "MULLIGAN DONE",
+    gc_mulligan_drop: "Discard for the mulligan",
+    gc_as_objective: "Play as an Objective",
+    gc_as_resource: "Play as a Resource",
+    gc_discard: "Discard — to the bottom of the deck",
+    gc_remove: "Remove — out of the game",
+    gc_score: "Requirements met — score it",
+    gc_unplay: "Requirements not met — discard it",
+    gc_unscore: "Send back to the in-play zone",
+    gc_rp: "Resource Points",
+    gc_activation: "Activation",
+    gc_new_activation: "New activation — reset the 1 Objective + 1 Resource limit",
+    gc_shuffle: "Shuffle the deck and refill (end of Recount)",
+    gc_apply_vp: "Write the scored VP into the game score",
+    gc_reset: "Deal the deck again",
+    gc_confirm_reset: "Deal the deck again? Your hand, played and scored Objectives will be cleared.",
+    gc_confirm_remove: "Remove \"{name}\" from the game for good? It will never return to the deck.",
+    gc_same_name: "A copy of \"{name}\" is already in play. Several copies may stay in play, but two cards with the same name may never be played SIMULTANEOUSLY. Play it?",
+    gc_score_same_name: "Another \"{name}\" is in play. You may not score two Objectives with the same name at the same time — score only this one?",
+    gc_deck_size_warn: "The deck holds {count} cards instead of {need}. The rules require exactly {need} — deal it anyway?",
+    gc_apply_vp_confirm: "The game score will be overwritten: {from} → {to}. Points added by hand will be lost. Continue?",
+    gc_mandatory: "MANDATORY CREW CARDS",
+    gc_mandatory_hint: "Not shuffled into the deck and not part of the 30 — they sit aside and work by their own rules. Tap to open the scan.",
+    gc_act_limit_obj: "Only 1 Objective may be played during a model's activation. Outside the Execute the Plan phase there is no limit — continue?",
+    gc_act_limit_res: "Only 1 Resource may be played during a model's activation. Outside the Execute the Plan phase there is no limit — continue?",
+    gc_no_rp: "You are out of Resource Points. The cost is printed on the card — continue anyway?",
+    gc_suspect_limit: "⚠ A player cannot have more than 8 Suspect markers in the gaming area.",
+    gc_traits: "CREW TRAITS THAT TOUCH OBJECTIVE CARDS",
+    gc_traits_hint: "These traits of your models affect the deck, the hand or the tokens. Tap for the full rule."
   }
 };
 
@@ -1916,12 +2004,18 @@ const buildFullCardHTML = model => {
       <div class="official-section yellow">
         <div class="official-section-title">EQUIPMENT</div>
         <div class="official-traits-list">
-          ${crewModel.equipment.map(eq => `
-            <div class="official-trait-item equipment-item" onclick="showTraitPopup('${eq.name}', '${eq.effects.join('<br>')}')">
+          ${crewModel.equipment.map(eq => {
+            // Текст эффекта в onclick не подставляем: в описаниях есть дюймы
+            // (6" to 8"), а кавычка рвёт атрибут. showEquipmentInfo сам найдёт
+            // предмет по имени — как в жёлтой панели апгрейдов (renderUpgradeFlapHTML)
+            const safeModel = model.name.replace(/'/g, "\\'");
+            const safeEq = eq.name.replace(/'/g, "\\'");
+            return `
+            <div class="official-trait-item equipment-item" onclick="showEquipmentInfo('${safeModel}', '${safeEq}')">
               ${eq.name} <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>.
-              <span class="remove-eq" onclick="event.stopPropagation(); removeEquipmentFromModel('${model.name}', '${eq.name}')">×</span>
-            </div>
-          `).join("")}
+              <span class="remove-eq" onclick="event.stopPropagation(); removeEquipmentFromModel('${safeModel}', '${safeEq}')">×</span>
+            </div>`;
+          }).join("")}
         </div>
       </div>
     `;

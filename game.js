@@ -175,13 +175,21 @@ async function renderGame() {
   // Возобновление активной игры после перезагрузки страницы
   const savedCode = localStorage.getItem(GAME_CODE_KEY);
   if (savedCode) {
+    // ВАЖНО: в try только сетевой запрос. Если сюда попадёт и отрисовка, то любая
+    // ошибка рендера будет принята за «игра истекла» и код игры молча пропадёт —
+    // хост свою игру уже не вернёт, а гость будет вводить код заново
+    let loaded = null;
     try {
-      activeGame = await api('/api/games/' + savedCode);
-      renderGameState();
-      return;
+      loaded = await api('/api/games/' + savedCode);
     } catch (e) {
       localStorage.removeItem(GAME_CODE_KEY); // игра истекла или недоступна
+      localStorage.removeItem(GAME_STATE_PREFIX + savedCode); // и её счётчики с колодой
       activeGame = null;
+    }
+    if (loaded) {
+      activeGame = loaded;
+      renderGameState();
+      return;
     }
   }
 
@@ -360,6 +368,9 @@ function gmNextRound() {
     st.aud = 0;
     if (st.fx) END_OF_ROUND_STATUSES.forEach(fx => delete st.fx[fx]);
   });
+  // Конец Recount для колоды целей: вернуть Resource Points до 3, обязательно
+  // перетасовать колоду и добрать руку (см. gcEndOfRound в game-cards.js)
+  if (typeof gcEndOfRound === 'function') gcEndOfRound();
   saveGameTrack();
   renderGamePlay();
 }
@@ -665,6 +676,8 @@ function renderGamePlay() {
     ${conditionsBarHTML(activeGame.conditions)}
     ${gameRoundPanelHTML()}
     ${gameResultPanelHTML()}
+    <div id="gameCardsPanel">${typeof gcPanelHTML === 'function'
+      ? gcPanelHTML(me.roster, meIsHost ? 'host' : 'guest') : ''}</div>
     <div class="game-play">
       ${rosterColumnHTML(me, 'your_roster', meIsHost ? 'host' : 'guest')}
       ${rosterColumnHTML(opp, 'opponent_roster', meIsHost ? 'guest' : 'host')}

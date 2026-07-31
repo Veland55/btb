@@ -21,6 +21,13 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .top-bar-content { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:0 15px; }
 .top-bar-content h1 { margin-bottom:0; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .header-buttons { display:flex; gap:12px; align-items:center; flex-shrink:0; }
+/* Пометка «бета-тест» рядом с названием раздела. margin-right:auto прижимает её
+   к заголовку, а кнопки топ-бара оставляет у правого края */
+.beta-badge {
+  flex-shrink:0; margin-right:auto; white-space:nowrap;
+  background:rgba(233,69,96,.14); color:#e94560; border:1px solid #e94560; border-radius:8px;
+  padding:2px 7px; font-size:9.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+}
 /* Все круглые кнопки топ-бара — строго 40×40, не сжимаются при нехватке места */
 .compendium-small-btn { display:flex; align-items:center; justify-content:center; width:40px; height:40px; flex-shrink:0; padding:0; background:#e94560; color:#fff; border:none; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(233,69,96,.5); transition:all .3s; position: relative; }
 .compendium-small-btn:hover { background:#ff3366; transform:translateY(-2px); }
@@ -138,7 +145,7 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   box-shadow:0 2px 5px rgba(0,0,0,.5); pointer-events:none;
 }
 
-.obj-cards-page { padding:10px; max-width:1500px; margin:0 auto; }
+.obj-cards-page { padding:10px 10px calc(10px + var(--safe-bottom)); max-width:1500px; margin:0 auto; }
 .obj-section-title { color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:2px; font-size:14px; margin:14px 4px 8px; }
 .obj-cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px; align-items:start; }
 
@@ -699,6 +706,45 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 }
 .gm-status:hover { border-color:#666; }
 .gm-status.on { background:#ffd700; color:#000; border-color:#ffd700; }
+
+/* КОЛОДА ЦЕЛЕЙ НА ЭКРАНЕ ИГРЫ (game-cards.js): рука, зоны, фишки.
+   Панель видна только своему игроку — рука по правилам скрыта от оппонента. */
+.gc-panel { margin-bottom:16px; }
+.gc-stats { display:flex; flex-wrap:wrap; gap:8px 16px; }
+.gc-stat { color:#999; font-size:12px; letter-spacing:1px; font-weight:700; text-transform:uppercase; }
+.gc-stat b { color:#ffd700; font-size:16px; }
+.gc-tokens { display:flex; flex-wrap:wrap; gap:10px 16px; padding:10px 0; border-top:1px solid #222; border-bottom:1px solid #222; }
+.gc-token { text-transform:none; }
+.gc-warn { color:#ff6b6b; }
+.gc-actions-row { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.gc-act-chip {
+  background:#1e1e1e; border:2px solid #333; border-radius:10px; padding:7px 12px;
+  color:#ffd700; font-size:12.5px; font-weight:700; letter-spacing:1px;
+}
+.gc-block { display:flex; flex-direction:column; gap:8px; }
+.gc-block-title { color:#e94560; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; }
+.gc-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(128px, 1fr)); gap:10px; align-items:start; }
+.gc-card {
+  position:relative; background:#1a1a1a; border-radius:12px; overflow:hidden; cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.5); transition:box-shadow .2s;
+}
+.gc-card:hover { box-shadow:0 8px 18px rgba(233,69,96,.35); }
+.gc-card img { width:100%; display:block; }
+.gc-card-name { color:#fff; font-weight:700; font-size:11px; padding:6px 8px 0; }
+.gc-card-actions { display:flex; flex-wrap:wrap; align-items:center; gap:4px; padding:6px 8px 8px; }
+.gc-card-actions button {
+  flex:1; min-width:30px; height:30px; border-radius:8px; background:#222; color:#fff;
+  border:1px solid #383838; cursor:pointer; font-size:14px; line-height:1;
+  display:flex; align-items:center; justify-content:center; transition:border-color .15s;
+}
+.gc-card-actions button:hover { border-color:#e94560; }
+.gc-vp { color:#ffd700; font-weight:700; font-size:12px; letter-spacing:1px; }
+.gc-trait-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.gc-trait-chip {
+  background:#1e1e1e; border:1px solid #383838; border-radius:10px; padding:5px 10px;
+  color:#ffd700; font-size:11.5px; font-weight:700; cursor:pointer; transition:border-color .15s;
+}
+.gc-trait-chip:hover { border-color:#e94560; }
 
 @media (min-width: 700px) {
   .game-setup { flex-direction:row; align-items:stretch; }
