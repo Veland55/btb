@@ -614,10 +614,27 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 
 /* СЧЁТ ПАРТИИ И РЕЗУЛЬТАТ (очки побед + фиксация победителя) */
 .game-result-panel { margin-bottom:14px; }
-/* Счёт стоит во вкладке карт целей — там же, где набираются VP */
-.game-score-panel { margin-bottom:16px; gap:10px; }
-.game-finish-btn { align-self:flex-start; padding:9px 16px; font-size:13px; }
-.game-finish-cancel { align-self:flex-start; background:#333; }
+/* Счёт стоит во вкладке карт целей — там же, где набираются VP.
+   Компактный вид: обе стороны и кнопка завершения в одну строку */
+.game-score-panel { margin-bottom:14px; gap:8px; padding:10px 12px; }
+.game-score-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px 10px; }
+.game-score-label { color:#ffd700; font-weight:700; font-size:12px; letter-spacing:2px; flex-shrink:0; }
+.game-score-sep { color:#666; font-weight:700; }
+.game-score-panel .game-vp-box {
+  flex:0 1 auto; min-width:0; flex-direction:row; align-items:center; gap:8px;
+  background:#1a1a1a; border-radius:10px; padding:4px 8px;
+}
+.game-score-panel .game-vp-name { font-size:12px; max-width:96px; }
+.game-score-panel .gm-counter b { font-size:19px; min-width:24px; }
+.game-score-panel .gm-counter button { width:28px; height:28px; font-size:16px; }
+.game-finish-btn {
+  margin-left:auto; flex-shrink:0; background:#141414; color:#e94560; border:2px solid #e94560;
+  border-radius:10px; padding:6px 12px; font-family:'Oswald',sans-serif; font-weight:700;
+  font-size:11.5px; letter-spacing:1px; cursor:pointer; transition:all .15s; touch-action:manipulation;
+}
+.game-finish-btn:hover { background:#e94560; color:#fff; }
+.game-finish-block { display:flex; flex-direction:column; gap:8px; border-top:1px solid #222; padding-top:8px; }
+.game-finish-cancel { background:#333; flex:0 0 auto; }
 .game-finish-cancel:hover { background:#444; }
 .game-vp-row { display:flex; gap:12px; flex-wrap:wrap; }
 .game-vp-box {

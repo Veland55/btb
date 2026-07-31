@@ -132,6 +132,13 @@ function objDeckWarnings(s) {
 function addObjectiveCard(id) {
   const card = objCardById(id);
   if (!card || crewCards[id]) return;
+  // Запреты банды (prevTrait — например «A Lot Colder» у Mrs. Freeze закрывает
+  // карту Searching for Nora) прячут карту из каталога, но проверяем и здесь:
+  // карту можно попытаться добавить и после найма запрещающей модели
+  if (!objCardVisible(card)) {
+    alert(t('obj_card_forbidden', { name: card.name }));
+    return;
+  }
   if (!objCardRequirementMet(card)) {
     alert(t('obj_req_missing') + ': ' + objCardRequirementText(card));
     return;

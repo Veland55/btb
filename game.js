@@ -655,28 +655,38 @@ function gameResultBannerHTML() {
 function gameScorePanelHTML() {
   if (activeGame.result) return '';
   const names = { host: activeGame.host.name, guest: activeGame.guest.name };
+  // Компактно: обе стороны и кнопка завершения в одну строку. Подсказка про то,
+  // что VP набираются картами ниже, ушла в title — на телефоне она занимала
+  // столько же места, сколько сами счётчики
   const counter = side => `
-    <div class="game-vp-box">
-      <div class="game-vp-name">${names[side]}</div>
-      <span class="gm-counter">VP
+    <span class="game-vp-box">
+      <span class="game-vp-name">${names[side]}</span>
+      <span class="gm-counter">
         <button onclick="vpAdjust('${side}',-1)">−</button>
         <b id="game-vp-${side}">${vpValue(side)}</b>
         <button onclick="vpAdjust('${side}',1)">+</button>
       </span>
-    </div>`;
+    </span>`;
   const finish = gameFinishing
-    ? `<p class="game-note">${t('game_finish_hint')}</p>
-       <div class="game-finish-row">
-         <button class="rank-select-btn" onclick="recordGameResult('host')">🏆 ${names.host}</button>
-         <button class="rank-select-btn" onclick="recordGameResult('guest')">🏆 ${names.guest}</button>
-       </div>
-       <button class="save-btn game-finish-cancel" onclick="cancelFinishGame()">${t('game_finish_cancel')}</button>`
-    : `<button class="rank-select-btn game-finish-btn" onclick="startFinishGame()">🏁 ${t('game_finish')}</button>`;
+    ? `<div class="game-finish-block">
+         <p class="game-note">${t('game_finish_hint')}</p>
+         <div class="game-finish-row">
+           <button class="rank-select-btn" onclick="recordGameResult('host')">🏆 ${names.host}</button>
+           <button class="rank-select-btn" onclick="recordGameResult('guest')">🏆 ${names.guest}</button>
+           <button class="save-btn game-finish-cancel" onclick="cancelFinishGame()">${t('game_finish_cancel')}</button>
+         </div>
+       </div>`
+    : '';
   return `
-    <div class="game-panel game-score-panel" id="gameScorePanelBody">
-      <div class="game-panel-title">${t('game_score')}</div>
-      <div class="game-vp-row">${counter('host')}${counter('guest')}</div>
-      <p class="game-note">${t('game_score_hint')}</p>
+    <div class="game-panel game-score-panel" id="gameScorePanelBody" title="${t('game_score_hint')}">
+      <div class="game-score-row">
+        <span class="game-score-label">${t('game_score_short')}</span>
+        ${counter('host')}
+        <span class="game-score-sep">:</span>
+        ${counter('guest')}
+        ${gameFinishing ? '' : `
+          <button class="game-finish-btn" onclick="startFinishGame()">🏁 ${t('game_finish')}</button>`}
+      </div>
       ${finish}
     </div>`;
 }
