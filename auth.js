@@ -53,6 +53,7 @@ function apiErrorText(e) {
     network: 'server_unreachable',
     exists: 'auth_user_exists',
     badcred: 'auth_bad_credentials',
+    rate: 'auth_rate_limited',
     input: 'auth_fill_fields',
     limit: 'saves_limit',
     auth: 'login_required',
@@ -65,6 +66,9 @@ function apiErrorText(e) {
     tn_started: 'tn_started_msg',
     tn_few: 'tn_need_players',
     tn_locked: 'tn_locked_msg',
+    tn_notfound: 'tn_not_found',
+    tn_round_open: 'tn_round_open_msg',
+    tn_max_rounds: 'tn_max_rounds_msg',
     reset_user_notfound: 'reset_user_notfound',
     reset_no_email: 'reset_no_email',
     reset_rate_limited: 'reset_rate_limited',
@@ -104,6 +108,12 @@ function authLogout() {
   currentUserEmail = null;
   mySaves = [];
   localStorage.removeItem(AUTH_TOKEN_KEY);
+  // Раздел турниров держит свой поллинг и кэш чужих ростеров — без сброса
+  // он продолжал бы опрашивать сервер мёртвым токеном и показывать данные
+  // вышедшего пользователя до ручного перехода
+  if (typeof resetTournamentsState === 'function') resetTournamentsState();
+  if (typeof currentMode !== 'undefined' && currentMode === 'tournaments'
+      && typeof renderTournaments === 'function') renderTournaments();
   renderAuthModal();
 }
 
@@ -197,10 +207,18 @@ function serializeCrew(name) {
     r: BMG_REP_LIMIT,
     d: Math.floor(Date.now() / 86400000),
     b: crew.indexOf(BMG_BOSS),
+    // [имя, кодРанга, [снаряжение]?, _id?]
+    // _id — индекс модели в data.js: шесть имён там дублируются с разной
+    // стоимостью, и восстановление по одному имени подменяло модель. Поле
+    // необязательное — старые сохранения без него читаются по-прежнему.
     m: crew.map(m => {
       const entry = [m.name, RANK_TO_CODE[m.rankUsed] || m.rankUsed];
-      const eq = (m.equipment || []).map(e => e.name);
-      if (eq.length) entry.push(eq);
+      // цену снаряжения храним уплаченную: скидки (Smuggler, Alexandra Kosov)
+      // не воспроизводятся из каталога и терялись при загрузке
+      const eq = (m.equipment || []).map(e =>
+        (e.fundingCost != null || e.repCost) ? [e.name, e.fundingCost || 0, e.repCost || 0] : e.name);
+      if (eq.length) entry.push(eq); else if (m._id !== undefined) entry.push([]);
+      if (m._id !== undefined) entry.push(m._id);
       return entry;
     })
   };
@@ -271,19 +289,37 @@ function restoreCrewFromSave(s) {
   let skipped = 0;
   const eqPool = equipmentByFaction[s.f] || [];
   s.m.forEach((entry, i) => {
-    const base = models.find(mm => mm.name === entry[0]);
+    // entry[3] — _id модели; при его отсутствии (старые сохранения) ищем по имени
+    const byId = (typeof entry[3] === 'number' && models[entry[3]] && models[entry[3]].name === entry[0])
+      ? models[entry[3]] : null;
+    const base = byId || models.find(mm => mm.name === entry[0]);
     if (!base) { skipped++; return; } // модель могла исчезнуть из базы
     const cloned = {
       ...base,
       rankUsed: CODE_TO_RANK[entry[1]] || entry[1],
       uniqueId: Date.now() + Math.random(),
       equipment: (entry[2] || [])
-        .map(en => { const eq = eqPool.find(e => e.name === en); return eq ? { ...eq } : null; })
+        .map(en => {
+          // строка — старый формат (цена из каталога); массив — с уплаченной ценой
+          const name = Array.isArray(en) ? en[0] : en;
+          const eq = eqPool.find(e => e.name === name);
+          if (!eq) return null;
+          return Array.isArray(en)
+            ? { ...eq, fundingCost: en[1] || 0, repCost: en[2] || 0 }
+            : { ...eq };
+        })
         .filter(Boolean)
     };
     crew.push(cloned);
     if (i === s.b) BMG_BOSS = cloned;
   });
+
+  // В сохранении есть модели формата Eternal — включаем формат, иначе отряд
+  // восстановится, но половина моделей будет недоступна для правки
+  if (crew.some(m => m.eternal) && typeof showEternal !== 'undefined' && !showEternal
+      && typeof toggleEternal === 'function') {
+    toggleEternal(true);
+  }
 
   if (!BMG_BOSS) {
     BMG_BOSS = crew.find(m => m.rankUsed === 'Leader' || m.rankUsed === 'Sidekick') || null;
@@ -299,7 +335,10 @@ function restoreCrewFromSave(s) {
   if (typeof crewCards !== 'undefined') {
     crewCards = {};
     (s.o || []).forEach(([id, count]) => {
-      if (objCardById(id)) crewCards[id] = count;
+      const card = objCardById(id);
+      // тот же потолок копий, что применяет игровой режим (game-cards.js):
+      // иначе одно сохранение давало в билдере одну колоду, а в игре другую
+      if (card) crewCards[id] = Math.min(parseInt(count, 10) || 0, card.max || 1);
     });
     updateDeckBadge();
   }

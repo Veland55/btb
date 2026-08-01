@@ -45,6 +45,13 @@ function objCardModelHireable(card) {
 function objCardVisible(card) {
   if (card.faction && !card.faction.includes(currentFaction)) return false;
   if (card.prevTrait && crewHasAnyTrait(card.prevTrait)) return false;
+  // Bat Family и Cults: правило onlyBossAffiliationObjectives раньше только
+  // печаталось в описании фракции и ничего не фильтровало — банда могла набрать
+  // карты целей любой аффилиации независимо от босса
+  const rules = (typeof factionCrewRules !== 'undefined' && factionCrewRules[currentFaction]) || {};
+  if (rules.onlyBossAffiliationObjectives && card.faction && typeof BMG_AFFILIATIONS !== 'undefined' && BMG_AFFILIATIONS) {
+    if (!card.faction.some(f => BMG_AFFILIATIONS.includes(f))) return false;
+  }
   if (!objCardModelHireable(card)) return false;
   return true;
 }

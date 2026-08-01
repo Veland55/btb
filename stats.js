@@ -15,6 +15,15 @@ const COUNTRY_CODES = [
   'US','UY','UZ','VN','ZA'
 ];
 
+// Экранирование: в панели-рейтинги попадают строки, введённые пользователями
+// (адрес турнира, название фракции и модели из сохранённых ростеров). Без этого
+// любой посетитель раздела «Статистика» выполнил бы чужой скрипт в нашем origin.
+function sEsc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 // Флаг-эмодзи из кода страны (пара региональных индикаторов)
 function countryFlag(code) {
   return String.fromCodePoint(...[...code.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
@@ -122,7 +131,7 @@ function rankPanelHTML(title, note, entries, leftHTML, nameFn) {
       <div class="stats-row-place">${i + 1}</div>
       ${leftHTML(name)}
       <div class="stats-row-main">
-        <div class="stats-row-name">${nameFn ? nameFn(name) : name}</div>
+        <div class="stats-row-name">${sEsc(nameFn ? nameFn(name) : name)}</div>
         <div class="stats-row-bar"><div class="stats-row-fill" style="width:${Math.max(4, Math.round(count / max * 100))}%"></div></div>
       </div>
       <div class="stats-row-count">${count}</div>
@@ -143,7 +152,7 @@ function factionRowLeftHTML(faction) {
 function modelRowLeftHTML(name) {
   const model = (typeof models !== 'undefined') && models.find(m => m.name === name);
   const src = (model && model.img) || 'img/no.png';
-  return `<img class="stats-row-img stats-row-photo" src="${src}" alt="" decoding="async" onerror="this.src='img/no.png'">`;
+  return `<img class="stats-row-img stats-row-photo" src="${sEsc(src)}" alt="" loading="lazy" decoding="async" onerror="this.src='img/no.png'">`;
 }
 
 function countryRowLeftHTML(code) {

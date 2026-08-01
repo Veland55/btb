@@ -41,23 +41,71 @@ const FACTION_ICON_MAP = {
   "Batman Who Laughs": "BatmanWhoLaughs.png",
   "Cults": "CULTS.png",
   "Doom Patrol": "Doom_Patrol.png",
+  // Фракция формата Eternal — её модели видны только при включённом Eternal
+  "The Big Bang Theory": "BigBangTheory.png",
   "Unknown": "UNKNOWN.png"
 };
 
+// ======================== ФОРМАТ ETERNAL ========================
+// Eternal — отдельный формат Knight Models: старые/снятые с продажи профили.
+// В обычной игре они не используются, поэтому по умолчанию скрыты и включаются
+// переключателем. Выбор запоминается между визитами.
+const ETERNAL_KEY = 'bmg_show_eternal';
+let showEternal = localStorage.getItem(ETERNAL_KEY) === '1';
+
+// Фракции, у которых вне формата Eternal не остаётся ни одной модели
+function factionHasVisibleModels(faction) {
+  return models.some(m => !(m.eternal && !showEternal) && getFactions(m).includes(faction));
+}
+
+function toggleEternal(on) {
+  // Выключаем формат, а в отряде уже есть Eternal-модели — предупреждаем:
+  // молча оставить их означало бы нелегальный по формату отряд
+  if (!on && crew.some(m => m.eternal)) {
+    if (!confirm(t('eternal_crew_warning'))) { renderFactionCards(); return; }
+    crew = crew.filter(m => !m.eternal);
+    if (BMG_BOSS && BMG_BOSS.eternal) { crew = []; BMG_BOSS = null; BMG_AFFILIATIONS = null; }
+    updateCrewEquipmentCounts();
+    modifiers = calculateModifiers();
+    updateCrewBar();
+  }
+  showEternal = !!on;
+  localStorage.setItem(ETERNAL_KEY, showEternal ? '1' : '0');
+  renderFactionCards();
+  if (currentMode === 'builder') renderMiniCardsBuilder();
+  if (currentMode === 'cards') renderMiniCardsView();
+}
+
+// Компактная «пилюля» над списком фракций: подпись + маленький тумблер.
+// Полное пояснение — в title, чтобы не занимать две строки на узком экране.
+function eternalToggleHTML() {
+  return `
+    <label class="eternal-toggle" title="${t('eternal_hint')}">
+      <input type="checkbox" ${showEternal ? 'checked' : ''} onchange="toggleEternal(this.checked)">
+      <span class="eternal-toggle-track"><span class="eternal-toggle-knob"></span></span>
+      <span class="eternal-toggle-label">${t('eternal_title')}</span>
+    </label>`;
+}
+
 function buildFactionCardsHTML() {
   const base = "img/menu/";
-  return Object.entries(FACTION_ICON_MAP).map(([faction, iconFile]) => {
-    const bgFile = iconFile.replace(/\.png$/, ".jpg");
-    return `
+  return Object.entries(FACTION_ICON_MAP)
+    // фракцию без единой доступной модели не показываем (например, The Big Bang
+    // Theory существует только в Eternal)
+    .filter(([faction]) => faction === 'Unknown' || factionHasVisibleModels(faction))
+    .map(([faction, iconFile]) => {
+      const bgFile = iconFile.replace(/\.png$/, ".jpg");
+      return `
         <div class="faction-card" data-faction="${faction}" style="background-image: url('${base}${bgFile}');">
           <img class="faction-icon" src="${base}${iconFile}" alt="${faction}" loading="lazy" decoding="async">
         </div>`;
-  }).join("");
+    }).join("");
 }
 
 function renderFactionCards() {
   const html = buildFactionCardsHTML();
   document.querySelectorAll('.tabs-container .faction-cards').forEach(el => el.innerHTML = html);
+  document.querySelectorAll('.eternal-toggle-slot').forEach(el => el.innerHTML = eternalToggleHTML());
 }
 
 // ======================== ИКОНКИ ========================
@@ -120,15 +168,20 @@ const STAT_ICONS = {
   Movement: "img/Movement.png"
 };
 
+// Регулярки собираются один раз: раньше каждый вызов создавал 45 новых
+// RegExp, а при построении справочника функция вызывается 2472 раза —
+// более ста тысяч лишних аллокаций на каждой загрузке страницы.
+// onerror нужен, потому что часть иконок в ICON_MAP отсутствует на диске:
+// без него пользователь видит «сломанную картинку» прямо в тексте правила.
+const ICON_REPLACERS = Object.keys(ICON_MAP).map(tag => [
+  new RegExp(tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+  `<img src="${ICON_MAP[tag]}" class="inline-icon" alt="" onerror="this.remove()">`
+]);
+
 function replaceIcons(text) {
   if (!text) return "";
   let html = text;
-  Object.keys(ICON_MAP).forEach(tag => {
-    const iconFile = ICON_MAP[tag];
-    const safeTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(safeTag, 'g');
-    html = html.replace(regex, `<img src="${iconFile}" class="inline-icon" alt="icon">`);
-  });
+  for (const [rx, rep] of ICON_REPLACERS) html = html.replace(rx, rep);
   return html;
 }
 
@@ -240,6 +293,12 @@ const translations = {
     rank_label: "Ранг",
     leader_or_sidekick: "Leader или Sidekick",
     equipment_insufficient_funds: "Недостаточно Funding для этого equipment!",
+    equipment_exceeds_rep: "Этот апгрейд добавляет Rep и выводит отряд за лимит репутации!",
+    auth_rate_limited: "Слишком много неудачных попыток входа. Подождите минуту и попробуйте снова.",
+    eternal_title: "ETERNAL",
+    eternal_hint: "Показывать модели формата Eternal — снятые с продажи профили. В обычной игре не используются.",
+    eternal_crew_warning: "В отряде есть модели формата Eternal. Если выключить формат, они будут убраны из отряда. Продолжить?",
+    eternal_badge: "ETERNAL",
     equipment_for: "Equipment для",
     equipment_available: "Доступно",
     equipment_of_total: "из",
@@ -249,6 +308,8 @@ const translations = {
     crew_building_rules: "Правила набора отряда",
     crew_rules_intro: "У выбранной фракции особые правила набора отряда.",
     rule_ignore_rank_requirements: "Фракция игнорирует стандартные требования к рангам.",
+    rule_only_keyword_trait: "В отряд можно брать только модели с трейтом {trait}.",
+    keyword_trait_required: "В этот отряд можно брать только модели с трейтом {trait}!",
     rule_same_name_different_alias: "Можно включать персонажей с одинаковым именем (но разными псевдонимами).",
     rule_leader_as_boss: "Боссом отряда должен быть Leader.",
     rule_only_affiliation: "Нельзя нанимать персонажей вне аффилиации.",
@@ -425,6 +486,22 @@ const translations = {
     tn_lock_meta: "ростеры закрываются за {days} дн. до начала",
     tn_rosters_closed: "приём ростеров закрыт",
     tn_locked_msg: "Изменение ростеров закрыто — до начала турнира осталось меньше установленного организатором срока",
+    tn_not_found: "Турнир не найден",
+    tn_round_open_msg: "В текущем туре есть несведённые результаты",
+    tn_max_rounds_msg: "Достигнут максимум туров для этого числа участников",
+    tn_confirm_force: "В туре остались пары без результата. Всё равно продолжить? Незаписанные партии будут потеряны.",
+    tn_disputed: "спор",
+    tn_resolve: "Рассудить",
+    tn_resolve_prompt: "Кто победил в паре {a} — {b}? Введите имя победителя.",
+    tn_resolve_vp: "Сколько VP набрал {name}?",
+    tn_resolve_bad: "Некорректный ввод",
+    tn_dispute_note: "Оба игрока заявили один и тот же исход. Результат засчитает организатор.",
+    tn_claim_pending: "Заявлено: {res}, {vp} VP. Ждём подтверждения соперника.",
+    tn_dropped: "снят",
+    tn_drop_confirm: "Снять участника {name} с турнира? Сыгранные им туры останутся в таблице, в новые пары он не попадёт.",
+    tn_played: "сыграно партий",
+    tn_buchholz: "Бухгольц: сумма побед соперников",
+    tn_rounds_left: "осталось туров: {n}",
     footer_opensource: "Проект с открытым исходным кодом",
     forgot_password_link: "Забыли пароль?",
     forgot_request_hint: "Введите имя пользователя — на почту, привязанную к аккаунту, придёт код для сброса пароля.",
@@ -613,6 +690,12 @@ const translations = {
     rank_label: "Rank",
     leader_or_sidekick: "Leader or Sidekick",
     equipment_insufficient_funds: "Insufficient Funding for this equipment!",
+    equipment_exceeds_rep: "This upgrade adds Rep and would push the crew over the reputation limit!",
+    auth_rate_limited: "Too many failed sign-in attempts. Wait a minute and try again.",
+    eternal_title: "ETERNAL",
+    eternal_hint: "Show Eternal-format models — retired profiles. Not used in the standard game.",
+    eternal_crew_warning: "Your crew contains Eternal-format models. Turning the format off will remove them from the crew. Continue?",
+    eternal_badge: "ETERNAL",
     equipment_for: "Equipment for",
     equipment_available: "Available",
     equipment_of_total: "of",
@@ -622,6 +705,8 @@ const translations = {
     crew_building_rules: "Crew Building Rules",
     crew_rules_intro: "Your selected affiliation has unique crew building rules.",
     rule_ignore_rank_requirements: "This affiliation ignores standard rank requirements.",
+    rule_only_keyword_trait: "Only models with the {trait} trait can be recruited into this crew.",
+    keyword_trait_required: "Only models with the {trait} trait can join this crew!",
     rule_same_name_different_alias: "This affiliation can include characters with the same name (but different alias).",
     rule_leader_as_boss: "This affiliation must select a Leader as a Boss.",
     rule_only_affiliation: "This affiliation cannot hire characters that are not in the Affiliation.",
@@ -798,6 +883,22 @@ const translations = {
     tn_lock_meta: "rosters lock {days} days before the start",
     tn_rosters_closed: "roster submission closed",
     tn_locked_msg: "Roster changes are closed — the organizer's deadline before the tournament has passed",
+    tn_not_found: "Tournament not found",
+    tn_round_open_msg: "The current round still has unreconciled results",
+    tn_max_rounds_msg: "Maximum number of rounds reached for this player count",
+    tn_confirm_force: "Some pairs in this round have no result yet. Continue anyway? Unreported games will be lost.",
+    tn_disputed: "disputed",
+    tn_resolve: "Resolve",
+    tn_resolve_prompt: "Who won the pair {a} — {b}? Enter the winner's name.",
+    tn_resolve_vp: "How many VP did {name} score?",
+    tn_resolve_bad: "Invalid input",
+    tn_dispute_note: "Both players reported the same outcome. The organizer will settle the result.",
+    tn_claim_pending: "Reported: {res}, {vp} VP. Waiting for your opponent to confirm.",
+    tn_dropped: "dropped",
+    tn_drop_confirm: "Drop {name} from the tournament? Their played rounds stay in the standings, but they will not be paired again.",
+    tn_played: "games played",
+    tn_buchholz: "Buchholz: sum of opponents' wins",
+    tn_rounds_left: "rounds left: {n}",
     footer_opensource: "Open source project",
     forgot_password_link: "Forgot password?",
     forgot_request_hint: "Enter your username — a reset code will be sent to the email on file for this account.",
@@ -943,8 +1044,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const $ = id => document.getElementById(id);
-const hasInCrew = m => crew.some(x => x.name === m.name);
-const countInCrew = m => crew.filter(x => x.name === m.name).length;
+// Сравнение по _id (индекс в models), а не по имени: шесть имён в data.js
+// дублируются с разными характеристиками, и сравнение по имени путало их
+const sameModel = (a, b) => (a._id !== undefined && b._id !== undefined) ? a._id === b._id : a.name === b.name;
+const hasInCrew = m => crew.some(x => sameModel(x, m));
+const countInCrew = m => crew.filter(x => sameModel(x, m)).length;
 
 // Lieutenant (X): "If the crew contain a model with Alias (X), this model reduces its funding cost to 0..."
 function getEffectiveModelFunding(m) {
@@ -971,6 +1075,60 @@ function getCleanName(name) {
   return name.split('{')[0].trim().replace(/’/g, "'");
 }
 
+// Индекс справочника. Раньше каждый поиск линейно перебирал 1236 ключей до
+// пяти раз (~180 мкс на попадание, ~1.5 мс на промах), а на одну карточку
+// приходится десяток трейтов. Индекс строится один раз при первом обращении.
+const _punctNorm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+// Последняя группа в скобках: "Teamwork (X) (All)" -> "all"
+function _parenTail(s) {
+  const groups = s.match(/\(([^()]*)\)/g);
+  return groups ? groups[groups.length - 1].slice(1, -1).trim().toLowerCase() : null;
+}
+let _compIndexSrc = null, _compIndex = null;
+function compendiumIndex() {
+  if (_compIndex && _compIndexSrc === window.compendium) return _compIndex;
+  const clean = new Map(), base = new Map(), punct = new Map(), num = new Map();
+  for (const key of Object.keys(window.compendium)) {
+    const value = window.compendium[key];
+    const ck = getCleanName(key);
+    const lower = ck.toLowerCase();
+    if (!clean.has(lower)) clean.set(lower, value);
+
+    const b = ck.split('(')[0].trim().toLowerCase();
+    if (b) {
+      if (!base.has(b)) base.set(b, []);
+      base.get(b).push({ value, tail: _parenTail(ck), groups: (ck.match(/\(/g) || []).length });
+    }
+    const pn = _punctNorm(ck);
+    if (pn && !punct.has(pn)) punct.set(pn, value);
+
+    const nk = ck.replace(/\s+X$/i, '').trim().toLowerCase();
+    if (nk && !num.has(nk)) num.set(nk, value);
+  }
+  _compIndexSrc = window.compendium;
+  _compIndex = { clean, base, punct, num };
+  return _compIndex;
+}
+
+// Выбор среди ключей с одинаковой базой. Раньше всегда брался первый, из-за
+// чего 17 моделей с именным Teamwork получали текст варианта «(All)».
+function _pickByTail(candidates, cleanSearch, baseName) {
+  if (candidates.length === 1) return candidates[0].value;
+  // Остаток запроса после базы и первого параметра: "" | "all" | имя/ключевое слово
+  const afterBase = cleanSearch.slice(baseName.length).trim();
+  const rest = afterBase.replace(/^\([^()]*\)/, '').trim().replace(/^[()]|[()]$/g, '').toLowerCase();
+  if (!rest) {
+    return (candidates.find(c => c.groups <= 1) || candidates[0]).value;
+  }
+  const exact = candidates.find(c => c.tail === rest);
+  if (exact) return exact.value;
+  if (rest === 'all') {
+    return (candidates.find(c => c.tail === 'all') || candidates[0]).value;
+  }
+  // Параметр — имя модели или ключевое слово
+  return (candidates.find(c => c.tail === 'model/keyword') || candidates[0]).value;
+}
+
 function findCompendiumEntry(searchTerm) {
   if (!window.compendium) return null;
 
@@ -982,50 +1140,32 @@ function findCompendiumEntry(searchTerm) {
   if (window.compendium[searchTerm]) return window.compendium[searchTerm];
   if (window.compendium[cleanSearch]) return window.compendium[cleanSearch];
 
-  const keys = Object.keys(window.compendium);
+  const idx = compendiumIndex();
 
   // 3. Поиск с игнорированием регистра и иконок в ключах базы
-  for (let key of keys) {
-    const cleanKey = getCleanName(key).toLowerCase();
-    if (cleanKey === lowerSearch) {
-      return window.compendium[key];
-    }
-  }
+  const byClean = idx.clean.get(lowerSearch);
+  if (byClean !== undefined) return byClean;
 
-  // 4. Логика для трейтов с параметрами в скобках, например "Fast (3)"
-  // Если в карточке "Fast (2'')", а в базе "Fast" или "Fast {ICON}"
-  if (cleanSearch.includes('(')) {
-    const baseName = cleanSearch.split('(')[0].trim().toLowerCase();
-    for (let key of keys) {
-      const cleanKey = getCleanName(key).split('(')[0].trim().toLowerCase();
-      if (cleanKey === baseName) {
-        return window.compendium[key];
-      }
-    }
-  }
+  // 4. Трейт с параметром: "Fast (3)" -> ключ "Fast" / "Fast (X)".
+  // Работает и в обратную сторону — голое "Slow" находит ключ "Slow (X)",
+  // без этого статусы в игре открывали пустое окно описания.
+  const baseName = cleanSearch.split('(')[0].trim().toLowerCase();
+  const candidates = baseName ? idx.base.get(baseName) : null;
+  if (candidates) return _pickByTail(candidates, cleanSearch, baseName);
 
   // 5. Сравнение без пунктуации: "360 Strike" == "360° Strike",
   // "Sewer's Nightmare" == "Sewers Nightmare", "Bipolar Mental Disorder" == "Bipolar (Mental Disorder)"
-  const punctNorm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const normSearch = punctNorm(cleanSearch);
+  const normSearch = _punctNorm(cleanSearch);
   if (normSearch) {
-    for (let key of keys) {
-      if (punctNorm(getCleanName(key)) === normSearch) {
-        return window.compendium[key];
-      }
-    }
+    const byPunct = idx.punct.get(normSearch);
+    if (byPunct !== undefined) return byPunct;
   }
 
   // 6. Числовой параметр без скобок: "Expendable Penguin 2" -> "Expendable Penguin X"
   const numMatch = cleanSearch.match(/^(.*\S)\s+\d+$/);
   if (numMatch) {
-    const baseName = numMatch[1].toLowerCase();
-    for (let key of keys) {
-      const cleanKey = getCleanName(key).replace(/\s+X$/i, '').trim().toLowerCase();
-      if (cleanKey === baseName) {
-        return window.compendium[key];
-      }
-    }
+    const byNum = idx.num.get(numMatch[1].toLowerCase());
+    if (byNum !== undefined) return byNum;
   }
 
   return null;
@@ -1079,8 +1219,22 @@ function getRivals(model) {
 }
 
 // Проверить может ли модель быть нанята в текущую фракцию (для режима билдера)
+// Фракция-команда набирается по ключевому трейту, а не по аффилиации:
+// в отряд входят только носители этого трейта. Сравнение точное — трейт
+// "Big Bang Theory" и трейт "The Big Bang Theory" это разные правила.
+function matchesKeywordTrait(model, keyword) {
+  return (model.traits || []).some(t => getCleanName(t) === keyword);
+}
+
 function canHireInFaction(model, faction) {
   if (!faction) return false;
+
+  // Формат Eternal выключен — таких моделей для игрока не существует
+  if (model.eternal && !showEternal) return false;
+
+  // Фракция, ограниченная ключевым трейтом (The Big Bang Theory)
+  const kw = (factionCrewRules[faction] || {}).onlyKeywordTrait;
+  if (kw && !matchesKeywordTrait(model, kw)) return false;
 
   // Модель не может быть нанята во фракцию, указанную у неё как rival
   if (getRivals(model).includes(faction)) return false;
@@ -1204,7 +1358,13 @@ const UNRECRUITABLE_TRAITS = [
   "Shapeshifting Tiger Progress"
 ];
 
+// Модели, которые не нанимаются, а появляются по ходу партии, и отличить их
+// по одному трейту нельзя. Этриган выставляется, когда Jason Blood проходит
+// проверку Demon Curse, поэтому в билдере его быть не должно (0 Rep).
+const UNRECRUITABLE_NAMES = ["The Demon"];
+
 function isUnrecruitable(model) {
+  if (UNRECRUITABLE_NAMES.includes(model.name)) return true;
   return model.traits && model.traits.some(t => UNRECRUITABLE_TRAITS.includes(t));
 }
 
@@ -1293,6 +1453,7 @@ function getFactionRulesLines(faction) {
   const rules = factionCrewRules[faction];
   if (!rules) return [];
   const lines = [];
+  if (rules.onlyKeywordTrait) lines.push(t("rule_only_keyword_trait", { trait: rules.onlyKeywordTrait }));
   if (rules.ignoreStandardRankRequirements) lines.push(t("rule_ignore_rank_requirements"));
   if (rules.allowSameNameDifferentAlias) lines.push(t("rule_same_name_different_alias"));
   if (rules.mustHaveLeaderAsBoss) lines.push(t("rule_leader_as_boss"));
@@ -1494,7 +1655,12 @@ function showRankSelectionModal(model, ranks) {
 };
 
 const removeFromCrew = m => {
-  const index = crew.findLastIndex(x => x.name === m.name);
+  // Если передан конкретный экземпляр отряда — убираем именно его: иначе при
+  // нескольких копиях (Horde/Minion) удалялась последняя, а снаряжение
+  // оставалось на первой
+  const index = (m.uniqueId != null && crew.some(x => x.uniqueId === m.uniqueId))
+    ? crew.findIndex(x => x.uniqueId === m.uniqueId)
+    : crew.findLastIndex(x => sameModel(x, m));
   if (index !== -1) {
     crew.splice(index, 1);
     // Three Jokers: нанимаются только все вместе — при удалении одного удаляем остальных
@@ -1681,11 +1847,11 @@ function renderMiniCardHTML(item, showButtons, showStats) {
   return `
 ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 <div class="mini-photo-wrap">
-  <img src="${item.img}" loading="lazy" decoding="async" onerror="this.src='img/no.png'">
+  <img src="${item.img}" width="74" height="94" loading="lazy" decoding="async" onerror="this.src='img/no.png'">
   ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
 </div>
 <div class="mini-right-col">
-  <div class="mini-name">${item.name}</div>
+  <div class="mini-name">${item.name}${item.eternal ? ` <span class="eternal-badge">${t('eternal_badge')}</span>` : ''}</div>
   <div class="mini-rank-text">${rankText}</div>
   <div class="mini-rep">${item.rep} Rep • $${item.inCrew ? getEffectiveModelFunding(item.instance) : (item.funding || 0)}</div>
   ${statsHTML}
@@ -1698,19 +1864,31 @@ ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 // Панель есть у КАЖДОЙ модели отряда — и в билдере, и в просмотре ростера.
 function renderUpgradeFlapHTML(item, equipment) {
   const safeName = item.name.replace(/'/g, "\\'");
+  // uid конкретной копии модели: Horde/Minion позволяют взять одну модель до
+  // четырёх раз, и без uid всё снаряжение уходило первой копии
+  const uid = item.instance && item.instance.uniqueId != null ? String(item.instance.uniqueId) : '';
   const chips = equipment.map(eq => {
     const safeEq = eq.name.replace(/'/g, "\\'");
     return `
     <span class="flap-chip" onclick="event.stopPropagation(); showEquipmentInfo('${safeName}', '${safeEq}')">
       <span class="flap-chip-name">${eq.name}</span>
       ${eq.fundingCost ? `<b>$${eq.fundingCost}</b>` : ''}${eq.repCost ? `<b>+${eq.repCost}R</b>` : ''}
-      <span class="flap-chip-remove" onclick="event.stopPropagation(); removeEquipmentFromModel('${safeName}', '${safeEq}')">×</span>
+      <span class="flap-chip-remove" onclick="event.stopPropagation(); removeEquipmentFromModel('${safeName}', '${safeEq}', '${uid}')">×</span>
     </span>`;
   }).join('');
   return `
     <span class="flap-title">${t('upgrades_flap')}</span>
     ${chips}
-    <button class="flap-add" title="Equipment" onclick="event.stopPropagation(); openEquipmentMenu(models[${item._id}], this.closest('.mini-card-wrap'))">+</button>`;
+    <button class="flap-add" title="Equipment" onclick="event.stopPropagation(); openEquipmentMenu(models[${item._id}], this.closest('.mini-card-wrap'), '${uid}')">+</button>`;
+}
+
+// Экземпляр в отряде по uid; без uid — первый подходящий по имени (старый путь)
+function crewInstance(modelName, uid) {
+  if (uid) {
+    const byUid = crew.find(m => String(m.uniqueId) === String(uid));
+    if (byUid) return byUid;
+  }
+  return crew.find(m => m.name === modelName && m.rankUsed) || crew.find(m => m.name === modelName);
 }
 
 // Обёртка «карточка + панель апгрейдов снизу» — общая для билдера и просмотра ростера
@@ -1761,16 +1939,18 @@ const renderMiniCardsBuilder = debounce(() => {
   // ИЗМЕНЕНИЕ: Создаем массив для рендеринга - сначала отряд, затем все остальные модели
   let renderArray = [];
   
-  // Сначала добавляем все модели из отряда (в порядке как они есть в crew)
-  renderArray.push(...crew.map(m => {
-    const originalModel = models.find(model => model.name === m.name);
-    return { 
-      ...originalModel, 
-      inCrew: true, 
-      count: countInCrew(originalModel),
-      instance: m // ссылка на экземпляр в отряде
-    };
-  }));
+  // Сначала добавляем все модели из отряда (в порядке как они есть в crew).
+  // Берём данные ИЗ САМОГО экземпляра, а не ищем заново по имени: шесть имён
+  // в data.js встречаются дважды с разной стоимостью и аффилиацией (Batman,
+  // The Riddler, Poison Ivy, Ace of Spades, ...), и поиск по имени всегда
+  // возвращал первый вариант — карточка показывала одну модель, а отряд
+  // считал другую.
+  renderArray.push(...crew.map(m => ({
+    ...m,
+    inCrew: true,
+    count: countInCrew(m),
+    instance: m // ссылка на экземпляр в отряде
+  })));
   
   // === ИСПРАВЛЕНО: используем canHireInFaction для режима билдера ===
   let filteredModels = models.filter(m => canHireInFaction(m, currentFaction) && !hasInCrew(m));
@@ -1806,8 +1986,11 @@ const renderMiniCardsBuilder = debounce(() => {
   // Обработка Batman Lives: если Boss имеет Batman Lives, показываем William Cobb даже если не совпадает аффилиация
   if (BMG_BOSS && BMG_BOSS.traits && BMG_BOSS.traits.includes("Batman Lives")) {
     // Добавляем William Cobb в доступные модели если его еще нет в отряде
-    const williamCobb = models.find(m => m.name === "William Cobb");
-    if (williamCobb && !hasInCrew(williamCobb) && !filteredModels.some(m => m.name === "William Cobb")) {
+    // "William Cobb" — это realname модели "The Talon", отдельной модели с таким
+    // именем в data.js нет: поиск по name всегда возвращал undefined и всё
+    // правило Batman Lives не работало
+    const williamCobb = models.find(m => modelMatchesCharacter(m, "William Cobb"));
+    if (williamCobb && !hasInCrew(williamCobb) && !filteredModels.some(m => sameModel(m, williamCobb))) {
       filteredModels.push(williamCobb);
     }
   }
@@ -1913,7 +2096,27 @@ function isSpecialTrait(trait) {
   const cleanTrait = getCleanName(trait).trim();
 
   // Проверяем в кэше специальных трейтов
-  return specialTraitNames.has(cleanTrait);
+  if (specialTraitNames.has(cleanTrait)) return true;
+
+  // Кэш сверяется по точному имени, а поиск по справочнику — нечёткий.
+  // Из-за этого 14 трейтов ("Serum Injection (2)", "Support (Batman)",
+  // "Kapow!!!" и др.) находили правило со значком, но сам значок теряли,
+  // и игрок не видел, что действие стоит Special. Сверяем найденный текст.
+  const entry = findCompendiumEntry(trait);
+  return typeof entry === 'string' && specialTraitDescriptions().has(entry);
+}
+
+// Тексты правил, отмеченных как Special-действие (строится один раз)
+let _specialDescCache = null, _specialDescSrc = null;
+function specialTraitDescriptions() {
+  if (_specialDescCache && _specialDescSrc === window.compendium) return _specialDescCache;
+  const set = new Set();
+  for (const key of (compendiumKeys || [])) {
+    if (key.includes("{SPECIAL_ICON}") || key.includes("{S}")) set.add(window.compendium[key]);
+  }
+  _specialDescSrc = window.compendium;
+  _specialDescCache = set;
+  return set;
 }
 
 // Вспомогательная функция для получения описания трейта
@@ -2149,28 +2352,42 @@ function refreshBuilderCardPanel(modelName) {
 }
 
 // ======================== COMPENDIUM ========================
+// Разметка справочника собирается при первом открытии, а не на загрузке страницы
+function buildCompendiumHTML() {
+  if (allCompendiumHTML || !window.compendium) return allCompendiumHTML;
+  allCompendiumHTML = compendiumKeys.map(k => `
+      <div class="comp-entry">
+        <div class="comp-title">${replaceIcons(k)}</div>
+        <div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div>
+      </div>`).join("");
+  return allCompendiumHTML;
+}
+
 const openCompendium = () => {
   $("compendiumModal").classList.add("active");
   $("compendiumSearch").value = "";
   $("compendiumSearch").placeholder = t("compendium_search");
-  $("compendiumList").innerHTML = allCompendiumHTML;
+  $("compendiumList").innerHTML = buildCompendiumHTML();
   setTimeout(() => $("compendiumSearch").focus(), 300);
 };
 
 const clearCompendiumSearch = () => {
   $("compendiumSearch").value = "";
   document.querySelector("#compendiumModal .clear-search").style.display = "none";
-  $("compendiumList").innerHTML = allCompendiumHTML;
+  $("compendiumList").innerHTML = buildCompendiumHTML();
 };
 
-$("compendiumSearch").oninput = function() {
-  const q = this.value.toLowerCase().trim();
+// Поиск с задержкой: без неё каждое нажатие клавиши перестраивало до 250 КБ
+// разметки (~106 мс на запрос из одной буквы). В compendium.html и rules.html
+// такая задержка уже стоит, здесь её просто забыли.
+$("compendiumSearch").oninput = debounce(function() {
+  const q = ($("compendiumSearch").value || "").toLowerCase().trim();
   document.querySelector("#compendiumModal .clear-search").style.display = q ? "flex" : "none";
-  if (!q) { $("compendiumList").innerHTML = allCompendiumHTML; return; }
+  if (!q) { $("compendiumList").innerHTML = buildCompendiumHTML(); return; }
   const html = compendiumKeys.filter(k => k.toLowerCase().includes(q)).map(k => `
     <div class="comp-entry"><div class="comp-title">${replaceIcons(k)}</div><div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div></div>`).join("");
   $("compendiumList").innerHTML = html || `<div style="text-align:center;color:#888;padding:80px;font-size:18px;">${t("nothing_found")}</div>`;
-};
+}, 130);
 
 // ======================== СВЯЗАННЫЕ ПРАВИЛА В ПОПАПАХ ========================
 // Ищет в тексте упоминания известных трейтов/правил из компендиума, чтобы показать
@@ -2314,8 +2531,8 @@ function showEquipmentInfo(modelName, eqName) {
 }
 
 // Новая функция для показа effects equipment
-function removeEquipmentFromModel(modelName, eqName) {
-  const crewModel = crew.find(m => m.name === modelName);
+function removeEquipmentFromModel(modelName, eqName, uid) {
+  const crewModel = crewInstance(modelName, uid);
   if (crewModel && crewModel.equipment) {
     const index = crewModel.equipment.findIndex(eq => eq.name === eqName);
     if (index !== -1) {
@@ -2369,15 +2586,12 @@ window.addEventListener("load", () => {
   // Генерируем карточки фракций (одинаковы для cardsSection и builderSection)
   renderFactionCards();
 
-  // Инициализация compendium (если он есть)
+  // Инициализация compendium (если он есть).
+  // Сам HTML справочника (400 КБ, 3708 узлов, ~150 мс на десктопе и до
+  // полусекунды на телефоне) собирается ЛЕНИВО — при первом открытии окна.
+  // На главном меню он не нужен, а строился на каждой загрузке.
   if (window.compendium) {
     compendiumKeys = Object.keys(window.compendium).sort();
-    allCompendiumHTML = compendiumKeys.map(k => `
-      <div class="comp-entry">
-        <div class="comp-title">${replaceIcons(k)}</div>
-        <div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div>
-      </div>`).join("");
-    $("compendiumList").innerHTML = allCompendiumHTML;
 
     // Инициализация кэша специальных трейтов
     compendiumKeys.forEach(key => {
@@ -2487,6 +2701,13 @@ function bmgCanAddModel(model) {
     return false;
   }
 
+  // Фракция-команда: в отряд входят только носители ключевого трейта
+  const kwTrait = (factionCrewRules[currentFaction] || {}).onlyKeywordTrait;
+  if (kwTrait && !matchesKeywordTrait(model, kwTrait)) {
+    alert(t("keyword_trait_required", { trait: kwTrait }));
+    return false;
+  }
+
   // Проверка зависимостей моделей (например, Robin Who Laughs требует The Batman Who Laughs)
   const unmetDependency = getUnmetDependency(model);
   if (unmetDependency) {
@@ -2511,7 +2732,10 @@ function bmgCanAddModel(model) {
   // Проверка первого Босса
   if (!BMG_BOSS) {
     const validBossRanks = factionRules.mustHaveLeaderAsBoss ? ["Leader"] : ["Leader", "Sidekick"];
-    if (!getRanks(model).some(r => validBossRanks.includes(r))) {
+    // getHireableRanks, а не getRanks: Contractor (Deathstroke) добавляет ранг
+    // Leader сверх базовых. Выбор ранга уже предлагал Leader через
+    // getHireableRanks, а эта проверка тут же его отклоняла.
+    if (!getHireableRanks(model).some(r => validBossRanks.includes(r))) {
       alert(t("leader_required", { rank: factionRules.mustHaveLeaderAsBoss ? "Leader" : t("leader_or_sidekick") }));
       return false;
     }
@@ -2584,9 +2808,19 @@ function bmgCanAddModel(model) {
           crew.filter(m => m.hireException === "Criminal Bonds").length < 3) {
         // Criminal Bonds: "If this model is included in your crew..." — носитель любой член отряда
         hireException = "Criminal Bonds"; // до 3 Henchman Organized Crime с трейтом Criminal
-      } else if (model.traits.includes("Vocational") &&
+      } else if (model.traits.includes("Vocational") && crew.length &&
           crew.every(m => m.traits.includes("Cop"))) {
+        // crew.length: Array.every на пустом отряде истинно, и правило срабатывало впустую
         hireException = "Vocational"; // допустимо, если у всех в отряде есть трейт Cop
+      } else {
+        // Affinity (X): "may be hired ... even if they would not ordinarily be
+        // permitted to join that crew". Имя цели раньше вычислялось и
+        // выбрасывалось, поэтому 8 моделей с Affinity нельзя было нанять вовсе.
+        const affinity = model.traits.filter(tr => /^Affinity \(.+\)$/.test(tr));
+        for (const tr of affinity) {
+          const target = tr.slice("Affinity (".length, -1).trim();
+          if (crew.some(cm => modelMatchesCharacter(cm, target))) { hireException = "Affinity"; break; }
+        }
       }
 
       if (hireException) {
@@ -2806,7 +3040,10 @@ function bmgCanAddModel(model) {
 
     // Mercenary: "You can only recruit this model in a League of Assassins crew
     // if a model with Name: Bane is also included in the crew."
-    if (modelTrait === "Mercenary" && currentFaction === "League of Shadows" && !crew.some(m => m.name === "Bane")) {
+    // Модели с именем ровно "Bane" в data.js нет — есть Bane Unleashed / Titan /
+    // Rebirth / The Bat / Commander / Dark Knight Rises. Сравнение по name всегда
+    // было ложным, из-за чего Mercenary 1/2 и Barsad нельзя было нанять вообще.
+    if (modelTrait === "Mercenary" && currentFaction === "League of Shadows" && !crew.some(m => modelMatchesCharacter(m, "Bane"))) {
       alert(t("mercenary_requires_bane"));
       exceeded = true;
     }
@@ -2833,7 +3070,9 @@ function bmgCanAddModel(model) {
       if (currentFaction === "Court of Owls") {
         alert(t("requires_goliath_not_owls"));
         exceeded = true;
-      } else if (!crew.some(m => m.name === "Damian Wayne")) {
+      // "Damian Wayne" — realname моделей Robin / Robin [Damian Wayne] /
+      // Damian Who Laughs; модели с таким name нет, и Goliath был ненанимаем
+      } else if (!crew.some(m => modelMatchesCharacter(m, "Damian Wayne"))) {
         alert(t("requires_goliath"));
         exceeded = true;
       }
@@ -2879,7 +3118,7 @@ function bmgCanAddModel(model) {
   if (BMG_BOSS && BMG_BOSS.traits && BMG_BOSS.traits.includes("Batman Lives")) {
     // Batman Lives позволяет нанять William Cobb без учета аффилиации
     // Но если William Cobb нанят, Free Agent модели должны быть с аффилиацией Bane
-    const hasWilliamCobb = crew.some(m => m.name === "William Cobb");
+    const hasWilliamCobb = crew.some(m => modelMatchesCharacter(m, "William Cobb"));
     if (hasWilliamCobb && rank === "Free Agent") {
       const modelFactions = getFactions(model);
       if (!modelFactions.includes("Bane") && !modelFactions.includes("Unknown")) {
@@ -2986,11 +3225,12 @@ function getEquipmentCost(eq) {
   return base;
 }
 
-function openEquipmentMenu(model, cardElement) {
+function openEquipmentMenu(model, cardElement, uid) {
   event.stopPropagation();
 
-  // Находим экземпляр модели в банде
-  const crewModel = crew.find(m => m.name === model.name && m.rankUsed);
+  // Находим КОНКРЕТНЫЙ экземпляр модели в банде (одна модель может быть
+  // взята несколько раз по Horde/Minion — снаряжение у каждой копии своё)
+  const crewModel = crewInstance(model.name, uid);
   if (!crewModel) return;
 
   // Модели с трейтом Animal не могут покупать оборудование
@@ -3131,13 +3371,16 @@ function openEquipmentMenu(model, cardElement) {
 
     if (!allConditionsMet) return false;
 
-    // Проверка на дублирование трейтов от equipment (нельзя купить то, что уже даёт имеющийся трейт)
+    // Проверка на дублирование трейтов от equipment (нельзя купить то, что уже даёт имеющийся трейт).
+    // Прежний шаблон из-за якоря $ и альтернативы "\." всегда захватывал слово
+    // rule/trait вместе с названием ("Lantern rule"), поэтому не срабатывал ни разу
+    // на 143 предметах. Заодно разбираем перечисления: "Model gains A and B rules."
     if (eq.effects && eq.effects.length) {
       for (const effect of eq.effects) {
-        const gainsMatch = effect.match(/Model gains (?:the )?([^(.]+?)(?: rule| trait|\.)$/i);
+        const gainsMatch = effect.match(/Model gains (?:the )?(.+?)(?:\s+(?:rule|trait)s?)?\.?$/i);
         if (gainsMatch) {
-          const gainedTrait = gainsMatch[1].trim();
-          if (crewModel.traits && crewModel.traits.some(tr => tr.includes(gainedTrait))) {
+          const gained = gainsMatch[1].split(/\s*(?:,|\band\b)\s*/i).map(s => s.trim()).filter(Boolean);
+          if (crewModel.traits && gained.some(g => crewModel.traits.some(tr => getCleanName(tr) === g))) {
             return false;
           }
         }
@@ -3212,9 +3455,17 @@ function openEquipmentMenu(model, cardElement) {
         return;
       }
 
-      // Добавляем equipment к модели (с фактически уплаченной стоимостью)
+      // 21 предмет добавляет ещё и Rep (Ancient Plants +40, The Turning +10, ...).
+      // Проверялся только бюджет, поэтому отряд молча уезжал за лимит репутации.
+      if ((eq.repCost || 0) && getCrewTotalRep() + eq.repCost > BMG_REP_LIMIT) {
+        alert(t("equipment_exceeds_rep"));
+        return;
+      }
+
+      // Добавляем equipment к модели (с фактически уплаченной стоимостью).
+      // Всегда копия: иначе несколько моделей ссылались бы на один объект каталога.
       if (!crewModel.equipment) crewModel.equipment = [];
-      crewModel.equipment.push(cost !== (eq.fundingCost || 0) ? { ...eq, fundingCost: cost } : eq);
+      crewModel.equipment.push({ ...eq, fundingCost: cost });
 
       // Обновляем счётчики и интерфейс
       updateCrewEquipmentCounts();
@@ -3226,7 +3477,7 @@ function openEquipmentMenu(model, cardElement) {
 
       // Закрываем и открываем заново для обновления списка
       overlay.remove();
-      openEquipmentMenu(model, cardElement);
+      openEquipmentMenu(model, cardElement, crewModel.uniqueId);
     };
   });
 

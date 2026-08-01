@@ -8,20 +8,49 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-  <!-- ?v=... — метка версии против кэша браузера: меняйте при каждом обновлении файлов -->
-  <link rel="stylesheet" href="style.css?v=2.8">
+  <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
+       файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
+       каждом изменении файла — иначе браузер год не увидит обновление. -->
+  <link rel="stylesheet" href="style.css?v=3.1">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
-  <script src="data.js?v=2.0" defer></script>
-  <script src="data-traits.js?v=1.8" defer></script>
-  <script src="script.js?v=1.22" defer></script>
-  <script src="auth.js?v=1.7" defer></script>
-  <script src="data-game.js?v=1.3" defer></script>
-  <script src="game.js?v=2.1" defer></script>
-  <script src="data-cards.js?v=1.3" defer></script>
-  <script src="cards.js?v=1.5" defer></script>
-  <script src="game-cards.js?v=1.3" defer></script>
-  <script src="stats.js?v=1.5" defer></script>
-  <script src="tournaments.js?v=1.5" defer></script>
+  <script src="data.js?v=2.5" defer></script>
+  <script src="data-traits.js?v=2.0" defer></script>
+  <script src="script.js?v=1.27" defer></script>
+  <script src="auth.js?v=1.9" defer></script>
+  <script src="data-cards.js?v=1.4" defer></script>
+  <script src="cards.js?v=1.6" defer></script>
+  <script src="stats.js?v=1.6" defer></script>
+  <!-- ИГРА и ТУРНИРЫ грузятся при первом открытии раздела: на главном меню
+       они не нужны, а это ещё ~105 КБ разбора на каждой загрузке. Оба раздела
+       ни от чего не зависят снаружи, поэтому их можно отложить безопасно. -->
+  <script>
+    const BMG_LAZY = {
+      game: ['data-game.js?v=1.4', 'game.js?v=2.2', 'game-cards.js?v=1.4'],
+      tournaments: ['tournaments.js?v=1.6']
+    };
+    const _bmgLoading = {};
+    function bmgLoad(group) {
+      if (_bmgLoading[group]) return _bmgLoading[group];
+      // строго последовательно: game-cards.js рассчитывает на уже загруженный game.js
+      _bmgLoading[group] = BMG_LAZY[group].reduce((chain, src) => chain.then(() => new Promise((ok, fail) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = ok;
+        s.onerror = () => fail(new Error(src));
+        document.head.appendChild(s);
+      })), Promise.resolve());
+      _bmgLoading[group].catch(() => { _bmgLoading[group] = null; }); // дать повторить попытку
+      return _bmgLoading[group];
+    }
+    // Имена шимов отличаются от showGame/showTournaments: после загрузки
+    // настоящие функции перекрывают глобальные, и вызов уходит уже в них
+    async function bmgShowGame() {
+      try { await bmgLoad('game'); showGame(); } catch (e) { alert('Не удалось загрузить раздел'); }
+    }
+    async function bmgShowTournaments() {
+      try { await bmgLoad('tournaments'); showTournaments(); } catch (e) { alert('Не удалось загрузить раздел'); }
+    }
+  </script>
 </head>
 <body>
 
@@ -46,7 +75,7 @@
           <span class="btn-icon">👥</span>
           <span class="btn-text" data-i18n="crews">CREWS</span>
         </button>
-        <button class="menu-btn" onclick="showGame()">
+        <button class="menu-btn" onclick="bmgShowGame()">
           <span class="btn-icon">🎲</span>
           <span class="btn-text" data-i18n="game">ИГРА</span>
         </button>
@@ -58,7 +87,7 @@
           <span class="btn-icon">📚</span>
           <span class="btn-text" data-i18n="compendium">СПРАВОЧНИК</span>
         </button>
-        <button class="menu-btn" onclick="showTournaments()">
+        <button class="menu-btn" onclick="bmgShowTournaments()">
           <span class="btn-icon">🏆</span>
           <span class="btn-text" data-i18n="tournaments">ТУРНИРЫ</span>
         </button>
@@ -103,6 +132,8 @@
 
       <!-- ВКЛАДКИ ФРАКЦИЙ (генерируются в script.js из FACTION_ICON_MAP, см. renderFactionCards()) -->
       <div class="tabs-container hidden" id="cardsTabsContainer">
+        <!-- Переключатель формата Eternal — заполняется eternalToggleHTML() -->
+        <div class="eternal-toggle-slot"></div>
         <div class="faction-cards"></div>
       </div>
 
@@ -144,6 +175,8 @@
       </div>
       <!-- ВКЛАДКИ ФРАКЦИЙ (генерируются в script.js из FACTION_ICON_MAP, см. renderFactionCards()) -->
       <div class="tabs-container hidden" id="builderFactionCards">
+        <!-- Переключатель формата Eternal — заполняется eternalToggleHTML() -->
+        <div class="eternal-toggle-slot"></div>
         <div class="faction-cards"></div>
       </div>
     </div>

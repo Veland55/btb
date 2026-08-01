@@ -1243,3 +1243,52 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   }
   .models-list { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
 }
+
+/* ======================== ПЕРЕКЛЮЧАТЕЛЬ ФОРМАТА ETERNAL ========================
+   Компактная пилюля над списком фракций (билдер и раздел КАРТОЧКИ).
+   Выключен по умолчанию: модели Eternal скрыты, пока игрок сам их не включит.
+   Пояснение к формату — в атрибуте title, отдельной строки не занимает. */
+.eternal-toggle-slot { display: flex; justify-content: flex-end; padding: 0 12px 8px; }
+.eternal-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #1a1a1a; border: 1px solid #2e2e2e; border-radius: 999px;
+  /* по вертикали чуть свободнее, чем нужно визуально — чтобы попадать пальцем */
+  padding: 6px 8px 6px 12px; cursor: pointer; user-select: none;
+  line-height: 1; transition: border-color .18s;
+}
+.eternal-toggle:hover { border-color: #444; }
+.eternal-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+/* order: -1 — подпись слева от тумблера, хотя в разметке идёт после него.
+   Так работает обычный сестринский селектор input:checked ~ .eternal-toggle-label
+   и не нужен :has() */
+.eternal-toggle-label {
+  order: -1;
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  color: #8a8a8a; white-space: nowrap; transition: color .18s;
+}
+.eternal-toggle input:checked ~ .eternal-toggle-label { color: #ffc72c; }
+
+.eternal-toggle-track {
+  flex: none; position: relative; width: 30px; height: 17px;
+  background: #333; border-radius: 999px; transition: background .18s;
+}
+.eternal-toggle-knob {
+  position: absolute; top: 3px; left: 3px; width: 11px; height: 11px;
+  background: #888; border-radius: 50%; transition: transform .18s, background .18s;
+}
+.eternal-toggle input:checked + .eternal-toggle-track { background: #7a5c12; }
+.eternal-toggle input:checked + .eternal-toggle-track .eternal-toggle-knob {
+  transform: translateX(13px); background: #ffc72c;
+}
+.eternal-toggle input:focus-visible + .eternal-toggle-track { outline: 2px solid #ffc72c; outline-offset: 2px; }
+
+/* Метка на карточке модели формата Eternal — чтобы в общем списке было видно,
+   что профиль не из стандартного формата */
+.eternal-badge {
+  display: inline-block; vertical-align: middle;
+  font-size: 9px; font-weight: 700; letter-spacing: .08em;
+  color: #ffc72c; background: rgba(255, 199, 44, .12);
+  border: 1px solid rgba(255, 199, 44, .45); border-radius: 4px;
+  padding: 1px 5px; margin-left: 6px; white-space: nowrap;
+}

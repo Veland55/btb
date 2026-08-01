@@ -254,7 +254,6 @@ const traitDescriptions = {
     "Crit. Freeze": "CRT effect: when this weapon scores a Critical Hit, the Freeze Status can be applied to the target instead of Knocked Down.",
     "Critical": "Critical Effect",
     "CRT (X)": "Natural 6 on the Strength die = Critical Hit. Target is Knocked Down by default. Weapons may list a special CRT effect ( CRT (X) ). If present, player chooses one effect: the listed one or Knocked Down.",
-    "Crt (X)": "Natural 6 on the Strength die = Critical Hit. Target is Knocked Down by default. Weapons may list a special CRT effect ( CRT (X) ). If present, player chooses one effect: the listed one or Knocked Down.",
     "Critical Strike {SPECIAL_ICON}": "After activating this trait, any Melee Attacks performed by this model automatically treat the Strength die as scoring a natural 6. No die is rolled, but the success is counted.",
     "Crucial Information {SPECIAL_ICON}": "This model may move a Suspect within 8\" and LoS 4\".",
     "Cruel {SPECIAL_ICON}": "Choose a KO enemy (not a Vehicle) in contact. That model is removed from play as a Casualty.",
@@ -491,7 +490,7 @@ const traitDescriptions = {
     "God's Work": "During the Raise the Plan phase, target an enemy model. Attacks this model performs against the targeted model gain +1 to the Attack dice roll. If this model removes a targeted model as a Casualty, it gains a free Manipulate action for the rest of the game.\r\nThis model can only perform an Attack using a weapon that causes {BLOOD_ICON} against models that have been targeted by this trait.",
     "Good Aim {SPECIAL_ICON}": "During this model's next Ranged attack this activation, before rolling, roll one of your attack dice, on a 2+ that die is a successful hit.\r\nIf it fails, remove it from the attack.",
     "Gotham City Siren": "One use only. Target another friendly model with this trait within 4” – the target gains +2 {+ATT_ICON} or {+DEF_ICON}.",
-    "Grapple Gun": "Model gains the Grapple Gun trait.",
+    "Grapple Gun (Equipment Effect)": "Model gains the Grapple Gun trait.",
     "Grand Strategist": "While this model is in play and not KO, you gain +2 Resource points.",
     "Greed": "This model cannot contribute to or fulfill criteria for Objective cards that award VP for inflicting Damage, making models KO, or removing models as Casualties.",
     "Green Magic": "This model can use Green Spells. In addition, once per game this model can spend 1 MP to remove 2 Damage markers from its character card.",
@@ -1322,9 +1321,19 @@ const traitDescriptions = {
     
     
     "360° Strike {SPECIAL_ICON}": "When this model performs a Melee Attack this round, it must be performed against all the models available to be a target (friendly and enemy). During this attack, no one model can make Efforts. Roll only once, and compare with all the targets results. Friendly models cannot make defense rolls against these attacks, but they cannot be the only models affected by it (there must be at least one enemy to target)."
-
+,
+    // --- Трейты формата Eternal: описания из официальной базы Knight Models ---
+    "Hook Arrow {SPECIAL_ICON}": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun!",
+    "This... is.. Awesome-Sauce!": "Target a friendly model within 4” and line of sight. The target model gains an Audacity marker, and adds +1 to its Strength die rolls until the end of the round.",
+    "Make them perfect": "This model’s Attack actions gain the Push (4) Status, but the direction of the Push must be directly towards a friendly Professor Pyg model if he is in play.",
+    "Meta-Skin (Bulletproof Vest)": "Traits and attacks with the Firearm rule deduct 1 attack die when rolling against this model.",
+    "Bug (Archie)": "A model with the Archie trait is not deployed as usual – instead, during a friendly model’s activation, you may place this model in contact with a friendly Suspect and then remove that Suspect. Always are considered an activable model and inside the gaming area until they are removed as a Casualty. • A model with Archie may receive an Audacity marker even if it is not in play.",
+    "Hook Arrow {SPECIAL_ICON} (Batclaw)": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun!",
+    "Speed Force Absorption": "This model can steal 1 Speed Force marker from another model with the Speedster trait at the end of the Drain Speed Force subphase. This marker may cause the model to exceed the normal maximum reserve of Speed Force markers.",
+    "Amazon’s Wig": "This model may make an Effort to activate this trait, which will remain active until the start of this model’s next activation. Enemy models roll 2 fewer Attack dice when attacking this model, but this model suffers Slow 4.",
 };
 
 // Экспорт: window.compendium — база, по которой ищут описания трейтов/правил
 window.traitDescriptions = traitDescriptions;
-window.compendium = { ...traitDescriptions };
+window.compendium = { ...traitDescriptions 
+};

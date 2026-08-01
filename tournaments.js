@@ -21,21 +21,67 @@ const TOURNAMENT_RULES = {
 };
 
 let tournamentRole = null;        // null (экран выбора) | 'player' | 'organizer'
-let tournamentList = [];          // кэш списка турниров с сервера
+let tournamentList = [];          // кэш списка турниров с сервера (БЕЗ ростеров)
+let tnDetails = {};               // id -> полная карточка с ростерами, тянется по требованию
 let tnRostersOpenId = null;       // турнир с раскрытой формой подачи ростеров
 let tnReportEditId = null;        // турнир, где игрок исправляет записанный результат тура
 let tnPollTimer = null;           // поллинг: старт туров и чужие результаты видны без перезахода
 let tnAutoRoleDone = false;       // автозаход организатора — один раз за визит в раздел
+let tnPollBackoff = 0;            // подряд упавших опросов — интервал растёт, сервер не долбим
+let tnBusy = new Set();           // операции в полёте: защита от двойного клика
 
 function stopTnPolling() {
-  if (tnPollTimer) { clearInterval(tnPollTimer); tnPollTimer = null; }
+  if (tnPollTimer) { clearTimeout(tnPollTimer); tnPollTimer = null; }
+}
+
+// Полный сброс состояния раздела — вызывается при выходе из аккаунта,
+// иначе поллинг продолжал бы стучаться мёртвым токеном, а на экране
+// оставались бы турниры и ростеры предыдущего пользователя
+function resetTournamentsState() {
+  stopTnPolling();
+  tournamentRole = null;
+  tournamentList = [];
+  tnDetails = {};
+  tnRostersOpenId = null;
+  tnReportEditId = null;
+  tnAutoRoleDone = false;
+  tnPollBackoff = 0;
+  tnBusy.clear();
 }
 
 // Сигнатура «хода» турниров: перерисовываем список только при реальных изменениях
-// (статус, тур, состав, число записанных результатов) — не сбрасывая формы зря
+// (статус, тур, состав, результаты и споры) — не сбрасывая формы зря
 function tnListSignature(list) {
   return JSON.stringify(list.map(tn => [tn.id, tn.status, tn.round, tn.players.length,
-    (tn.rounds || []).map(r => Object.keys(r.results || {}).length)]));
+    (tn.rounds || []).map(r => [Object.keys(r.results || {}).length,
+                                Object.keys(r.claims || {}).length,
+                                Object.keys(r.disputes || {}).length])]));
+}
+
+// Обёртка мутирующих действий: блокирует повтор до ответа сервера и гасит
+// кнопку, чтобы двойной клик не создавал два турнира / две регистрации
+async function tnRun(key, fn) {
+  if (tnBusy.has(key)) return false;
+  tnBusy.add(key);
+  document.querySelectorAll('#tournamentsContent button').forEach(b => { b.disabled = true; });
+  try {
+    await fn();
+    return true;
+  } catch (e) {
+    alert(apiErrorText(e));
+    return false;
+  } finally {
+    tnBusy.delete(key);
+    document.querySelectorAll('#tournamentsContent button').forEach(b => { b.disabled = false; });
+  }
+}
+
+// Полная карточка турнира (с ростерами) — в списке их больше нет
+async function tnLoadDetails(id) {
+  try {
+    tnDetails[id] = await api('/api/tournaments/' + id);
+  } catch (e) { /* карточка останется без ростеров, форма покажет заглушку */ }
+  return tnDetails[id];
 }
 
 // Экранирование пользовательского текста (адрес, инфо, заметки — свободный ввод)
@@ -83,6 +129,7 @@ async function renderTournaments() {
   if (!box) return;
 
   if (!currentUser) {
+    stopTnPolling();
     box.innerHTML = `
       <div class="game-panel game-center">
         <p class="game-note">${t('tn_login_note')}</p>
@@ -95,6 +142,7 @@ async function renderTournaments() {
   try {
     tournamentList = (await api('/api/tournaments')).tournaments || [];
   } catch (e) {
+    stopTnPolling();
     box.innerHTML = `<div class="game-panel game-center"><p class="game-note">${apiErrorText(e)}</p></div>`;
     return;
   }
@@ -127,19 +175,31 @@ async function renderTournaments() {
   }
 
   renderTournamentsView();
+  tnPollBackoff = 0;
+  scheduleTnPoll();
+}
 
-  // Поллинг: участники видят старт турнира/тура и чужие результаты без перезахода
+// Поллинг: участники видят старт турнира/тура и чужие результаты без перезахода.
+// setTimeout, а не setInterval: при ошибке интервал удваивается (до 2 минут),
+// чтобы упавший сервер не получал запрос каждые 8 секунд от каждой вкладки.
+function scheduleTnPoll() {
   stopTnPolling();
-  tnPollTimer = setInterval(async () => {
-    if (currentMode !== 'tournaments' || !tournamentRole) { stopTnPolling(); return; }
+  const delay = Math.min(8000 * Math.pow(2, tnPollBackoff), 120000);
+  tnPollTimer = setTimeout(async () => {
+    if (currentMode !== 'tournaments' || !tournamentRole || !currentUser) { stopTnPolling(); return; }
+    if (document.hidden) { scheduleTnPoll(); return; }   // вкладка в фоне — не тратим запрос
     try {
       const fresh = (await api('/api/tournaments')).tournaments || [];
+      tnPollBackoff = 0;
       if (tnListSignature(fresh) !== tnListSignature(tournamentList)) {
         tournamentList = fresh;
         renderTournamentsView();
       }
-    } catch (e) { /* сервер мог мигнуть — экран не трогаем */ }
-  }, 8000);
+    } catch (e) {
+      tnPollBackoff = Math.min(tnPollBackoff + 1, 4);    // сервер мог мигнуть — экран не трогаем
+    }
+    if (currentMode === 'tournaments' && tournamentRole) scheduleTnPoll();
+  }, delay);
 }
 
 // Перерисовка из кэша tournamentList (без запроса к серверу)
@@ -227,10 +287,12 @@ async function deleteTournament(id) {
   }
 }
 
-// Попап организатора: поданные ростеры и заметки участника
-function showTournamentPlayerRosters(tnId, playerName) {
-  const tn = tournamentList.find(x => x.id === tnId);
-  const pl = tn && tn.players.find(x => x.name === playerName);
+// Попап организатора: поданные ростеры и заметки участника.
+// Список турниров ростеров не содержит (это мегабайты на каждый опрос) —
+// подтягиваем карточку целиком по требованию.
+async function showTournamentPlayerRosters(tnId, playerName) {
+  const tn = tnDetails[tnId] || await tnLoadDetails(tnId);
+  const pl = tn && (tn.players || []).find(x => x.name === playerName);
   if (!pl) return;
   const rosterBlock = (s, num) => {
     if (!s) return `<p>${t('tn_list')} ${num}: ${t('tn_rosters_missing')}</p>`;
@@ -259,32 +321,70 @@ function tnStatusBadge(tn) {
   return `<span class="tn-badge tn-badge-open">${t('tn_status_open')}</span>`;
 }
 
-// Пары текущего тура с отметками записанных результатов
-function tnRoundPairsHTML(tn) {
-  if (tn.status !== 'active' || !tn.rounds.length) return '';
-  const r = tn.rounds[tn.rounds.length - 1];
+// Пары одного тура с отметками сведённых результатов и споров.
+// asOrganizer — показываем кнопку разбора спора.
+function tnOneRoundHTML(tn, r, roundNo, asOrganizer) {
   const res = r.results || {};
+  const claims = r.claims || {};
+  const disputes = r.disputes || {};
+  const key = (a, b) => [a, b].sort().join('|');
   const mark = name => {
     const x = res[name];
-    if (!x) return `<span class="tn-pair-pending">…</span>`;
-    return `<span class="${x.win ? 'tn-pair-win' : 'tn-pair-loss'}">${x.win ? '🏆' : '✗'} ${x.vp} VP</span>`;
+    if (x) return `<span class="${x.win ? 'tn-pair-win' : 'tn-pair-loss'}">${x.win ? '🏆' : '✗'} ${x.vp} VP</span>`;
+    if (claims[name]) return `<span class="tn-pair-pending">✎</span>`; // заявил, ждём соперника
+    return `<span class="tn-pair-pending">…</span>`;
   };
-  const rows = (r.pairs || []).map((pr, i) => pr[1] ? `
+  const rows = (r.pairs || []).map((pr, i) => {
+    if (!pr[1]) return `
     <div class="tn-pair-row">
+      <span class="tn-player-num">${i + 1}</span>
+      <span class="tn-pair-side">${tnEsc(pr[0])} — <i>${t('tn_bye')}</i> 🏆</span>
+    </div>`;
+    const disputed = disputes[key(pr[0], pr[1])];
+    return `
+    <div class="tn-pair-row${disputed ? ' tn-pair-disputed' : ''}">
       <span class="tn-player-num">${i + 1}</span>
       <span class="tn-pair-side">${tnEsc(pr[0])} ${mark(pr[0])}</span>
       <span class="tn-pair-vs">vs</span>
       <span class="tn-pair-side">${tnEsc(pr[1])} ${mark(pr[1])}</span>
-    </div>` : `
-    <div class="tn-pair-row">
-      <span class="tn-player-num">${i + 1}</span>
-      <span class="tn-pair-side">${tnEsc(pr[0])} — <i>${t('tn_bye')}</i> 🏆</span>
-    </div>`).join('');
-  return `<div class="saves-title">${t('tn_round_pairs', { round: tn.round })}</div>
+      ${disputed ? `<span class="tn-badge tn-badge-wait">⚠ ${t('tn_disputed')}</span>` : ''}
+      ${disputed && asOrganizer && tn.status === 'active' ? `<button class="save-btn"
+        onclick="tnResolveDispute('${tn.id}',${roundNo - 1},'${tnEsc(pr[0])}','${tnEsc(pr[1])}')">${t('tn_resolve')}</button>` : ''}
+    </div>`;
+  }).join('');
+  return `<div class="saves-title">${t('tn_round_pairs', { round: roundNo })}</div>
     <div class="tn-players">${rows}</div>`;
 }
 
-// Таблица турнира: место, игрок, победы, суммарные VP; у завершённого — победитель
+// Текущий тур — у идущего турнира; вся история туров — у завершённого,
+// иначе после финиша запись мероприятия исчезала с экрана
+function tnRoundPairsHTML(tn, asOrganizer) {
+  if (!tn.rounds || !tn.rounds.length) return '';
+  if (tn.status === 'active') {
+    return tnOneRoundHTML(tn, tn.rounds[tn.rounds.length - 1], tn.rounds.length, asOrganizer);
+  }
+  if (tn.status === 'finished') {
+    return tn.rounds.map((r, i) => tnOneRoundHTML(tn, r, i + 1, false)).join('');
+  }
+  return '';
+}
+
+// Организатор разбирает спор: обе стороны заявили один и тот же исход
+async function tnResolveDispute(id, round, a, b) {
+  const winner = prompt(t('tn_resolve_prompt', { a, b }), a);
+  if (!winner) return;
+  if (winner !== a && winner !== b) { alert(t('tn_resolve_bad')); return; }
+  const vpWinner = parseInt(prompt(t('tn_resolve_vp', { name: winner }), '0'), 10);
+  const loser = winner === a ? b : a;
+  const vpLoser = parseInt(prompt(t('tn_resolve_vp', { name: loser }), '0'), 10);
+  if (!Number.isInteger(vpWinner) || !Number.isInteger(vpLoser)) { alert(t('tn_resolve_bad')); return; }
+  await tnRun('resolve-' + id, async () => {
+    await api('/api/tournaments/resolve', 'POST', { id, round, winner, vpWinner, vpLoser });
+    await renderTournaments();
+  });
+}
+
+// Таблица турнира: место, игрок, сыграно, победы, Бухгольц, VP; у завершённого — победитель
 function tnStandingsHTML(tn) {
   if (tn.status === 'open' || !(tn.standings || []).length) return '';
   const finished = tn.status === 'finished';
@@ -292,7 +392,9 @@ function tnStandingsHTML(tn) {
     <div class="tn-player-row tn-st-row${finished && i === 0 ? ' tn-st-winner' : ''}">
       <span class="tn-player-num">${i + 1}</span>
       <span class="tn-player-name">${tnEsc(s.name)}${s.name === currentUser ? ` <b>(${t('tn_you')})</b>` : ''}</span>
+      <span class="tn-st-cell" title="${t('tn_played')}">▦ ${s.played || 0}</span>
       <span class="tn-st-cell">🏆 ${s.wins}</span>
+      <span class="tn-st-cell" title="${t('tn_buchholz')}">Bh ${s.buchholz || 0}</span>
       <span class="tn-st-cell">${s.vp} VP</span>
     </div>`).join('');
   return `
@@ -308,11 +410,23 @@ function tnReportFormHTML(tn) {
   const myPair = (r.pairs || []).find(pr => pr[0] === currentUser || pr[1] === currentUser);
   if (!myPair || !myPair[0] || !myPair[1]) return ''; // не участвую или бай (записан автоматически)
   const my = (r.results || {})[currentUser];
+  const myClaim = (r.claims || {})[currentUser];
+  const disputed = (r.disputes || {})[[myPair[0], myPair[1]].sort().join('|')];
 
+  // Результат засчитан только когда соперник заявил обратное. Пока он молчит —
+  // это «заявка», а если оба заявили одно и то же, спор решает организатор.
   if (my && tnReportEditId !== tn.id) {
     return `
       <div class="tn-report-done">
         ✓ ${t('tn_result_recorded', { res: my.win ? t('tn_result_win') : t('tn_result_loss'), vp: my.vp })}
+        <button class="save-btn" onclick="tnReportEditId='${tn.id}';renderTournamentsView()">${t('tn_change')}</button>
+      </div>`;
+  }
+  if (myClaim && !my && tnReportEditId !== tn.id) {
+    return `
+      <div class="tn-report-done">
+        ${disputed ? `⚠ ${t('tn_dispute_note')}` : `✎ ${t('tn_claim_pending', {
+          res: myClaim.win ? t('tn_result_win') : t('tn_result_loss'), vp: myClaim.vp })}`}
         <button class="save-btn" onclick="tnReportEditId='${tn.id}';renderTournamentsView()">${t('tn_change')}</button>
       </div>`;
   }
@@ -324,7 +438,7 @@ function tnReportFormHTML(tn) {
       <p class="game-note">${t('tn_report_hint')}</p>
       <div class="tn-form-row">
         <label class="tn-form-label">${t('tn_vp_label')}</label>
-        <input type="number" id="tnVp-${tn.id}" class="game-select tn-num" min="0" max="200" value="${my ? my.vp : 0}">
+        <input type="number" id="tnVp-${tn.id}" class="game-select tn-num" min="0" max="200" value="${my ? my.vp : (myClaim ? myClaim.vp : 0)}">
       </div>
       <div class="game-finish-row">
         <button class="rank-select-btn" onclick="reportTnResult('${tn.id}', 1)">🏆 ${t('tn_result_win')}</button>
@@ -333,30 +447,41 @@ function tnReportFormHTML(tn) {
     </div>`;
 }
 
-// Действия организатора и участника над ходом турнира
+// Действия организатора и участника над ходом турнира.
+// tn_round_open — сервер не даёт закрыть тур с несведёнными парами; переспрашиваем
+// и повторяем с force, чтобы организатор мог продолжить осознанно.
 async function tnAction(pathname, body, confirmKey, confirmParams) {
   if (confirmKey && !confirm(t(confirmKey, confirmParams || {}))) return;
-  try {
-    await api(pathname, 'POST', body);
-    renderTournaments();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  return tnRun(pathname + (body.id || ''), async () => {
+    try {
+      await api(pathname, 'POST', body);
+    } catch (e) {
+      if (e && e.error === 'tn_round_open') {
+        if (!confirm(t('tn_confirm_force'))) return;
+        await api(pathname, 'POST', { ...body, force: true });
+      } else {
+        throw e;
+      }
+    }
+    await renderTournaments();
+  });
 }
 function startTournament(id) { return tnAction('/api/tournaments/start', { id }, 'tn_confirm_start'); }
 function nextTournamentRound(id) { return tnAction('/api/tournaments/next', { id }, 'tn_confirm_next'); }
 function finishTournament(id) { return tnAction('/api/tournaments/finish', { id }, 'tn_confirm_finish'); }
-function kickTournamentPlayer(id, name) { return tnAction('/api/tournaments/kick', { id, player: name }, 'tn_kick', { name }); }
+function kickTournamentPlayer(id, name, started) {
+  return tnAction('/api/tournaments/kick', { id, player: name }, started ? 'tn_drop_confirm' : 'tn_kick', { name });
+}
 
 async function reportTnResult(id, win) {
-  const vp = parseInt(($(`tnVp-${id}`) || {}).value, 10) || 0;
-  try {
-    await api('/api/tournaments/report', 'POST', { id, win, vp });
+  const raw = parseInt(($(`tnVp-${id}`) || {}).value, 10);
+  const vp = Number.isInteger(raw) && raw >= 0 ? Math.min(raw, 200) : 0;
+  await tnRun('report-' + id, async () => {
+    const r = await api('/api/tournaments/report', 'POST', { id, win, vp });
     tnReportEditId = null;
-    renderTournaments();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+    if (r && r.disputed) alert(t('tn_dispute_note'));
+    await renderTournaments();
+  });
 }
 
 // Карточка турнира. asOrganizer — режим ОРГАНИЗАТОРА: управление ходом
@@ -369,15 +494,19 @@ function tournamentCardHTML(tn, asOrganizer) {
   const isFull = tn.players.length >= tn.maxPlayers + tn.reserve;
   const isOpen = tn.status === 'open';
 
+  const roundsLeft = tn.status === 'active' && tn.maxRounds
+    ? Math.max(0, tn.maxRounds - (tn.rounds || []).length) : null;
+
   const playerRow = (p, num) => `
-    <div class="tn-player-row${asOrganizer ? ' tn-player-clickable' : ''}"
+    <div class="tn-player-row${asOrganizer ? ' tn-player-clickable' : ''}${p.dropped ? ' tn-player-dropped' : ''}"
          ${asOrganizer ? `onclick="showTournamentPlayerRosters('${tn.id}','${tnEsc(p.name)}')"` : ''}>
       <span class="tn-player-num">${num}</span>
       <span class="tn-player-name">${tnEsc(p.name)}${p.name === currentUser ? ` <b>(${t('tn_you')})</b>` : ''}</span>
       ${p.isReserve ? `<span class="tn-badge tn-badge-reserve">${t('tn_reserve_badge')}</span>` : ''}
+      ${p.dropped ? `<span class="tn-badge tn-badge-wait">${t('tn_dropped')}</span>` : ''}
       <span class="tn-badge ${p.hasRosters ? 'tn-badge-ok' : 'tn-badge-wait'}">${p.hasRosters ? '✓ ' + t('tn_rosters_ok') : '⏳ ' + t('tn_rosters_wait')}</span>
-      ${asOrganizer && isOpen ? `<span class="flap-chip-remove" title="${t('tn_kick_title')}"
-        onclick="event.stopPropagation();kickTournamentPlayer('${tn.id}','${tnEsc(p.name)}')">×</span>` : ''}
+      ${asOrganizer && tn.status !== 'finished' && !p.dropped ? `<span class="flap-chip-remove" title="${t('tn_kick_title')}"
+        onclick="event.stopPropagation();kickTournamentPlayer('${tn.id}','${tnEsc(p.name)}',${!isOpen})">×</span>` : ''}
     </div>`;
 
   return `
@@ -387,31 +516,34 @@ function tournamentCardHTML(tn, asOrganizer) {
         ${tnStatusBadge(tn)} &nbsp; 📅 ${tnDate(tn.dateStart)}${tn.dateEnd ? ' — ' + tnDate(tn.dateEnd) : ''}
         &nbsp;•&nbsp; 👤 ${tnEsc(tn.orgNick)} &nbsp;•&nbsp; #${tn.id}
         ${tn.rosterLockDays ? ` &nbsp;•&nbsp; 🔒 ${t('tn_lock_meta', { days: tn.rosterLockDays })}` : ''}
+        ${roundsLeft !== null ? ` &nbsp;•&nbsp; ${t('tn_rounds_left', { n: roundsLeft })}` : ''}
       </div>
       ${tn.info ? `<p class="game-note">${tnEsc(tn.info)}</p>` : ''}
       ${isOpen ? `
       <div class="tn-card-slots">
         ${t('tn_slots')}: <b>${mainPlayers.length} / ${tn.maxPlayers}</b>
         ${tn.reserve ? ` &nbsp;•&nbsp; ${t('tn_reserve')}: <b>${reservePlayers.length} / ${tn.reserve}</b>` : ''}
-      </div>
-      ${tn.players.length ? `<div class="tn-players">${tn.players.map((p, i) => playerRow(p, i + 1)).join('')}</div>` : ''}` : ''}
-      ${tnRoundPairsHTML(tn)}
+      </div>` : ''}
+      ${/* состав виден и после старта: организатору нужны листы именно во время турнира */ ''}
+      ${tn.players.length ? `<div class="tn-players">${tn.players.map((p, i) => playerRow(p, i + 1)).join('')}</div>` : ''}
+      ${tnRoundPairsHTML(tn, asOrganizer)}
       ${!asOrganizer && me ? tnReportFormHTML(tn) : ''}
       ${tnStandingsHTML(tn)}
       <div class="tn-card-actions">
         ${!asOrganizer && isOpen && !me && !isFull ? `<button class="rank-select-btn" onclick="joinTournament('${tn.id}')">${t('tn_join')}</button>` : ''}
         ${!asOrganizer && isOpen && !me && isFull ? `<span class="tn-badge tn-badge-wait">${t('tn_full')}</span>` : ''}
-        ${!asOrganizer && me && tn.status !== 'finished' ? (tn.rostersLocked
+        ${/* листы подаются только до старта — иначе банду можно менять между турами */ ''}
+        ${!asOrganizer && isOpen && me ? (tn.rostersLocked
           ? `<span class="tn-badge tn-badge-wait">🔒 ${t('tn_rosters_closed')}</span>`
           : `<button class="save-btn" onclick="toggleTnRosters('${tn.id}')">🃏 ${t('tn_submit_rosters')}</button>`) : ''}
         ${!asOrganizer && isOpen && me ? `<button class="save-btn save-btn-del" onclick="leaveTournament('${tn.id}')">${t('tn_leave')}</button>` : ''}
         ${asOrganizer && isOpen ? `<button class="rank-select-btn tn-org-btn" onclick="startTournament('${tn.id}')">▶ ${t('tn_start')}</button>` : ''}
         ${asOrganizer && tn.status === 'active' ? `
-          <button class="rank-select-btn tn-org-btn" onclick="nextTournamentRound('${tn.id}')">⏭ ${t('tn_next_round')}</button>
+          ${roundsLeft ? `<button class="rank-select-btn tn-org-btn" onclick="nextTournamentRound('${tn.id}')">⏭ ${t('tn_next_round')}</button>` : ''}
           <button class="rank-select-btn tn-org-btn" onclick="finishTournament('${tn.id}')">🏁 ${t('tn_finish')}</button>` : ''}
         ${asOrganizer ? `<button class="save-btn save-btn-del" onclick="deleteTournament('${tn.id}')">✕ ${t('tn_delete')}</button>` : ''}
       </div>
-      ${!asOrganizer && me && tn.status !== 'finished' && !tn.rostersLocked && tnRostersOpenId === tn.id ? tnRostersFormHTML(tn, me) : ''}
+      ${!asOrganizer && isOpen && me && !tn.rostersLocked && tnRostersOpenId === tn.id ? tnRostersFormHTML(tn, me) : ''}
     </div>`;
 }
 
@@ -435,8 +567,10 @@ async function leaveTournament(id) {
   }
 }
 
-function toggleTnRosters(id) {
-  tnRostersOpenId = tnRostersOpenId === id ? null : id;
+async function toggleTnRosters(id) {
+  if (tnRostersOpenId === id) { tnRostersOpenId = null; renderTournamentsView(); return; }
+  await tnLoadDetails(id);          // нужны уже поданные листы для предвыбора в селектах
+  tnRostersOpenId = id;
   renderTournamentsView();
 }
 
@@ -488,9 +622,13 @@ function tnRostersFormHTML(tn, me) {
   const R = TOURNAMENT_RULES;
   if (!mySaves.length) return `<p class="auth-note">${t('tn_no_saves')}</p>`;
 
+  // Ростеры приходят отдельным запросом (tnLoadDetails), в списке их нет
+  const detail = tnDetails[tn.id];
+  const mine = (detail && (detail.players || []).find(p => p.name === currentUser)) || me;
+
   // Уже поданные листы — предвыбор в селектах по имени сохранения
   const findIdx = r => r ? mySaves.findIndex(s => s.n === r.n && s.f === r.f) : -1;
-  const sel1 = findIdx(me.roster1), sel2 = findIdx(me.roster2);
+  const sel1 = findIdx(mine.roster1), sel2 = findIdx(mine.roster2);
 
   const options = selected => `<option value="">—</option>` + mySaves.map((s, i) =>
     `<option value="${i}" ${i === selected ? 'selected' : ''}>${tnEsc(s.n)} (${tnEsc(s.f)})</option>`).join('');
@@ -512,7 +650,7 @@ function tnRostersFormHTML(tn, me) {
       </div>
       <div class="tn-checklist" id="tnChecklist-${tn.id}">${tnChecklistHTML(sel1 >= 0 ? mySaves[sel1] : null, sel2 >= 0 ? mySaves[sel2] : null)}</div>
       <textarea id="tnNotes-${tn.id}" class="game-select tn-textarea" maxlength="400" rows="2"
-                placeholder="${t('tn_notes_ph')}">${tnEsc(me.notes || '')}</textarea>
+                placeholder="${t('tn_notes_ph')}">${tnEsc(mine.notes || '')}</textarea>
       <button class="rank-select-btn" onclick="submitTournamentRosters('${tn.id}')">${t('tn_submit')}</button>
     </div>`;
 }

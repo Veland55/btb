@@ -17,6 +17,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const zlib = require('zlib');
 const net = require('net');
 const tls = require('tls');
 const { DatabaseSync } = require('node:sqlite');
@@ -33,10 +34,16 @@ const SESSION_TTL_MS = 30 * 24 * 3600 * 1000;   // сессии — 30 дней
 const RESET_CODE_TTL_MS = 15 * 60 * 1000;       // код восстановления пароля — 15 минут
 const RESET_MAX_ATTEMPTS = 5;                   // попыток ввода кода, дальше нужен новый
 const RESET_MIN_INTERVAL_MS = 60 * 1000;        // не чаще одного запроса кода в минуту
+const STATS_TTL_MS = 60 * 1000;                 // публичная статистика кэшируется на минуту
+
+let statsCache = { at: 0, body: null };
 
 // ======================== БАЗА ДАННЫХ ========================
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 const db = new DatabaseSync(path.join(DATA_DIR, 'bmg.db'));
+// WAL: читатели не блокируют писателя и наоборот — заметно ровнее под нагрузкой
+db.exec('PRAGMA journal_mode = WAL');
+db.exec('PRAGMA synchronous = NORMAL');
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
@@ -112,8 +119,21 @@ db.exec(`
     roster1 TEXT,
     roster2 TEXT,
     notes   TEXT,
+    dropped INTEGER NOT NULL DEFAULT 0,
+    seat    INTEGER,
     PRIMARY KEY (tid, user)
   );
+  -- Индексы под горячие выборки: список турниров у организатора, лента по дате,
+  -- рейтинг победителей в /api/stats и разбор результатов игр
+  CREATE INDEX IF NOT EXISTS idx_tn_organizer ON tournaments (organizer);
+  CREATE INDEX IF NOT EXISTS idx_tn_created   ON tournaments (created DESC);
+  CREATE INDEX IF NOT EXISTS idx_tn_winner    ON tournaments (winner);
+  CREATE INDEX IF NOT EXISTS idx_res_winner   ON results (winner_user);
+  CREATE INDEX IF NOT EXISTS idx_res_wboss    ON results (winner_boss);
+  CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions (user);
+  CREATE INDEX IF NOT EXISTS idx_sessions_created ON sessions (created);
+  CREATE INDEX IF NOT EXISTS idx_games_created    ON games (created);
+  CREATE INDEX IF NOT EXISTS idx_resets_created   ON password_resets (created);
 `);
 
 // Миграции для баз, созданных старыми версиями (колонки, добавленные позже;
@@ -127,11 +147,29 @@ const MIGRATIONS = [
   'ALTER TABLE tournaments ADD COLUMN rounds TEXT',
   'ALTER TABLE tournaments ADD COLUMN winner TEXT',
   'ALTER TABLE tournaments ADD COLUMN roster_lock_days INTEGER NOT NULL DEFAULT 0',
-  'ALTER TABLE users ADD COLUMN email TEXT'
+  'ALTER TABLE users ADD COLUMN email TEXT',
+  // снятие с турнира после старта (не пришёл / снялся) — пары его больше не берут,
+  // но уже сыгранные туры остаются в таблице
+  'ALTER TABLE tournament_players ADD COLUMN dropped INTEGER NOT NULL DEFAULT 0',
+  // место в основном составе, фиксируется на старте: резерв в пары не попадает
+  'ALTER TABLE tournament_players ADD COLUMN seat INTEGER'
 ];
 for (const stmt of MIGRATIONS) {
   try { db.exec(stmt); } catch (e) { /* колонка уже есть */ }
 }
+
+// Кэш подготовленных запросов: db.prepare() заново компилирует SQL при каждом
+// вызове, а вызывается он в обработчиках ~60 раз за запрос. Текст запросов —
+// литералы из этого файла, их конечное число, поэтому кэш не растёт бесконечно.
+// Node однопоточный и все обращения к базе синхронные, так что переиспользовать
+// один объект-statement безопасно.
+const _rawPrepare = db.prepare.bind(db);
+const _stmtCache = new Map();
+db.prepare = sql => {
+  let st = _stmtCache.get(sql);
+  if (!st) { st = _rawPrepare(sql); _stmtCache.set(sql, st); }
+  return st;
+};
 
 // Постоянные счётчики (игры живут в базе сутки, а статистике нужен итог за всё время)
 function bumpCounter(name) {
@@ -284,17 +322,62 @@ function resetRateLimited(name) {
 }
 
 // ======================== ХЕЛПЕРЫ ========================
+// scrypt намеренно дорогой (~40 мс). Синхронная версия на это время полностью
+// останавливала цикл событий: 60 неудачных логинов подряд делали сайт
+// неотзывчивым для всех остальных. Асинхронная считает в пуле потоков.
 function hashPassword(salt, password) {
-  return crypto.scryptSync(password, salt, 32).toString('hex');
+  return new Promise((resolve, reject) =>
+    crypto.scrypt(password, salt, 32, (e, key) => e ? reject(e) : resolve(key.toString('hex'))));
 }
 
+// Ограничитель попыток входа/регистрации с одного адреса: без него подбор
+// пароля не только опасен сам по себе, но и работает как DoS через scrypt
+// (каждая проверка — ~40 мс работы). Считаем только НЕУДАЧНЫЕ попытки:
+// целый клуб за одним NAT-адресом иначе упирался бы в лимит на ровном месте.
+const AUTH_MAX_FAILS = 20;                         // неудач в минуту с одного адреса
+const authHits = new Map();
+const authIp = req => req.socket.remoteAddress || '?';
+
+function authThrottled(req) {
+  const e = authHits.get(authIp(req));
+  return !!(e && Date.now() <= e.reset && e.n >= AUTH_MAX_FAILS);
+}
+function authFailed(req) {
+  const ip = authIp(req), now = Date.now();
+  if (authHits.size > 10000) authHits.clear();     // грубая защита от роста Map
+  let e = authHits.get(ip);
+  if (!e || now > e.reset) { e = { n: 0, reset: now + 60000 }; authHits.set(ip, e); }
+  e.n++;
+}
+function authSucceeded(req) { authHits.delete(authIp(req)); }
+
+// JSON-ответ. Крупные ответы (списки турниров, статистика) сжимаем: это
+// экономит десятки процентов трафика при поллинге. res.req — сам запрос,
+// его подставляет http-сервер, отдельный аргумент во все вызовы не нужен.
 function send(res, code, obj) {
-  const body = JSON.stringify(obj);
-  res.writeHead(code, {
+  const body = Buffer.from(JSON.stringify(obj), 'utf8');
+  const head = {
     'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store'
-  });
-  res.end(body);
+    'Cache-Control': 'no-store',
+    'Vary': 'Accept-Encoding',
+    'X-Content-Type-Options': 'nosniff'
+  };
+  const accept = (res.req && res.req.headers['accept-encoding']) || '';
+  const enc = body.length < 1024 ? null
+            : /\bbr\b/.test(accept) ? 'br'
+            : /\bgzip\b/.test(accept) ? 'gzip' : null;
+  if (!enc) {
+    head['Content-Length'] = body.length;
+    res.writeHead(code, head);
+    return res.end(body);
+  }
+  const packed = enc === 'br'
+    ? zlib.brotliCompressSync(body, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 5 } })
+    : zlib.gzipSync(body, { level: 6 });
+  head['Content-Encoding'] = enc;
+  head['Content-Length'] = packed.length;
+  res.writeHead(code, head);
+  res.end(packed);
 }
 
 function readBody(req) {
@@ -362,17 +445,22 @@ function validSavesArray(arr) {
     && arr.every(validSave);
 }
 
-// Код игры: 6 символов без визуально похожих (0/O, 1/I/L)
+// Код игры/турнира: 6 символов без визуально похожих (0/O, 1/I/L).
+// Уникальность проверяется в ТОЙ таблице, куда код и пойдёт: игры чистятся через
+// сутки, турниры живут вечно, поэтому общая проверка по games для турниров врала.
 const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-function newGameCode() {
+function newCode(table, col) {
+  // table/col — только литералы из кода, не пользовательский ввод
+  const check = db.prepare(`SELECT ${col} FROM ${table} WHERE ${col} = ?`);
   for (let attempt = 0; attempt < 20; attempt++) {
     let code = '';
     const bytes = crypto.randomBytes(6);
     for (let i = 0; i < 6; i++) code += CODE_ALPHABET[bytes[i] % CODE_ALPHABET.length];
-    if (!db.prepare('SELECT code FROM games WHERE code = ?').get(code)) return code;
+    if (!check.get(code)) return code;
   }
   return null;
 }
+const newGameCode = () => newCode('games', 'code');
 
 function gameToJSON(g) {
   return {
@@ -406,11 +494,19 @@ const validVp = v => Number.isInteger(v) && v >= 0 && v <= 200;
 const reqStr = (s, max) => typeof s === 'string' && s.trim().length > 0 && s.length <= max;
 const optStr = (s, max) => s == null || (typeof s === 'string' && s.length <= max);
 
+// Даты турнира приходят из <input type="datetime-local"> в ISO-виде.
+// Непарсящаяся дата раньше тихо отключала блокировку ростеров (Date.parse -> NaN).
+const validDate = s => typeof s === 'string' && !isNaN(Date.parse(s));
+
 function validTournament(tn) {
   return tn && typeof tn === 'object'
     && reqStr(tn.address, 120)
-    && reqStr(tn.dateStart, 40)
+    && !/[<>]/.test(tn.address)                 // адрес попадает в публичную статистику
+    && !/[<>]/.test(tn.orgNick || '')
+    && reqStr(tn.dateStart, 40) && validDate(tn.dateStart)
     && optStr(tn.dateEnd, 40)
+    && (tn.dateEnd == null || tn.dateEnd === '' ||
+        (validDate(tn.dateEnd) && Date.parse(tn.dateEnd) >= Date.parse(tn.dateStart)))
     && Number.isInteger(tn.maxPlayers) && tn.maxPlayers >= 2 && tn.maxPlayers <= 128
     && Number.isInteger(tn.reserve) && tn.reserve >= 0 && tn.reserve <= 64
     && Number.isInteger(tn.rosterLockDays) && tn.rosterLockDays >= 0 && tn.rosterLockDays <= 60
@@ -429,16 +525,50 @@ function rostersLocked(tn) {
 }
 
 // ---- Ход турнира: туры, пары, таблица ----
-// tn.rounds (JSON): [ { pairs: [["A","B"], ["C", null]], results: { "A": {win:1, vp:12}, ... } }, ... ]
+// tn.rounds (JSON): [ { pairs: [["A","B"], ["C", null]],
+//                       claims:  { "A": {win:1, vp:12}, ... },   — что заявил каждый игрок
+//                       results: { "A": {win:1, vp:12}, ... },   — сведённый результат пары
+//                       disputes: { "A|B": true } }, ... ]       — заявки не сошлись
 // null в паре — «бай» (нечётное число игроков): автоматически победа с 0 VP.
+// Результат пары засчитывается, только когда обе стороны заявили противоположный
+// исход, либо когда организатор разрешил спор вручную (/api/tournaments/resolve).
 function tnRounds(tn) {
   try { return tn.rounds ? JSON.parse(tn.rounds) : []; } catch (e) { return []; }
 }
 
-// Таблица: победы, суммарные VP, сыграно туров; сортировка — победы, затем VP
+// Ключ пары не зависит от порядка имён
+const pairKey = (a, b) => [a, b].sort().join('|');
+
+// Сведение заявок одной пары в результат. Обе заявили победу (или обе поражение)
+// — спор, результат не засчитывается, пока организатор не рассудит.
+function reconcilePair(round, a, b) {
+  const key = pairKey(a, b);
+  const claims = round.claims || {};
+  const ca = claims[a], cb = claims[b];
+  round.results = round.results || {};
+  round.disputes = round.disputes || {};
+  if (round.results[a] && round.results[a].forced) return; // решение организатора не перебиваем
+  delete round.results[a];
+  delete round.results[b];
+  delete round.disputes[key];
+  if (!ca || !cb) return;                       // ждём вторую сторону
+  if (ca.win === cb.win) { round.disputes[key] = true; return; }
+  round.results[a] = { win: ca.win, vp: ca.vp };
+  round.results[b] = { win: cb.win, vp: cb.vp };
+}
+
+// Все ли пары тура сведены (бай считается сыгранным)
+function roundComplete(round) {
+  return (round.pairs || []).every(([a, b]) => !b || ((round.results || {})[a] && (round.results || {})[b]));
+}
+
+// Таблица: победы, суммарные VP, сыграно туров.
+// Тай-брейк: победы → Бухгольц (сумма побед всех соперников) → VP → имя.
 function tournamentStandings(tn, playerNames) {
-  const table = new Map(playerNames.map(n => [n, { name: n, wins: 0, vp: 0, played: 0 }]));
-  for (const r of tnRounds(tn)) {
+  const table = new Map(playerNames.map(n => [n, { name: n, wins: 0, vp: 0, played: 0, buchholz: 0 }]));
+  const opponents = new Map(playerNames.map(n => [n, []]));
+  const rounds = tnRounds(tn);
+  for (const r of rounds) {
     for (const [name, res] of Object.entries(r.results || {})) {
       const row = table.get(name);
       if (!row || !res) continue;
@@ -446,8 +576,16 @@ function tournamentStandings(tn, playerNames) {
       row.wins += res.win ? 1 : 0;
       row.vp += res.vp || 0;
     }
+    for (const [a, b] of (r.pairs || [])) {
+      if (a && b) { (opponents.get(a) || []).push(b); (opponents.get(b) || []).push(a); }
+    }
   }
-  return [...table.values()].sort((a, b) => b.wins - a.wins || b.vp - a.vp || a.name.localeCompare(b.name));
+  for (const row of table.values()) {
+    row.buchholz = (opponents.get(row.name) || [])
+      .reduce((sum, opp) => sum + ((table.get(opp) || {}).wins || 0), 0);
+  }
+  return [...table.values()].sort((a, b) =>
+    b.wins - a.wins || b.buchholz - a.buchholz || b.vp - a.vp || a.name.localeCompare(b.name));
 }
 
 // Пары следующего тура (швейцарская система «лайт»): по текущей таблице,
@@ -462,20 +600,35 @@ function makePairings(tn, playerNames) {
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
   } else {
-    pool = tournamentStandings(tn, playerNames).map(s => s.name);
+    pool = tournamentStandings(tn, playerNames).map(s => s.name).filter(n => playerNames.includes(n));
   }
   const played = new Set();
+  const byes = new Set();
   rounds.forEach(r => (r.pairs || []).forEach(([a, b]) => {
     if (a && b) { played.add(a + '|' + b); played.add(b + '|' + a); }
+    else if (a) byes.add(a);                    // кому бай уже доставался
   }));
+
+  // Бай отдаём заранее — и снизу таблицы, как требует швейцарская система,
+  // пропуская тех, у кого он уже был. Раньше бай получал ЛУЧШИЙ из оставшихся
+  // и мог получить его повторно, что позволяло выиграть турнир без единой игры.
+  let byePlayer = null;
+  if (pool.length % 2 === 1) {
+    let bi = pool.length - 1;
+    while (bi > 0 && byes.has(pool[bi])) bi--;
+    byePlayer = pool.splice(bi, 1)[0];
+  }
+
   const pairs = [];
+  let fallback = 0;                             // ротация, чтобы реванши не повторялись один в один
   while (pool.length > 1) {
     const a = pool.shift();
     let idx = pool.findIndex(b => !played.has(a + '|' + b));
-    if (idx === -1) idx = 0; // со всеми уже сыграно — берём ближайшего по таблице
+    if (idx === -1) idx = Math.min(fallback++, pool.length - 1); // со всеми уже сыграно
     pairs.push([a, pool.splice(idx, 1)[0]]);
   }
-  if (pool.length) pairs.push([pool[0], null]); // бай
+  if (pool.length) pairs.push([pool[0], null]); // подстраховка на нечётность
+  if (byePlayer) pairs.push([byePlayer, null]);
   return pairs;
 }
 
@@ -485,15 +638,39 @@ function pushRound(tn, playerNames) {
   const pairs = makePairings(tn, playerNames);
   const results = {};
   pairs.forEach(([a, b]) => { if (!b) results[a] = { win: 1, vp: 0, bye: true }; });
-  rounds.push({ pairs, results });
+  rounds.push({ pairs, results, claims: {}, disputes: {} });
   return rounds;
 }
 
+// Потолок числа туров для швейцарской системы: больше ceil(log2(N)) туров
+// система развести не может и начинает выдавать те же пары повторно.
+const maxRounds = n => Math.max(1, Math.ceil(Math.log2(Math.max(2, n))));
+
+// Основной состав турнира (без резерва). До старта место определяется порядком
+// регистрации, после старта — колонкой seat, зафиксированной на старте, чтобы
+// поздние изменения состава не переставляли уже сыгранные пары.
+//   dropped:false — кто играет дальше (для жеребьёвки)
+//   dropped:true  — плюс снятые: их сыгранные туры остаются в таблице
+function tournamentSeated(tid, maxPlayers, withDropped) {
+  const rows = db.prepare('SELECT user, dropped, seat FROM tournament_players WHERE tid = ? ORDER BY joined').all(tid);
+  const seated = rows.some(r => r.seat != null)
+    ? rows.filter(r => r.seat != null).sort((a, b) => a.seat - b.seat)
+    : rows.slice(0, maxPlayers);
+  return seated.filter(r => withDropped || !r.dropped).map(r => r.user);
+}
+// Кого жеребьюем в следующем туре
+const tournamentEntrants = (tid, maxPlayers) => tournamentSeated(tid, maxPlayers, false);
+// Кого показываем в итоговой таблице
+const tournamentTableNames = (tid, maxPlayers) => tournamentSeated(tid, maxPlayers, true);
+
 // Турнир + участники; свои ростеры видит их владелец, все ростеры — организатор
-function tournamentToJSON(tn, user) {
+function tournamentToJSON(tn, user, opts) {
   const players = db.prepare('SELECT * FROM tournament_players WHERE tid = ? ORDER BY joined').all(tn.id);
   const isOrganizer = tn.organizer === user;
-  const names = players.map(pl => pl.user);
+  const names = tournamentEntrants(tn.id, tn.max_players);
+  const tableNames = tournamentTableNames(tn.id, tn.max_players);
+  // Списком турниров ростеры не отдаём: на каждый опрос это мегабайты чужого JSON
+  const withRosters = !opts || opts.rosters !== false;
   return {
     id: tn.id,
     created: tn.created,
@@ -511,16 +688,18 @@ function tournamentToJSON(tn, user) {
     rosterLockDays: tn.roster_lock_days || 0,
     rostersLocked: rostersLocked(tn),
     rounds: tnRounds(tn),
-    standings: tn.status !== 'open' ? tournamentStandings(tn, names) : [],
+    standings: tn.status !== 'open' ? tournamentStandings(tn, tableNames) : [],
     isOrganizer,
+    maxRounds: maxRounds(names.length),
     players: players.map((pl, i) => {
       const mine = pl.user === user;
       const row = {
         name: pl.user,
-        isReserve: i >= tn.max_players,     // порядок регистрации: сверх лимита — резерв
+        isReserve: pl.seat != null ? false : i >= tn.max_players, // сверх лимита — резерв
+        dropped: !!pl.dropped,
         hasRosters: !!(pl.roster1 && pl.roster2)
       };
-      if (mine || isOrganizer) {
+      if ((mine || isOrganizer) && withRosters) {
         row.roster1 = pl.roster1 ? JSON.parse(pl.roster1) : null;
         row.roster2 = pl.roster2 ? JSON.parse(pl.roster2) : null;
         row.notes = pl.notes || null;
@@ -536,6 +715,7 @@ async function handleApi(req, res, url) {
 
   // --- Аутентификация ---
   if (p === '/api/register' && req.method === 'POST') {
+    if (authThrottled(req)) return send(res, 429, { error: 'rate' });
     const body = await readBody(req);
     const name = normName(body.name), pass = body.pass;
     if (!validName(name) || !validPass(pass)) return send(res, 400, { error: 'input' });
@@ -543,25 +723,28 @@ async function handleApi(req, res, url) {
     // но если прислан, должен быть валидного формата
     const email = body.email ? String(body.email).trim() : null;
     if (email != null && !validEmail(email)) return send(res, 400, { error: 'input' });
-    if (userNameTaken(name)) return send(res, 409, { error: 'exists' });
+    if (userNameTaken(name)) { authFailed(req); return send(res, 409, { error: 'exists' }); }
     const salt = crypto.randomBytes(8).toString('hex');
     db.prepare('INSERT INTO users (name, salt, hash, created, email) VALUES (?, ?, ?, ?, ?)')
-      .run(name, salt, hashPassword(salt, pass), Date.now(), email);
+      .run(name, salt, await hashPassword(salt, pass), Date.now(), email);
     return send(res, 200, { token: createSession(name), name, country: null, email });
   }
 
   if (p === '/api/login' && req.method === 'POST') {
+    if (authThrottled(req)) return send(res, 429, { error: 'rate' });
     const body = await readBody(req);
     const name = normName(body.name), pass = body.pass;
     const row = validName(name) && validPass(pass)
       ? db.prepare('SELECT salt, hash, country, email FROM users WHERE name = ?').get(name) : null;
-    if (!row) return send(res, 401, { error: 'badcred' });
+    if (!row) { authFailed(req); return send(res, 401, { error: 'badcred' }); }
     // timingSafeEqual — сравнение хэшей без утечки по времени ответа
-    const given = Buffer.from(hashPassword(row.salt, pass), 'hex');
+    const given = Buffer.from(await hashPassword(row.salt, pass), 'hex');
     const stored = Buffer.from(row.hash, 'hex');
     if (given.length !== stored.length || !crypto.timingSafeEqual(given, stored)) {
+      authFailed(req);
       return send(res, 401, { error: 'badcred' });
     }
+    authSucceeded(req);
     return send(res, 200, { token: createSession(name), name, country: row.country || null, email: row.email || null });
   }
 
@@ -620,14 +803,20 @@ async function handleApi(req, res, url) {
       return send(res, 400, { error: 'reset_bad_code' });
     }
     const salt = crypto.randomBytes(8).toString('hex');
-    db.prepare('UPDATE users SET salt = ?, hash = ? WHERE name = ?').run(salt, hashPassword(salt, newPass), name);
+    db.prepare('UPDATE users SET salt = ?, hash = ? WHERE name = ?').run(salt, await hashPassword(salt, newPass), name);
     db.prepare('DELETE FROM password_resets WHERE user = ?').run(name);
     db.prepare('DELETE FROM sessions WHERE user = ?').run(name); // сброс пароля — разлогиниваем все устройства
     return send(res, 200, { ok: true });
   }
 
   // --- Публичная статистика (агрегаты без личных данных, см. stats.js) ---
+  // Считается полным перебором всех сохранений — на тысячах пользователей это
+  // сотни миллисекунд заблокированного цикла событий. Ответ одинаков для всех
+  // и не обязан быть секундной свежести, поэтому держим минутный кэш.
   if (p === '/api/stats' && req.method === 'GET') {
+    if (statsCache.body && Date.now() - statsCache.at < STATS_TTL_MS) {
+      return send(res, 200, statsCache.body);
+    }
     const usersTotal = db.prepare('SELECT COUNT(*) AS c FROM users').get().c;
     const countries = db.prepare(
       "SELECT country, COUNT(*) AS c FROM users WHERE country IS NOT NULL AND country != '' GROUP BY country ORDER BY c DESC, country LIMIT 10"
@@ -680,7 +869,7 @@ async function handleApi(req, res, url) {
        WHERE t.winner IS NOT NULL GROUP BY t.winner, u.country ORDER BY c DESC, t.winner LIMIT 10`
     ).all().map(r => [r.name, r.c, r.country || null]);
 
-    return send(res, 200, {
+    const payload = {
       users: usersTotal,
       rosters,
       games: getCounter('games_created'),
@@ -694,7 +883,9 @@ async function handleApi(req, res, url) {
       topPlayers,
       locations,
       countries
-    });
+    };
+    statsCache = { at: Date.now(), body: payload };
+    return send(res, 200, payload);
   }
 
   // --- Всё ниже требует входа ---
@@ -833,17 +1024,40 @@ async function handleApi(req, res, url) {
   }
 
   // --- Турниры ---
+  // Лента турниров. ?scope=mine — все свои (организатор + участие), без лимита;
+  // иначе страница общего списка. Ростеры в списке не отдаются — их тянет
+  // /api/tournaments/:id при открытии карточки.
   if (p === '/api/tournaments' && req.method === 'GET') {
-    const rows = db.prepare('SELECT * FROM tournaments ORDER BY created DESC LIMIT 50').all();
-    return send(res, 200, { tournaments: rows.map(tn => tournamentToJSON(tn, user)) });
+    const scope = url.searchParams.get('scope');
+    const limit = Math.min(Math.max(parseInt(url.searchParams.get('limit'), 10) || 50, 1), 100);
+    const offset = Math.max(parseInt(url.searchParams.get('offset'), 10) || 0, 0);
+    const rows = scope === 'mine'
+      ? db.prepare(`SELECT * FROM tournaments WHERE organizer = ?
+                      OR id IN (SELECT tid FROM tournament_players WHERE user = ?)
+                    ORDER BY created DESC`).all(user, user)
+      : db.prepare('SELECT * FROM tournaments ORDER BY created DESC LIMIT ? OFFSET ?').all(limit, offset);
+    const total = db.prepare('SELECT COUNT(*) AS c FROM tournaments').get().c;
+    return send(res, 200, {
+      tournaments: rows.map(tn => tournamentToJSON(tn, user, { rosters: false })),
+      total, offset, limit
+    });
+  }
+
+  // Одна карточка целиком — включая ростеры (свои, а организатору — все)
+  const tnGetMatch = /^\/api\/tournaments\/([A-Z0-9]{6})$/i.exec(p);
+  if (tnGetMatch && req.method === 'GET') {
+    const tn = db.prepare('SELECT * FROM tournaments WHERE id = ?').get(tnGetMatch[1].toUpperCase());
+    if (!tn) return send(res, 404, { error: 'tn_notfound' });
+    return send(res, 200, tournamentToJSON(tn, user));
   }
 
   if (p === '/api/tournaments' && req.method === 'POST') {
     const tn = await readBody(req);
     if (!validTournament(tn)) return send(res, 400, { error: 'input' });
-    const mine = db.prepare('SELECT COUNT(*) AS c FROM tournaments WHERE organizer = ?').get(user).c;
+    // лимит на НЕзавершённые: иначе организатор клуба навсегда упирается в потолок
+    const mine = db.prepare("SELECT COUNT(*) AS c FROM tournaments WHERE organizer = ? AND status != 'finished'").get(user).c;
     if (mine >= MAX_TOURNAMENTS_PER_ORG) return send(res, 400, { error: 'tn_limit' });
-    const id = newGameCode();
+    const id = newCode('tournaments', 'id');
     if (!id) return send(res, 500, { error: 'server' });
     db.prepare(`INSERT INTO tournaments (id, created, organizer, org_nick, address, date_start,
                   date_end, max_players, reserve, info, roster_lock_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
@@ -872,7 +1086,8 @@ async function handleApi(req, res, url) {
     const tn = typeof id === 'string' ? db.prepare('SELECT * FROM tournaments WHERE id = ?').get(id.toUpperCase()) : null;
     if (!tn) return send(res, 404, { error: 'notfound' });
     if (tn.status !== 'open') return send(res, 409, { error: 'tn_started' }); // после старта пары уже сформированы
-    db.prepare('DELETE FROM tournament_players WHERE tid = ? AND user = ?').run(tn.id, user);
+    const gone = db.prepare('DELETE FROM tournament_players WHERE tid = ? AND user = ?').run(tn.id, user);
+    if (!gone.changes) return send(res, 404, { error: 'tn_notfound' });      // не был записан
     return send(res, 200, { ok: true });
   }
 
@@ -884,6 +1099,8 @@ async function handleApi(req, res, url) {
     if (!db.prepare('SELECT user FROM tournament_players WHERE tid = ? AND user = ?').get(tn.id, user)) {
       return send(res, 403, { error: 'auth' });
     }
+    // Листы подаются только до старта: иначе игрок менял бы банду между турами
+    if (tn.status !== 'open') return send(res, 409, { error: 'tn_started' });
     if (rostersLocked(tn)) return send(res, 409, { error: 'tn_locked' }); // дедлайн организатора прошёл
     if (!validSave(roster1) || !validSave(roster2) || !optStr(notes, 400)) return send(res, 400, { error: 'input' });
     if (roster1.f !== roster2.f) return send(res, 400, { error: 'input' }); // одна банда для обоих листов
@@ -894,12 +1111,12 @@ async function handleApi(req, res, url) {
 
   // --- Ход турнира (управляет организатор) ---
   // Хелпер: турнир по id из тела + список имён участников
+  // names — только те, кто реально играет: основной состав, без резерва и снятых
   function tnByBody(body) {
     const tn = body && typeof body.id === 'string'
       ? db.prepare('SELECT * FROM tournaments WHERE id = ?').get(body.id.toUpperCase()) : null;
     if (!tn) return null;
-    const names = db.prepare('SELECT user FROM tournament_players WHERE tid = ? ORDER BY joined').all(tn.id).map(r => r.user);
-    return { tn, names };
+    return { tn, names: tournamentEntrants(tn.id, tn.max_players) };
   }
 
   // Старт: регистрация закрывается, формируются пары 1-го тура — участники
@@ -911,6 +1128,10 @@ async function handleApi(req, res, url) {
     if (tn.organizer !== user) return send(res, 403, { error: 'auth' });
     if (tn.status !== 'open') return send(res, 400, { error: 'input' });
     if (names.length < 2) return send(res, 400, { error: 'tn_few' });
+    // Фиксируем основной состав: с этого момента порядок регистрации ничего
+    // не меняет, а резерв в пары не попадает
+    const seatStmt = db.prepare('UPDATE tournament_players SET seat = ? WHERE tid = ? AND user = ?');
+    names.forEach((n, i) => seatStmt.run(i, tn.id, n));
     const rounds = pushRound(tn, names);
     db.prepare("UPDATE tournaments SET status = 'active', round = 1, rounds = ? WHERE id = ?")
       .run(JSON.stringify(rounds), tn.id);
@@ -919,11 +1140,19 @@ async function handleApi(req, res, url) {
 
   // Следующий тур: пары строятся по текущей таблице (швейцарская система)
   if (p === '/api/tournaments/next' && req.method === 'POST') {
-    const found = tnByBody(await readBody(req));
-    if (!found) return send(res, 404, { error: 'notfound' });
+    const body = await readBody(req);
+    const found = tnByBody(body);
+    if (!found) return send(res, 404, { error: 'tn_notfound' });
     const { tn, names } = found;
     if (tn.organizer !== user) return send(res, 403, { error: 'auth' });
     if (tn.status !== 'active') return send(res, 400, { error: 'input' });
+    const prev = tnRounds(tn);
+    // Незакрытый тур нельзя молча потерять: либо все результаты сведены,
+    // либо организатор явно подтверждает переход (force)
+    if (prev.length && !roundComplete(prev[prev.length - 1]) && !body.force) {
+      return send(res, 409, { error: 'tn_round_open' });
+    }
+    if (prev.length >= maxRounds(names.length)) return send(res, 409, { error: 'tn_max_rounds' });
     const rounds = pushRound(tn, names);
     db.prepare('UPDATE tournaments SET round = ?, rounds = ? WHERE id = ?')
       .run(rounds.length, JSON.stringify(rounds), tn.id);
@@ -933,25 +1162,36 @@ async function handleApi(req, res, url) {
   // Финиш: победитель — первый в таблице; турнир остаётся в базе как история
   // организатора и попадает в статистику («Лучшие игроки», география)
   if (p === '/api/tournaments/finish' && req.method === 'POST') {
-    const found = tnByBody(await readBody(req));
-    if (!found) return send(res, 404, { error: 'notfound' });
+    const body = await readBody(req);
+    const found = tnByBody(body);
+    if (!found) return send(res, 404, { error: 'tn_notfound' });
     const { tn, names } = found;
     if (tn.organizer !== user) return send(res, 403, { error: 'auth' });
     if (tn.status !== 'active') return send(res, 400, { error: 'input' });
-    const standings = tournamentStandings(tn, names);
+    const rounds = tnRounds(tn);
+    if (rounds.length && !roundComplete(rounds[rounds.length - 1]) && !body.force) {
+      return send(res, 409, { error: 'tn_round_open' });
+    }
+    // В итоговой таблице учитываем и снятых: их сыгранные туры не пропадают
+    const standings = tournamentStandings(tn, tournamentTableNames(tn.id, tn.max_players));
+    // Победитель попадает в публичный рейтинг — засчитываем, только если
+    // он действительно сыграл хотя бы один сведённый тур и не снят
+    const champ = standings.find(s => s.played > 0 && names.includes(s.name));
     db.prepare("UPDATE tournaments SET status = 'finished', winner = ? WHERE id = ?")
-      .run(standings.length ? standings[0].name : null, tn.id);
+      .run(champ ? champ.name : null, tn.id);
     return send(res, 200, tournamentToJSON(db.prepare('SELECT * FROM tournaments WHERE id = ?').get(tn.id), user));
   }
 
-  // Участник записывает свой результат текущего тура: победа/поражение + VP
+  // Участник заявляет результат своей пары в текущем туре.
+  // Результат засчитывается только когда обе стороны заявили ПРОТИВОПОЛОЖНЫЙ
+  // исход; совпавшие заявки («мы оба выиграли») уходят в спор к организатору.
   if (p === '/api/tournaments/report' && req.method === 'POST') {
     const body = await readBody(req);
     const found = tnByBody(body);
-    if (!found) return send(res, 404, { error: 'notfound' });
+    if (!found) return send(res, 404, { error: 'tn_notfound' });
     const { tn } = found;
     if (tn.status !== 'active') return send(res, 400, { error: 'input' });
-    const win = body.win ? 1 : 0;
+    if (body.win !== 0 && body.win !== 1) return send(res, 400, { error: 'input' });
     if (!validVp(body.vp)) return send(res, 400, { error: 'input' });
     const rounds = tnRounds(tn);
     const current = rounds[rounds.length - 1];
@@ -959,23 +1199,60 @@ async function handleApi(req, res, url) {
     const myPair = (current.pairs || []).find(pr => pr[0] === user || pr[1] === user);
     if (!myPair) return send(res, 403, { error: 'auth' });       // не в парах тура
     if (!myPair[0] || !myPair[1]) return send(res, 400, { error: 'input' }); // бай записан автоматически
-    current.results = current.results || {};
-    current.results[user] = { win, vp: body.vp }; // повторная запись — исправление
+    current.claims = current.claims || {};
+    current.claims[user] = { win: body.win, vp: body.vp };       // повторная запись — исправление
+    reconcilePair(current, myPair[0], myPair[1]);
+    db.prepare('UPDATE tournaments SET rounds = ? WHERE id = ?').run(JSON.stringify(rounds), tn.id);
+    return send(res, 200, {
+      ok: true,
+      disputed: !!(current.disputes || {})[pairKey(myPair[0], myPair[1])],
+      pending: !current.results[user]
+    });
+  }
+
+  // Организатор рассуживает спор (обе стороны заявили победу) или правит
+  // результат любой пары любого тура вручную
+  if (p === '/api/tournaments/resolve' && req.method === 'POST') {
+    const body = await readBody(req);
+    const found = tnByBody(body);
+    if (!found) return send(res, 404, { error: 'tn_notfound' });
+    const { tn } = found;
+    if (tn.organizer !== user) return send(res, 403, { error: 'auth' });
+    if (tn.status !== 'active') return send(res, 400, { error: 'input' });
+    if (typeof body.winner !== 'string' || !validVp(body.vpWinner) || !validVp(body.vpLoser)) {
+      return send(res, 400, { error: 'input' });
+    }
+    const rounds = tnRounds(tn);
+    const idx = Number.isInteger(body.round) ? body.round : rounds.length - 1;
+    const round = rounds[idx];
+    if (!round) return send(res, 400, { error: 'input' });
+    const pr = (round.pairs || []).find(x => x[0] === body.winner || x[1] === body.winner);
+    if (!pr || !pr[0] || !pr[1]) return send(res, 400, { error: 'input' });
+    const loser = pr[0] === body.winner ? pr[1] : pr[0];
+    round.results = round.results || {};
+    round.disputes = round.disputes || {};
+    round.results[body.winner] = { win: 1, vp: body.vpWinner, forced: true };
+    round.results[loser] = { win: 0, vp: body.vpLoser, forced: true };
+    delete round.disputes[pairKey(pr[0], pr[1])];
     db.prepare('UPDATE tournaments SET rounds = ? WHERE id = ?').run(JSON.stringify(rounds), tn.id);
     return send(res, 200, { ok: true });
   }
 
-  // Организатор убирает участника (не пришёл) — только до старта,
-  // резервные при этом автоматически поднимаются в основной состав
+  // Организатор убирает участника. До старта — удаление из списка (резерв
+  // поднимается сам), после старта — снятие: в новые пары не попадает,
+  // сыгранные туры остаются в таблице.
   if (p === '/api/tournaments/kick' && req.method === 'POST') {
     const body = await readBody(req);
     const found = tnByBody(body);
-    if (!found) return send(res, 404, { error: 'notfound' });
+    if (!found) return send(res, 404, { error: 'tn_notfound' });
     const { tn } = found;
     if (tn.organizer !== user) return send(res, 403, { error: 'auth' });
-    if (tn.status !== 'open') return send(res, 400, { error: 'input' });
-    if (typeof body.player !== 'string') return send(res, 400, { error: 'input' });
-    db.prepare('DELETE FROM tournament_players WHERE tid = ? AND user = ?').run(tn.id, body.player);
+    if (tn.status === 'finished') return send(res, 400, { error: 'input' });
+    if (typeof body.player !== 'string' || body.player.length > 30) return send(res, 400, { error: 'input' });
+    const r = tn.status === 'open'
+      ? db.prepare('DELETE FROM tournament_players WHERE tid = ? AND user = ?').run(tn.id, body.player)
+      : db.prepare('UPDATE tournament_players SET dropped = 1 WHERE tid = ? AND user = ?').run(tn.id, body.player);
+    if (!r.changes) return send(res, 404, { error: 'tn_notfound' }); // такого участника нет
     return send(res, 200, { ok: true });
   }
 
@@ -1013,33 +1290,72 @@ const MIME = {
 const DENY = [/^\/data(\/|$)/i, /^\/server\.js$/i, /^\/\.git(\/|$)/i, /\.db(-|$)/i, /^\/node_modules(\/|$)/i, /^\/\.env$/i];
 
 function serveStatic(req, res, url) {
-  let pathname = decodeURIComponent(url.pathname);
+  let pathname;
+  try { pathname = decodeURIComponent(url.pathname); }
+  catch (e) { res.writeHead(400); return res.end('Bad request'); }        // битый %-escape
+  if (pathname.indexOf('\0') !== -1) { res.writeHead(400); return res.end('Bad request'); }
   if (pathname === '/') pathname = '/index.html';
 
-  if (DENY.some(rx => rx.test(pathname))) { res.writeHead(404); return res.end('Not found'); }
-
+  // ВАЖЕН ПОРЯДОК: сначала нормализуем путь, и только потом проверяем DENY.
+  // new URL() не раскрывает %2F, поэтому запрос вида /a/..%2Fserver.js после
+  // decodeURIComponent превращался в "/a/../server.js" — этот вид не совпадал
+  // ни с одним якорным правилом DENY и отдавал исходники (включая .git).
   const filePath = path.normalize(path.join(ROOT, pathname));
-  if (!filePath.startsWith(ROOT + path.sep) && filePath !== ROOT) { res.writeHead(403); return res.end('Forbidden'); }
+  if (filePath !== ROOT && !filePath.startsWith(ROOT + path.sep)) { res.writeHead(403); return res.end('Forbidden'); }
+  const rel = '/' + path.relative(ROOT, filePath).split(path.sep).join('/');
+  if (DENY.some(rx => rx.test(rel))) { res.writeHead(404); return res.end('Not found'); }
 
   fs.stat(filePath, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404); return res.end('Not found'); }
 
-    // 304 по If-Modified-Since — браузер не качает неизменившиеся файлы
-    const ims = req.headers['if-modified-since'];
     const mtime = new Date(st.mtimeMs);
     mtime.setMilliseconds(0);
-    if (ims && new Date(ims) >= mtime) { res.writeHead(304); return res.end(); }
+    const etag = `W/"${st.size.toString(16)}-${Math.floor(st.mtimeMs).toString(16)}"`;
+
+    // 304 по ETag / If-Modified-Since — браузер не качает неизменившиеся файлы
+    if (req.headers['if-none-match'] === etag) { res.writeHead(304, { ETag: etag }); return res.end(); }
+    const ims = req.headers['if-modified-since'];
+    if (ims && new Date(ims) >= mtime) { res.writeHead(304, { ETag: etag }); return res.end(); }
 
     const ext = path.extname(filePath).toLowerCase();
-    const isImage = MIME[ext] && MIME[ext].startsWith('image/');
-    res.writeHead(200, {
-      'Content-Type': MIME[ext] || 'application/octet-stream',
-      'Content-Length': st.size,
+    const mime = MIME[ext] || 'application/octet-stream';
+    const isImage = mime.startsWith('image/');
+    // Ссылки на код и стили в index.html versioned (?v=...), поэтому их можно
+    // кэшировать намертво: смена версии сама ломает кэш. Без ?v — только ревалидация.
+    const cache = isImage ? 'public, max-age=604800'
+                : url.search ? 'public, max-age=31536000, immutable'
+                : 'no-cache';
+
+    // Сжимаем только текст: картинки уже сжаты, повторный проход — трата CPU.
+    // Brotli на quality 5: почти как gzip по цене и заметно лучше по размеру.
+    const accept = req.headers['accept-encoding'] || '';
+    const enc = (isImage || st.size < 1024) ? null
+              : /\bbr\b/.test(accept) ? 'br'
+              : /\bgzip\b/.test(accept) ? 'gzip' : null;
+
+    const head = {
+      'Content-Type': mime,
       'Last-Modified': mtime.toUTCString(),
-      // картинки меняются редко — кэшируем на неделю; код/данные всегда перепроверяются
-      'Cache-Control': isImage ? 'public, max-age=604800' : 'no-cache'
-    });
-    fs.createReadStream(filePath).pipe(res);
+      'ETag': etag,
+      'Cache-Control': cache,
+      'Vary': 'Accept-Encoding',
+      'X-Content-Type-Options': 'nosniff'
+    };
+    if (enc) head['Content-Encoding'] = enc; else head['Content-Length'] = st.size;
+    res.writeHead(200, head);
+    if (req.method === 'HEAD') return res.end();
+
+    // .pipe() НЕ пробрасывает ошибки: без этого обработчика один нечитаемый файл
+    // (или EMFILE под нагрузкой) роняет весь процесс
+    const stream = fs.createReadStream(filePath);
+    stream.on('error', () => { res.end(); });
+    res.on('close', () => stream.destroy());
+    if (!enc) return stream.pipe(res);
+    const zc = enc === 'br'
+      ? zlib.createBrotliCompress({ params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 5 } })
+      : zlib.createGzip({ level: 6 });
+    zc.on('error', () => res.end());
+    stream.pipe(zc).pipe(res);
   });
 }
 
@@ -1060,6 +1376,20 @@ const server = http.createServer(async (req, res) => {
     try { send(res, code, { error: 'server' }); } catch (_) { /* соединение уже закрыто */ }
   }
 });
+
+// Тайм-ауты: дефолтные 300 с на запрос — приглашение для slowloris,
+// когда сотня полуоткрытых соединений держит сервер занятым
+server.headersTimeout = 15000;
+server.requestTimeout = 30000;
+server.keepAliveTimeout = 10000;
+server.maxRequestsPerSocket = 1000;
+
+// Один необработанный сбой не должен уносить процесс вместе со всеми сессиями
+server.on('clientError', (e, socket) => {
+  if (socket.writable) socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+});
+process.on('unhandledRejection', e => console.error('unhandledRejection:', e));
+process.on('uncaughtException', e => console.error('uncaughtException:', e));
 
 server.listen(PORT, () => {
   console.log(`BMG Crew Builder: http://localhost:${PORT}`);

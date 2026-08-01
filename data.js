@@ -24,6 +24,15 @@ const factionCrewRules = {
     // Официальное Crew Building Rules: модели с Rivals: GCPD и модели с аффилиацией GCPD
     // взаимоисключаются в одном отряде (в обе стороны)
     rivalsExclusion: "GCPD"
+  },
+  "The Big Bang Theory": {
+    // Команда из шести фиксированных персонажей (формат Eternal, is_team в
+    // официальной базе): в отряд входят только носители ключевого трейта.
+    // Трейт называется ровно "Big Bang Theory" — не путать с "The Big Bang
+    // Theory", это другое правило, про добор карт целей.
+    onlyKeywordTrait: "Big Bang Theory",
+    // Шести моделей не хватает на стандартные требования к рангам
+    ignoreStandardRankRequirements: true
   }
   // Другие фракции могут иметь стандартные правила (пустой объект или null)
 };
@@ -63,8 +72,10 @@ const modelDependencyRules = {
   // Batman Michael Keaton
   "Catwoman Michelle Pfeiffer": { requiredModel: "Batman Michael Keaton" },
   
-  // Suicide Squad
-  "Ratcatcher": { requiredModel: "Ratcatcher 2 The Suicide Squad" },
+  // Suicide Squad. Трейт Required (Ratcatcher 2) висит на Себастьяне-крысе,
+  // а не на самом Ratcatcher: с прежним ключом Ratcatcher (фракция Unknown)
+  // становился ненанимаемым, а Себастьян — вообще без ограничения
+  "Sebastian the Rat The Suicide Squad": { requiredModel: "Ratcatcher 2 The Suicide Squad" },
   "Eagly": { requiredModel: "Peacemaker John Cena" },
   
   // League of Shadows / Batman Begins
@@ -76,7 +87,22 @@ const modelDependencyRules = {
   
   // Arkham Assistants (требуется Dr. Hugo Strange или Scarecrow The Worst Nightmare)
   "Arkham Assistant 1": { requiredModels: ["Dr. Hugo Strange", "Scarecrow (The Worst Nightmare)"] },
-  "Arkham Assistant 2": { requiredModels: ["Dr. Hugo Strange", "Scarecrow (The Worst Nightmare)"] }
+  "Arkham Assistant 2": { requiredModels: ["Dr. Hugo Strange", "Scarecrow (The Worst Nightmare)"] },
+
+  // --- Формат Eternal ---
+  // Трейт Perfect Creations: "Dollotrons can only be recruited in a crew that
+  // contains Professor Pyg". В официальной базе у них пустая аффилиация, и без
+  // этого правила они попадали бы в любую банду.
+  "Dollotron 1": { requiredModel: "Professor Pyg" },
+  "Dollotron 2": { requiredModel: "Professor Pyg" },
+  "Dollotron 3": { requiredModel: "Professor Pyg" },
+
+  // Амазонки — самодостаточная группа: у них нет аффилиации, а связывает их
+  // трейт Amazon (у королевы — Amazon Lineage: «набирать можно только модели
+  // с трейтом Amazon»). Воительницы имеют смысл только вместе с Ипполитой.
+  "Amazon Warrior 1": { requiredModel: "Queen Hippolita" },
+  "Amazon Warrior 2": { requiredModel: "Queen Hippolita" },
+  "Amazon Warrior 3": { requiredModel: "Queen Hippolita" }
   // Добавляйте новые правила здесь по мере необходимости
 };
 
@@ -103,7 +129,11 @@ const modelAversionRules = {
   // Joker Gang / Gaggy variants and Punchline
   "Gaggy Rebirth": ["Harley Quinn"],
   "Gaggy": ["Harley Quinn"],
-  "Punchline": ["Harley Quinn"]
+  "Punchline": ["Harley Quinn"],
+
+  // League of Shadows / Damien Darhk — трейт Aversion (Ra's Al Ghul) есть,
+  // а правила в этой таблице не было, поэтому запрет не работал
+  "Damien Darhk": ["Ra's al Ghul"]
 
   // Добавляйте новые правила здесь по мере необходимости
 };
@@ -481,6 +511,7 @@ const models = [
 
   {
     "name": "Harley Quinn Arkham Knight",
+    "eternal": true,
     "realname": "Dr. Harleen Frances Quinzel",
     "base": "40mm",
     "rep": 80,
@@ -555,6 +586,7 @@ const models = [
   },
   {
     "name": "Damien Darhk",
+    "eternal": true,
     "realname": "Damien Darhk",
     "base": "30mm",
     "rep": 85,
@@ -647,6 +679,7 @@ const models = [
 
   {
     "name": "Harley Quinn Gatling Brute",
+    "eternal": true,
     "realname": "Unknown",
     "base": "40mm",
     "rep": 49,
@@ -690,6 +723,7 @@ const models = [
   },
   {
     "name": "Nightwing Arkham Knight",
+    "eternal": true,
     "realname": "Dick Grayson",
     "base": "40mm",
     "rep": 95,
@@ -808,6 +842,7 @@ const models = [
   
   {
     "name": "Harley Thug 1",
+    "eternal": true,
     "realname": "Punker",
     "base": "30mm",
     "rep": 28,
@@ -841,6 +876,7 @@ const models = [
   },
     {
     "name": "Harley Thug 2",
+    "eternal": true,
     "realname": "Bragg",
     "base": "30mm",
     "rep": 19,
@@ -873,6 +909,7 @@ const models = [
   
     {
     "name": "Harley Thug 3",
+    "eternal": true,
     "realname": "Worker",
     "base": "30mm",
     "rep": 19,
@@ -905,6 +942,7 @@ const models = [
   
     {
     "name": "Harley Thug 4",
+    "eternal": true,
     "realname": "Unknown",
     "base": "30mm",
     "rep": 14,
@@ -937,6 +975,7 @@ const models = [
   
   {
     "name": "Harley Thug 5",
+    "eternal": true,
     "realname": "Unknown",
     "base": "30mm",
     "rep": 20,
@@ -968,6 +1007,7 @@ const models = [
   },
     {
     "name": "Harley Thug 6",
+    "eternal": true,
     "realname": "Chencho",
     "base": "30mm",
     "rep": 23,
@@ -1001,6 +1041,7 @@ const models = [
   },
   {
     "name": "Harley Thug 7",
+    "eternal": true,
     "realname": "Lumberjack",
     "base": "30mm",
     "rep": 18,
@@ -1123,6 +1164,7 @@ const models = [
   },
   {
     "name": "Batman Arkham Knight",
+    "eternal": true,
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 150,
@@ -1303,6 +1345,7 @@ const models = [
 
   {
     "name": "Arkham Knight",
+    "eternal": true,
     "realname": "Jason Todd",
     "base": "40mm",
     "rep": 105,
@@ -6653,6 +6696,47 @@ const models = [
         "rof": 4,
         "ammo": 2,
         "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    // Имя без скобок — как у остальных «киношных» моделей (Batman Robert
+    // Pattinson). Карта цели MOTHER OF STRAYS ссылается на «Catwoman (Zoë
+    // Kravitz)»: normalizeModelName убирает скобки, но НЕ диакритику, поэтому
+    // «ë» в имени обязательна, иначе карта снова станет недостижимой.
+    "name": "Catwoman Zoë Kravitz",
+    "realname": "Selina Kyle",
+    "base": "40mm",
+    "rep": 55,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["Bat Family", "Organized Crime"],
+    "img": "img/CatwomanZoeKravitz.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Backpack",
+      "Bat-Lenses",
+      "Combo (Weapon)",
+      "Disguise",
+      "Don't Mind Me",
+      "Thief"
+    ],
+    "weapons": [
+      {
+        "name": "Chain Whip",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2) / Heavy"
       }
     ]
   },
@@ -19541,7 +19625,5302 @@ const models = [
       "traits": "S. Range / Firearm / Light"
     }
   ]
-}
+},
+
+
+//----------------------------------------------------------------------------------------------------------------------------------
+//ETERNAL — модели формата Eternal (флаг eternal: true).
+//В билдере и в разделе КАРТОЧКИ скрыты, пока пользователь не включит формат
+//переключателем (showEternal в script.js). Импортированы из официальной базы
+//https://app.knightmodels.com/gamedata/ — имена, статы, трейты и оружие оттуда же.
+//----------------------------------------------------------------------------------------------------------------------------------
+  {
+    "name": "Mr. Hammer",
+    "realname": "Abramovici",
+    "base": "40mm",
+    "rep": 71,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/MrHammer.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bodyguard",
+      "Brutal",
+      "Elite Boss (Circus)",
+      "Large",
+      "Lethal Blow {SPECIAL_ICON}",
+      "One-Armed"
+    ],
+    "weapons": [
+      {
+        "name": "Warhammer",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (1) / Handy"
+      }
+    ]
+  },
+  {
+    "name": "Arsenal",
+    "realname": "Roy Harper, Jr.",
+    "base": "30mm",
+    "rep": 74,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Arsenal.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Charge {SPECIAL_ICON}",
+      "Good Aim {SPECIAL_ICON}",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Bow (Standard Arrow)",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Explosive Arrow",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Aim / Explosive / Firearm / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Alfred Pennyworth",
+    "realname": "Alfred Pennyworth",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/AlfredPennyworth2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Informer",
+      "Veteran",
+      "Business Agent",
+      "Medic {SPECIAL_ICON}"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Black Mask",
+    "realname": "Roman Sionis",
+    "base": "30mm",
+    "rep": 79,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/BlackMask2.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Brutal",
+      "Criminal",
+      "Elite Boss (Gangsters)",
+      "Mob {SPECIAL_ICON}",
+      "No Mercy!!!",
+      "Order {SPECIAL_ICON}",
+      "Strategist"
+    ],
+    "weapons": [
+      {
+        "name": "Explosive Grenade",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Explosive / Firearm / Grenade / S. Range"
+      },
+      {
+        "name": "Personal Gun",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Nyssa Al Ghul",
+    "realname": "Nyssa Raatko",
+    "base": "30mm",
+    "rep": 83,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["League of Shadows"],
+    "eternal": true,
+    "img": "img/NyssaAlGhul.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Hook Arrow {SPECIAL_ICON}",
+      "Elite Boss (Ninja)",
+      "Good Aim {SPECIAL_ICON}",
+      "Martial Artist",
+      "Master Marksman",
+      "Reflexes",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Bow (Standard Arrow)",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Kukri",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler (Arkham Knight)",
+    "realname": "Edward Nigma",
+    "base": "30mm",
+    "rep": 85,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["The Riddler"],
+    "eternal": true,
+    "img": "img/TheRiddlerArkhamKnight.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bot Mechanic {SPECIAL_ICON}",
+      "Can You Solve This? (2)",
+      "Confusion {SPECIAL_ICON}",
+      "Distract {SPECIAL_ICON}",
+      "Handyman",
+      "Luck",
+      "Mastermind",
+      "Objectives? Puzzles everywhere!!!",
+      "Puzzle Master"
+    ],
+    "weapons": [
+      {
+        "name": "Great ? Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy / CRT (Stunned)"
+      }
+    ]
+  },
+  {
+    "name": "The Riddler's Mech",
+    "realname": "Edward Nigma",
+    "base": "60mm",
+    "rep": 123,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["The Riddler"],
+    "eternal": true,
+    "img": "img/TheRiddlerSMech.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Bot Bomb {SPECIAL_ICON}",
+      "Can You Solve This? (4)",
+      "Distract {SPECIAL_ICON}",
+      "Cybernetic",
+      "Energy Field",
+      "Huge",
+      "Mastermind",
+      "Objectives? Puzzles everywhere!!!",
+      "Safe hands"
+    ],
+    "weapons": [
+      {
+        "name": "Mechanic Claw",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical"
+      },
+      {
+        "name": "Laser Beam Cannon",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Aim / Beam / Reload / Knocked Down"
+      }
+    ]
+  },
+  {
+    "name": "Arkham Guard 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 21,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/ArkhamGuard1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest {SPECIAL_ICON}",
+      "Radio",
+      "Hockey Gear"
+    ],
+    "weapons": [
+      {
+        "name": "Extendable Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Arkham Guard 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 600,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/ArkhamGuard2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Hockey Gear",
+      "Arrest {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Assault Rifle",
+        "damage": "🩸🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm"
+      }
+    ]
+  },
+  {
+    "name": "Arkham Guard 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/ArkhamGuard3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest {SPECIAL_ICON}",
+      "Hockey Gear",
+      "Tireless"
+    ],
+    "weapons": [
+      {
+        "name": "Riot Gun",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Blunt (2) / Mechanical"
+      }
+    ]
+  },
+  {
+    "name": "Bat-Mite",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 85,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/BatMite.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Concealment {SPECIAL_ICON}",
+      "Confusion {SPECIAL_ICON}",
+      "Fly {SPECIAL_ICON}",
+      "Inspire",
+      "Reinforced Gloves",
+      "Small",
+      "Supernatural",
+      "My Idol!",
+      "Time Stretch {SPECIAL_ICON}",
+      "This... is.. Awesome-Sauce!"
+    ],
+    "weapons": [
+      {
+        "name": "Energy Projection",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": "-",
+        "traits": "Electric / M. Range / Reload / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batgirl",
+    "realname": "Barbara Gordon",
+    "base": "30mm",
+    "rep": 59,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Batgirl.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Martial Artist",
+      "Informer",
+      "Bat Cape",
+      "Stealth",
+      "Sneak Attack",
+      "Combo (Unarmed)"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batman",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 125,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Batman2.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Reinforced Gloves",
+      "Bat-Armor Mk I",
+      "Bat Cape",
+      "Counter Attack",
+      "Detective",
+      "Detective Mode",
+      "Explosive Gel",
+      "Mixed Combat Style {SPECIAL_ICON}",
+      "Sneak Attack",
+      "Total Vision"
+    ],
+    "weapons": [
+      {
+        "name": "Batarang",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "M. Range / Remote Controlled / Throwing"
+      },
+      {
+        "name": "Smoke Pellets",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "S. Range / Grenade / Smoke"
+      }
+    ]
+  },
+  {
+    "name": "Batman (Ben Affleck)",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 125,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BatmanBenAffleck.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bat-Armor Mk I",
+      "Bat Cape",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Reinforced Gloves",
+      "Close Combat Master",
+      "Detective",
+      "Martial Artist",
+      "Sustained Defense"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Batman (Flashpoint)",
+    "realname": "Thomas Wayne",
+    "base": "30mm",
+    "rep": 133,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BatmanFlashpoint.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 10
+    },
+    "traits": [
+      "Bat Cape",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Bat-Armor Mk II",
+      "Detective",
+      "Grand Strategist",
+      "Instinctive Shooting {SPECIAL_ICON}",
+      "Mastermind",
+      "Medic {SPECIAL_ICON}",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Dual Handguns",
+        "damage": "🩸★",
+        "rof": 4,
+        "ammo": 3,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Batman (Knightfall)",
+    "realname": "Jean Paul Valley",
+    "base": "30mm",
+    "rep": 115,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BatmanKnightfall.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "2+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Batclaw {SPECIAL_ICON}",
+      "Bat Cape",
+      "Claws",
+      "Fast (2)",
+      "Medium Armor",
+      "Sturdy",
+      "Unstoppable {SPECIAL_ICON}",
+      "OCD (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Hand-Flamethrower",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Mechanical / Fire"
+      }
+    ]
+  },
+  {
+    "name": "Batman (Modern Age)",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BatmanModernAge.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 11,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Bat Cape",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Assistance",
+      "Detective",
+      "Martial Artist",
+      "Reinforced Gloves",
+      "Sneak Attack",
+      "Stealth",
+      "The Dynamic Duo"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Black Manta",
+    "realname": "David",
+    "base": "30mm",
+    "rep": 100,
+    "funding": 350,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "rivals": ["GCPD","Bat Family","Organized Crime"],
+    "eternal": true,
+    "img": "img/BlackManta.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Amphibious",
+      "Night Vision",
+      "Scientific",
+      "Stealth",
+      "Strategist",
+      "Tracking {SPECIAL_ICON}",
+      "Weapon Master",
+      "Persuasive {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Dual Blade",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Death Ray",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Beam / M. Range / Reload / CRT (Casualty)"
+      }
+    ]
+  },
+  {
+    "name": "Bobbie",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/Bobbie.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 3
+    },
+    "traits": [
+      "Fly {SPECIAL_ICON}",
+      "Bot",
+      "Safe hands",
+      "Funny Bomb {SPECIAL_ICON}",
+      "Small",
+      "Expendable"
+    ],
+    "weapons": [
+      {
+        "name": "Laughning Gas Weapon",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Gas / Mechanical / S. Range / Enervating (2)"
+      }
+    ]
+  },
+  {
+    "name": "Bobbie MKII",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 25,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/BobbieMKII.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Fly {SPECIAL_ICON}",
+      "Bot",
+      "Safe hands",
+      "Funny Bomb {SPECIAL_ICON}",
+      "Small",
+      "Expendable"
+    ],
+    "weapons": [
+      {
+        "name": "Laughning Gas Weapon",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Gas / Mechanical / Enervating (1)"
+      }
+    ]
+  },
+  {
+    "name": "Calendar Man",
+    "realname": "Julian Gregory Day",
+    "base": "30mm",
+    "rep": 55,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family","Organized Crime"],
+    "eternal": true,
+    "img": "img/CalendarMan2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 6,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Assassin (4)",
+      "Adaptable",
+      "Deadly Strike {SPECIAL_ICON}",
+      "Handyman",
+      "Self-Discipline",
+      "Mastermind",
+      "Psycho",
+      "Undercover",
+      "Thirty Days Has…"
+    ],
+    "weapons": [
+      {
+        "name": "Shiv",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy"
+      }
+    ]
+  },
+  {
+    "name": "Captain Cold",
+    "realname": "Leonard Snart",
+    "base": "30mm",
+    "rep": 72,
+    "funding": 400,
+    "rank": ["Free Agent"],
+    "faction": ["Mr. Freeze","Unknown"],
+    "rivals": ["GCPD","Bat Family","Joker","League of Shadows"],
+    "eternal": true,
+    "img": "img/CaptainCold.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Strategist",
+      "Leadership",
+      "Mastermind",
+      "Order {SPECIAL_ICON}",
+      "Ranged Master",
+      "Teamwork (1) (Heatwave)"
+    ],
+    "weapons": [
+      {
+        "name": "The Cold Gun (Full Power)",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Aim / Beam / Cold / S. Range / Ice Template"
+      },
+      {
+        "name": "The Cold Gun",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Accurate / Beam / Cold / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Carnivorous Plant",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 14,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
+    "eternal": true,
+    "img": "img/CarnivorousPlant.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 0,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Plant",
+      "Cannibal",
+      "Elite (Plants)"
+    ],
+    "weapons": [
+      {
+        "name": "Bite",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / CRT (Paralyze)"
+      }
+    ]
+  },
+  {
+    "name": "Coldy",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["Mr. Freeze"],
+    "eternal": true,
+    "img": "img/Coldy.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Hockey Gear"
+    ],
+    "weapons": [
+      {
+        "name": "Freezing Spray",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Cold / Expansive / Mechanical"
+      }
+    ]
+  },
+  {
+    "name": "Commissioner Gordon",
+    "realname": "James W. Gordon",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/CommissionerGordon2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Commissioner",
+      "Bulletproof Vest",
+      "Veteran",
+      "Affinity (Batman)",
+      "Air Support {SPECIAL_ICON}",
+      "Arrest {SPECIAL_ICON}",
+      "Detective",
+      "Elite Boss (SWAT)",
+      "Hidden Sniper {SPECIAL_ICON}",
+      "Take Cover! {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Deadshot (Classic)",
+    "realname": "Floyd Lawton",
+    "base": "30mm",
+    "rep": 90,
+    "funding": 600,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "rivals": ["GCPD","Bat Family","Joker"],
+    "eternal": true,
+    "img": "img/DeadshotClassic.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Dodge",
+      "Obsessive (Mental Disorder)",
+      "Ranged Master",
+      "Outlaw Field Commander {SPECIAL_ICON}",
+      "Assassin (3)",
+      "Hold Breath"
+    ],
+    "weapons": [
+      {
+        "name": "Barret",
+        "damage": "🩸🩸🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Aim / Anti-Tank / Bleed (2) / Devastating / Firearm / Scope"
+      },
+      {
+        "name": "9mm Twin Cannons",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / Light / M. Range"
+      }
+    ]
+  },
+  {
+    // Ранг в источнике не указан (Rep 0, приходят с Professor Pyg) — проставлен Henchman
+    "name": "Dollotron 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD"],
+    "eternal": true,
+    "img": "img/Dollotron1.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 1,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Desensitized",
+      "Self-Discipline",
+      "Stupid",
+      "Make them perfect",
+      "Perfect Creations"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    // Ранг в источнике не указан (Rep 0, приходят с Professor Pyg) — проставлен Henchman
+    "name": "Dollotron 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD"],
+    "eternal": true,
+    "img": "img/Dollotron2.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 1,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Desensitized",
+      "Self-Discipline",
+      "Stupid",
+      "Make them perfect",
+      "Perfect Creations"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    // Ранг в источнике не указан (Rep 0, приходят с Professor Pyg) — проставлен Henchman
+    "name": "Dollotron 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD"],
+    "eternal": true,
+    "img": "img/Dollotron3.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 1,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Desensitized",
+      "Self-Discipline",
+      "Stupid",
+      "Make them perfect",
+      "Perfect Creations"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Electrocutioner",
+    "realname": "Lester Buchinsky",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "rivals": ["Bat Family"],
+    "eternal": true,
+    "img": "img/Electrocutioner.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Charismatic",
+      "Electric Storm {SPECIAL_ICON}",
+      "Taunt {SPECIAL_ICON}",
+      "EMP",
+      "Expendable"
+    ],
+    "weapons": [
+      {
+        "name": "Shock Gloves",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "CRT (Stunned)"
+      }
+    ]
+  },
+  {
+    "name": "Emperor Penguin",
+    "realname": "Ignatius Ogilvy",
+    "base": "30mm",
+    "rep": 111,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Penguin"],
+    "eternal": true,
+    "img": "img/EmperorPenguin.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Reinforced Gloves",
+      "Dirty Money",
+      "Fast (2)",
+      "Master Fighter",
+      "Regeneration",
+      "Scheming (1)",
+      "Tough Skin",
+      "Underworld King"
+    ],
+    "weapons": [
+      {
+        "name": "Chain",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (3)"
+      }
+    ]
+  },
+  {
+    "name": "Firefly",
+    "realname": "Garfield Lynns",
+    "base": "40mm",
+    "rep": 70,
+    "funding": 400,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Firefly.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bat Cape",
+      "Handyman",
+      "Kevlar Vest",
+      "Pyromania (Mental Disorder)",
+      "Fly {SPECIAL_ICON}",
+      "Hover"
+    ],
+    "weapons": [
+      {
+        "name": "Flamethrower",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Mechanical / Fire"
+      },
+      {
+        "name": "Frag Grenade",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Bleed (1) / Explosive / Firearm / Grenade / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Freezy",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Mr. Freeze"],
+    "eternal": true,
+    "img": "img/Freezy.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 6
+    },
+    "traits": [
+      "Hockey Gear"
+    ],
+    "weapons": [
+      {
+        "name": "Freeze Laser MKII",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Beam / Cold / S. Range / Ice Template"
+      }
+    ]
+  },
+  {
+    "name": "Goat Head Priest",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 35,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/GoatHeadPriest.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Elite (Cosplayers)",
+      "Dirty Fighter",
+      "Anger Management (Mental disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "LMG",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Explosive / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Goro",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "eternal": true,
+    "img": "img/Goro.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Duelist",
+      "Light Armor",
+      "Kill them! {SPECIAL_ICON}",
+      "Large",
+      "Martial Artist"
+    ],
+    "weapons": [
+      {
+        "name": "Dao Dao",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn (Rebirth)",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 77,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "eternal": true,
+    "img": "img/HarleyQuinnRebirth.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Charismatic",
+      "Combat Flip {SPECIAL_ICON}",
+      "Confusion {SPECIAL_ICON}",
+      "Fast (2)",
+      "Gotham City Siren",
+      "True Love (Joker)"
+    ],
+    "weapons": [
+      {
+        "name": "Your Face Here",
+        "damage": "★★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1) / Push (3)"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn (Suicide Squad)",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["Joker","Suicide Squad"],
+    "eternal": true,
+    "img": "img/HarleyQuinnSuicideSquad.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "True Love (Joker)",
+      "Acrobat",
+      "Confusion {SPECIAL_ICON}",
+      "Combat Flip {SPECIAL_ICON}",
+      "Charismatic",
+      "One of the Boys",
+      "The Voices (Mental Disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Good Night Bat",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      },
+      {
+        "name": "Hate/Love Gun",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Bleed (2) / Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Hawkgirl",
+    "realname": "Kendra Saunders",
+    "base": "30mm",
+    "rep": 99,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Hawkgirl.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Flying High {SPECIAL_ICON}",
+      "Fly {SPECIAL_ICON}",
+      "Hover",
+      "Fire Immunity",
+      "Teamwork (2) (Hawkman)",
+      "Weapon Master",
+      "Unstoppable {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Nth Metal Mace",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Magic"
+      }
+    ]
+  },
+  {
+    "name": "Hawkman",
+    "realname": "Carter Hall",
+    "base": "30mm",
+    "rep": 109,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Hawkman.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Flying High {SPECIAL_ICON}",
+      "Fly {SPECIAL_ICON}",
+      "Hardened",
+      "Hover",
+      "Fire Immunity",
+      "Teamwork (2) (Hawkgirl)",
+      "Power Strike {SPECIAL_ICON}",
+      "Savage Fighter {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Nth Metal Mace",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Magic"
+      }
+    ]
+  },
+  {
+    "name": "Heat Wave",
+    "realname": "Mick Rory",
+    "base": "30mm",
+    "rep": 65,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family","Joker","League of Shadows"],
+    "eternal": true,
+    "img": "img/HeatWave.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Criminal",
+      "Teamwork (2) (Captain Cold)",
+      "Escape Artist",
+      "Reinforced Gloves",
+      "Runaway",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Flamethrower",
+        "damage": "🩸★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Expansive / Mechanical / Fire"
+      }
+    ]
+  },
+  {
+    "name": "High Court Lady",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 150,
+    "rank": ["Sidekick"],
+    "faction": ["Court of Owls"],
+    "eternal": true,
+    "img": "img/HighCourtLady.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 6,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Boss’s Orders {SPECIAL_ICON}",
+      "Invaluable",
+      "Protect Me!",
+      "Court of Owls Crew",
+      "Enemies of the Court"
+    ],
+    "weapons": [
+      {
+        "name": "Hidden Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 1,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "High Court Member",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 37,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Court of Owls"],
+    "eternal": true,
+    "img": "img/HighCourtMember.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 6,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Discourage {SPECIAL_ICON}",
+      "Distract {SPECIAL_ICON}",
+      "Scheming (2)",
+      "Court of Owls Crew",
+      "Demoralize {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "High Security Henchman",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/HighSecurityHenchman.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 8
+    },
+    "traits": [
+      "Brutal",
+      "Combo (Knife)",
+      "Criminal",
+      "Hidden"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Huntress",
+    "realname": "Helena Bertinelli",
+    "base": "30mm",
+    "rep": 66,
+    "funding": 100,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Huntress2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Runaway",
+      "Stealth",
+      "Distract {SPECIAL_ICON}",
+      "Martial Artist",
+      "Hidden"
+    ],
+    "weapons": [
+      {
+        "name": "Hand Crossbow",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Mechanical / M. Range"
+      },
+      {
+        "name": "Bo",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Ichi",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 32,
+    "funding": 100,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "eternal": true,
+    "img": "img/Ichi.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Stealth",
+      "Elite (Ninja)",
+      "Feint {SPECIAL_ICON}",
+      "Martial Artist"
+    ],
+    "weapons": [
+      {
+        "name": "Katana",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      },
+      {
+        "name": "Smoke Grenades",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Grenade / S. Range / Smoke"
+      }
+    ]
+  },
+  {
+    "name": "Icy",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Mr. Freeze"],
+    "eternal": true,
+    "img": "img/Icy.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Hockey Gear",
+      "Order {SPECIAL_ICON}",
+      "Bluff {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Shovel",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Overwhelming / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Jason Blood",
+    "realname": "Jason Blood",
+    "base": "30mm",
+    "rep": 85,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/JasonBlood.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Eldritch",
+      "Demon Curse",
+      "Immortal",
+      "Occultism",
+      "Magical Power (3)",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "John Constantine",
+    "realname": "John Constantine",
+    "base": "30mm",
+    "rep": 100,
+    "funding": 100,
+    "rank": ["Sidekick","Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/JohnConstantine.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Luck",
+      "Detective",
+      "Charm",
+      "Exorcism",
+      "Magical Power (4)",
+      "Necromancy",
+      "The Devil You Know",
+      "Divination",
+      "Survivor"
+    ],
+    "weapons": [
+      {
+        "name": "Blessed Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Magic"
+      },
+      {
+        "name": "Amulet Lighter",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Fire"
+      }
+    ]
+  },
+  {
+    "name": "Joker",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/Joker.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Combo (Precise Knife)",
+      "Cruel {SPECIAL_ICON}",
+      "Kaos Agent",
+      "Trickster",
+      "Psycho",
+      "The Target of the Bat"
+    ],
+    "weapons": [
+      {
+        "name": "Precise Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      },
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Joker (Jared Leto)",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 120,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/JokerJaredLeto.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Kaos Agent",
+      "Mobster",
+      "True Love (Harley Quinn)",
+      "Elite Boss (Cosplayers)",
+      "Follow Me! {SPECIAL_ICON}",
+      "Psycho",
+      "Survivor",
+      "Dirty Money",
+      "Intimidate {SPECIAL_ICON}",
+      "Exhaustive Planner"
+    ],
+    "weapons": [
+      {
+        "name": "Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy"
+      },
+      {
+        "name": "Pink Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Accurate / Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Daughter",
+    "realname": "Duela Dent",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 100,
+    "rank": ["Sidekick"],
+    "faction": ["Joker","Suicide Squad"],
+    "eternal": true,
+    "img": "img/JokerSDaughter.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Discourage {SPECIAL_ICON}",
+      "Detective",
+      "Psycho",
+      "Daddy’s Girrrl",
+      "Cruel {SPECIAL_ICON}",
+      "Aversion (Harley Quinn)"
+    ],
+    "weapons": [
+      {
+        "name": "Machete",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Sharp"
+      },
+      {
+        "name": "Lipstick Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 1,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Katana",
+    "realname": "Tatsu Yamashiro",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 100,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD","Suicide Squad"],
+    "eternal": true,
+    "img": "img/Katana.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 11,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Adaptable",
+      "Feint {SPECIAL_ICON}",
+      "Martial Artist",
+      "Precise Blow {SPECIAL_ICON}",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Soultaker Katana",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp / Enervating (1)"
+      },
+      {
+        "name": "Shuriken",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Ki",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 28,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "eternal": true,
+    "img": "img/Ki.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Stealth",
+      "Martial Artist",
+      "Elite (Ninja)",
+      "Hidden",
+      "Precise Aim {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Bow",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Acid Arrow",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Acid / Aim / Caustic / Explosive / Mechanical / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Mary",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/Mary.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 3
+    },
+    "traits": [
+      "Bot",
+      "Fly {SPECIAL_ICON}",
+      "Safe hands",
+      "Funny Bomb {SPECIAL_ICON}",
+      "Small",
+      "Expendable"
+    ],
+    "weapons": [
+      {
+        "name": "Laughning Gas Weapon",
+        "damage": "🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Gas / Mechanical / S. Range / Enervating (2)"
+      }
+    ]
+  },
+  {
+    "name": "Militia Soldier 1",
+    "realname": "Perry",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "eternal": true,
+    "img": "img/MilitiaSoldier1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Veteran",
+      "Shooter"
+    ],
+    "weapons": [
+      {
+        "name": "Carbine",
+        "damage": "🩸",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Militia Soldier 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "eternal": true,
+    "img": "img/MilitiaSoldier2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Veteran",
+      "Gas Mask"
+    ],
+    "weapons": [
+      {
+        "name": "Extendable Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Reach (1)"
+      },
+      {
+        "name": "Shield",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Protective"
+      }
+    ]
+  },
+  {
+    "name": "Militia Soldier 3",
+    "realname": "Scott",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "eternal": true,
+    "img": "img/MilitiaSoldier3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Veteran",
+      "Good Aim {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Rocket Launcher",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Firearm / M. Range / Explosive / Aim / Anti-Tank"
+      }
+    ]
+  },
+  {
+    "name": "Militia Brute",
+    "realname": "Drummer",
+    "base": "40mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bane"],
+    "eternal": true,
+    "img": "img/MilitiaBrute.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 6,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Large",
+      "Elite (Militia Brute)",
+      "Sturdy",
+      "Gas Mask",
+      "Cybernetic",
+      "Light Armor"
+    ],
+    "weapons": [
+      {
+        "name": "Long Electric Baton",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Mechanical / Electric / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Mr. Freeze (Arkham Knight)",
+    "realname": "Victor Fries",
+    "base": "30mm",
+    "rep": 80,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Mr. Freeze"],
+    "eternal": true,
+    "img": "img/MrFreezeArkhamKnight.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Power Armor MKII",
+      "Desensitized",
+      "Ice Flash {SPECIAL_ICON}",
+      "Safe hands",
+      "Scheming (3)",
+      "Scientific",
+      "Self-Discipline",
+      "Vulnerability to Fire",
+      "Medium Armor"
+    ],
+    "weapons": [
+      {
+        "name": "Freeze Arm Weapon",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Cold / Expansive / Mechanical / CRT (Freeze)"
+      }
+    ]
+  },
+  {
+    "name": "Mr. Grin - Black",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 17,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/MrGrinBlack.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Elite (Cosplayers)",
+      "Desensitized",
+      "Grin Twins"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Mr. Grin - White",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 19,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/MrGrinWhite.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Elite (Cosplayers)",
+      "Desensitized",
+      "Grin Twins"
+    ],
+    "weapons": [
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "Nen",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/Nen.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Brutal",
+      "Criminal",
+      "Gas Mask"
+    ],
+    "weapons": [
+      {
+        "name": "Shield",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Protective"
+      },
+      {
+        "name": "Maul",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Panda Man",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 40,
+    "funding": 650,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/PandaMan.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Elite (Cosplayers)",
+      "Paranoid (Mental Disorder)",
+      "Panda Costume",
+      "Hardened"
+    ],
+    "weapons": [
+      {
+        "name": "Modified Assault Rifle",
+        "damage": "🩸🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / Red Dot / Silencer"
+      }
+    ]
+  },
+  {
+    "name": "Prisoner 04211",
+    "realname": "Gustaff Gustaffson",
+    "base": "30mm",
+    "rep": 18,
+    "funding": 400,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Prisoner04211.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Escape Artist",
+      "Pickpocket"
+    ],
+    "weapons": [
+      {
+        "name": "Carbine",
+        "damage": "🩸",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Prisoner 47905",
+    "realname": "Carlo Grotti",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Prisoner47905.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Rapid Fire {SPECIAL_ICON}",
+      "Criminal"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Prisoner 93432",
+    "realname": "Tyrone Johnson",
+    "base": "30mm",
+    "rep": 20,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Prisoner93432.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Reinforced Gloves",
+      "Criminal",
+      "Master Fighter"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Professor Pyg",
+    "realname": "Lazlo Valentin",
+    "base": "30mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/ProfessorPyg.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Combo (Knife)",
+      "Goad {SPECIAL_ICON}",
+      "Medic {SPECIAL_ICON}",
+      "Self-Discipline",
+      "Arrest {SPECIAL_ICON}",
+      "Dollotrons",
+      "Surgical madness (Mental disorder)"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Sharp / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Ra's Al Ghul (Rebirth)",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 122,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["League of Shadows"],
+    "eternal": true,
+    "img": "img/RaSAlGhulRebirth.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Veteran",
+      "Weapon Master",
+      "Arrogant",
+      "Elite Boss (Ninja)",
+      "Exhaustive Planner",
+      "Immortal",
+      "Martial Artist",
+      "Mastermind",
+      "Deadly Strike {SPECIAL_ICON}",
+      "Strategist"
+    ],
+    "weapons": [
+      {
+        "name": "Ancient Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Reaper",
+    "realname": "Benjamin Gruener",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/Reaper.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Combo (Sickle)",
+      "Assassin (2)",
+      "Brutal",
+      "Coward’s Reward",
+      "Tireless",
+      "Stealth",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Sickle",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (1) / Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Red Hood (Arkham Knight)",
+    "realname": "Jason Todd",
+    "base": "30mm",
+    "rep": 88,
+    "funding": 500,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/RedHoodArkhamKnight.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Bulletproof Vest",
+      "Safe hands",
+      "Scheming (1)",
+      "Takedown",
+      "Teamwork (1) (All)"
+    ],
+    "weapons": [
+      {
+        "name": "Dual Handguns (Ranged)",
+        "damage": "🩸★",
+        "rof": 4,
+        "ammo": 3,
+        "traits": "Firearm / Light / S. Range"
+      },
+      {
+        "name": "Dual handguns (Melee)",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "Reverse Flash (TV)",
+    "realname": "Eobard Thawne",
+    "base": "30mm",
+    "rep": 110,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "rivals": ["GCPD","Bat Family","Joker","League of Shadows"],
+    "eternal": true,
+    "img": "img/ReverseFlashTV.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "4+",
+      "Movement": 14,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Dodge",
+      "Fast (4)",
+      "Scientific",
+      "Tachyon device",
+      "I Know What I’m Doing",
+      "Survivor",
+      "(Unique Speed Power) Kinetic Tornado"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Rick Flag",
+    "realname": "Richard Rogers Flag",
+    "base": "30mm",
+    "rep": 64,
+    "funding": 500,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD","Suicide Squad"],
+    "eternal": true,
+    "img": "img/RickFlag.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Elite Boss (Special Forces)",
+      "Leadership",
+      "Multifire {SPECIAL_ICON}",
+      "Order {SPECIAL_ICON}",
+      "Veteran",
+      "Volunteer"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "MG",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Robin (Boy Wonder)",
+    "realname": "Dick Grayson",
+    "base": "30mm",
+    "rep": 65,
+    "funding": 100,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/RobinBoyWonder.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 4
+    },
+    "traits": [
+      "Acrobat",
+      "Agile",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Boy Wonder",
+      "Combat Flip {SPECIAL_ICON}",
+      "Disarray {SPECIAL_ICON}",
+      "Escape Artist",
+      "Reflexes",
+      "Small",
+      "Teen Titans Founder",
+      "The Sidekick"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Scarecrow (Arkham Knight)",
+    "realname": "Jonathan Crane",
+    "base": "30mm",
+    "rep": 79,
+    "funding": 0,
+    "rank": ["Leader","Sidekick"],
+    "faction": ["Bane"],
+    "eternal": true,
+    "img": "img/ScarecrowArkhamKnight.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Discourage {SPECIAL_ICON}",
+      "Gas Mask",
+      "Psycho",
+      "Psychologist",
+      "Scheming (1)",
+      "Undercover",
+      "The Fear Master",
+      "Inspire Fear {SPECIAL_ICON}",
+      "Scientific"
+    ],
+    "weapons": [
+      {
+        "name": "Syringe Fear Claw",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Scared"
+      }
+    ]
+  },
+  {
+    "name": "Spartan",
+    "realname": "John Diggle",
+    "base": "30mm",
+    "rep": 60,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Spartan.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bodyguard",
+      "Kevlar Vest",
+      "Lantern",
+      "Master Marksman",
+      "Scheming (2)"
+    ],
+    "weapons": [
+      {
+        "name": "Taser",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Reach (3) / CRT (Stunned)"
+      },
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Spikes Plant",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 13,
+    "funding": 150,
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
+    "eternal": true,
+    "img": "img/SpikesPlant.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 0,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Plant",
+      "Elite (Plants)"
+    ],
+    "weapons": [
+      {
+        "name": "Spike Shot",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Mechanical / S. Range / Enervating (1)"
+      }
+    ]
+  },
+  {
+    "name": "Tet",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 36,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/Tet.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Gas Mask",
+      "Criminal",
+      "Sturdy"
+    ],
+    "weapons": [
+      {
+        "name": "Heavy Flamethrower",
+        "damage": "🩸🩸★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Expansive / Mechanical / Fire"
+      }
+    ]
+  },
+  {
+    "name": "The Eyeball Man",
+    "realname": "Stan",
+    "base": "30mm",
+    "rep": 27,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/TheEyeballMan.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Cyclops",
+      "OCD (Mental Disorder)",
+      "Street Guy",
+      "Elite (Cosplayers)"
+    ],
+    "weapons": [
+      {
+        "name": "Carbine",
+        "damage": "🩸",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Vov",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 22,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/Vov.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Gas Mask",
+      "Sapper {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Zatanna",
+    "realname": "Zatanna Zatara",
+    "base": "30mm",
+    "rep": 108,
+    "funding": 400,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Zatanna.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Bluff {SPECIAL_ICON}",
+      "Divination",
+      "Eldritch",
+      "Hover",
+      "Safe hands",
+      "Magical Power (6)",
+      "Homo Magi",
+      "Distort Magic"
+    ],
+    "weapons": [
+      {
+        "name": "Pyrokinesis Bolts",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Light / Magic / S. Range / Throwing / Fire"
+      }
+    ]
+  },
+  {
+    "name": "The Flash",
+    "realname": "Barry Allen",
+    "base": "30mm",
+    "rep": 118,
+    "funding": 100,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/TheFlash.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "4+",
+      "Movement": 14,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Detective",
+      "Dodge",
+      "Fast (4)",
+      "Mixed Combat Style {SPECIAL_ICON}",
+      "Moral Compass",
+      "Safe hands",
+      "Scientific",
+      "Speed Force Master"
+    ],
+    "weapons": [
+      {
+        "name": "Kinetic Burst",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric"
+      },
+      {
+        "name": "Kinetic Lightning",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 4,
+        "traits": "Beam / Electric / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Nightwing",
+    "realname": "Dick Grayson",
+    "base": "30mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Nightwing.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Batclaw {SPECIAL_ICON}",
+      "Charismatic",
+      "Combat Flip {SPECIAL_ICON}",
+      "Combo (Sticks)",
+      "Jump Up",
+      "Martial Artist",
+      "Searcher",
+      "Street Guy"
+    ],
+    "weapons": [
+      {
+        "name": "Sticks",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Electric / Handy / Mechanical"
+      },
+      {
+        "name": "Wingdings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Harley Quinn",
+    "realname": "Dr. Harleen Frances Quinzel",
+    "base": "30mm",
+    "rep": 68,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["Birds of Prey","Joker","Suicide Squad"],
+    "eternal": true,
+    "img": "img/HarleyQuinn2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Unpredictable",
+      "Acrobat",
+      "Chaotic Friends",
+      "Disarray {SPECIAL_ICON}",
+      "Follow Me! {SPECIAL_ICON}",
+      "Gotham City Siren",
+      "Technique {SPECIAL_ICON}",
+      "True Love (Joker)"
+    ],
+    "weapons": [
+      {
+        "name": "Reinforced Bat",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      },
+      {
+        "name": "Twin Guns",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 1,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Poison Ivy",
+    "realname": "Dr. Pamela Lillian Isley",
+    "base": "30mm",
+    "rep": 101,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Birds of Prey","Suicide Squad"],
+    "eternal": true,
+    "img": "img/PoisonIvy2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 11,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Chlorokinesis {SPECIAL_ICON}",
+      "Control Pheromones {SPECIAL_ICON}",
+      "Acrobat",
+      "Elite Boss (Plants)",
+      "Gotham City Siren",
+      "Mortal Kiss {SPECIAL_ICON}",
+      "Poison immunity",
+      "Possessed",
+      "Scientific",
+      "The Song of the Sirens"
+    ],
+    "weapons": [
+      {
+        "name": "Sprinkling Spores",
+        "damage": "-",
+        "rof": 1,
+        "ammo": "-",
+        "traits": "Expansive / Poison / Toxic (1)"
+      }
+    ]
+  },
+  {
+    "name": "Two-Face",
+    "realname": "Harvey Dent",
+    "base": "30mm",
+    "rep": 99,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/TwoFace2.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 9
+    },
+    "traits": [
+      "Reinforced Gloves",
+      "Judgment",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Bipolar (Mental Disorder)",
+      "Attorney’s Allegation {SPECIAL_ICON}",
+      "Aversion (Catwoman)",
+      "Duke of Duality",
+      "I Believe in Harvey Dent",
+      "Sturdy",
+      "Master Marksman"
+    ],
+    "weapons": [
+      {
+        "name": "Magnum",
+        "damage": "🩸🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Green Arrow",
+    "realname": "Oliver Queen",
+    "base": "30mm",
+    "rep": 110,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/GreenArrow.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Counter Attack",
+      "Dirty Fighter",
+      "Good Aim {SPECIAL_ICON}",
+      "Grapple Gun {SPECIAL_ICON}",
+      "Master Marksman",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Shooter",
+      "Stealth"
+    ],
+    "weapons": [
+      {
+        "name": "Bow (Standard Arrow)",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Bow (Multi Arrows)",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 1,
+        "traits": "Aim / Mechanical / One Use / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Catwoman",
+    "realname": "Selina Kyle",
+    "base": "30mm",
+    "rep": 66,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["Joker"],
+    "eternal": true,
+    "img": "img/Catwoman2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 15,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Retractable Claws",
+      "Acrobat",
+      "Climbing Claws",
+      "Gotham City Siren",
+      "Planning the Move",
+      "Primary Target",
+      "Sneaking",
+      "Thief {SPECIAL_ICON}",
+      "Total Vision"
+    ],
+    "weapons": [
+      {
+        "name": "Whip",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Deathstroke (Arkham Origins)",
+    "realname": "Slade Wilson",
+    "base": "30mm",
+    "rep": 145,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/DeathstrokeArkhamOrigins.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 11,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Combo (Reinforced Bo)",
+      "Counter Attack",
+      "Hidden Sniper {SPECIAL_ICON}",
+      "Martial Artist",
+      "Soul Armor {SPECIAL_ICON}",
+      "Stealth",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Reinforced Bo",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Reach (2)"
+      },
+      {
+        "name": "Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    "name": "Talia Al Ghul",
+    "realname": "Talia Al Ghul",
+    "base": "30mm",
+    "rep": 75,
+    "funding": 250,
+    "rank": ["Sidekick"],
+    "faction": ["League of Shadows","Organized Crime"],
+    "eternal": true,
+    "img": "img/TaliaAlGhul.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 11,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Master Marksman",
+      "Scheming (3)",
+      "True Love (Bruce Wayne)",
+      "Business Agent",
+      "Get ’Em {SPECIAL_ICON}",
+      "Affinity (Lex Luthor)"
+    ],
+    "weapons": [
+      {
+        "name": "Mauser Gun",
+        "damage": "🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Owlman",
+    "realname": "Thomas Wayne Jr.",
+    "base": "30mm",
+    "rep": 135,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/Owlman.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Aversion (Lex Luthor)",
+      "Bat-Armor Mk I",
+      "Bat Cape",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Claws",
+      "Detective",
+      "Master Fighter",
+      "Sneak Attack",
+      "Hates Humanity",
+      "Multiverse Teleportation Device"
+    ],
+    "weapons": [
+      {
+        "name": "Razorangs",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Sharp / S. Range / Throwing"
+      },
+      {
+        "name": "Heavy Handgun",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Firearm / One Use / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Zur-En-Arrh Batman",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 115,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/ZurEnArrhBatman.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Reinforced Gloves",
+      "Adaptable",
+      "Bat-Armor Mk I",
+      "Bat Cape",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Bipolar (Mental Disorder)",
+      "Detective",
+      "Devastating Blow {SPECIAL_ICON}",
+      "Hallucination {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 1,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    // В официальной базе аффилиация ПУСТАЯ: амазонок связывает трейт Amazon,
+    // а не банда. Unknown здесь означает «может возглавить любой отряд», после
+    // чего Amazon Lineage ограничит набор моделями с трейтом Amazon.
+    "name": "Queen Hippolita",
+    "realname": "Hippolyta",
+    "base": "30mm",
+    "rep": 190,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Unknown"],
+    "eternal": true,
+    "img": "img/QueenHippolita.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 11
+    },
+    "traits": [
+      "Amazon Lineage",
+      "Amazon",
+      "Leadership",
+      "Martial Artist",
+      "Sturdy",
+      "Super Jump {SPECIAL_ICON}",
+      "Grand Strategist",
+      "Weapon Master",
+      "Veteran",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    // Аффилиация в источнике пустая — набор ограничен правилом в modelDependencyRules
+    "name": "Amazon Warrior 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 54,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "eternal": true,
+    "img": "img/AmazonWarrior1.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 11,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Martial Artist",
+      "Amazon"
+    ],
+    "weapons": [
+      {
+        "name": "Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      }
+    ]
+  },
+  {
+    // Аффилиация в источнике пустая — набор ограничен правилом в modelDependencyRules
+    "name": "Amazon Warrior 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 54,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "eternal": true,
+    "img": "img/AmazonWarrior3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 13,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Amazon",
+      "Good Aim {SPECIAL_ICON}",
+      "Rapid Fire {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Bow",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 4,
+        "traits": "Aim / Mechanical / Acceleration"
+      }
+    ]
+  },
+  {
+    // Аффилиация в источнике пустая — набор ограничен правилом в modelDependencyRules
+    "name": "Amazon Warrior 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 52,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "eternal": true,
+    "img": "img/AmazonWarrior2.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 11,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Amazon",
+      "Combat Flip {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Spear (Melee)",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (2) / Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Johnny Quick",
+    "realname": "Jonathan Allen",
+    "base": "30mm",
+    "rep": 125,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/JohnnyQuick.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "4+",
+      "Movement": 14,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Aversion (Lex Luthor)",
+      "Criminal",
+      "Dodge",
+      "Fast (4)",
+      "Speed Force Master",
+      "Atomica",
+      "(Unique Speed Power) Molecular Vibration "
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Batman (Rebirth)",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 150,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BatmanRebirth.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 8
+    },
+    "traits": [
+      "Bat-Armor Mk I",
+      "Bat Cape",
+      "Batclaw {SPECIAL_ICON}",
+      "Detective",
+      "Informer",
+      "Martial Artist",
+      "Master of Stealth",
+      "Reinforced Gloves",
+      "Self-Discipline",
+      "Sneaking",
+      "Sneak Attack",
+      "The World’s Greatest Detective"
+    ],
+    "weapons": [
+      {
+        "name": "Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Light / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Lobo",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 141,
+    "funding": 500,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "eternal": true,
+    "img": "img/Lobo.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 11
+    },
+    "traits": [
+      "Arrogant",
+      "Brutal",
+      "Close Combat Master",
+      "Dirty Fighter",
+      "Immortal",
+      "Obstinate",
+      "Large",
+      "Regeneration",
+      "Reinforced Gloves",
+      "Sturdy",
+      "The Main Man"
+    ],
+    "weapons": [
+      {
+        "name": "Chained Hook",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (3) / Sharp"
+      },
+      {
+        "name": "Big Gun",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Killer Frost",
+    "realname": "Louise Lincoln",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 150,
+    "rank": ["Free Agent"],
+    "faction": ["Mr. Freeze","Suicide Squad","Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/KillerFrost.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Adaptable",
+      "Chill Touch",
+      "Resilient",
+      "Runaway",
+      "Stop! {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Ice Daggers",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": "-",
+        "traits": "M. Range / Throwing / Cold / Exposure"
+      }
+    ]
+  },
+  {
+    "name": "The Batman Who Laughs",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 140,
+    "funding": 200,
+    "rank": ["Free Agent"],
+    "faction": ["Batman Who Laughs","Unknown"],
+    "rivals": ["GCPD","Bat Family","Joker"],
+    "eternal": true,
+    "img": "img/TheBatmanWhoLaughs2.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 9
+    },
+    "traits": [
+      "Cannibal",
+      "Detective",
+      "Large",
+      "Luck",
+      "Martial Artist",
+      "Persuasive {SPECIAL_ICON}",
+      "Psycho",
+      "Sneaking",
+      "Stealth",
+      "Strategist",
+      "Trickster"
+    ],
+    "weapons": [
+      {
+        "name": "Teeth & Claws",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Protective / Reach (3)"
+      },
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Catwoman (Modern Age)",
+    "realname": "Selina Kyle",
+    "base": "30mm",
+    "rep": 69,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["Joker"],
+    "eternal": true,
+    "img": "img/CatwomanModernAge.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "5+",
+      "Movement": 13,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Backpack",
+      "Bluff {SPECIAL_ICON}",
+      "Climbing Claws",
+      "Retractable Claws",
+      "Coward’s Reward",
+      "Sneaking",
+      "Thief {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Whip",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Reach (2)"
+      }
+    ]
+  },
+  {
+    "name": "Swamp Thing",
+    "realname": "Alec Holland",
+    "base": "40mm",
+    "rep": 150,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD","Birds of Prey"],
+    "eternal": true,
+    "img": "img/SwampThing.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 9,
+      "Endurance": 12
+    },
+    "traits": [
+      "Chlorokinesis {SPECIAL_ICON}",
+      "Elite Boss (Plants)",
+      "Green Magic",
+      "Immortal",
+      "Large",
+      "Magical Power (5)",
+      "Natural Immunities",
+      "Pollution Hate",
+      "Regeneration",
+      "Supernatural",
+      "Tough Skin",
+      "Vulnerability to Fire"
+    ],
+    "weapons": [
+      {
+        "name": "Metamorphic Branch",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Reach (2)"
+      },
+      {
+        "name": "Spikes",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Deadman",
+    "realname": "Boston Brand",
+    "base": "30mm",
+    "rep": 80,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Deadman.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Acrobat",
+      "Concealment {SPECIAL_ICON}",
+      "Escape Artist",
+      "Ghost",
+      "Possession {SPECIAL_ICON}"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Black Orchid",
+    "realname": "Susan Linden",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD","Suicide Squad"],
+    "eternal": true,
+    "img": "img/BlackOrchid.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Adaptable",
+      "Detective",
+      "Energy Field",
+      "Fly {SPECIAL_ICON}",
+      "Hidden",
+      "Invulnerability (1)",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Lexcorp Heavy Trooper",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 55,
+    "funding": 500,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/LexcorpHeavyTrooper.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 2,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Medium Armor",
+      "Reinforced Gloves",
+      "Cybernetic",
+      "Invaluable",
+      "Large"
+    ],
+    "weapons": [
+      {
+        "name": "Laser Cannon",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 3,
+        "traits": "Assault / Beam / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "LexCorp Trooper 1",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 34,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/LexCorpTrooper1.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Medium Armor",
+      "Reinforced Gloves",
+      "Close Combat Master",
+      "Cybernetic"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "LexCorp Trooper 2",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 38,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/LexCorpTrooper2.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Medium Armor",
+      "Reinforced Gloves",
+      "Cybernetic",
+      "Follow Me! {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Electric Blade",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Electric / Mechanical"
+      }
+    ]
+  },
+  {
+    "name": "LexCorp Trooper 3",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 37,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/LexCorpTrooper3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Medium Armor",
+      "Reinforced Gloves",
+      "Cybernetic"
+    ],
+    "weapons": [
+      {
+        "name": "Hand Cannon",
+        "damage": "🩸🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Beam / S. Range / Push (3)"
+      }
+    ]
+  },
+  {
+    "name": "King Shark",
+    "realname": "Shay Lamden",
+    "base": "60mm",
+    "rep": 95,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/KingShark.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Amphibious",
+      "Bloodthirsty (Mental Disorder)",
+      "Brutal",
+      "Combo (Claws & Teeth)",
+      "Huge",
+      "Meta-Skin (Bulletproof Vest)",
+      "Regeneration",
+      "Swift",
+      "Blood Scent"
+    ],
+    "weapons": [
+      {
+        "name": "Claws & Teeth",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Devastating"
+      }
+    ]
+  },
+  {
+    "name": "Batman (Knightmare)",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 132,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BatmanKnightmare.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Aversion (Kal-El)",
+      "Bat-Armor Mk I",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Close Combat Master",
+      "Detective",
+      "Martial Artist",
+      "Reinforced Gloves",
+      "Mixed Combat Style {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Custom MG",
+        "damage": "🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "Booster Gold",
+    "realname": "Michael Jon Carter",
+    "base": "30mm",
+    "rep": 114,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BoosterGold.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "2+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 8
+    },
+    "traits": [
+      "Energy Field",
+      "Fly {SPECIAL_ICON}",
+      "Hacking {SPECIAL_ICON}",
+      "Master Fighter",
+      "Power Armor MKII",
+      "Reinforced Gloves",
+      "Teamwork (1) (Blue Beetle)",
+      "Timely Arrival",
+      "Total Vision"
+    ],
+    "weapons": [
+      {
+        "name": "Blasters",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Beam / M. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Blue Beetle",
+    "realname": "Ted Kord",
+    "base": "30mm",
+    "rep": 65,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/BlueBeetle.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Teamwork (1) (Booster Gold)",
+      "Reinforced Gloves",
+      "Batclaw/Grapple Gun {SPECIAL_ICON}",
+      "Bug (Archie)",
+      "Martial Artist"
+    ],
+    "weapons": [
+      {
+        "name": "BB Gun",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Beam / Light / S. Range / Blind"
+      },
+      {
+        "name": "BB Gun (Compressed Air)",
+        "damage": "★★",
+        "rof": 1,
+        "ammo": 2,
+        "traits": "Beam / Expansive / Push (3)"
+      }
+    ]
+  },
+  {
+    "name": "Poison Ivy",
+    "realname": "Dr. Pamela Lillian Isley",
+    "base": "40mm",
+    "rep": 97,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Birds of Prey","Suicide Squad"],
+    "eternal": true,
+    "img": "img/PoisonIvy3.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Adaptable",
+      "Chlorokinesis {SPECIAL_ICON}",
+      "Large",
+      "Control Pheromones {SPECIAL_ICON}",
+      "Elite Boss (Plants)",
+      "Gotham City Siren",
+      "Mortal Kiss {SPECIAL_ICON}",
+      "Poison immunity",
+      "Possessed",
+      "Scientific"
+    ],
+    "weapons": [
+      {
+        "name": "Plants",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Mechanical / Protective / Reach (2)"
+      },
+      {
+        "name": "Spores",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Acid / Explosive / S. Range / Poison / Toxic (1)"
+      }
+    ]
+  },
+  {
+    "name": "The Demon",
+    "realname": "Etrigan",
+    "base": "40mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/TheDemon.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "2+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Adaptable",
+      "Claws",
+      "Demon",
+      "Divination",
+      "Flaming Wave {SPECIAL_ICON}",
+      "Immortal",
+      "Large",
+      "Magical Power (4)",
+      "Natural Immunities",
+      "Necromancy"
+    ],
+    "weapons": [
+      {
+        "name": "Flaming Breath",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Expansive / One Use / Fire"
+      }
+    ]
+  },
+  {
+    "name": "The Wizard",
+    "realname": "Malcolm Merlyn",
+    "base": "30mm",
+    "rep": 110,
+    "funding": 0,
+    "rank": ["Leader","Sidekick"],
+    "faction": ["League of Shadows"],
+    "eternal": true,
+    "img": "img/TheWizard.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 11,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Acrobat",
+      "Good Aim {SPECIAL_ICON}",
+      "Elite Boss (Ninja)",
+      "Hook Arrow {SPECIAL_ICON} (Batclaw)",
+      "Martial Artist",
+      "Mixed Combat Style {SPECIAL_ICON}",
+      "Outlaw Field Commander {SPECIAL_ICON}",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Trickster",
+      "The Wizard"
+    ],
+    "weapons": [
+      {
+        "name": "Sword",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Carbon Arrow",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Aim / Mechanical / Sharp / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "The Flash (TV Show)",
+    "realname": "Barry Allen",
+    "base": "30mm",
+    "rep": 100,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/TheFlashTVShow.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "4+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Arrest {SPECIAL_ICON}",
+      "Detective",
+      "Dodge",
+      "Fast (4)",
+      "Moral Compass",
+      "Scientific",
+      "Speed Force Master",
+      "(Unique Speed Power) Speed Force Bolts"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Vibe",
+    "realname": "Cisco Ramon",
+    "base": "30mm",
+    "rep": 63,
+    "funding": 300,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Vibe.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Charismatic",
+      "Luck",
+      "Multitask",
+      "Scientific",
+      "Unpredictable",
+      "Dimensional Portal {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Vibe Attack",
+        "damage": "★★",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Beam / Expansive / Push (5)"
+      }
+    ]
+  },
+  {
+    "name": "Harry",
+    "realname": "Harrison Wells (Earth's 2)",
+    "base": "30mm",
+    "rep": 48,
+    "funding": 500,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Harry.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Leadership",
+      "Scientific",
+      "Smuggler",
+      "Strategist"
+    ],
+    "weapons": [
+      {
+        "name": "Energy Rifle (Expansive",
+        "damage": "★★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Beam / Devastating / Expansive"
+      },
+      {
+        "name": "Energy Rifle (Concentrated)",
+        "damage": "★★★",
+        "rof": 3,
+        "ammo": 3,
+        "traits": "Beam / M. Range"
+      }
+    ]
+  },
+  {
+    // Аффилиация в источнике пустая; rivals оттуда же — как у прочих безбандных злодеев
+    "name": "Black Flash",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 0,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/BlackFlash.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 14,
+      "Willpower": 8,
+      "Endurance": 10
+    },
+    "traits": [
+      "Dodge",
+      "Fast (4)",
+      "Escape Artist",
+      "Immortal",
+      "Speed Force Absorption",
+      "Supernatural",
+      "Undead"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Joker (The Killing Joke)",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 98,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/JokerTheKillingJoke.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "To Prove a Point",
+      "Trickster",
+      "Psycho",
+      "Kill them! {SPECIAL_ICON}",
+      "Kaos Agent",
+      "Scheming (1)",
+      "Intimidate {SPECIAL_ICON}",
+      "Demotivate {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Joker's Gun",
+        "damage": "🩸🩸🩸",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Devastating / Firearm / S. Range / CRT (Paralyze)"
+      },
+      {
+        "name": "Camera",
+        "damage": "-",
+        "rof": 1,
+        "ammo": 24,
+        "traits": "Accurate / Light / S. Range / Blind"
+      }
+    ]
+  },
+  {
+    "name": "Bronze Tiger",
+    "realname": "Benjamin Turner",
+    "base": "30mm",
+    "rep": 85,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Suicide Squad","Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/BronzeTiger.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Close Combat Master",
+      "Counter Attack",
+      "Martial Artist",
+      "Martial Expert",
+      "Takedown",
+      "Reinforced Gloves",
+      "Offensive Defense",
+      "The Professional"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Mahoney",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 30,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Mahoney.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest {SPECIAL_ICON}",
+      "Charismatic",
+      "Cop",
+      "Goad {SPECIAL_ICON}",
+      "Obstinate"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "1 Dollar",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 46,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["Penguin"],
+    "eternal": true,
+    "img": "img/1Dollar.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Bulletproof Vest",
+      "Criminal",
+      "Dirty Money",
+      "Mobster",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      }
+    ]
+  },
+  {
+    "name": "Li Holidays",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 63,
+    "funding": 150,
+    "rank": ["Sidekick"],
+    "faction": ["Bane"],
+    "eternal": true,
+    "img": "img/LiHolidays.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 6
+    },
+    "traits": [
+      "Air Support {SPECIAL_ICON}",
+      "Assassin (2)",
+      "Bulletproof Vest",
+      "Master Marksman",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Veteran",
+      "Martial Artist"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Sharp / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Tyrant",
+    "realname": "Unknown",
+    "base": "40mm",
+    "rep": 40,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Birds of Prey"],
+    "eternal": true,
+    "img": "img/Tyrant.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 2,
+      "Strength": "3+",
+      "Movement": 6,
+      "Willpower": 5,
+      "Endurance": 7
+    },
+    "traits": [
+      "Desensitized",
+      "Hardened",
+      "Large",
+      "Obstinate",
+      "Self-Discipline"
+    ],
+    "weapons": [
+      {
+        "name": "Improvised Weapon",
+        "damage": "🩸★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Bleed (1) / Handy"
+      }
+    ]
+  },
+  {
+    "name": "Big Sidekick",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 200,
+    "rank": ["Sidekick"],
+    "faction": ["Bane"],
+    "eternal": true,
+    "img": "img/BigSidekick.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Concealment {SPECIAL_ICON}",
+      "Reinforced Gloves",
+      "Searcher",
+      "Sneak Attack",
+      "Stealth",
+      "Undercover",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp"
+      },
+      {
+        "name": "Stun Gun",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Light / Mechanical / S. Range / Enervating (2)"
+      }
+    ]
+  },
+  {
+    "name": "Hayabusa",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 55,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["League of Shadows"],
+    "eternal": true,
+    "img": "img/Hayabusa.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Acrobat",
+      "Combat Flip {SPECIAL_ICON}",
+      "Martial Artist",
+      "Undercover"
+    ],
+    "weapons": [
+      {
+        "name": "Katana",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Sharp"
+      },
+      {
+        "name": "Ancient Bow",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Mechanical / Acceleration"
+      }
+    ]
+  },
+  {
+    "name": "Boogeyman",
+    "realname": "Johnny",
+    "base": "30mm",
+    "rep": 70,
+    "funding": 450,
+    "rank": ["Free Agent"],
+    "faction": ["Organized Crime"],
+    "eternal": true,
+    "img": "img/Boogeyman.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Assassin (2)",
+      "Instinctive Shooting {SPECIAL_ICON}",
+      "Martial Artist",
+      "Master Marksman",
+      "Undercover",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "S. Range / Firearm / Light"
+      },
+      {
+        "name": "Carbine",
+        "damage": "🩸",
+        "rof": 5,
+        "ammo": 2,
+        "traits": "Assault / Firearm / M. Range"
+      }
+    ]
+  },
+  {
+    "name": "That",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 66,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "eternal": true,
+    "img": "img/That.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "3+",
+      "Movement": 8,
+      "Willpower": 6,
+      "Endurance": 5
+    },
+    "traits": [
+      "Cannibal",
+      "Discourage {SPECIAL_ICON}",
+      "Ghost",
+      "Inspire Fear {SPECIAL_ICON}",
+      "Lord of the Sewers",
+      "Resilient"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Matches Malone",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 90,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["Unknown"],
+    "rivals": ["GCPD","Bat Family"],
+    "eternal": true,
+    "img": "img/MatchesMalone.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Charismatic",
+      "Charm",
+      "Counter Attack",
+      "Detective",
+      "Hidden Boss",
+      "Hidden Plans",
+      "Reinforced Gloves"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Grifter",
+    "realname": "Cole Cash",
+    "base": "30mm",
+    "rep": 140,
+    "funding": 600,
+    "rank": ["Free Agent"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/Grifter.png",
+    "stats": {
+      "Attack": 5,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 10
+    },
+    "traits": [
+      "Master Fighter",
+      "Mastermind",
+      "Mental Dominance {SPECIAL_ICON}",
+      "Mixed Combat Style {SPECIAL_ICON}",
+      "Reinforced Gloves",
+      "Sharpshooter",
+      "Telekinesis",
+      "Veteran"
+    ],
+    "weapons": [
+      {
+        "name": "Dual Handguns",
+        "damage": "🩸★",
+        "rof": 4,
+        "ammo": 3,
+        "traits": "Firearm / Light / S. Range"
+      },
+      {
+        "name": "SMG",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "Firearm / Red Dot / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Joe Chill",
+    "realname": "Joseph Chilton",
+    "base": "30mm",
+    "rep": 24,
+    "funding": 150,
+    "rank": ["Henchman"],
+    "faction": ["Unknown"],
+    "eternal": true,
+    "img": "img/JoeChill.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Criminal",
+      "Cruel {SPECIAL_ICON}",
+      "Expendable",
+      "Pickpocket",
+      "Plead {SPECIAL_ICON}",
+      "The Target of the Bat"
+    ],
+    "weapons": [
+      {
+        "name": "Gun",
+        "damage": "🩸★",
+        "rof": 2,
+        "ammo": 2,
+        "traits": "Firearm / Light / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Leonard Hofstadter",
+    "realname": "Leonard Hofstadter",
+    "base": "30mm",
+    "rep": 62,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["The Big Bang Theory"],
+    "eternal": true,
+    "img": "img/LeonardHofstadter.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 8,
+      "Endurance": 7
+    },
+    "traits": [
+      "Big Bang Theory",
+      "New Laser {SPECIAL_ICON}",
+      "Pop Dart",
+      "Scientific",
+      "True Love (Penny)"
+    ],
+    "weapons": [
+      {
+        "name": "Fake Lantern",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
+    "name": "Sheldon Cooper",
+    "realname": "Sheldon Cooper",
+    "base": "30mm",
+    "rep": 72,
+    "funding": 0,
+    "rank": ["Sidekick"],
+    "faction": ["The Big Bang Theory"],
+    "eternal": true,
+    "img": "img/SheldonCooper.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 9,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bazinga {SPECIAL_ICON}",
+      "Big Bang Theory",
+      "Genius {SPECIAL_ICON}",
+      "Order {SPECIAL_ICON}",
+      "Scientific",
+      "The False Boss",
+      "Zoom, Zoom"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Penny",
+    "realname": "Penny",
+    "base": "30mm",
+    "rep": 63,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["The Big Bang Theory"],
+    "eternal": true,
+    "img": "img/Penny.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Amazon’s Wig",
+      "Big Bang Theory",
+      "Charm",
+      "Country Girl",
+      "Molecules {SPECIAL_ICON}",
+      "True Love (Leonard Hofstadter)"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Howard Wolowitz",
+    "realname": "Howard Wolowitz",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["The Big Bang Theory"],
+    "eternal": true,
+    "img": "img/HowardWolowitz.png",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 7,
+      "Endurance": 5
+    },
+    "traits": [
+      "Big Bang Theory",
+      "Engineer",
+      "Froot Loops",
+      "Handyman",
+      "Magic Tricks"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Rajesh Koothrappali",
+    "realname": "Rajesh Koothrappali",
+    "base": "30mm",
+    "rep": 50,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["The Big Bang Theory"],
+    "eternal": true,
+    "img": "img/RajeshKoothrappali.png",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 6,
+      "Willpower": 7,
+      "Endurance": 6
+    },
+    "traits": [
+      "Big Bang Theory",
+      "Cinnamon {SPECIAL_ICON}",
+      "Rich Family",
+      "Through the Stars",
+      "Weird True Love",
+      "Scientific"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Zack Johnson",
+    "realname": "Zack Johnson",
+    "base": "30mm",
+    "rep": 53,
+    "funding": 0,
+    "rank": ["Free Agent"],
+    "faction": ["The Big Bang Theory"],
+    "eternal": true,
+    "img": "img/ZackJohnson.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 3,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 9
+    },
+    "traits": [
+      "Big Bang Theory",
+      "Big Guy",
+      "Blow Up the Moon",
+      "Dolphins or Zack?",
+      "Reinforced Gloves",
+      "Unstoppable {SPECIAL_ICON}"
+    ],
+    "weapons": [
+
+    ]
+  },
+  {
+    "name": "Green Arrow",
+    "realname": "Oliver Queen",
+    "base": "30mm",
+    "rep": 102,
+    "funding": 300,
+    "rank": ["Sidekick"],
+    "faction": ["GCPD"],
+    "eternal": true,
+    "img": "img/GreenArrow2.png",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 13,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Good Aim {SPECIAL_ICON}",
+      "Hardened",
+      "Hook Arrow {SPECIAL_ICON}",
+      "Master Marksman",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Stealth",
+      "Technique {SPECIAL_ICON}"
+    ],
+    "weapons": [
+      {
+        "name": "Bow (Standard Arrow)",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 3,
+        "traits": "Aim / Mechanical / Acceleration"
+      },
+      {
+        "name": "Bow (Special Arrow)",
+        "damage": "🩸🩸",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Aim / Mechanical / Stunned / Acceleration"
+      }
+    ]
+  }
 ];
 
 window.models = models;

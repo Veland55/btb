@@ -51,6 +51,7 @@ function conditionPool(type) {
 // Переброс: равновероятно, но не та же карта (иначе кажется, что кнопка не сработала)
 function rerollGameCondition(type) {
   const pool = conditionPool(type);
+  if (!pool || pool.length < 2) return;   // иначе цикл ниже никогда не завершится
   let idx = gameConditions[type];
   while (idx === gameConditions[type]) idx = Math.floor(Math.random() * pool.length);
   gameConditions[type] = idx;
@@ -295,7 +296,10 @@ function renderGameWait() {
       <button class="save-btn save-btn-del" onclick="leaveGame()">${t('leave_game')}</button>
     </div>`;
 
-  // Поллинг: ждём присоединения оппонента
+  // Поллинг: ждём присоединения оппонента.
+  // stopGamePolling обязателен: повторный вход в этот экран иначе оставлял
+  // предыдущий таймер сиротой, и опросы копились по одному на каждый вход
+  stopGamePolling();
   gamePollTimer = setInterval(async () => {
     try {
       activeGame = await api('/api/games/' + activeGame.code);
