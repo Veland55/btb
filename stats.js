@@ -150,7 +150,8 @@ function factionRowLeftHTML(faction) {
 }
 
 function modelRowLeftHTML(name) {
-  const model = (typeof models !== 'undefined') && models.find(m => m.name === name);
+  // имя приходит из агрегатов сервера — оно могло быть сохранено до переименования
+  const model = (typeof findModelByStoredName === 'function') && findModelByStoredName(name);
   const src = (model && model.img) || 'img/no.png';
   return `<img class="stats-row-img stats-row-photo" src="${sEsc(src)}" alt="" loading="lazy" decoding="async" onerror="this.src='img/no.png'">`;
 }

@@ -292,7 +292,8 @@ function restoreCrewFromSave(s) {
     // entry[3] — _id модели; при его отсутствии (старые сохранения) ищем по имени
     const byId = (typeof entry[3] === 'number' && models[entry[3]] && models[entry[3]].name === entry[0])
       ? models[entry[3]] : null;
-    const base = byId || models.find(mm => mm.name === entry[0]);
+    // findModelByStoredName: ростер мог быть сохранён до переименования моделей
+    const base = byId || findModelByStoredName(entry[0]);
     if (!base) { skipped++; return; } // модель могла исчезнуть из базы
     const cloned = {
       ...base,

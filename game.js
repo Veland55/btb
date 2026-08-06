@@ -584,7 +584,7 @@ function resolveRoster(roster) {
   const eqPool = equipmentByFaction[roster.f] || [];
   let totalRep = 0;
   const rows = (roster.m || []).map(entry => {
-    const model = models.find(mm => mm.name === entry[0]) || null;
+    const model = findModelByStoredName(entry[0]);
     const eqNames = entry[2] || [];
     let rep = model ? (model.rep || 0) : 0;
     eqNames.forEach(en => {

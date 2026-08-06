@@ -341,7 +341,7 @@ function gcRosterTraits(roster) {
   if (typeof models === 'undefined' || typeof getTraitDescription !== 'function') return [];
   const found = new Map();
   (roster.m || []).forEach(entry => {
-    const model = models.find(mm => mm.name === entry[0]);
+    const model = findModelByStoredName(entry[0]);
     if (!model) return;
     (model.traits || []).forEach(tr => {
       const desc = getTraitDescription(tr);

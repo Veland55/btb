@@ -49,37 +49,37 @@ const modelDependencyRules = {
   "Robin Who Laughs": { requiredModel: "The Batman Who Laughs" },
   
   // Dark Knight Rises
-  "Gordon Infiltrate": { requiredModel: "Batman Dark Knight Rises" },
-  "Catwoman Dark Knight Rises": { requiredModel: ["Batman Dark Knight Rises", "Bane Dark Knight Rises"] },
+  "Gordon (Infiltrate)": { requiredModel: "Batman (Dark Knight Rises)" },
+  "Catwoman (Dark Knight Rises)": { requiredModel: ["Batman (Dark Knight Rises)", "Bane (Dark Knight Rises)"] },
   
   // Adam West 1966
-  "Robin Burt Ward": { requiredModel: "Batman Adam West" },
+  "Robin (Burt Ward)": { requiredModel: "Batman (Adam West)" },
   
   // Batman Beyond (Terry McGinnis)
-  "Mr. Wayne Beyond": { requiredModel: "Batman Beyond" },
-  "Robin Beyond": { requiredModel: "Batman Beyond" },
+  "Mr. Wayne (Beyond)": { requiredModel: "Batman (Beyond)" },
+  "Robin (Beyond)": { requiredModel: "Batman (Beyond)" },
   
   // The Animated Series
-  "Harley Quinn The Animated Series": { requiredModel: "Batman The Animated Series" },
+  "Harley Quinn (The Animated Series)": { requiredModel: "Batman (The Animated Series)" },
   
   // GCPD / Two-Face
   "Gilda Dent": { requiredModel: "Two-Face" },
   
   // Batman Forever: киношный Two-Face (Tommy Lee Jones) нанимается только с Риддлером Джима Керри.
   // Ключ не должен называться просто "Two-Face" — иначе правило блокировало бы и лидера фракции Two-Face
-  "Two-Face Batman Forever": { requiredModel: "The Riddler Jim Carrey" },
+  "Two-Face (Batman Forever)": { requiredModel: "The Riddler (Jim Carrey)" },
   
   // Batman Michael Keaton
-  "Catwoman Michelle Pfeiffer": { requiredModel: "Batman Michael Keaton" },
+  "Catwoman (Michelle Pfeiffer)": { requiredModel: "Batman (Michael Keaton)" },
   
   // Suicide Squad. Трейт Required (Ratcatcher 2) висит на Себастьяне-крысе,
   // а не на самом Ratcatcher: с прежним ключом Ratcatcher (фракция Unknown)
   // становился ненанимаемым, а Себастьян — вообще без ограничения
-  "Sebastian the Rat The Suicide Squad": { requiredModel: "Ratcatcher 2 The Suicide Squad" },
-  "Eagly": { requiredModel: "Peacemaker John Cena" },
+  "Sebastian the Rat (The Suicide Squad)": { requiredModel: "Ratcatcher 2 (The Suicide Squad)" },
+  "Eagly": { requiredModel: "Peacemaker (John Cena)" },
   
   // League of Shadows / Batman Begins
-  "Bruce Batman Begins": { requiredModel: "Henry Ducard" },
+  "Bruce (Batman Begins)": { requiredModel: "Henry Ducard" },
   
   // Joker Cesar Romero (Batman 1966)
   "The Riddler (Frank Gorshin)": { requiredModel: "Joker (Cesar Romero)" },
@@ -115,7 +115,7 @@ window.modelDependencyRules = modelDependencyRules;
 // И наоборот: если эта модель в отряде, модели из списка не могут быть наняты
 const modelAversionRules = {
   // League of Shadows / Nyssa al Ghul
-  "Nyssa al Ghul (Arkham Knight)": ["Ra's al Ghul", "Talia Rebirth"],
+  "Nyssa al Ghul (Arkham Knight)": ["Ra's Al Ghul", "Talia (Rebirth)"],
 
   // GCPD / Aaron Cash
   "Aaron Cash": ["Killer Croc"],
@@ -127,13 +127,13 @@ const modelAversionRules = {
   "The Holiday Killer": ["Sal Maroni"],
 
   // Joker Gang / Gaggy variants and Punchline
-  "Gaggy Rebirth": ["Harley Quinn"],
+  "Gaggy (Rebirth)": ["Harley Quinn"],
   "Gaggy": ["Harley Quinn"],
   "Punchline": ["Harley Quinn"],
 
   // League of Shadows / Damien Darhk — трейт Aversion (Ra's Al Ghul) есть,
   // а правила в этой таблице не было, поэтому запрет не работал
-  "Damien Darhk": ["Ra's al Ghul"]
+  "Damien Darhk": ["Ra's Al Ghul"]
 
   // Добавляйте новые правила здесь по мере необходимости
 };
@@ -310,7 +310,7 @@ const equipmentByFaction = {
     { name: "Freeze Generator", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Victor Fries"], effects: ["Model gains Shockwave rule."] },
     { name: "Engineer Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Victor Fries"], effects: ["Model gains the Handyman rule."] },
     { name: "Queen's Chosen", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Killer Frost"], effects: ["Model gains the Bodyguard rule."] },
-    { name: "Ivy's Snow Coat", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Poison Ivy 1997"], targetModels: ["Poison Ivy"], effects: ["Model gains the Cold Acclimation trait."] }
+    { name: "Ivy's Snow Coat", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Poison Ivy (1997)"], targetModels: ["Poison Ivy"], effects: ["Model gains the Cold Acclimation trait."] }
   ],
   "League of Shadows": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -323,7 +323,7 @@ const equipmentByFaction = {
     { name: "Venom Dose", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains one Venom Dose."] },
     { name: "Precise Orders", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains Chain of Command."] },
     { name: "Pure Lazarus", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Leader", "Sidekick"], effects: ["Model gains the Regeneration trait."] },
-    { name: "Ancient Weapon", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Ra's al Ghul"], effects: ["Close combat attacks gain Bleed(1)."] },
+    { name: "Ancient Weapon", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Ra's Al Ghul"], effects: ["Close combat attacks gain Bleed(1)."] },
     { name: "Shadow Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Talia al Ghul"], effects: ["Model gains the Undercover trait."] },
     { name: "Unarmed Combat Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Lady Shiva"], effects: ["Model gains the Close Combat Master trait."] },
     { name: "Poison Training", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Cheshire"], effects: ["Model gains the Poison Master trait."] },
@@ -413,15 +413,15 @@ const equipmentByFaction = {
     { name: "Back on Track", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Reset Task counter with Cranial Bomb."] },
     { name: "Right Motivation", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Free Manipulate action if no Task counter."] },
     { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy", "Model has Control Pheromones trait"], effects: ["Enhances Control Pheromones (details in desc)."] },
-    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke Vanguard Team"], targetModels: ["Deathstroke Vanguard Team"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
-    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager Vanguard Team"], targetModels: ["Ravager Vanguard Team"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
+    { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team)"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
+    { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team)"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
    ]
 
 };
 
 const models = [
   {
-    "name": "Batman Bushi",
+    "name": "Batman (Bushi)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 105,
@@ -462,7 +462,7 @@ const models = [
 //New Models 18.05
 
   {
-    "name": "The Penguin Crime Lord Rising",
+    "name": "The Penguin (Crime Lord Rising)",
     "realname": "Oswald Chesterfield Cobblepot",
     "base": "40mm",
     "rep": 74,
@@ -510,7 +510,7 @@ const models = [
 //New Models 20.04
 
   {
-    "name": "Harley Quinn Arkham Knight",
+    "name": "Harley Quinn (Arkham Knight)",
     "eternal": true,
     "realname": "Dr. Harleen Frances Quinzel",
     "base": "40mm",
@@ -633,7 +633,7 @@ const models = [
   },
  
   {
-    "name": "Jokermobile Arkham Knight",
+    "name": "Jokermobile (Arkham Knight)",
     "realname": "Unknown",
     "base": "90mm",
     "rep": 130,
@@ -722,7 +722,7 @@ const models = [
     ]
   },
   {
-    "name": "Nightwing Arkham Knight",
+    "name": "Nightwing (Arkham Knight)",
     "eternal": true,
     "realname": "Dick Grayson",
     "base": "40mm",
@@ -771,7 +771,7 @@ const models = [
   
 
   {
-    "name": "Poison Ivy Arkham City",
+    "name": "Poison Ivy (Arkham City)",
     "realname": "Dr. Pamela Lillian Isley",
     "base": "30mm",
     "rep": 101,
@@ -799,7 +799,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Dark Knight Rises",
+    "name": "Batman (Dark Knight Rises)",
     "realname": "Bruce Wayne",
     "base": "30mm",
     "rep": 120,
@@ -1073,7 +1073,7 @@ const models = [
   },
   
   {
-    "name": "Batmobile Arkham Knight",
+    "name": "Batmobile (Arkham Knight)",
     "realname": "Bruce Wayne",
     "base": "90mm",
     "rep": 160,
@@ -1118,7 +1118,7 @@ const models = [
   },
   
   {
-    "name": "Catwoman Dark Knight Rises",
+    "name": "Catwoman (Dark Knight Rises)",
     "realname": "Selina Kyle",
     "base": "30mm",
     "rep": 64,
@@ -1163,7 +1163,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Arkham Knight",
+    "name": "Batman (Arkham Knight)",
     "eternal": true,
     "realname": "Bruce Wayne",
     "base": "40mm",
@@ -1212,7 +1212,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Arkham City",
+    "name": "Batman (Arkham City)",
     "realname": "Bruce Wayne",
     "base": "60mm",
     "rep": 125,
@@ -1390,7 +1390,7 @@ const models = [
     ]
   },
   {
-    "name": "Mad Hatter Arkham Knight",
+    "name": "Mad Hatter (Arkham Knight)",
     "realname": "Jervis Tech",
     "base": "30mm",
     "rep": 70,
@@ -1784,7 +1784,7 @@ const models = [
   },
 
     {
-    "name": "Raven Trigon's Daughter",
+    "name": "Raven (Trigon's Daughter)",
     "realname": "Rachel Roth",
     "base": "60mm",
     "rep": 70,
@@ -1829,7 +1829,7 @@ const models = [
   },
   
    {
-    "name": "Ra's al Ghul Decoy",
+    "name": "Ra's al Ghul (Decoy)",
     "realname": "Unknown",
     "base": "30mm",
     "rep": 46,
@@ -1946,7 +1946,7 @@ const models = [
   ]
 },
 {
-  "name": "Bruce Batman Begins",
+  "name": "Bruce (Batman Begins)",
   "realname": "Bruce Wayne",
   "base": "30mm",
   "rep": 52,
@@ -1983,7 +1983,7 @@ const models = [
   }
 },
 {
-  "name": "Gordon Infiltrate",
+  "name": "Gordon (Infiltrate)",
   "realname": "James W. Gordon",
   "base": "30mm",
   "rep": 40,
@@ -2062,7 +2062,7 @@ const models = [
   //---------------------------------------------------------------------------//
 
   {
-    "name": "The Drifter Robert Pattinson",
+    "name": "The Drifter (Robert Pattinson)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 112,
@@ -2093,7 +2093,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Batman Year One",
+    "name": "Batman (Year One)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 121,
@@ -2139,7 +2139,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Robert Pattinson",
+    "name": "Batman (Robert Pattinson)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 112,
@@ -2185,7 +2185,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman on Bike Robert Pattinson",
+    "name": "Batman on Bike (Robert Pattinson)",
     "realname": "Bruce Wayne",
     "base": "42x75mm",
     "rep": 112,
@@ -2225,7 +2225,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman 1997",
+    "name": "Batman (1997)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 105,
@@ -2270,7 +2270,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Michael Keaton",
+    "name": "Batman (Michael Keaton)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 125,
@@ -2316,7 +2316,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Red Rain",
+    "name": "Batman (Red Rain)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 150,
@@ -2356,7 +2356,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Adam West",
+    "name": "Batman (Adam West)",
     "realname": "Bruce Wayne",
     "base": "30mm",
     "rep": 75,
@@ -2471,7 +2471,7 @@ const models = [
     ]
   },
   {
-    "name": "Green Arrow Rebirth",
+    "name": "Green Arrow (Rebirth)",
     "realname": "Oliver Queen",
     "base": "40mm",
     "rep": 95,
@@ -2508,7 +2508,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Gaslight",
+    "name": "Batman (Gaslight)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 92,
@@ -2589,7 +2589,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin Burt Ward",
+    "name": "Robin (Burt Ward)",
     "realname": "Dick Grayson",
     "base": "30mm",
     "rep": 38,
@@ -2627,7 +2627,7 @@ const models = [
   },
 
   {
-    "name": "Batman Dark Knight Rises Batpod",
+    "name": "Batman on Batpod (Dark Knight Rises)",
     "realname": "Bruce Wayne",
     "base": "42x75mm",
     "rep": 120,
@@ -2706,7 +2706,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin 1997",
+    "name": "Robin (1997)",
     "realname": "Dick Grayson",
     "base": "40mm",
     "rep": 45,
@@ -2746,7 +2746,7 @@ const models = [
   },
  
   {
-    "name": "Batman Multiverse",
+    "name": "Batman (Multiverse)",
     "realname": "Bruce Wayne",
     "base": "60mm",
     "rep": 150,
@@ -2784,7 +2784,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Viking",
+    "name": "Batman (Viking)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 100,
@@ -2822,7 +2822,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Frank Miller on Power Armor",
+    "name": "Batman (Frank Miller on Power Armor)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 109,
@@ -2862,7 +2862,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman The Animated Series",
+    "name": "Batman (The Animated Series)",
     "realname": "Bruce Wayne",
     "base": "30mm",
     "rep": 80,
@@ -2947,7 +2947,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin Teen Titans",
+    "name": "Robin (Teen Titans)",
     "realname": "Dick Grayson",
     "base": "30mm",
     "rep": 50,
@@ -2992,7 +2992,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman The Gotham City Knight",
+    "name": "Batman (The Gotham City Knight)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 130,
@@ -3031,7 +3031,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Death Metal",
+    "name": "Batman (Death Metal)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 150,
@@ -3079,7 +3079,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Frank Miller on Horse",
+    "name": "Batman (Frank Miller on Horse)",
     "realname": "Bruce Wayne",
     "base": "60mm",
     "rep": 109,
@@ -3120,7 +3120,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Beyond",
+    "name": "Batman (Beyond)",
     "realname": "Terry McGinnis",
     "base": "40mm",
     "rep": 140,
@@ -3167,7 +3167,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Classic",
+    "name": "Batman (Classic)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 125,
@@ -3254,7 +3254,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman Frank Miller",
+    "name": "Batman (Frank Miller)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 109,
@@ -3382,7 +3382,7 @@ const models = [
     ]
   },
   {
-    "name": "Red Hood Rebirth",
+    "name": "Red Hood (Rebirth)",
     "realname": "Jason Todd",
     "base": "40mm",
     "rep": 80,
@@ -3426,7 +3426,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin Classic",
+    "name": "Robin (Classic)",
     "realname": "Dick Grayson",
     "base": "40mm",
     "rep": 50,
@@ -3465,7 +3465,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin [Jason Todd]",
+    "name": "Robin (Jason Todd)",
     "realname": "Jason Todd",
     "base": "30mm",
     "rep": 40,
@@ -3553,7 +3553,7 @@ const models = [
     ]
   },
   {
-    "name": "Mr. Wayne Beyond",
+    "name": "Mr. Wayne (Beyond)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 50,
@@ -3636,7 +3636,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin [Carrie Kelley]",
+    "name": "Robin (Carrie Kelley)",
     "realname": "Carrie Kelley",
     "base": "30mm",
     "rep": 54,
@@ -3672,7 +3672,7 @@ const models = [
     ]
   },
   {
-    "name": "Red Hood The Outlaw",
+    "name": "Red Hood (The Outlaw)",
     "realname": "Jason Todd",
     "base": "40mm",
     "rep": 80,
@@ -3719,7 +3719,7 @@ const models = [
     ]
   },
   {
-    "name": "Starfire Teen Titans",
+    "name": "Starfire (Teen Titans)",
     "realname": "Koriand'r",
     "base": "30mm",
     "rep": 70,
@@ -3762,7 +3762,7 @@ const models = [
     ]
   },
   {
-    "name": "Nightwing Rebirth",
+    "name": "Nightwing (Rebirth)",
     "realname": "Dick Grayson",
     "base": "40mm",
     "rep": 94,
@@ -3809,7 +3809,7 @@ const models = [
     ]
   },
   {
-    "name": "Green Arrow The Animated Series",
+    "name": "Green Arrow (The Animated Series)",
     "realname": "Oliver Queen",
     "base": "30mm",
     "rep": 55,
@@ -3957,7 +3957,7 @@ const models = [
     ]
   },
   {
-    "name": "Huntress Classic",
+    "name": "Huntress (Classic)",
     "realname": "Helena Bertinelli",
     "base": "40mm",
     "rep": 70,
@@ -4209,7 +4209,7 @@ const models = [
     ]
   },
   {
-    "name": "Azrael God's Punishment",
+    "name": "Azrael (God's Punishment)",
     "realname": "Michael Washington's Lane",
     "base": "40mm",
     "rep": 85,
@@ -4255,7 +4255,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin [Tim Drake]",
+    "name": "Robin (Tim Drake)",
     "realname": "Tim Drake",
     "base": "40mm",
     "rep": 50,
@@ -4324,7 +4324,7 @@ const models = [
   },
 
   {
-    "name": "Catwoman The Animated Series",
+    "name": "Catwoman (The Animated Series)",
     "realname": "Selina Kyle",
     "base": "30mm",
     "rep": 35,
@@ -4358,7 +4358,7 @@ const models = [
     ]
   },
   {
-    "name": "Batgirl The Animated Series",
+    "name": "Batgirl (The Animated Series)",
     "realname": "Barbara Gordon",
     "base": "30mm",
     "rep": 35,
@@ -4401,7 +4401,7 @@ const models = [
     ]
   },
   {
-    "name": "Harley Quinn The Animated Series",
+    "name": "Harley Quinn (The Animated Series)",
     "realname": "Dr. Harleen Frances Quinzel",
     "base": "30mm",
     "rep": 30,
@@ -4436,7 +4436,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin Beyond",
+    "name": "Robin (Beyond)",
     "realname": "Matt McGinnis",
     "base": "40mm",
     "rep": 50,
@@ -4479,7 +4479,7 @@ const models = [
     ]
   },
   {
-    "name": "Ravager Vanguard Team",
+    "name": "Ravager (Vanguard Team)",
     "realname": "Rose Wilson",
     "base": "30mm",
     "rep": 36,
@@ -4513,7 +4513,7 @@ const models = [
     ]
   },
   {
-    "name": "Black Canary The Animated Series",
+    "name": "Black Canary (The Animated Series)",
     "realname": "Dinah Lance",
     "base": "30mm",
     "rep": 45,
@@ -5101,7 +5101,7 @@ const models = [
     ]
   },
   {
-    "name": "Lieutenant Gordon Year One",
+    "name": "Lieutenant Gordon (Year One)",
     "realname": "James W. Gordon",
     "base": "30mm",
     "rep": 46,
@@ -5175,7 +5175,7 @@ const models = [
     ]
   },
   {
-    "name": "Lt. Gordon Jeffrey Wright",
+    "name": "Lt. Gordon (Jeffrey Wright)",
     "realname": "James W. Gordon",
     "base": "40mm",
     "rep": 50,
@@ -5353,7 +5353,7 @@ const models = [
     ]
   },
   {
-    "name": "Detective Flass Year One",
+    "name": "Detective Flass (Year One)",
     "realname": "Arnold Flass",
     "base": "30mm",
     "rep": 41,
@@ -5713,7 +5713,7 @@ const models = [
     ]
   },
   {
-    "name": "Killer Croc Thug",
+    "name": "Killer Croc (Thug)",
     "realname": "Waylon Jones",
     "base": "40mm",
     "rep": 50,
@@ -6704,7 +6704,7 @@ const models = [
     // Pattinson). Карта цели MOTHER OF STRAYS ссылается на «Catwoman (Zoë
     // Kravitz)»: normalizeModelName убирает скобки, но НЕ диакритику, поэтому
     // «ë» в имени обязательна, иначе карта снова станет недостижимой.
-    "name": "Catwoman Zoë Kravitz",
+    "name": "Catwoman (Zoë Kravitz)",
     "realname": "Selina Kyle",
     "base": "40mm",
     "rep": 55,
@@ -6745,7 +6745,7 @@ const models = [
 //DOOM PATROL
 //----------------------------------------------------------------------------------------------------------------------------------
   {
-    "name": "Beast Boy - Tiger Teen Titans",
+    "name": "Beast Boy - Tiger (Teen Titans)",
     "realname": "Unknown",
     "base": "40mm",
     "rep": 0,
@@ -6780,7 +6780,7 @@ const models = [
     ]
   },
   {
-    "name": "Beast Boy - Gorilla Teen Titans",
+    "name": "Beast Boy - Gorilla (Teen Titans)",
     "realname": "Unknown",
     "base": "40mm",
     "rep": 0,
@@ -6816,7 +6816,7 @@ const models = [
     ]
   },
   {
-    "name": "Beast Boy - Hawk Teen Titans",
+    "name": "Beast Boy - Hawk (Teen Titans)",
     "realname": "Unknown",
     "base": "40mm",
     "rep": 0,
@@ -7036,7 +7036,7 @@ const models = [
 //---------------------------------------------------------------------------------------------------------------------------------------------
 
   {
-    "name": "Bane Unleashed",
+    "name": "Bane (Unleashed)",
     "realname": "Unknown",
     "base": "60mm",
     "rep": 161,
@@ -7117,7 +7117,7 @@ const models = [
   },
 
   {
-    "name": "Bane Titan",
+    "name": "Bane (Titan)",
     "realname": "Unknown",
     "base": "60mm",
     "rep": 140,
@@ -7156,7 +7156,7 @@ const models = [
     ]
   },
   {
-    "name": "Medic OP",
+    "name": "Medic Op",
     "realname": "Dillon",
     "base": "30mm",
     "rep": 21,
@@ -7188,7 +7188,7 @@ const models = [
     ]
   },
   {
-    "name": "Bird Classic",
+    "name": "Bird (Classic)",
     "realname": "Angel Vallelunga",
     "base": "40mm",
     "rep": 58,
@@ -7274,7 +7274,7 @@ const models = [
     ]
   },
   {
-    "name": "Bane Rebirth",
+    "name": "Bane (Rebirth)",
     "realname": "Unknown",
     "base": "40mm",
     "rep": 161,
@@ -7339,7 +7339,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Bane The Bat",
+    "name": "Bane (The Bat)",
     "realname": "Unknown",
     "base": "60mm",
     "rep": 170,
@@ -7380,7 +7380,7 @@ const models = [
     ]
   },
   {
-    "name": "Dreadnought OP",
+    "name": "Dreadnought Op",
     "realname": "Billy",
     "base": "30mm",
     "rep": 44,
@@ -7413,7 +7413,7 @@ const models = [
     ]
   },
   {
-    "name": "Elite OP",
+    "name": "Elite Op",
     "realname": "Duke",
     "base": "30mm",
     "rep": 30,
@@ -7447,7 +7447,7 @@ const models = [
     ]
   },
   {
-    "name": "Bane Commander",
+    "name": "Bane (Commander)",
     "realname": "Unknown",
     "base": "40mm",
     "rep": 95,
@@ -7480,7 +7480,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Lieutenant OP",
+    "name": "Lieutenant Op",
     "realname": "Ross",
     "base": "30mm",
     "rep": 35,
@@ -7554,7 +7554,7 @@ const models = [
     ]
   },
   {
-    "name": "Stealth OP",
+    "name": "Stealth Op",
     "realname": "Kabuto",
     "base": "30mm",
     "rep": 32,
@@ -7623,7 +7623,7 @@ const models = [
     ]
   },
   {
-    "name": "Macgregor",
+    "name": "MacGregor",
     "realname": "Unknown",
     "base": "30mm",
     "rep": 26,
@@ -7899,7 +7899,7 @@ const models = [
     ]
   },
   {
-    "name": "Support OP",
+    "name": "Support Op",
     "realname": "Dolph Wolf",
     "base": "30mm",
     "rep": 32,
@@ -8047,7 +8047,7 @@ const models = [
     ]
   },
   {
-    "name": "Gaggy Rebirth",
+    "name": "Gaggy (Rebirth)",
     "realname": "Unknown",
     "base": "30mm",
     "rep": 16,
@@ -9672,7 +9672,7 @@ const models = [
     ]
   },
   {
-    "name": "Harley Quinn (& The Boys)",
+    "name": "Harley Quinn (& the Boys)",
     "realname": "Dr. Harleen Frances Quinzel",
     "base": "40mm",
     "rep": 80,
@@ -9812,7 +9812,7 @@ const models = [
 //---------------------------------------------------------------------------------------------------------// 
 
   {
-    "name": "Mr. Freeze 1997",
+    "name": "Mr. Freeze (1997)",
     "realname": "Victor Fries",
     "base": "40mm",
     "rep": 90,
@@ -10106,7 +10106,7 @@ const models = [
     ]
   },
   {
-    "name": "Mr. Freeze Cryo-Armor",
+    "name": "Mr. Freeze (Cryo-Armor)",
     "realname": "Victor Fries",
     "base": "40mm/60mm",
     "rep": 90,
@@ -10228,7 +10228,7 @@ const models = [
   },
   
 {
-    "name": "Killer Frost Rebirth",
+    "name": "Killer Frost (Rebirth)",
     "realname": "Caitlin Snow",
     "base": "40mm",
     "rep": 90,
@@ -10393,7 +10393,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "The Riddler Paul Dano",
+    "name": "The Riddler (Paul Dano)",
     "realname": "Paul Dano Edward Nigma",
     "base": "40mm",
     "rep": 64,
@@ -10604,7 +10604,7 @@ const models = [
     ]
   },
   {
-    "name": "The Riddler Modern Age",
+    "name": "The Riddler (Modern Age)",
     "realname": "Edward Nigma",
     "base": "30mm",
     "rep": 80,
@@ -10704,7 +10704,7 @@ const models = [
     ]
   },
   {
-    "name": "Two-Face Batman Forever",
+    "name": "Two-Face (Batman Forever)",
     "realname": "Tommy Lee Jones Harvey Dent",
     "base": "40mm",
     "rep": 80,
@@ -10773,7 +10773,7 @@ const models = [
     ]
   },
   {
-    "name": "The Riddler Jim Carrey",
+    "name": "The Riddler (Jim Carrey)",
     "realname": "Jim Carrey Edward Nigma",
     "base": "40mm",
     "rep": 60,
@@ -10923,7 +10923,7 @@ const models = [
 //---------------------------------------------------------------------------------------------------------// 
 
   {
-    "name": "Catwoman Michelle Pfeiffer",
+    "name": "Catwoman (Michelle Pfeiffer)",
     "realname": "Selina Kyle",
     "base": "40mm",
     "rep": 50,
@@ -11001,7 +11001,7 @@ const models = [
     ]
   },
   {
-    "name": "The Penguin Danny DeVito",
+    "name": "The Penguin (Danny DeVito)",
     "realname": "Oswald Chesterfield Cobblepot",
     "base": "40mm",
     "rep": 74,
@@ -11045,7 +11045,7 @@ const models = [
     ]
   },
   {
-    "name": "The Penguin New 52",
+    "name": "The Penguin (New 52)",
     "realname": "Oswald Chesterfield Cobblepot",
     "base": "30mm",
     "rep": 74,
@@ -11124,7 +11124,7 @@ const models = [
     ]
   },
   {
-    "name": "The Penguin Arkham City",
+    "name": "The Penguin (Arkham City)",
     "realname": "Oswald Chesterfield Cobblepot",
     "base": "30mm",
     "rep": 74,
@@ -11280,7 +11280,7 @@ const models = [
     ]
   },
   {
-    "name": "Emperor Penguin Unchained",
+    "name": "Emperor Penguin (Unchained)",
     "realname": "Ignatius Ogilvy",
     "base": "40mm",
     "rep": 120,
@@ -11507,7 +11507,7 @@ const models = [
     ]
   },
   {
-    "name": "The Penguin Penguin's Duck",
+    "name": "The Penguin (Penguin's Duck)",
     "realname": "Oswald Chesterfield Cobblepot",
     "base": "60mm",
     "rep": 74,
@@ -11553,7 +11553,7 @@ const models = [
     ]
   },
   {
-    "name": "The Penguin Arkham Knight",
+    "name": "The Penguin (Arkham Knight)",
     "realname": "Oswald Chesterfield Cobblepot",
     "base": "30mm",
     "rep": 77,
@@ -12189,7 +12189,7 @@ const models = [
     ]
   },
   {
-    "name": "Talia Rebirth",
+    "name": "Talia (Rebirth)",
     "realname": "Talia al Ghul",
     "base": "40mm",
     "rep": 100,
@@ -12456,7 +12456,7 @@ const models = [
     ]
   },
   {
-    "name": "Bane Dark Knight Rises",
+    "name": "Bane (Dark Knight Rises)",
     "realname": "Bane",
     "base": "30mm",
     "rep": 97,
@@ -12486,7 +12486,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Ra's al Ghul",
+    "name": "Ra's Al Ghul",
     "realname": "Ra's al Ghul",
     "base": "40mm / 60mm",
     "rep": 120,
@@ -12672,7 +12672,7 @@ const models = [
     ]
   },
   {
-    "name": "Two-Face Tommy Lee Jones",
+    "name": "Two-Face (Tommy Lee Jones)",
     "realname": "Harvey Dent",
     "base": "40mm",
     "rep": 82,
@@ -13009,7 +13009,7 @@ const models = [
     ]
   },
   {
-    "name": "Two-Face Arkham City",
+    "name": "Two-Face (Arkham City)",
     "realname": "Harvey Dent",
     "base": "30mm",
     "rep": 99,
@@ -13047,7 +13047,7 @@ const models = [
     ]
   },
   {
-    "name": "Killer Croc Thug",
+    "name": "Killer Croc (Thug)",
     "realname": "Waylon Jones",
     "base": "40mm",
     "rep": 50,
@@ -13123,7 +13123,7 @@ const models = [
 //---------------------------------------------------------------------------------------------------------// 
 
 {
-  "name": "Poison Ivy 1997",
+  "name": "Poison Ivy (1997)",
   "realname": "Dr. Pamela Lillian Isley",
   "base": "40mm",
   "rep": 66,
@@ -13169,7 +13169,7 @@ const models = [
 },
 
 {
-  "name": "Harley Quinn Roller Derby",
+  "name": "Harley Quinn (Roller Derby)",
   "realname": "Dr. Harleen Frances Quinzel",
   "base": "40mm",
   "rep": 84,
@@ -13207,7 +13207,7 @@ const models = [
 },
 
 {
-  "name": "Harley Quinn KaBoom!",
+  "name": "Harley Quinn (KaBoom!)",
   "realname": "Dr. Harleen Frances Quinzel",
   "base": "60mm",
   "rep": 84,
@@ -14071,7 +14071,7 @@ const models = [
   },
 
   {
-    "name": "Batgirl Rebirth",
+    "name": "Batgirl (Rebirth)",
     "realname": "Barbara Gordon",
     "base": "30mm",
     "rep": 45,
@@ -14109,7 +14109,7 @@ const models = [
   },
 
   {
-    "name": "Batgirl Vampire Queen",
+    "name": "Batgirl (Vampire Queen)",
     "realname": "Barbara Gordon",
     "base": "40mm",
     "rep": 130,
@@ -14271,7 +14271,7 @@ const models = [
   },
 
   {
-    "name": "Batgirl Classic Costume",
+    "name": "Batgirl (Classic Costume)",
     "realname": "Barbara Gordon",
     "base": "40mm",
     "rep": 71,
@@ -15103,7 +15103,7 @@ const models = [
     ]
   },
   {
-    "name": "Robin [Damian Wayne]",
+    "name": "Robin (Damian Wayne)",
     "realname": "Damian Wayne",
     "base": "30mm",
     "rep": 50,
@@ -15470,7 +15470,7 @@ const models = [
 //--------------------------------------------------------------------------------------------------------------------
 
   {
-    "name": "Slipknot Suicide Squad",
+    "name": "Slipknot (Suicide Squad)",
     "realname": "Christopher Weiss",
     "base": "30mm",
     "rep": 30,
@@ -15505,7 +15505,7 @@ const models = [
     ]
   },
   {
-    "name": "Polka-Dot Man The Suicide Squad",
+    "name": "Polka-Dot Man (The Suicide Squad)",
     "realname": "Abner Krill",
     "base": "30mm",
     "rep": 38,
@@ -15539,7 +15539,7 @@ const models = [
     ]
   },
   {
-    "name": "Weasel The Suicide Squad",
+    "name": "Weasel (The Suicide Squad)",
     "realname": "Unknown",
     "base": "30mm",
     "rep": 30,
@@ -15681,7 +15681,7 @@ const models = [
     ]
   },
   {
-    "name": "Killer Croc Suicide Squad",
+    "name": "Killer Croc (Suicide Squad)",
     "realname": "Waylon Jones",
     "base": "30mm",
     "rep": 40,
@@ -15743,7 +15743,7 @@ const models = [
     ]
   },
   {
-    "name": "Thinker The Suicide Squad",
+    "name": "Thinker (The Suicide Squad)",
     "realname": "Gaius Grieves",
     "base": "30mm",
     "rep": 30,
@@ -15769,7 +15769,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Diablo Suicide Squad",
+    "name": "Diablo (Suicide Squad)",
     "realname": "Chato Santana",
     "base": "30mm",
     "rep": 35,
@@ -15813,7 +15813,7 @@ const models = [
     ]
   },
   {
-    "name": "Katana Suicide Squad",
+    "name": "Katana (Suicide Squad)",
     "realname": "Tatsu Yamashiro",
     "base": "30mm",
     "rep": 50,
@@ -15855,7 +15855,7 @@ const models = [
     ]
   },
   {
-    "name": "Sebastian the Rat The Suicide Squad",
+    "name": "Sebastian the Rat (The Suicide Squad)",
     "realname": "Sebastian",
     "base": "30mm",
     "rep": 10,
@@ -15922,7 +15922,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "King Shark The Suicide Squad",
+    "name": "King Shark (The Suicide Squad)",
     "realname": "Nanaue",
     "base": "40mm",
     "rep": 70,
@@ -16005,7 +16005,7 @@ const models = [
     ]
   },
   {
-    "name": "Killer Croc Arkham Asylum",
+    "name": "Killer Croc (Arkham Asylum)",
     "realname": "Waylon Jones",
     "base": "60mm",
     "rep": 110,
@@ -16046,7 +16046,7 @@ const models = [
     ]
   },
   {
-    "name": "T.D.K. The Suicide Squad",
+    "name": "T.D.K. (The Suicide Squad)",
     "realname": "Cory Pitzner",
     "base": "30mm",
     "rep": 36,
@@ -16079,7 +16079,7 @@ const models = [
     ]
   },
   {
-    "name": "Deathstroke Vanguard Team",
+    "name": "Deathstroke (Vanguard Team)",
     "realname": "Slade Wilson",
     "base": "30mm",
     "rep": 74,
@@ -16124,7 +16124,7 @@ const models = [
     ]
   },
   {
-    "name": "The Riddler Modern Age",
+    "name": "The Riddler (Modern Age)",
     "realname": "Edward Nigma",
     "base": "30mm",
     "rep": 40,
@@ -16157,7 +16157,7 @@ const models = [
     ]
   },
   {
-    "name": "Ratcatcher 2 The Suicide Squad",
+    "name": "Ratcatcher 2 (The Suicide Squad)",
     "realname": "Cleo Cazo",
     "base": "40mm",
     "rep": 40,
@@ -16184,7 +16184,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Captain Boomerang Vanguard Team",
+    "name": "Captain Boomerang (Vanguard Team)",
     "realname": "George \"Digger\" Harkness",
     "base": "30mm",
     "rep": 46,
@@ -16226,7 +16226,7 @@ const models = [
   },
 
   {
-    "name": "Rick Flag Infiltration",
+    "name": "Rick Flag (Infiltration)",
     "realname": "Rick Flag",
     "base": "30mm",
     "rep": 46,
@@ -16349,7 +16349,7 @@ const models = [
     ]
   },
   {
-    "name": "Captain Boomerang Suicide Squad",
+    "name": "Captain Boomerang (Suicide Squad)",
     "realname": "George \"Digger\" Harkness",
     "base": "30mm",
     "rep": 40,
@@ -16483,7 +16483,7 @@ const models = [
     ]
   },
   {
-    "name": "Harley Quinn Bombshell",
+    "name": "Harley Quinn (Bombshell)",
     "realname": "Dr. Harleen Frances Quinzel",
     "base": "30mm",
     "rep": 65,
@@ -16527,7 +16527,7 @@ const models = [
     ]
   },
   {
-    "name": "Deadshot Suicide Squad",
+    "name": "Deadshot (Suicide Squad)",
     "realname": "Floyd Lawton",
     "base": "30mm",
     "rep": 80,
@@ -16571,7 +16571,7 @@ const models = [
     ]
   },
   {
-    "name": "Deathstroke The Terminator",
+    "name": "Deathstroke (The Terminator)",
     "realname": "Slade Wilson",
     "base": "40mm/60mm",
     "rep": 150,
@@ -16605,7 +16605,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Amanda Waller Viola Davis",
+    "name": "Amanda Waller (Viola Davis)",
     "realname": "Amanda Waller",
     "base": "40mm",
     "rep": 44,
@@ -16676,7 +16676,7 @@ const models = [
     "weapons": []
   },
   {
-    "name": "Harley Quinn The Suicide Squad",
+    "name": "Harley Quinn (The Suicide Squad)",
     "realname": "Dr. Harleen Frances Quinzel",
     "base": "30mm",
     "rep": 81,
@@ -16721,7 +16721,7 @@ const models = [
     ]
   },
   {
-    "name": "Peacemaker John Cena",
+    "name": "Peacemaker (John Cena)",
     "realname": "Christopher Smith",
     "base": "40mm",
     "rep": 70,
@@ -16760,7 +16760,7 @@ const models = [
     ]
   },
   {
-    "name": "Bloodsport The Suicide Squad",
+    "name": "BloodSport (The Suicide Squad)",
     "realname": "Robert DuBois",
     "base": "40mm",
     "rep": 78,
@@ -17394,7 +17394,7 @@ const models = [
     ]
   },
   {
-    "name": "Batman The Cult",
+    "name": "Batman (The Cult)",
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 70,
@@ -18630,7 +18630,7 @@ const models = [
     ]
   },
   {
-    "name": "Lobo Paramilitary",
+    "name": "Lobo (Paramilitary)",
     "realname": "Unknown",
     "base": "40mm",
     "rep": 140,
@@ -18677,7 +18677,7 @@ const models = [
     ]
   },
   {
-    "name": "Calculator Classic",
+    "name": "Calculator (Classic)",
     "realname": "Noah Kuttler",
     "base": "40mm",
     "rep": 33,
@@ -18711,7 +18711,7 @@ const models = [
     ]
   },
   {
-    "name": "Catman The Hunter",
+    "name": "Catman (The Hunter)",
     "realname": "Thomas Reese Blake",
     "base": "40mm",
     "rep": 115,
@@ -18785,7 +18785,7 @@ const models = [
   },
   
   {
-    "name": "Harley Quinn Bewitched",
+    "name": "Harley Quinn (Bewitched)",
     "realname": "Dr. Harleen Frances Quinzel",
     "base": "40mm",
     "rep": 77,
@@ -18897,7 +18897,7 @@ const models = [
     ]
   },
   {
-    "name": "Scarecrow Arkham Asylum",
+    "name": "Scarecrow (Arkham Asylum)",
     "realname": "Jonathan Crane",
     "base": "30mm",
     "rep": 50,
@@ -18980,7 +18980,7 @@ const models = [
     ]
   },
   {
-    "name": "Catwoman Julie Newmar",
+    "name": "Catwoman (Julie Newmar)",
     "realname": "Selina Kyle",
     "base": "30mm",
     "rep": 44,
@@ -24924,3 +24924,161 @@ const models = [
 ];
 
 window.models = models;
+
+// ======================== СОВМЕСТИМОСТЬ ИМЁН ========================
+// Модели переименованы в стиль официальной базы: "Имя (Вариант)".
+// Сохранённые ростеры хранят имя модели, поэтому старые записи ищутся
+// через эту карту (см. restoreCrewFromSave в auth.js). Не удалять.
+const MODEL_RENAMES = {
+  "Batman Bushi": "Batman (Bushi)",
+  "The Penguin Crime Lord Rising": "The Penguin (Crime Lord Rising)",
+  "Harley Quinn Arkham Knight": "Harley Quinn (Arkham Knight)",
+  "Jokermobile Arkham Knight": "Jokermobile (Arkham Knight)",
+  "Nightwing Arkham Knight": "Nightwing (Arkham Knight)",
+  "Poison Ivy Arkham City": "Poison Ivy (Arkham City)",
+  "Batman Dark Knight Rises": "Batman (Dark Knight Rises)",
+  "Batmobile Arkham Knight": "Batmobile (Arkham Knight)",
+  "Catwoman Dark Knight Rises": "Catwoman (Dark Knight Rises)",
+  "Batman Arkham Knight": "Batman (Arkham Knight)",
+  "Batman Arkham City": "Batman (Arkham City)",
+  "Mad Hatter Arkham Knight": "Mad Hatter (Arkham Knight)",
+  "Raven Trigon's Daughter": "Raven (Trigon's Daughter)",
+  "Ra's al Ghul Decoy": "Ra's al Ghul (Decoy)",
+  "Bruce Batman Begins": "Bruce (Batman Begins)",
+  "Gordon Infiltrate": "Gordon (Infiltrate)",
+  "The Drifter Robert Pattinson": "The Drifter (Robert Pattinson)",
+  "Batman Year One": "Batman (Year One)",
+  "Batman Robert Pattinson": "Batman (Robert Pattinson)",
+  "Batman on Bike Robert Pattinson": "Batman on Bike (Robert Pattinson)",
+  "Batman 1997": "Batman (1997)",
+  "Batman Michael Keaton": "Batman (Michael Keaton)",
+  "Batman Red Rain": "Batman (Red Rain)",
+  "Batman Adam West": "Batman (Adam West)",
+  "Green Arrow Rebirth": "Green Arrow (Rebirth)",
+  "Batman Gaslight": "Batman (Gaslight)",
+  "Robin Burt Ward": "Robin (Burt Ward)",
+  "Batman Dark Knight Rises Batpod": "Batman on Batpod (Dark Knight Rises)",
+  "Robin 1997": "Robin (1997)",
+  "Batman Multiverse": "Batman (Multiverse)",
+  "Batman Viking": "Batman (Viking)",
+  "Batman Frank Miller on Power Armor": "Batman (Frank Miller on Power Armor)",
+  "Batman The Animated Series": "Batman (The Animated Series)",
+  "Robin Teen Titans": "Robin (Teen Titans)",
+  "Batman The Gotham City Knight": "Batman (The Gotham City Knight)",
+  "Batman Death Metal": "Batman (Death Metal)",
+  "Batman Frank Miller on Horse": "Batman (Frank Miller on Horse)",
+  "Batman Beyond": "Batman (Beyond)",
+  "Batman Classic": "Batman (Classic)",
+  "Batman Frank Miller": "Batman (Frank Miller)",
+  "Red Hood Rebirth": "Red Hood (Rebirth)",
+  "Robin Classic": "Robin (Classic)",
+  "Robin [Jason Todd]": "Robin (Jason Todd)",
+  "Mr. Wayne Beyond": "Mr. Wayne (Beyond)",
+  "Robin [Carrie Kelley]": "Robin (Carrie Kelley)",
+  "Red Hood The Outlaw": "Red Hood (The Outlaw)",
+  "Starfire Teen Titans": "Starfire (Teen Titans)",
+  "Nightwing Rebirth": "Nightwing (Rebirth)",
+  "Green Arrow The Animated Series": "Green Arrow (The Animated Series)",
+  "Huntress Classic": "Huntress (Classic)",
+  "Azrael God's Punishment": "Azrael (God's Punishment)",
+  "Robin [Tim Drake]": "Robin (Tim Drake)",
+  "Catwoman The Animated Series": "Catwoman (The Animated Series)",
+  "Batgirl The Animated Series": "Batgirl (The Animated Series)",
+  "Harley Quinn The Animated Series": "Harley Quinn (The Animated Series)",
+  "Robin Beyond": "Robin (Beyond)",
+  "Ravager Vanguard Team": "Ravager (Vanguard Team)",
+  "Black Canary The Animated Series": "Black Canary (The Animated Series)",
+  "Lieutenant Gordon Year One": "Lieutenant Gordon (Year One)",
+  "Lt. Gordon Jeffrey Wright": "Lt. Gordon (Jeffrey Wright)",
+  "Detective Flass Year One": "Detective Flass (Year One)",
+  "Killer Croc Thug": "Killer Croc (Thug)",
+  "Catwoman Zoë Kravitz": "Catwoman (Zoë Kravitz)",
+  "Beast Boy - Tiger Teen Titans": "Beast Boy - Tiger (Teen Titans)",
+  "Beast Boy - Gorilla Teen Titans": "Beast Boy - Gorilla (Teen Titans)",
+  "Beast Boy - Hawk Teen Titans": "Beast Boy - Hawk (Teen Titans)",
+  "Bane Unleashed": "Bane (Unleashed)",
+  "Bane Titan": "Bane (Titan)",
+  "Medic OP": "Medic Op",
+  "Bird Classic": "Bird (Classic)",
+  "Bane Rebirth": "Bane (Rebirth)",
+  "Bane The Bat": "Bane (The Bat)",
+  "Dreadnought OP": "Dreadnought Op",
+  "Elite OP": "Elite Op",
+  "Bane Commander": "Bane (Commander)",
+  "Lieutenant OP": "Lieutenant Op",
+  "Stealth OP": "Stealth Op",
+  "Macgregor": "MacGregor",
+  "Support OP": "Support Op",
+  "Gaggy Rebirth": "Gaggy (Rebirth)",
+  "Harley Quinn (& The Boys)": "Harley Quinn (& the Boys)",
+  "Mr. Freeze 1997": "Mr. Freeze (1997)",
+  "Mr. Freeze Cryo-Armor": "Mr. Freeze (Cryo-Armor)",
+  "Killer Frost Rebirth": "Killer Frost (Rebirth)",
+  "The Riddler Paul Dano": "The Riddler (Paul Dano)",
+  "The Riddler Modern Age": "The Riddler (Modern Age)",
+  "Two-Face Batman Forever": "Two-Face (Batman Forever)",
+  "The Riddler Jim Carrey": "The Riddler (Jim Carrey)",
+  "Catwoman Michelle Pfeiffer": "Catwoman (Michelle Pfeiffer)",
+  "The Penguin Danny DeVito": "The Penguin (Danny DeVito)",
+  "The Penguin New 52": "The Penguin (New 52)",
+  "The Penguin Arkham City": "The Penguin (Arkham City)",
+  "Emperor Penguin Unchained": "Emperor Penguin (Unchained)",
+  "The Penguin Penguin's Duck": "The Penguin (Penguin's Duck)",
+  "The Penguin Arkham Knight": "The Penguin (Arkham Knight)",
+  "Talia Rebirth": "Talia (Rebirth)",
+  "Bane Dark Knight Rises": "Bane (Dark Knight Rises)",
+  "Ra's al Ghul": "Ra's Al Ghul",
+  "Two-Face Tommy Lee Jones": "Two-Face (Tommy Lee Jones)",
+  "Two-Face Arkham City": "Two-Face (Arkham City)",
+  "Poison Ivy 1997": "Poison Ivy (1997)",
+  "Harley Quinn Roller Derby": "Harley Quinn (Roller Derby)",
+  "Harley Quinn KaBoom!": "Harley Quinn (KaBoom!)",
+  "Batgirl Rebirth": "Batgirl (Rebirth)",
+  "Batgirl Vampire Queen": "Batgirl (Vampire Queen)",
+  "Batgirl Classic Costume": "Batgirl (Classic Costume)",
+  "Robin [Damian Wayne]": "Robin (Damian Wayne)",
+  "Slipknot Suicide Squad": "Slipknot (Suicide Squad)",
+  "Polka-Dot Man The Suicide Squad": "Polka-Dot Man (The Suicide Squad)",
+  "Weasel The Suicide Squad": "Weasel (The Suicide Squad)",
+  "Killer Croc Suicide Squad": "Killer Croc (Suicide Squad)",
+  "Thinker The Suicide Squad": "Thinker (The Suicide Squad)",
+  "Diablo Suicide Squad": "Diablo (Suicide Squad)",
+  "Katana Suicide Squad": "Katana (Suicide Squad)",
+  "Sebastian the Rat The Suicide Squad": "Sebastian the Rat (The Suicide Squad)",
+  "King Shark The Suicide Squad": "King Shark (The Suicide Squad)",
+  "Killer Croc Arkham Asylum": "Killer Croc (Arkham Asylum)",
+  "T.D.K. The Suicide Squad": "T.D.K. (The Suicide Squad)",
+  "Deathstroke Vanguard Team": "Deathstroke (Vanguard Team)",
+  "Ratcatcher 2 The Suicide Squad": "Ratcatcher 2 (The Suicide Squad)",
+  "Captain Boomerang Vanguard Team": "Captain Boomerang (Vanguard Team)",
+  "Rick Flag Infiltration": "Rick Flag (Infiltration)",
+  "Captain Boomerang Suicide Squad": "Captain Boomerang (Suicide Squad)",
+  "Harley Quinn Bombshell": "Harley Quinn (Bombshell)",
+  "Deadshot Suicide Squad": "Deadshot (Suicide Squad)",
+  "Deathstroke The Terminator": "Deathstroke (The Terminator)",
+  "Amanda Waller Viola Davis": "Amanda Waller (Viola Davis)",
+  "Harley Quinn The Suicide Squad": "Harley Quinn (The Suicide Squad)",
+  "Peacemaker John Cena": "Peacemaker (John Cena)",
+  "Bloodsport The Suicide Squad": "BloodSport (The Suicide Squad)",
+  "Batman The Cult": "Batman (The Cult)",
+  "Lobo Paramilitary": "Lobo (Paramilitary)",
+  "Calculator Classic": "Calculator (Classic)",
+  "Catman The Hunter": "Catman (The Hunter)",
+  "Harley Quinn Bewitched": "Harley Quinn (Bewitched)",
+  "Scarecrow Arkham Asylum": "Scarecrow (Arkham Asylum)",
+  "Catwoman Julie Newmar": "Catwoman (Julie Newmar)"
+};
+window.MODEL_RENAMES = MODEL_RENAMES;
+
+// Поиск модели по имени из ХРАНИЛИЩА (сохранённый ростер, обмен игрой по коду,
+// турнирный лист, агрегаты статистики). Имя там могло быть записано до
+// переименования, поэтому сначала пробуем как есть, затем через карту.
+// Для данных, созданных прямо сейчас, работает первая же ветка.
+function findModelByStoredName(name) {
+  if (!name) return null;
+  const direct = models.find(m => m.name === name);
+  if (direct) return direct;
+  const renamed = MODEL_RENAMES[name];
+  return renamed ? (models.find(m => m.name === renamed) || null) : null;
+}
+window.findModelByStoredName = findModelByStoredName;

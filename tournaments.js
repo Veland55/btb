@@ -580,7 +580,7 @@ function tournamentRosterStats(save) {
   const eqPool = (typeof equipmentByFaction !== 'undefined' && equipmentByFaction[save.f]) || [];
   let rep = 0, funding = 0;
   (save.m || []).forEach(entry => {
-    const model = models.find(m => m.name === entry[0]);
+    const model = findModelByStoredName(entry[0]);
     if (model) { rep += model.rep || 0; funding += model.funding || 0; }
     (entry[2] || []).forEach(en => {
       const eq = eqPool.find(e => e.name === en);
