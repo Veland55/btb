@@ -1164,7 +1164,6 @@ const models = [
   },
   {
     "name": "Batman (Arkham Knight)",
-    "eternal": true,
     "realname": "Bruce Wayne",
     "base": "40mm",
     "rep": 150,
