@@ -39,7 +39,7 @@ const traitDescriptions = {
     "Airborne Deployment": "Select a model in your Suicide Squad crew before the game starts. This model is not deployed at the beginning of the game, but is instead held in reserve. At the beginning of the second round or any subsequent round, before determining who takes the lead, deploy the model in contact with any board edge, as long as the model’s base physically fits in the new position. The model may act normally in the round it arrives.",
     "Aerial Locator System": "Once per game at the start of the round, before determining who takes the lead, you can target one model currently in play. For the remainder of the round the target is illuminated, as if affected by a Lantern. \nNote that unlike the Lantern or Lamppost rules, only the target model is illuminated, not other models within 4”. NB. The rules governing line of sight apply as normal.",
     "Alpha": "This model's Attack and Defense cannot be reduced by any means.",
-    "Always Illuminated": "This model is considered Illuminated.",
+    "Always Illuminated": "This model is considered Illuminated and counts as a Light source with a radius of 2\".",
     "Always on the Move": "This model can interrupt its Movement action to perform an Attack action, and then continue with its Movement action. The model must have enough actions available to use this trait.",
     "Always Prepared": "When this model Sets a Suspect, you may Set a Thwart within 4\" of that Suspect.",
     "Amazon": "This model receives a +1 bonus to its Attack and Defense rolls. In addition, enemy models roll 1 less attack die when targeting this model.",

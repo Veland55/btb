@@ -11298,14 +11298,15 @@ const models = [
     },
     "traits": [
       "Brawler",
-      "Dirty Money",
-      "Master Fighter",
-      "Regeneration",
-      "Tough Skin",
       "Claws",
+      "Dirty Money",
       "Fight Me!",
+      "Master Fighter",
       "Provoke",
+      "Regeneration",
       "Scheming (2)",
+      "The Emperor",
+      "Tough Skin",
       "Underworld King"
     ],
     "weapons": [
@@ -11459,10 +11460,11 @@ const models = [
     },
     "traits": [
       "Criminal",
-      "Electric Storm",
-      "Reinforced Gloves",
       "Deadly Strike",
-      "Energy Absorption"
+      "Electric Storm",
+      "Energy Absorption",
+      "Reinforced Gloves",
+      "Scientific"
     ],
     "weapons": [
       {
