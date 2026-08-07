@@ -33,6 +33,17 @@ const factionCrewRules = {
     onlyKeywordTrait: "Big Bang Theory",
     // Шести моделей не хватает на стандартные требования к рангам
     ignoreStandardRankRequirements: true
+  },
+  "Watchmen": {
+    // Команда (is_team + only_allow_affiliation_characters в официальной базе):
+    // набирается только своими шестью моделями, поблажка через Unknown не действует
+    onlyAffiliationMembers: true
+  },
+  "Doom Patrol": {
+    // То же самое: закрытая команда из пяти моделей
+    onlyAffiliationMembers: true,
+    // В составе только Leader и Sidekick — стандартные требования к рангам неприменимы
+    ignoreStandardRankRequirements: true
   }
   // Другие фракции могут иметь стандартные правила (пустой объект или null)
 };
@@ -21914,10 +21925,6 @@ const models = [
     ]
   },
   {
-    // ВРЕМЕННАЯ ЗАГЛУШКА: img/MrGrinWhite.png — это копия фотографии варианта
-    // Black. Своего фото у модели нет: ссылка в базе Knight Models
-    // (images/character/main/unknown-1624967368.png) отдаёт 404, и в выгрузке
-    // каталога файла тоже не было. Заменить, когда появится настоящее фото.
     "name": "Mr. Grin - White",
     "realname": "Unknown",
     "base": "30mm",

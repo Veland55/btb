@@ -1996,7 +1996,8 @@ const renderMiniCardsBuilder = debounce(() => {
   }
 
   // Фракции с правилом "нельзя нанимать вне аффилиации" (Court of Owls, Suicide Squad,
-  // Batman Who Laughs): скрываем модели, не входящие в саму фракцию (обход через Unknown не работает)
+  // Batman Who Laughs, Watchmen, Doom Patrol): скрываем модели, не входящие
+  // в саму фракцию (обход через Unknown не работает)
   {
     const factionRules = factionCrewRules[currentFaction] || {};
     if (factionRules.onlyAffiliationMembers) {
