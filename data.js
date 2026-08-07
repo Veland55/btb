@@ -21914,6 +21914,10 @@ const models = [
     ]
   },
   {
+    // ВРЕМЕННАЯ ЗАГЛУШКА: img/MrGrinWhite.png — это копия фотографии варианта
+    // Black. Своего фото у модели нет: ссылка в базе Knight Models
+    // (images/character/main/unknown-1624967368.png) отдаёт 404, и в выгрузке
+    // каталога файла тоже не было. Заменить, когда появится настоящее фото.
     "name": "Mr. Grin - White",
     "realname": "Unknown",
     "base": "30mm",
