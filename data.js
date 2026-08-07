@@ -6859,9 +6859,6 @@ const models = [
     "rep": 50,
     "funding": 0,
     "rank": ["Henchman"],
-    // Двойная аффилиация как в официальной базе (#493: Vigilantes + Doom Patrol).
-    // Формы-перевёртыши (Tiger/Gorilla/Hawk) остаются только Bat Family — там
-    // Doom Patrol нет, и это верно: в отряд набирается сам Beast Boy.
     "faction": ["Bat Family", "Doom Patrol"],
     "img": "img/BeastBoy_Human.png",
     "stats": {

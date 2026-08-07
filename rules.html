@@ -158,6 +158,9 @@
     /* Иконки из проекта */
     img.ico { display:inline-block; height:1.15em; width:auto; vertical-align:-0.2em; margin:0 1px; }
     img.ico.r { background:#fff; border-radius:50%; padding:2px; box-sizing:content-box; height:1.05em; }
+    /* Иконки RoF и Ammo сами белые (в карточках моделей они лежат на тёмном фоне).
+       На белом круге они пропадали — им нужна тёмная подложка. */
+    img.ico.r.light-icon { background:#1c1c1c; }
     .legend img.ico, .legend img.ico.r { height:20px; }
 
     mark { background:#ffd700; color:#000; padding:0 1px; border-radius:2px; }
@@ -216,14 +219,15 @@
 
   <div class="search-wrapper">
     <div class="search-row">
-      <a href="index.html" class="back-btn" title="BACK" aria-label="Back">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </a>
       <div class="rules-search">
         <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input type="text" id="rulesSearch" placeholder="Search the rules..." autocomplete="off">
         <button class="clear-search" id="clearSearch">×</button>
       </div>
+      <!-- Кнопка «назад» идёт последней — справа, как во всех остальных разделах -->
+      <a href="index.html" class="back-btn" title="BACK" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
     </div>
     <div class="search-meta" id="searchMeta"></div>
   </div>
@@ -343,8 +347,8 @@
   <div class="legend" aria-label="Legend">
     <span><img class="ico r" src="img/ico/STUN_ICON.png" alt="★"> Stun Damage</span>
     <span><img class="ico r" src="img/ico/BLOOD_ICON.png" alt="♦"> Injury Damage</span>
-    <span><img class="ico r" src="img/rof.png" alt="RoF"> Rate of Fire (RoF)</span>
-    <span><img class="ico r" src="img/ammo.png" alt="Ammo"> Ammunition</span>
+    <span><img class="ico r light-icon" src="img/rof.png" alt="RoF"> Rate of Fire (RoF)</span>
+    <span><img class="ico r light-icon" src="img/ammo.png" alt="Ammo"> Ammunition</span>
     <span><img class="ico r" src="img/ico/SPECIAL_ICON.png" alt="Special"> Special Action</span>
     <span><img class="ico r" src="img/ico/CROWN_ICON.png" alt="Crown"> Boss (Crown)</span>
   </div>
@@ -1539,8 +1543,8 @@
   var SYMBOL_ICONS = {
     '★': { src: 'img/ico/STUN_ICON.png',    round: true },
     '♦': { src: 'img/ico/BLOOD_ICON.png',   round: true },
-    '⊕': { src: 'img/rof.png',              round: true },
-    '▮': { src: 'img/ammo.png',             round: true }
+    '⊕': { src: 'img/rof.png',              round: true, light: true },
+    '▮': { src: 'img/ammo.png',             round: true, light: true }
   };
   var symbolRe = /[★♦⊕▮]/;
 
@@ -1556,7 +1560,7 @@
         var img = document.createElement('img');
         img.src = SYMBOL_ICONS[ch].src;
         img.alt = ch;
-        img.className = SYMBOL_ICONS[ch].round ? 'ico r' : 'ico';
+        img.className = 'ico' + (SYMBOL_ICONS[ch].round ? ' r' : '') + (SYMBOL_ICONS[ch].light ? ' light-icon' : '');
         frag.appendChild(img);
       } else {
         buf += ch;
