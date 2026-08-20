@@ -4483,6 +4483,34 @@ const models = [
     ]
   },
   {
+    "name": "Bruce Wayne",
+    "realname": "Bruce Wayne",
+    "base": "30mm",
+    "rep": 91,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family", "GCPD"],
+    "img": "img/no.webp",
+    "stats": {
+      "Attack": 5,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Charismatic",
+      "Charm",
+      "Counter Attack",
+      "Detective",
+      "Disguised Sneak Attack {SPECIAL_ICON}",
+      "Millionaire",
+      "Reinforced Gloves"
+    ],
+    "weapons": []
+  },
+  {
     "name": "Lucius Fox",
     "realname": "Lucius Fox",
     "base": "40mm",
