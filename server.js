@@ -920,13 +920,13 @@ async function handleApi(req, res, url) {
     const { oldPass, newPass } = await readBody(req);
     if (!validPass(oldPass) || !validPass(newPass)) return send(res, 400, { error: 'input' });
     const row = db.prepare('SELECT salt, hash FROM users WHERE name = ?').get(user);
-    const given = Buffer.from(hashPassword(row.salt, oldPass), 'hex');
+    const given = Buffer.from(await hashPassword(row.salt, oldPass), 'hex');
     const stored = Buffer.from(row.hash, 'hex');
     if (given.length !== stored.length || !crypto.timingSafeEqual(given, stored)) {
       return send(res, 401, { error: 'badcred' });
     }
     const salt = crypto.randomBytes(8).toString('hex');
-    db.prepare('UPDATE users SET salt = ?, hash = ? WHERE name = ?').run(salt, hashPassword(salt, newPass), user);
+    db.prepare('UPDATE users SET salt = ?, hash = ? WHERE name = ?').run(salt, await hashPassword(salt, newPass), user);
     // Оставляем текущую сессию активной, но выходим из остальных устройств
     const m = /^Bearer\s+(.+)$/.exec(req.headers.authorization || '');
     const currentToken = m ? m[1] : null;

@@ -98,8 +98,12 @@ function conditionPopupBody(type, card) {
     </div>`;
 }
 
+function conditionTypeLabel(type) {
+  return t(type === 'ev' ? 'event_card' : 'encounter_card');
+}
+
 function conditionTitle(type, card) {
-  return `${t(type === 'ev' ? 'event_card' : 'encounter_card')}: ${card.name}`;
+  return `${conditionTypeLabel(type)}: ${card.name}`;
 }
 
 // Просмотр карты, выбранной в настройке (по текущему индексу)
@@ -121,7 +125,7 @@ function conditionRowHTML(type) {
   const selId = type === 'ev' ? 'gameCondEv' : 'gameCondEn';
   return `
     <div class="game-cond-row">
-      <span class="game-cond-label">${t(type === 'ev' ? 'event_card' : 'encounter_card')}</span>
+      <span class="game-cond-label">${conditionTypeLabel(type)}</span>
       <select id="${selId}" class="game-select game-cond-select" onchange="setGameCondition('${type}', this.value)">
         ${pool.map((c, i) => `<option value="${i}"${i === gameConditions[type] ? ' selected' : ''}>${c.name}</option>`).join('')}
       </select>
@@ -137,7 +141,7 @@ function conditionsChipsHTML(conditions) {
   if (!conditions || (!conditions.ev && !conditions.en)) return '';
   const chip = (type, name) => name ? `
     <span class="game-cond-chip" onclick="showGameCondition('${type}', '${name.replace(/'/g, "\\'")}')"
-          title="${t(type === 'ev' ? 'event_card' : 'encounter_card')}: ${name}">
+          title="${conditionTypeLabel(type)}: ${name}">
       <b>${t(type === 'ev' ? 'game_chip_ev' : 'game_chip_en')}</b><span class="game-cond-chip-name">${name}</span>
     </span>` : '';
   return chip('ev', conditions.ev) + chip('en', conditions.en);
@@ -150,7 +154,7 @@ function conditionsBarHTML(conditions) {
   if (!conditions || (!conditions.ev && !conditions.en)) return '';
   const card = (type, name) => name ? `
     <div class="game-cond-card" onclick="showGameCondition('${type}', '${name.replace(/'/g, "\\'")}')">
-      <div class="game-cond-card-label">${t(type === 'ev' ? 'event_card' : 'encounter_card')}</div>
+      <div class="game-cond-card-label">${conditionTypeLabel(type)}</div>
       <div class="game-cond-card-name">${name}</div>
       <div class="game-cond-card-hint">📖 ${t('tap_to_read')}</div>
     </div>` : '';
@@ -160,13 +164,7 @@ function conditionsBarHTML(conditions) {
 // ======================== НАВИГАЦИЯ ========================
 function showGame() {
   currentMode = 'game';
-  $('mainMenu').style.display = 'none';
-  $('cardsSection').style.display = 'none';
-  $('builderSection').style.display = 'none';
-  if ($('statsSection')) $('statsSection').style.display = 'none';
-  if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
-  $('gameSection').style.display = 'block';
-  $('compendiumModal').classList.remove('active');
+  showSection('gameSection');
   gameFinishing = false; // вернулись в раздел — выбор победителя снова скрыт
   renderGame();
 }

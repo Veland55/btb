@@ -315,6 +315,17 @@ function closeCardsMissions() {
   $('cardsMain').style.display = 'block';
 }
 
+// Общий шаблон сетки: сначала обязательные карты банды, затем весь каталог
+function renderObjectiveCardsGrid(box, mandatory, visible, itemOpts) {
+  box.innerHTML = `
+    ${mandatory.length ? `
+      <div class="obj-section-title">${t('obj_mandatory')} (${mandatory.length})</div>
+      <p class="game-note">${t('obj_mandatory_hint')}</p>
+      <div class="obj-cards-grid">${mandatory.map(c => objCardItemHTML(c, { mandatory: true, ...itemOpts })).join('')}</div>` : ''}
+    <div class="obj-section-title">${t('obj_catalog')} (${visible.length})</div>
+    <div class="obj-cards-grid">${visible.map(c => objCardItemHTML(c, itemOpts)).join('')}</div>`;
+}
+
 function renderCardsMissionsPage() {
   const box = $('cardsMissionsContent');
   if (!box || typeof OBJECTIVE_CARDS === 'undefined') return;
@@ -327,13 +338,7 @@ function renderCardsMissionsPage() {
   const summary = $('cardsMissionsSummary');
   if (summary) summary.innerHTML = `<span>${currentFaction}</span> | ${t('obj_catalog')}: <span>${visible.length}</span>${mandatory.length ? ` | ${t('obj_mandatory')}: <span>${mandatory.length}</span>` : ''}`;
 
-  box.innerHTML = `
-    ${mandatory.length ? `
-      <div class="obj-section-title">${t('obj_mandatory')} (${mandatory.length})</div>
-      <p class="game-note">${t('obj_mandatory_hint')}</p>
-      <div class="obj-cards-grid">${mandatory.map(c => objCardItemHTML(c, { mandatory: true, viewOnly: true })).join('')}</div>` : ''}
-    <div class="obj-section-title">${t('obj_catalog')} (${visible.length})</div>
-    <div class="obj-cards-grid">${visible.map(c => objCardItemHTML(c, { viewOnly: true })).join('')}</div>`;
+  renderObjectiveCardsGrid(box, mandatory, visible, { viewOnly: true });
 }
 
 function renderObjectiveCardsPage() {
@@ -349,11 +354,5 @@ function renderObjectiveCardsPage() {
   const summary = $('builderCardsSummary');
   if (summary) summary.innerHTML = objDeckSummaryHTML();
 
-  box.innerHTML = `
-    ${mandatory.length ? `
-      <div class="obj-section-title">${t('obj_mandatory')} (${mandatory.length})</div>
-      <p class="game-note">${t('obj_mandatory_hint')}</p>
-      <div class="obj-cards-grid">${mandatory.map(c => objCardItemHTML(c, { mandatory: true })).join('')}</div>` : ''}
-    <div class="obj-section-title">${t('obj_catalog')} (${visible.length})</div>
-    <div class="obj-cards-grid">${visible.map(c => objCardItemHTML(c)).join('')}</div>`;
+  renderObjectiveCardsGrid(box, mandatory, visible, {});
 }

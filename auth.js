@@ -80,12 +80,16 @@ function apiErrorText(e) {
 }
 
 // ======================== АУТЕНТИФИКАЦИЯ ========================
-async function authRegister(name, pass, email) {
-  const data = await api('/api/register', 'POST', { name, pass, email: email || null });
-  authToken = data.token;
+function applyAuthSession(data) {
   currentUser = data.name;
   currentUserCountry = data.country || null;
   currentUserEmail = data.email || null;
+}
+
+async function authRegister(name, pass, email) {
+  const data = await api('/api/register', 'POST', { name, pass, email: email || null });
+  authToken = data.token;
+  applyAuthSession(data);
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   mySaves = [];
 }
@@ -93,9 +97,7 @@ async function authRegister(name, pass, email) {
 async function authLogin(name, pass) {
   const data = await api('/api/login', 'POST', { name, pass });
   authToken = data.token;
-  currentUser = data.name;
-  currentUserCountry = data.country || null;
-  currentUserEmail = data.email || null;
+  applyAuthSession(data);
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   await refreshSaves();
 }
@@ -374,10 +376,7 @@ function closeAuthModal() {
 }
 
 // Экранирование для вставки пользовательского текста в HTML-атрибуты/разметку
-function authEsc(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+const authEsc = escHtml;
 
 // Форма для незалогиненного пользователя: вход/регистрация или один из двух
 // шагов восстановления пароля (см. authView)
@@ -508,9 +507,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!authToken) return;
   try {
     const me = await api('/api/me');
-    currentUser = me.name;
-    currentUserCountry = me.country || null;
-    currentUserEmail = me.email || null;
+    applyAuthSession(me);
     await refreshSaves();
   } catch (e) {
     if (e.status === 401) { // токен протух

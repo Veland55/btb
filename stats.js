@@ -18,11 +18,7 @@ const COUNTRY_CODES = [
 // Экранирование: в панели-рейтинги попадают строки, введённые пользователями
 // (адрес турнира, название фракции и модели из сохранённых ростеров). Без этого
 // любой посетитель раздела «Статистика» выполнил бы чужой скрипт в нашем origin.
-function sEsc(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
+const sEsc = escHtml;
 
 // Флаг-эмодзи из кода страны (пара региональных индикаторов)
 function countryFlag(code) {
@@ -52,13 +48,7 @@ function countryOptionsHTML(selected) {
 // ======================== НАВИГАЦИЯ ========================
 function showStats() {
   currentMode = 'stats';
-  $('mainMenu').style.display = 'none';
-  $('cardsSection').style.display = 'none';
-  $('builderSection').style.display = 'none';
-  if ($('gameSection')) $('gameSection').style.display = 'none';
-  if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
-  $('statsSection').style.display = 'block';
-  $('compendiumModal').classList.remove('active');
+  showSection('statsSection');
   renderStats();
 }
 

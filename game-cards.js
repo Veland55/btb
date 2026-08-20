@@ -319,10 +319,7 @@ function gcApplyVp(side) {
 // ======================== ВСПОМОГАТЕЛЬНОЕ ========================
 // Экранирование для вставки в разметку: в каталоге есть имена вроде
 // "SEARCH & DESTROY"
-function gcEsc(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+const gcEsc = escHtml;
 
 function gcCardName(id) {
   const c = typeof objCardById === 'function' ? objCardById(id) : null;

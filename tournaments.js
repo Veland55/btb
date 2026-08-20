@@ -85,11 +85,7 @@ async function tnLoadDetails(id) {
 }
 
 // Экранирование пользовательского текста (адрес, инфо, заметки — свободный ввод)
-function tnEsc(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
+const tnEsc = escHtml;
 
 // "2026-08-01T12:00" (datetime-local) → "2026-08-01 12:00"
 function tnDate(s) {
@@ -99,13 +95,7 @@ function tnDate(s) {
 // ======================== НАВИГАЦИЯ ========================
 function showTournaments() {
   currentMode = 'tournaments';
-  $('mainMenu').style.display = 'none';
-  $('cardsSection').style.display = 'none';
-  $('builderSection').style.display = 'none';
-  if ($('gameSection')) $('gameSection').style.display = 'none';
-  if ($('statsSection')) $('statsSection').style.display = 'none';
-  $('tournamentsSection').style.display = 'block';
-  $('compendiumModal').classList.remove('active');
+  showSection('tournamentsSection');
   tnAutoRoleDone = false;
   renderTournaments();
 }
@@ -547,24 +537,20 @@ function tournamentCardHTML(tn, asOrganizer) {
     </div>`;
 }
 
-async function joinTournament(id) {
-  try {
+function joinTournament(id) {
+  return tnRun('join' + id, async () => {
     await api('/api/tournaments/join', 'POST', { id });
-    renderTournaments();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+    await renderTournaments();
+  });
 }
 
-async function leaveTournament(id) {
+function leaveTournament(id) {
   if (!confirm(t('tn_confirm_leave'))) return;
-  try {
+  return tnRun('leave' + id, async () => {
     await api('/api/tournaments/leave', 'POST', { id });
     if (tnRostersOpenId === id) tnRostersOpenId = null;
-    renderTournaments();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+    await renderTournaments();
+  });
 }
 
 async function toggleTnRosters(id) {

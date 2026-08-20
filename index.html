@@ -142,6 +142,9 @@
         <div id="modelsGridCards" class="models-list"></div>
         <aside id="cardsCardPanel" class="builder-card-panel"></aside>
       </div>
+      <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
     </div>
 
     <!-- КАРТЫ МИССИЙ ВЫБРАННОЙ БАНДЫ: просмотр каталога без набора колоды (см. cards.js) -->
@@ -158,6 +161,9 @@
         <div class="funds" id="cardsMissionsSummary"></div>
       </div>
       <div id="cardsMissionsContent" class="obj-cards-page"></div>
+      <button class="mobile-back-fab" onclick="closeCardsMissions()" data-i18n-title="back" title="Назад">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
     </div>
   </div>
 
@@ -179,6 +185,9 @@
         <div class="eternal-toggle-slot"></div>
         <div class="faction-cards"></div>
       </div>
+      <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
     </div>
 
     <!-- ШАГ 2: БИЛДЕР БАНДЫ (СКРЫТ ПО УМОЛЧАНИЮ) -->
@@ -214,6 +223,9 @@
         <div id="modelsGridBuilder" class="models-list"></div>
         <aside id="builderCardPanel" class="builder-card-panel"></aside>
       </div>
+      <button class="mobile-back-fab" onclick="resetCrew(); backToFactionSelect()" data-i18n-title="back" title="Назад">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
     </div>
 
     <!-- СТРАНИЦА КАРТ ЦЕЛЕЙ: набор Objective-колоды банды (см. cards.js).
@@ -232,6 +244,9 @@
         <div class="funds" id="builderCardsSummary"></div>
       </div>
       <div id="builderCardsContent" class="obj-cards-page"></div>
+      <button class="mobile-back-fab" onclick="closeBuilderCards()" data-i18n-title="back" title="Назад">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
     </div>
   </div>
 
@@ -263,29 +278,9 @@
       <div id="rosterPreviewList" class="models-list"></div>
       <aside id="rosterPreviewCardPanel" class="builder-card-panel"></aside>
     </div>
-  </div>
-
-  <!-- COMPENDIUM (ПРАВИЛА) -->
-  <div id="compendiumModal" class="compendium-modal">
-    <div class="compendium-header">
-      <button onclick="closeCompendium()" class="back-btn" data-i18n-title="back" title="НАЗАД" aria-label="Назад">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <h2><span data-i18n="compendium">СПРАВОЧНИК</span> <span>v1.4</span></h2>
-      <div class="rules-docs-buttons">
-        <a href="https://app.knightmodels.com/files//rule-document-rulebook-1701448204.pdf" target="_blank" class="rules-doc-btn" data-i18n="rulebook">Rulebook</a>
-        <a href="https://app.knightmodels.com/files//rule-document-faqs-1701683889.pdf" target="_blank" class="rules-doc-btn" data-i18n="faqs">FAQs</a>
-        <a href="https://app.knightmodels.com/files//rule-document-batmatch-1700369985.pdf" target="_blank" class="rules-doc-btn" data-i18n="batmatch">Batmatch</a>
-      </div>
-    </div>
-    <div class="compendium-search-wrapper">
-      <div class="compendium-search">
-        <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" id="compendiumSearch" placeholder="Поиск по трейтам, оружию, правилам..." data-i18n-placeholder="compendium_search">
-        <button class="clear-search" onclick="clearCompendiumSearch()">×</button>
-      </div>
-    </div>
-    <div id="compendiumList" class="compendium-content"></div>
+    <button class="mobile-back-fab" onclick="closeRosterPreview()" data-i18n-title="back" title="Назад">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
   </div>
 
   <!-- РАЗДЕЛ ИГРА: ОБМЕН РОСТЕРАМИ ПО КОДУ (см. game.js) -->
@@ -302,6 +297,9 @@
       </div>
     </div>
     <div id="gameContent" class="game-content"></div>
+    <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
   </div>
 
   <!-- РАЗДЕЛ ТУРНИРЫ: организация и регистрация на мероприятия (см. tournaments.js) -->
@@ -318,6 +316,9 @@
       </div>
     </div>
     <div id="tournamentsContent" class="game-content"></div>
+    <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
   </div>
 
   <!-- РАЗДЕЛ СТАТИСТИКА: агрегаты по всем игрокам (см. stats.js и GET /api/stats) -->
@@ -333,6 +334,9 @@
       </div>
     </div>
     <div id="statsContent" class="stats-content"></div>
+    <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
   </div>
 
   <!-- ПРОФИЛЬ: ВХОД / РЕГИСТРАЦИЯ / СОХРАНЁННЫЕ ОТРЯДЫ (см. auth.js) -->

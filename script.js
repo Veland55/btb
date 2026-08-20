@@ -11,7 +11,6 @@ let modifiers = {
   extraMinions: {}
 };
 let currentFaction = null; // Изменено: null по умолчанию (нет фракции)
-let allCompendiumHTML = "";
 let compendiumKeys = [];
 let specialTraitNames = new Set(); // Кэш специальных трейтов
 
@@ -1024,11 +1023,6 @@ function setLanguage(lang) {
   // Сохраняем в localStorage
   localStorage.setItem('bmg_lang', lang);
 
-  // Перерисовываем компендиум если открыт
-  if (document.getElementById('compendiumModal').classList.contains('active')) {
-    openCompendium();
-  }
-
   // Динамические разделы (профиль, игра) рендерятся из JS — перерисовываем их,
   // чтобы перевод применялся сразу, а не после закрытия/открытия
   if (typeof renderAuthModal === 'function') renderAuthModal();
@@ -1044,6 +1038,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const $ = id => document.getElementById(id);
+
+// Экранирование пользовательского текста для вставки в HTML-разметку/атрибуты
+// (общая реализация — раньше была скопирована в 4 файла под разными именами)
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Верхнеуровневые разделы приложения (переключаются взаимоисключающе)
+const TOP_LEVEL_SECTIONS = ['mainMenu', 'cardsSection', 'builderSection', 'gameSection', 'statsSection', 'tournamentsSection'];
+function showSection(id) {
+  TOP_LEVEL_SECTIONS.forEach(sec => {
+    const el = $(sec);
+    if (el) el.style.display = sec !== id ? 'none' : (sec === 'mainMenu' ? 'flex' : 'block');
+  });
+}
 // Сравнение по _id (индекс в models), а не по имени: шесть имён в data.js
 // дублируются с разными характеристиками, и сравнение по имени путало их
 const sameModel = (a, b) => (a._id !== undefined && b._id !== undefined) ? a._id === b._id : a.name === b.name;
@@ -1370,13 +1381,7 @@ function isUnrecruitable(model) {
 
 function showCards() {
   currentMode = 'cards';
-  $('mainMenu').style.display = 'none';
-  $('cardsSection').style.display = 'block';
-  $('builderSection').style.display = 'none';
-  if ($('gameSection')) $('gameSection').style.display = 'none';
-  if ($('statsSection')) $('statsSection').style.display = 'none';
-  if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
-  $('compendiumModal').classList.remove('active');
+  showSection('cardsSection');
 
   // Сбрасываем фракцию и показываем вкладки
   currentFaction = null;
@@ -1390,16 +1395,10 @@ function showCards() {
 
 function showBuilder() {
   currentMode = 'builder';
-  $('mainMenu').style.display = 'none';
-  $('cardsSection').style.display = 'none';
-  if ($('gameSection')) $('gameSection').style.display = 'none';
-  if ($('statsSection')) $('statsSection').style.display = 'none';
-  if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
-  $('builderSection').style.display = 'block';
+  showSection('builderSection');
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
   if ($('builderCardsPage')) $('builderCardsPage').style.display = 'none';
-  $('compendiumModal').classList.remove('active');
   $('builderFactionCards').classList.remove('hidden'); // Показываем вкладки фракций
   initTabs(); // Инициализация табов для выбора фракции
 }
@@ -1411,16 +1410,10 @@ function showRules() {
 
 function backToMenu() {
   currentMode = 'menu';
-  $('mainMenu').style.display = 'flex';
-  $('cardsSection').style.display = 'none';
-  $('builderSection').style.display = 'none';
+  showSection('mainMenu');
   if ($('rosterPreviewSection')) $('rosterPreviewSection').style.display = 'none';
-  if ($('gameSection')) $('gameSection').style.display = 'none';
-  if ($('statsSection')) $('statsSection').style.display = 'none';
-  if ($('tournamentsSection')) $('tournamentsSection').style.display = 'none';
   if (typeof stopGamePolling === 'function') stopGamePolling();
   if (typeof stopTnPolling === 'function') stopTnPolling();
-  $('compendiumModal').classList.remove('active');
   closeBuilderCardPanel();
   resetCrew();
 
@@ -1442,11 +1435,6 @@ function backToFactionSelect() {
 }
 
 // ПРАВКА: Добавляем недостающие функции закрытия модалов
-function closeCompendium() {
-  $('compendiumModal').classList.remove('active');
-  if (currentMode === 'rules') backToMenu(); // ПРАВКА: Возврат в меню для "Правила"
-}
-
 // ======================== ВЫБОР ФРАКЦИИ В БИЛДЕРЕ ========================
 // Тексты особых правил набора отряда выбранной фракции (официальные Crew Building Rules)
 function getFactionRulesLines(faction) {
@@ -2381,44 +2369,6 @@ function refreshBuilderCardPanel(modelName) {
     showFullCard(sidePanelModel);
   }
 }
-
-// ======================== COMPENDIUM ========================
-// Разметка справочника собирается при первом открытии, а не на загрузке страницы
-function buildCompendiumHTML() {
-  if (allCompendiumHTML || !window.compendium) return allCompendiumHTML;
-  allCompendiumHTML = compendiumKeys.map(k => `
-      <div class="comp-entry">
-        <div class="comp-title">${replaceIcons(k)}</div>
-        <div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div>
-      </div>`).join("");
-  return allCompendiumHTML;
-}
-
-const openCompendium = () => {
-  $("compendiumModal").classList.add("active");
-  $("compendiumSearch").value = "";
-  $("compendiumSearch").placeholder = t("compendium_search");
-  $("compendiumList").innerHTML = buildCompendiumHTML();
-  setTimeout(() => $("compendiumSearch").focus(), 300);
-};
-
-const clearCompendiumSearch = () => {
-  $("compendiumSearch").value = "";
-  document.querySelector("#compendiumModal .clear-search").style.display = "none";
-  $("compendiumList").innerHTML = buildCompendiumHTML();
-};
-
-// Поиск с задержкой: без неё каждое нажатие клавиши перестраивало до 250 КБ
-// разметки (~106 мс на запрос из одной буквы). В compendium.html и rules.html
-// такая задержка уже стоит, здесь её просто забыли.
-$("compendiumSearch").oninput = debounce(function() {
-  const q = ($("compendiumSearch").value || "").toLowerCase().trim();
-  document.querySelector("#compendiumModal .clear-search").style.display = q ? "flex" : "none";
-  if (!q) { $("compendiumList").innerHTML = buildCompendiumHTML(); return; }
-  const html = compendiumKeys.filter(k => k.toLowerCase().includes(q)).map(k => `
-    <div class="comp-entry"><div class="comp-title">${replaceIcons(k)}</div><div class="comp-text">${replaceIcons((compendium[k]||"").replace(/\n/g,"<br>"))}</div></div>`).join("");
-  $("compendiumList").innerHTML = html || `<div style="text-align:center;color:#888;padding:80px;font-size:18px;">${t("nothing_found")}</div>`;
-}, 130);
 
 // ======================== СВЯЗАННЫЕ ПРАВИЛА В ПОПАПАХ ========================
 // Ищет в тексте упоминания известных трейтов/правил из компендиума, чтобы показать

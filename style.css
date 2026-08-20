@@ -15,6 +15,22 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* ПЛАВАЮЩАЯ КНОПКА «НАЗАД» — только на телефонах (до 700px, как и остальной
+   мобильный брейкпоинт приложения). Кнопка в шапке остаётся, эта дублирует то
+   же действие снизу справа, чтобы дотягиваться было удобно одной рукой. */
+.mobile-back-fab { display:none; }
+@media (max-width: 699px) {
+  .mobile-back-fab {
+    display:flex; align-items:center; justify-content:center;
+    position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150;
+    width:52px; height:52px; border-radius:50%;
+    background:#e94560; color:#fff; border:none;
+    box-shadow:0 4px 15px rgba(233,69,96,.5);
+  }
+  .mobile-back-fab:active { background:#ff3366; }
+  .mobile-back-fab svg { width:26px; height:26px; fill:#fff; }
+}
+
 /* ТОП-БАР */
 .top-bar { background:linear-gradient(#111,#000); padding:calc(10px + var(--safe-top)) 12px 10px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100; box-shadow:0 4px 15px rgba(0,0,0,.6); }
 .top-bar h1 { font-size:22px; letter-spacing:6px; color:#ffd700; text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }
@@ -248,62 +264,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .sidebar-entry-desc { color:#bbb; font-size:13px; line-height:1.5; }
 .sidebar-entry-desc .inline-icon { height:1.1em; vertical-align:middle; background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
 .sidebar-empty { color:#888; text-align:center; padding:40px 10px; font-size:14px; }
-
-/* COMPENDIUM И ПОИСК */
-.compendium-modal { position:fixed; inset:0; background:#000; z-index:2000; overflow-y:auto; display:none; flex-direction:column; padding-bottom:var(--safe-bottom); }
-.compendium-modal.active { display:flex; }
-.compendium-header { background:#111; padding:calc(15px + var(--safe-top)) 15px 15px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:10; }
-.compendium-header h2 { color:#ffd700; font-size:24px; margin:0; font-weight:700; letter-spacing:1px; }
-.compendium-header h2 span:last-child { color:#888; font-size:14px; }
-/* Единая кнопка «назад» — такой же красный круг 40×40 со стрелкой, как в топ-барах */
-.back-btn { position:absolute; left:15px; top:50%; transform:translateY(-50%); display:flex; align-items:center; justify-content:center; width:40px; height:40px; flex-shrink:0; padding:0; background:#e94560; color:#fff; border:none; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(233,69,96,.5); transition:background .3s; }
-.back-btn:hover { background:#ff3366; }
-.back-btn svg { width:24px; height:24px; fill:#fff; }
-
-/* КНОПКИ ДОКУМЕНТОВ (RULEBOOK, FAQS, BATMATCH) */
-.rules-docs-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
-}
-.rules-doc-btn {
-  display: inline-block;
-  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
-  color: #000;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-  transition: all 0.3s ease;
-}
-.rules-doc-btn:hover {
-  background: linear-gradient(135deg, #ffaa00 0%, #ffd700 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
-}
-.rules-doc-btn:active {
-  transform: translateY(0);
-}
-.compendium-search-wrapper { padding:16px; background:#111; }
-.compendium-search { display:flex; align-items:center; background:#222; border:2px solid #333; border-radius:50px; overflow:hidden; transition:all .3s ease; box-shadow:0 4px 15px rgba(0,0,0,.4); }
-.compendium-search:focus-within { border-color:#ff3366; box-shadow:0 0 25px rgba(233,69,96,.8); }
-.compendium-search .search-icon { width:20px; height:20px; fill:#e94560; margin:0 14px; pointer-events:none; }
-.compendium-search input { flex:1; background:transparent; border:none; outline:none; color:#fff; font-size:16px; padding:14px 10px 14px 0; }
-.compendium-search input::placeholder { color:#aaa; }
-.compendium-search .clear-search { background:#e94560; color:#fff; border:none; width:36px; height:36px; border-radius:50%; font-size:20px; cursor:pointer; margin-right:8px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
-.compendium-search .clear-search:hover { background:#ff3366; }
-.compendium-content { flex:1; padding-bottom:100px; }
-/* Записи справочника/поиска — в едином тёмном стиле попапов */
-.comp-entry { margin:20px 15px 10px; background:#141414; border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.5); }
-.comp-title { color:#ffd700; padding:14px 16px 10px; font-weight:700; font-size:18px; letter-spacing:1px; border-bottom:2px solid #e94560; word-break:break-word; }
-.comp-text { padding:14px 16px; line-height:1.65; color:#bbb; font-size:14px; }
-.comp-title .inline-icon, .comp-text .inline-icon { background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
 
 /* ОФИЦИАЛЬНЫЕ КАРТОЧКИ */
 .official-card { background:#f2ede2; color:#000; border-radius:18px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6); margin:10px; font-family:'Oswald',sans-serif; }
@@ -646,7 +606,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .game-finish-block { display:flex; flex-direction:column; gap:8px; border-top:1px solid #222; padding-top:8px; }
 .game-finish-cancel { background:#333; flex:0 0 auto; }
 .game-finish-cancel:hover { background:#444; }
-.game-vp-row { display:flex; gap:12px; flex-wrap:wrap; }
 .game-vp-box {
   flex:1; min-width:140px; background:#1a1a1a; border-radius:12px;
   padding:10px 12px; display:flex; flex-direction:column; align-items:center; gap:6px;
@@ -780,10 +739,6 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .gc-token { text-transform:none; }
 .gc-warn { color:#ff6b6b; }
 .gc-actions-row { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
-.gc-act-chip {
-  background:#1e1e1e; border:2px solid #333; border-radius:10px; padding:7px 12px;
-  color:#ffd700; font-size:12.5px; font-weight:700; letter-spacing:1px;
-}
 .gc-block { display:flex; flex-direction:column; gap:8px; }
 .gc-block-title { color:#e94560; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; }
 .gc-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(128px, 1fr)); gap:10px; align-items:start; }
@@ -936,41 +891,9 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .equipment-item-warning { color:#ff6b6b; display:block; margin-top:5px; font-size:11.5px; }
 .equipment-item-special { color:#ffd700; font-size:11px; margin-left:6px; }
 
-/* МОБИЛЬНАЯ ОПТИМИЗАЦИЯ COMPENDIUM */
 @media (max-width: 480px) {
-  .compendium-header { padding: calc(12px + var(--safe-top)) 10px 12px; }
-  .compendium-header h2 { font-size: 18px; }
-  .back-btn { left: 10px; }
-  
-  .rules-docs-buttons {
-    gap: 6px;
-    margin-top: 10px;
-  }
-  
-  .rules-doc-btn {
-    padding: 6px 12px;
-    font-size: 10px;
-    border-radius: 16px;
-  }
-  
-  .compendium-search-wrapper { padding: 12px; }
-  .compendium-search input { font-size: 14px; padding: 12px 10px 12px 0; }
-  
-  .comp-entry { margin: 16px 10px 8px; border-radius: 12px; }
-  .comp-title { font-size: 16px; padding: 12px 14px 8px; }
-  .comp-text { font-size: 13.5px; padding: 12px 14px; line-height: 1.6; }
-  
   /* Размер кнопок не трогаем — они всегда 40×40, меняется только зазор */
   .header-buttons { gap: 8px; }
-}
-
-@media (max-width: 360px) {
-  .rules-doc-btn {
-    padding: 5px 10px;
-    font-size: 9px;
-  }
-  
-  .compendium-header h2 { font-size: 16px; }
 }
 
 /* ======================== ГЛАВНОЕ МЕНЮ ======================== */
