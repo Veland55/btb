@@ -16,10 +16,12 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 }
 
 /* ПЛАВАЮЩАЯ КНОПКА «НАЗАД» — только на телефонах (до 700px, как и остальной
-   мобильный брейкпоинт приложения). Кнопка в шапке остаётся, эта дублирует то
-   же действие снизу справа, чтобы дотягиваться было удобно одной рукой. */
+   мобильный брейкпоинт приложения). На телефонах заменяет собой кнопку
+   в шапке (.topbar-back-btn), чтобы не было двух кнопок «назад» разом —
+   на планшетах/ПК всё наоборот: видна только кнопка в шапке. */
 .mobile-back-fab { display:none; }
 @media (max-width: 699px) {
+  .topbar-back-btn { display:none; }
   .mobile-back-fab {
     display:flex; align-items:center; justify-content:center;
     position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150;
