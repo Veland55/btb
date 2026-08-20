@@ -15,22 +15,15 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* ПЛАВАЮЩАЯ КНОПКА «НАЗАД» — только на телефонах (до 700px, как и остальной
-   мобильный брейкпоинт приложения). На телефонах заменяет собой кнопку
-   в шапке (.topbar-back-btn), чтобы не было двух кнопок «назад» разом —
-   на планшетах/ПК всё наоборот: видна только кнопка в шапке. */
-.mobile-back-fab { display:none; }
+/* КНОПКИ ШАПКИ НА ТЕЛЕФОНАХ — тот же самый .header-buttons (назад, ростер,
+   карты целей, сохранить и т.д.), просто перенесённый вниз справа и
+   ставший плавающим: одной рукой на большом экране до него не дотянуться,
+   когда он в шапке. Это не копия — один и тот же блок, поэтому нет
+   дублей и не нужно синхронизировать бейджи/id между двумя версиями. */
 @media (max-width: 699px) {
-  .topbar-back-btn { display:none; }
-  .mobile-back-fab {
-    display:flex; align-items:center; justify-content:center;
+  .header-buttons {
     position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150;
-    width:52px; height:52px; border-radius:50%;
-    background:#e94560; color:#fff; border:none;
-    box-shadow:0 4px 15px rgba(233,69,96,.5);
   }
-  .mobile-back-fab:active { background:#ff3366; }
-  .mobile-back-fab svg { width:26px; height:26px; fill:#fff; }
 }
 
 /* ТОП-БАР */

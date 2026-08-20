@@ -11,22 +11,22 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.1">
+  <link rel="stylesheet" href="style.css?v=3.2">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
-  <script src="data.js?v=3.1" defer></script>
+  <script src="data.js?v=3.2" defer></script>
   <script src="data-traits.js?v=2.1" defer></script>
-  <script src="script.js?v=1.28" defer></script>
-  <script src="auth.js?v=2.0" defer></script>
+  <script src="script.js?v=1.29" defer></script>
+  <script src="auth.js?v=2.1" defer></script>
   <script src="data-cards.js?v=1.4" defer></script>
-  <script src="cards.js?v=1.6" defer></script>
-  <script src="stats.js?v=1.7" defer></script>
+  <script src="cards.js?v=1.7" defer></script>
+  <script src="stats.js?v=1.8" defer></script>
   <!-- ИГРА и ТУРНИРЫ грузятся при первом открытии раздела: на главном меню
        они не нужны, а это ещё ~105 КБ разбора на каждой загрузке. Оба раздела
        ни от чего не зависят снаружи, поэтому их можно отложить безопасно. -->
   <script>
     const BMG_LAZY = {
-      game: ['data-game.js?v=1.4', 'game.js?v=2.3', 'game-cards.js?v=1.5'],
-      tournaments: ['tournaments.js?v=1.7']
+      game: ['data-game.js?v=1.4', 'game.js?v=2.4', 'game-cards.js?v=1.6'],
+      tournaments: ['tournaments.js?v=1.8']
     };
     const _bmgLoading = {};
     function bmgLoad(group) {
@@ -123,7 +123,7 @@
             <button class="compendium-small-btn" id="cardsMissionsBtn" style="display:none;" onclick="showCardsMissions()" data-i18n-title="obj_cards_title" title="Карты целей">
               <svg viewBox="0 0 24 24"><path d="M4 4h9c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2.2 3.5 4.3 2.5-4.3 2.5v-5zM17 3.3l4.1 1.1c1.06.28 1.7 1.38 1.41 2.44l-3.1 11.6-2.41-13.4V3.3z"/></svg>
             </button>
-            <button class="compendium-small-btn topbar-back-btn" onclick="backToMenu()">
+            <button class="compendium-small-btn" onclick="backToMenu()">
               <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> <!-- Иконка назад -->
             </button>
           </div>
@@ -142,9 +142,6 @@
         <div id="modelsGridCards" class="models-list"></div>
         <aside id="cardsCardPanel" class="builder-card-panel"></aside>
       </div>
-      <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
     </div>
 
     <!-- КАРТЫ МИССИЙ ВЫБРАННОЙ БАНДЫ: просмотр каталога без набора колоды (см. cards.js) -->
@@ -153,7 +150,7 @@
         <div class="top-bar-content">
           <h1 data-i18n="obj_cards_title">КАРТЫ ЦЕЛЕЙ</h1>
           <div class="header-buttons">
-            <button class="compendium-small-btn topbar-back-btn" onclick="closeCardsMissions()">
+            <button class="compendium-small-btn" onclick="closeCardsMissions()">
               <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
           </div>
@@ -161,9 +158,6 @@
         <div class="funds" id="cardsMissionsSummary"></div>
       </div>
       <div id="cardsMissionsContent" class="obj-cards-page"></div>
-      <button class="mobile-back-fab" onclick="closeCardsMissions()" data-i18n-title="back" title="Назад">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
     </div>
   </div>
 
@@ -174,9 +168,11 @@
       <div class="top-bar">
         <div class="top-bar-content">
           <h1 data-i18n="select_faction">ВЫБОР ФРАКЦИИ</h1>
-          <button class="compendium-small-btn topbar-back-btn" onclick="backToMenu()">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
+          <div class="header-buttons">
+            <button class="compendium-small-btn" onclick="backToMenu()">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+          </div>
         </div>
       </div>
       <!-- ВКЛАДКИ ФРАКЦИЙ (генерируются в script.js из FACTION_ICON_MAP, см. renderFactionCards()) -->
@@ -185,9 +181,6 @@
         <div class="eternal-toggle-slot"></div>
         <div class="faction-cards"></div>
       </div>
-      <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
     </div>
 
     <!-- ШАГ 2: БИЛДЕР БАНДЫ (СКРЫТ ПО УМОЛЧАНИЮ) -->
@@ -207,7 +200,7 @@
               <svg viewBox="0 0 24 24"><path d="M4 4h9c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2.2 3.5 4.3 2.5-4.3 2.5v-5zM17 3.3l4.1 1.1c1.06.28 1.7 1.38 1.41 2.44l-3.1 11.6-2.41-13.4V3.3z"/></svg>
               <span class="builder-deck-badge" id="builderDeckBadge">0</span>
             </button>
-            <button class="compendium-small-btn topbar-back-btn" onclick="resetCrew(); backToFactionSelect()">
+            <button class="compendium-small-btn" onclick="resetCrew(); backToFactionSelect()">
               <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
           </div>
@@ -223,9 +216,6 @@
         <div id="modelsGridBuilder" class="models-list"></div>
         <aside id="builderCardPanel" class="builder-card-panel"></aside>
       </div>
-      <button class="mobile-back-fab" onclick="resetCrew(); backToFactionSelect()" data-i18n-title="back" title="Назад">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
     </div>
 
     <!-- СТРАНИЦА КАРТ ЦЕЛЕЙ: набор Objective-колоды банды (см. cards.js).
@@ -236,7 +226,7 @@
         <div class="top-bar-content">
           <h1 data-i18n="obj_cards_title">КАРТЫ ЦЕЛЕЙ</h1>
           <div class="header-buttons">
-            <button class="compendium-small-btn topbar-back-btn" onclick="closeBuilderCards()">
+            <button class="compendium-small-btn" onclick="closeBuilderCards()">
               <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
           </div>
@@ -244,9 +234,6 @@
         <div class="funds" id="builderCardsSummary"></div>
       </div>
       <div id="builderCardsContent" class="obj-cards-page"></div>
-      <button class="mobile-back-fab" onclick="closeBuilderCards()" data-i18n-title="back" title="Назад">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
     </div>
   </div>
 
@@ -263,7 +250,7 @@
           <button class="compendium-small-btn" onclick="exportRoster()" data-i18n-title="export_title" title="Экспорт ростера в PDF">
             <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
           </button>
-          <button class="compendium-small-btn topbar-back-btn" onclick="closeRosterPreview()">
+          <button class="compendium-small-btn" onclick="closeRosterPreview()">
             <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
         </div>
@@ -278,9 +265,6 @@
       <div id="rosterPreviewList" class="models-list"></div>
       <aside id="rosterPreviewCardPanel" class="builder-card-panel"></aside>
     </div>
-    <button class="mobile-back-fab" onclick="closeRosterPreview()" data-i18n-title="back" title="Назад">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
   </div>
 
   <!-- РАЗДЕЛ ИГРА: ОБМЕН РОСТЕРАМИ ПО КОДУ (см. game.js) -->
@@ -290,16 +274,13 @@
         <h1 data-i18n="game">ИГРА</h1>
         <span class="beta-badge" data-i18n="beta" data-i18n-title="beta_title">БЕТА-ТЕСТ</span>
         <div class="header-buttons">
-          <button class="compendium-small-btn topbar-back-btn" onclick="backToMenu()">
+          <button class="compendium-small-btn" onclick="backToMenu()">
             <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
         </div>
       </div>
     </div>
     <div id="gameContent" class="game-content"></div>
-    <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
   </div>
 
   <!-- РАЗДЕЛ ТУРНИРЫ: организация и регистрация на мероприятия (см. tournaments.js) -->
@@ -309,16 +290,13 @@
         <h1 data-i18n="tournaments">ТУРНИРЫ</h1>
         <span class="beta-badge" data-i18n="beta" data-i18n-title="beta_title">БЕТА-ТЕСТ</span>
         <div class="header-buttons">
-          <button class="compendium-small-btn topbar-back-btn" onclick="backToMenu()">
+          <button class="compendium-small-btn" onclick="backToMenu()">
             <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
         </div>
       </div>
     </div>
     <div id="tournamentsContent" class="game-content"></div>
-    <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
   </div>
 
   <!-- РАЗДЕЛ СТАТИСТИКА: агрегаты по всем игрокам (см. stats.js и GET /api/stats) -->
@@ -327,16 +305,13 @@
       <div class="top-bar-content">
         <h1 data-i18n="stats">СТАТИСТИКА</h1>
         <div class="header-buttons">
-          <button class="compendium-small-btn topbar-back-btn" onclick="backToMenu()">
+          <button class="compendium-small-btn" onclick="backToMenu()">
             <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
         </div>
       </div>
     </div>
     <div id="statsContent" class="stats-content"></div>
-    <button class="mobile-back-fab" onclick="backToMenu()" data-i18n-title="back" title="Назад">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
   </div>
 
   <!-- ПРОФИЛЬ: ВХОД / РЕГИСТРАЦИЯ / СОХРАНЁННЫЕ ОТРЯДЫ (см. auth.js) -->
