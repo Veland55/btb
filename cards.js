@@ -223,7 +223,7 @@ function showObjectiveCardPreview(id, mandatory) {
   if (!card) return;
   showTraitPopup(card.name, `
     <div class="game-cond-popup-img-wrap">
-      <img src="${card.img}" alt="${card.name}" class="game-cond-popup-img" loading="lazy" onerror="this.src='img/no.png'">
+      <img src="${card.img}" alt="${card.name}" class="game-cond-popup-img" loading="lazy" onerror="this.src='img/no.webp'">
     </div>`, false);
 }
 
@@ -289,7 +289,7 @@ function objCardItemHTML(card, opts = {}) {
     <div class="obj-card${count ? ' in-crew' : ''}${opts.mandatory ? ' obj-card-mandatory' : ''}${reqMet ? '' : ' obj-card-req-missing'}"
          onclick="showObjectiveCardPreview('${card.id}', ${!!opts.mandatory})">
       <div class="mini-card-corner">${count > 1 ? `<span class="count">x${count}</span>` : ''}${btn}</div>
-      <img src="${card.img}" loading="lazy" decoding="async" alt="${card.name}" onerror="this.src='img/no.png'">
+      <img src="${card.img}" loading="lazy" decoding="async" alt="${card.name}" onerror="this.src='img/no.webp'">
       <div class="obj-card-footer">
         <span class="obj-card-name">${card.name}</span>
         <span class="obj-card-info-row">

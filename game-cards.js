@@ -328,7 +328,7 @@ function gcCardName(id) {
 
 function gcCardImg(id) {
   const c = typeof objCardById === 'function' ? objCardById(id) : null;
-  return c ? c.img : 'img/no.png';
+  return c ? c.img : 'img/no.webp';
 }
 
 // Трейты отряда, которые взаимодействуют с картами целей и фишками —
@@ -366,7 +366,7 @@ function gcCardHTML(id, actions) {
   return `
     <div class="gc-card" onclick="showObjectiveCardPreview('${id}', false)">
       <img src="${gcEsc(gcCardImg(id))}" loading="lazy" decoding="async" alt="${name}"
-           onerror="this.src='img/no.png'">
+           onerror="this.src='img/no.webp'">
       <div class="gc-card-name">${name}</div>
       <div class="gc-card-actions" onclick="event.stopPropagation()">${actions}</div>
     </div>`;
@@ -458,7 +458,7 @@ function gcMandatoryHTML(faction) {
         ${cards.map(c => `
           <div class="gc-card" onclick="showObjectiveCardPreview('${c.id}', true)">
             <img src="${gcEsc(c.img)}" loading="lazy" decoding="async" alt="${gcEsc(c.name)}"
-                 onerror="this.src='img/no.png'">
+                 onerror="this.src='img/no.webp'">
             <div class="gc-card-name">${gcEsc(c.name)}</div>
           </div>`).join('')}
       </div>

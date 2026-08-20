@@ -916,7 +916,7 @@
   </main>
   </div><!-- /layout -->
 
-<script src="data-traits.js?v=1.8"></script>
+<script src="data-traits.js?v=1.9"></script>
 <script>
 (function(){
   // Оглавление: клонируем шаблон
@@ -970,25 +970,25 @@
 
   // ===== Замена токенов и символов на иконки проекта =====
   var TOKENS = {
-    '{SA}':      'img/ico/SPECIAL_ICON.png',
-    '{CROWN}':   'img/ico/CROWN_ICON.png',
-    '{+ATT}':    'img/ico/+ATT_ICON.png',
-    '{+DEF}':    'img/ico/+DEF_ICON.png',
-    '{-ATT}':    'img/ico/-ATT_ICON.png',
-    '{-DEF}':    'img/ico/-DEF_ICON.png',
-    '{MOV+2}':   'img/ico/MOV+2_ICON.png',
-    '{MOV+4}':   'img/ico/MOV+4_ICON.png',
-    '{MOV-2}':   'img/ico/MOV-2_ICON.png',
-    '{AFF_BATMAN}': 'img/ico/AFF_BATMAN_ICON.png',
-    '{AFF_OWLS}':   'img/ico/AFF_OWLS_ICON.png',
-    '{AFF_LAW}':    'img/ico/AFF_LAW_FORCES_ICON.png',
-    '{AFF_SS}':     'img/ico/AFF_SUICIDE_SQUAD_ICON.png',
-    '{RANK_LEADER}':   'img/ico/RANK_LEADER_ICON.png',
-    '{RANK_SIDEKICK}': 'img/ico/RANK_SIDEKICK_ICON.png',
-    '★': 'img/ico/STUN_ICON.png',
-    '♦': 'img/ico/BLOOD_ICON.png',
-    '⊕': 'img/rof.png',
-    '▮': 'img/ammo.png'
+    '{SA}':      'img/ico/SPECIAL_ICON.webp',
+    '{CROWN}':   'img/ico/CROWN_ICON.webp',
+    '{+ATT}':    'img/ico/+ATT_ICON.webp',
+    '{+DEF}':    'img/ico/+DEF_ICON.webp',
+    '{-ATT}':    'img/ico/-ATT_ICON.webp',
+    '{-DEF}':    'img/ico/-DEF_ICON.webp',
+    '{MOV+2}':   'img/ico/MOV+2_ICON.webp',
+    '{MOV+4}':   'img/ico/MOV+4_ICON.webp',
+    '{MOV-2}':   'img/ico/MOV-2_ICON.webp',
+    '{AFF_BATMAN}': 'img/ico/AFF_BATMAN_ICON.webp',
+    '{AFF_OWLS}':   'img/ico/AFF_OWLS_ICON.webp',
+    '{AFF_LAW}':    'img/ico/AFF_LAW_FORCES_ICON.webp',
+    '{AFF_SS}':     'img/ico/AFF_SUICIDE_SQUAD_ICON.webp',
+    '{RANK_LEADER}':   'img/ico/RANK_LEADER_ICON.webp',
+    '{RANK_SIDEKICK}': 'img/ico/RANK_SIDEKICK_ICON.webp',
+    '★': 'img/ico/STUN_ICON.webp',
+    '♦': 'img/ico/BLOOD_ICON.webp',
+    '⊕': 'img/rof.webp',
+    '▮': 'img/ammo.webp'
   };
   // Эти иконки нарисованы белым — на белом круге их не видно, нужна тёмная подложка
   var LIGHT_TOKENS = { '⊕': 1, '▮': 1 };
@@ -1011,7 +1011,7 @@
       } else if (/^\{[A-Za-z0-9+\-_]+_ICON\}$/.test(part)) {
         // Токены базы трейтов вида {SPECIAL_ICON}, {BLOOD_ICON} и т.п.
         var img2 = document.createElement('img');
-        img2.src = 'img/ico/' + part.slice(1, -1) + '.png';
+        img2.src = 'img/ico/' + part.slice(1, -1) + '.webp';
         img2.alt = part;
         img2.className = 'ico r';
         // если файла иконки нет — показываем токен текстом, а не битую картинку

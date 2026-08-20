@@ -135,15 +135,15 @@ function rankPanelHTML(title, note, entries, leftHTML, nameFn) {
 }
 
 function factionRowLeftHTML(faction) {
-  const icon = (typeof FACTION_ICON_MAP !== 'undefined' && FACTION_ICON_MAP[faction]) || 'UNKNOWN.png';
+  const icon = (typeof FACTION_ICON_MAP !== 'undefined' && FACTION_ICON_MAP[faction]) || 'UNKNOWN.webp';
   return `<img class="stats-row-img stats-row-faction" src="img/menu/${icon}" alt="" decoding="async">`;
 }
 
 function modelRowLeftHTML(name) {
   // имя приходит из агрегатов сервера — оно могло быть сохранено до переименования
   const model = (typeof findModelByStoredName === 'function') && findModelByStoredName(name);
-  const src = (model && model.img) || 'img/no.png';
-  return `<img class="stats-row-img stats-row-photo" src="${sEsc(src)}" alt="" loading="lazy" decoding="async" onerror="this.src='img/no.png'">`;
+  const src = (model && model.img) || 'img/no.webp';
+  return `<img class="stats-row-img stats-row-photo" src="${sEsc(src)}" alt="" loading="lazy" decoding="async" onerror="this.src='img/no.webp'">`;
 }
 
 function countryRowLeftHTML(code) {

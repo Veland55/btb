@@ -64,10 +64,10 @@ function setGameCondition(type, value) {
 }
 
 // Папки со сканами печатных карт (см. img/GAME_EVENTS, img/GAME_ENCOUNTERS) —
-// имена файлов совпадают с card.name (например "Heavy Rain.png")
+// имена файлов совпадают с card.name (например "Heavy Rain.webp")
 function conditionImageSrc(type, name) {
   const folder = type === 'ev' ? 'GAME_EVENTS' : 'GAME_ENCOUNTERS';
-  return `img/${folder}/${encodeURIComponent(name)}.png`;
+  return `img/${folder}/${encodeURIComponent(name)}.webp`;
 }
 
 // Текстовое описание условия (правило + расстановка + флейвор) — используется
@@ -536,7 +536,7 @@ function ammoControlsHTML(side, index, model, st) {
     st.amx[wi] = max;
     if (st.am[wi] == null) st.am[wi] = max;
     return `
-      <span class="gm-counter gm-ammo"><img src="img/ammo.png" alt="ammo">${w.name}
+      <span class="gm-counter gm-ammo"><img src="img/ammo.webp" alt="ammo">${w.name}
         <button onclick="gmAmmo('${side}',${index},${wi},-1)">−</button>
         <b id="gm-${side}-${index}-am${wi}">${st.am[wi]}</b>
         <button onclick="gmAmmo('${side}',${index},${wi},1)">+</button>
@@ -609,8 +609,8 @@ function rosterColumnHTML(player, titleKey, side) {
         <div class="game-model-row${r.model ? '' : ' game-model-missing'}${st.ko ? ' game-model-ko' : ''}"
              id="gm-row-${side}-${i}"
              ${r.model ? `onclick="showFullCard(models[${r.model._id}])"` : ''}>
-          <img src="${r.model ? r.model.img : 'img/no.png'}" loading="lazy" decoding="async"
-               onerror="this.src='img/no.png'">
+          <img src="${r.model ? r.model.img : 'img/no.webp'}" loading="lazy" decoding="async"
+               onerror="this.src='img/no.webp'">
           <div class="game-model-info">
             <div class="game-model-line1">
               <span class="game-model-name">${r.name}</span>

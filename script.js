@@ -21,28 +21,28 @@ let currentMode = 'menu'; // menu, cards, builder, rules
 // Единый источник списка фракций и их иконок: используется и для генерации
 // вкладок выбора фракции (cardsSection/builderSection), и для иконок на карточках моделей
 const FACTION_ICON_MAP = {
-  "Bat Family": "BATMAN.png",
-  "GCPD": "GCPD.png",
-  "Birds of Prey": "BIRDS_OF_PREY.png",
-  "Joker": "JOKER.png",
-  "Bane": "SOLDIERS.png",
-  "League of Shadows": "LEAGUE.png",
-  "Royal Flush": "RoyalFlush.png",
-  "Penguin": "PENGUIN.png",
-  "Mr. Freeze": "MR_FREEZE.png",
-  "Scarecrow": "SCARECROW.png",
-  "Two-Face": "TWO-FACE.png",
-  "The Riddler": "RIDDLER.png",
-  "Organized Crime": "OrganizedCrime.png",
-  "Suicide Squad": "Suicide_Squad.png",
-  "Court of Owls": "OWLS.png",
-  "Watchmen": "Watchmen.png",
-  "Batman Who Laughs": "BatmanWhoLaughs.png",
-  "Cults": "CULTS.png",
-  "Doom Patrol": "Doom_Patrol.png",
+  "Bat Family": "BATMAN.webp",
+  "GCPD": "GCPD.webp",
+  "Birds of Prey": "BIRDS_OF_PREY.webp",
+  "Joker": "JOKER.webp",
+  "Bane": "SOLDIERS.webp",
+  "League of Shadows": "LEAGUE.webp",
+  "Royal Flush": "RoyalFlush.webp",
+  "Penguin": "PENGUIN.webp",
+  "Mr. Freeze": "MR_FREEZE.webp",
+  "Scarecrow": "SCARECROW.webp",
+  "Two-Face": "TWO-FACE.webp",
+  "The Riddler": "RIDDLER.webp",
+  "Organized Crime": "OrganizedCrime.webp",
+  "Suicide Squad": "Suicide_Squad.webp",
+  "Court of Owls": "OWLS.webp",
+  "Watchmen": "Watchmen.webp",
+  "Batman Who Laughs": "BatmanWhoLaughs.webp",
+  "Cults": "CULTS.webp",
+  "Doom Patrol": "Doom_Patrol.webp",
   // Фракция формата Eternal — её модели видны только при включённом Eternal
-  "The Big Bang Theory": "BigBangTheory.png",
-  "Unknown": "UNKNOWN.png"
+  "The Big Bang Theory": "BigBangTheory.webp",
+  "Unknown": "UNKNOWN.webp"
 };
 
 // ======================== ФОРМАТ ETERNAL ========================
@@ -119,7 +119,7 @@ function buildFactionCardsHTML() {
     // Theory существует только в Eternal)
     .filter(([faction]) => faction === 'Unknown' || factionHasVisibleModels(faction))
     .map(([faction, iconFile]) => {
-      const bgFile = iconFile.replace(/\.png$/, ".jpg");
+      const bgFile = iconFile.replace(/\.webp$/, "-bg.webp");
       return `
         <div class="faction-card" data-faction="${faction}" style="background-image: url('${base}${bgFile}');">
           <img class="faction-icon" src="${base}${iconFile}" alt="${faction}" loading="lazy" decoding="async">
@@ -134,51 +134,51 @@ function renderFactionCards() {
 
 // ======================== ИКОНКИ ========================
 const ICON_MAP = {
-  "{+ATT_ICON}": "img/ico/+ATT_ICON.png",
-  "{+DEF_ICON}": "img/ico/+DEF_ICON.png",
-  "{-ATT_ICON}": "img/ico/-ATT_ICON.png",
-  "{-DEF_ICON}": "img/ico/-DEF_ICON.png",
-  "{AFF_BANE_ICON}": "img/ico/AFF_BANE_ICON.png",
-  "{AFF_BATMAN_ICON}": "img/ico/AFF_BATMAN_ICON.png",
-  "{AFF_CULTS_ICON}": "img/ico/AFF_CULTS_ICON.png",
-  "{AFF_CRIME_ICON}": "img/ico/AFF_CRIME_ICON.png",
-  "{AFF_HARLEY_QUINN_FRIENDS_ICON}": "img/ico/AFF_HARLEY_QUINN_FRIENDS_ICON.png",
-  "{AFF_JOKER_ICON}": "img/ico/AFF_JOKER_ICON.png",
-  "{AFF_LAW_FORCES_ICON}": "img/ico/AFF_LAW_FORCES_ICON.png",
-  "{AFF_LEAGUE_ICON}": "img/ico/AFF_LEAGUE_ICON.png",
-  "{AFF_MRFREEZE_ICON}": "img/ico/AFF_MRFREEZE_ICON.png",
-  "{AFF_OWLS_ICON}": "img/ico/AFF_OWLS_ICON.png",
-  "{AFF_PENGUIN_ICON}": "img/ico/AFF_PENGUIN_ICON.png",
-  "{AFF_RIDDLER_ICON}": "img/ico/AFF_RIDDLER_ICON.png",
-  "{AFF_ROYAL_FLUSH_ICON}": "img/ico/AFF_ROYAL_FLUSH_ICON.png",
-  "{AFF_SCARECROW_ICON}": "img/ico/AFF_SCARECROW_ICON.png",
-  "{AFF_SUICIDE_SQUAD_ICON}": "img/ico/AFF_SUICIDE_SQUAD_ICON.png",
-  "{BLOOD_ICON}": "img/ico/BLOOD_ICON.png",
-  "{CROWN_ICON}": "img/ico/CROWN_ICON.png",
-  "{EFF_BLIND_ICON}": "img/ico/EFF_BLIND_ICON.png",
-  "{EFF_ENERV1_ICON}": "img/ico/EFF_ENERV1_ICON.png",
-  "{EFF_FIRE_ICON}": "img/ico/EFF_FIRE_ICON.png",
-  "{EFF_FREEZE_ICON}": "img/ico/EFF_FREEZE_ICON.png",
-  "{EFF_PARALYZE_ICON}": "img/ico/EFF_PARALYZE_ICON.png",
-  "{EFF_POISON1_ICON}": "img/ico/EFF_POISON1_ICON.png",
-  "{EFF_SCARED_ICON}": "img/ico/EFF_SCARED_ICON.png",
-  "{EFF_STUNNED_ICON}": "img/ico/EFF_STUNNED_ICON.png",
-  "{KD_ICON}": "img/ico/KD_ICON.png",
-  "{MOV+2_ICON}": "img/ico/MOV+2_ICON.png",
-  "{MOV+4_ICON}": "img/ico/MOV+4_ICON.png",
-  "{MOV-2_ICON}": "img/ico/MOV-2_ICON.png",
-  "{OBJECTIVE_CROSS_ICON}": "img/ico/OBJECTIVE_CROSS_ICON.png",
-  "{OT_CONTROL_ICON}": "img/ico/OT_CONTROL_ICON.png",
-  "{OT_MENACE_ICON}": "img/ico/OT_MENACE_ICON.png",
-  "{OT_PROTECTION_ICON}": "img/ico/OT_PROTECTION_ICON.png",
-  "{OT_VIOLENCE_ICON}": "img/ico/OT_VIOLENCE_ICON.png",
-  "{RANK_FREEAGENT_ICON}": "img/ico/RANK_FREEAGENT_ICON.png",
-  "{RANK_HENCHMAN_ICON}": "img/ico/RANK_HENCHMAN_ICON.png",
-  "{RANK_LEADER_ICON}": "img/ico/RANK_LEADER_ICON.png",
-  "{RANK_SIDEKICK_ICON}": "img/ico/RANK_SIDEKICK_ICON.png",
-  "{RANK_VEHICLE_ICON}": "img/ico/RANK_VEHICLE_ICON.png",
-  "{SPECIAL_ICON}": "img/ico/SPECIAL_ICON.png",
-  "{STUN_ICON}": "img/ico/STUN_ICON.png"
+  "{+ATT_ICON}": "img/ico/+ATT_ICON.webp",
+  "{+DEF_ICON}": "img/ico/+DEF_ICON.webp",
+  "{-ATT_ICON}": "img/ico/-ATT_ICON.webp",
+  "{-DEF_ICON}": "img/ico/-DEF_ICON.webp",
+  "{AFF_BANE_ICON}": "img/ico/AFF_BANE_ICON.webp",
+  "{AFF_BATMAN_ICON}": "img/ico/AFF_BATMAN_ICON.webp",
+  "{AFF_CULTS_ICON}": "img/ico/AFF_CULTS_ICON.webp",
+  "{AFF_CRIME_ICON}": "img/ico/AFF_CRIME_ICON.webp",
+  "{AFF_HARLEY_QUINN_FRIENDS_ICON}": "img/ico/AFF_HARLEY_QUINN_FRIENDS_ICON.webp",
+  "{AFF_JOKER_ICON}": "img/ico/AFF_JOKER_ICON.webp",
+  "{AFF_LAW_FORCES_ICON}": "img/ico/AFF_LAW_FORCES_ICON.webp",
+  "{AFF_LEAGUE_ICON}": "img/ico/AFF_LEAGUE_ICON.webp",
+  "{AFF_MRFREEZE_ICON}": "img/ico/AFF_MRFREEZE_ICON.webp",
+  "{AFF_OWLS_ICON}": "img/ico/AFF_OWLS_ICON.webp",
+  "{AFF_PENGUIN_ICON}": "img/ico/AFF_PENGUIN_ICON.webp",
+  "{AFF_RIDDLER_ICON}": "img/ico/AFF_RIDDLER_ICON.webp",
+  "{AFF_ROYAL_FLUSH_ICON}": "img/ico/AFF_ROYAL_FLUSH_ICON.webp",
+  "{AFF_SCARECROW_ICON}": "img/ico/AFF_SCARECROW_ICON.webp",
+  "{AFF_SUICIDE_SQUAD_ICON}": "img/ico/AFF_SUICIDE_SQUAD_ICON.webp",
+  "{BLOOD_ICON}": "img/ico/BLOOD_ICON.webp",
+  "{CROWN_ICON}": "img/ico/CROWN_ICON.webp",
+  "{EFF_BLIND_ICON}": "img/ico/EFF_BLIND_ICON.webp",
+  "{EFF_ENERV1_ICON}": "img/ico/EFF_ENERV1_ICON.webp",
+  "{EFF_FIRE_ICON}": "img/ico/EFF_FIRE_ICON.webp",
+  "{EFF_FREEZE_ICON}": "img/ico/EFF_FREEZE_ICON.webp",
+  "{EFF_PARALYZE_ICON}": "img/ico/EFF_PARALYZE_ICON.webp",
+  "{EFF_POISON1_ICON}": "img/ico/EFF_POISON1_ICON.webp",
+  "{EFF_SCARED_ICON}": "img/ico/EFF_SCARED_ICON.webp",
+  "{EFF_STUNNED_ICON}": "img/ico/EFF_STUNNED_ICON.webp",
+  "{KD_ICON}": "img/ico/KD_ICON.webp",
+  "{MOV+2_ICON}": "img/ico/MOV+2_ICON.webp",
+  "{MOV+4_ICON}": "img/ico/MOV+4_ICON.webp",
+  "{MOV-2_ICON}": "img/ico/MOV-2_ICON.webp",
+  "{OBJECTIVE_CROSS_ICON}": "img/ico/OBJECTIVE_CROSS_ICON.webp",
+  "{OT_CONTROL_ICON}": "img/ico/OT_CONTROL_ICON.webp",
+  "{OT_MENACE_ICON}": "img/ico/OT_MENACE_ICON.webp",
+  "{OT_PROTECTION_ICON}": "img/ico/OT_PROTECTION_ICON.webp",
+  "{OT_VIOLENCE_ICON}": "img/ico/OT_VIOLENCE_ICON.webp",
+  "{RANK_FREEAGENT_ICON}": "img/ico/RANK_FREEAGENT_ICON.webp",
+  "{RANK_HENCHMAN_ICON}": "img/ico/RANK_HENCHMAN_ICON.webp",
+  "{RANK_LEADER_ICON}": "img/ico/RANK_LEADER_ICON.webp",
+  "{RANK_SIDEKICK_ICON}": "img/ico/RANK_SIDEKICK_ICON.webp",
+  "{RANK_VEHICLE_ICON}": "img/ico/RANK_VEHICLE_ICON.webp",
+  "{SPECIAL_ICON}": "img/ico/SPECIAL_ICON.webp",
+  "{STUN_ICON}": "img/ico/STUN_ICON.webp"
 };
 
 // Значки характеристик на полной карточке модели.
@@ -186,10 +186,10 @@ const ICON_MAP = {
 // чтобы смена источника этих значков не задевала встраиваемые иконки текстов
 // ({...}-токены в трейтах, компендиуме и попапах — они остаются на /img/ico/).
 const STAT_ICONS = {
-  Attack: "img/Attack.png",
-  Defense: "img/Defense.png",
-  Strength: "img/Strength.png",
-  Movement: "img/Movement.png"
+  Attack: "img/Attack.webp",
+  Defense: "img/Defense.webp",
+  Strength: "img/Strength.webp",
+  Movement: "img/Movement.webp"
 };
 
 // Регулярки собираются один раз: раньше каждый вызов создавал 45 новых
@@ -1855,7 +1855,7 @@ function sortModelsByRank(list) {
 
 // HTML иконок рангов модели (используется в шапке полной карточки)
 const renderRankIconsHTML = ranks => ranks.map(rank =>
-  `<img src="img/${rank}.png" alt="${rank}" class="rank-icon" onerror="this.src='img/no.png'">`
+  `<img src="img/${rank}.webp" alt="${rank}" class="rank-icon" onerror="this.src='img/no.webp'">`
 ).join('');
 
 // Общая разметка мини-карточки для разделов "Карточки" и "Билдер":
@@ -1894,7 +1894,7 @@ function renderMiniCardHTML(item, showButtons, showStats) {
   return `
 ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 <div class="mini-photo-wrap">
-  <img src="${item.img}" width="74" height="94" loading="lazy" decoding="async" onerror="this.src='img/no.png'">
+  <img src="${item.img}" width="74" height="94" loading="lazy" decoding="async" onerror="this.src='img/no.webp'">
   ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
 </div>
 <div class="mini-right-col">
@@ -2230,7 +2230,7 @@ const buildFullCardHTML = model => {
 
   const renderIcons = arr => arr.length
     ? arr.map(f => {
-        const file = FACTION_ICON_MAP[f] || "UNKNOWN.png";
+        const file = FACTION_ICON_MAP[f] || "UNKNOWN.webp";
         return `<img src="img/menu/${file}" alt="${f}" class="faction-icon-small">`;
       }).join(" ")
     : "—";
@@ -2248,8 +2248,8 @@ const buildFullCardHTML = model => {
           <span class="official-weapon-name">${(w.name || "Unnamed").toUpperCase()}</span>
           <span class="official-weapon-stats">
             ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
-            ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="img/rof.png" class="stat-icon"></span>` : ""}
-            ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="img/ammo.png" class="stat-icon"></span>` : ""}
+            ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="img/rof.webp" class="stat-icon"></span>` : ""}
+            ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="img/ammo.webp" class="stat-icon"></span>` : ""}
           </span>
         </div>
         ${traits.length ? `<div class="official-weapon-traits-line">${traits.map(tr => `<span class="weapon-trait-text" onclick="event.stopPropagation(); showTraitDesc('${tr.replace(/'/g, "\\'")}')">${tr.toUpperCase()}</span>`).join(" / ")}</div>` : ""}
@@ -2304,7 +2304,7 @@ const buildFullCardHTML = model => {
 
       <div class="official-main">
         <div class="official-img-wrapper">
-          <img src="${model.img}" class="official-img" decoding="async" onerror="this.src='img/no.png'">
+          <img src="${model.img}" class="official-img" decoding="async" onerror="this.src='img/no.webp'">
         </div>
         <div class="official-info-col">
           <div class="official-aff-riv-row">

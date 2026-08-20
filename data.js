@@ -494,7 +494,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanBushi.png",
+    "img": "img/BatmanBushi.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -535,7 +535,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "img/ThePenguinCrimeLordRising.png",
+    "img": "img/ThePenguinCrimeLordRising.webp",
     "stats": {
       "Attack": "3",
       "Defense": "3",
@@ -584,7 +584,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/HarleyQuinnArkhamKnight.png",
+    "img": "img/HarleyQuinnArkhamKnight.webp",
     "stats": {
       "Attack": "4",
       "Defense": "4",
@@ -630,7 +630,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader", "Sidekick"],
     "faction": ["League of Shadows", "GCPD"],
-    "img": "img/WardenSharp.png",
+    "img": "img/WardenSharp.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -660,7 +660,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/DamienDarhk.png",
+    "img": "img/DamienDarhk.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -706,7 +706,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokermobileArkhamKnight.png",
+    "img": "img/JokermobileArkhamKnight.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -752,7 +752,7 @@ const models = [
     "funding": 850,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyQuinnGatlingBrute.png",
+    "img": "img/HarleyQuinnGatlingBrute.webp",
     "stats": {
       "Attack": "3",
       "Defense": "3",
@@ -796,7 +796,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Bat Family"],
-    "img": "img/NightwingArkhamKnight.png",
+    "img": "img/NightwingArkhamKnight.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -844,7 +844,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Birds of Prey"],
-    "img": "img/PoisonIvyArkhamCity.png",
+    "img": "img/PoisonIvyArkhamCity.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -872,7 +872,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanDarkKnightRises.png",
+    "img": "img/BatmanDarkKnightRises.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -915,7 +915,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyThug1.png",
+    "img": "img/HarleyThug1.webp",
     "stats": {
       "Attack": "3",
       "Defense": "2",
@@ -949,7 +949,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyThug2.png",
+    "img": "img/HarleyThug2.webp",
     "stats": {
       "Attack": "3",
       "Defense": "2",
@@ -982,7 +982,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyThug3.png",
+    "img": "img/HarleyThug3.webp",
     "stats": {
       "Attack": "3",
       "Defense": "2",
@@ -1015,7 +1015,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyThug4.png",
+    "img": "img/HarleyThug4.webp",
     "stats": {
       "Attack": "3",
       "Defense": "2",
@@ -1048,7 +1048,7 @@ const models = [
     "funding": 250,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyThug5.png",
+    "img": "img/HarleyThug5.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -1080,7 +1080,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyThug6.png",
+    "img": "img/HarleyThug6.webp",
     "stats": {
       "Attack": "3",
       "Defense": "2",
@@ -1114,7 +1114,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HarleyThug7.png",
+    "img": "img/HarleyThug7.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -1146,7 +1146,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmobileArkhamKnight.png",
+    "img": "img/BatmobileArkhamKnight.webp",
     "stats": {
       "Attack": "4",
       "Defense": "3",
@@ -1192,7 +1192,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD", "Unknown"],
     "rivals": ["Bat Family"],
-    "img": "img/CatwomanDarkKnightRises.png",
+    "img": "img/CatwomanDarkKnightRises.webp",
     "stats": {
       "Attack": "4",
       "Defense": "5",
@@ -1236,7 +1236,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanArkhamKnight.png",
+    "img": "img/BatmanArkhamKnight.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -1284,7 +1284,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanArkhamCity.png",
+    "img": "img/BatmanArkhamCity.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -1332,7 +1332,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Bane"],
-    "img": "img/MirandaTate.png",
+    "img": "img/MirandaTate.webp",
     "stats": {
       "Attack": "4",
       "Defense": "4",
@@ -1369,7 +1369,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/GreenArrowArrow.png",
+    "img": "img/GreenArrowArrow.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -1417,7 +1417,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bane"],
-    "img": "img/ArkhamKnight.png",
+    "img": "img/ArkhamKnight.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -1463,7 +1463,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/MadHatterArkhamKnight.png",
+    "img": "img/MadHatterArkhamKnight.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -1502,7 +1502,7 @@ const models = [
   "funding": 200,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/RebelArmoredAssassin.png",
+  "img": "img/RebelArmoredAssassin.webp",
   "stats": {
     "Attack": 3,
     "Defense": 4,
@@ -1544,7 +1544,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/RebelMaskedAssassin2.png",
+  "img": "img/RebelMaskedAssassin2.webp",
   "stats": {
     "Attack": 3,
     "Defense": 4,
@@ -1578,7 +1578,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/RebelMonk.png",
+  "img": "img/RebelMonk.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -1613,7 +1613,7 @@ const models = [
   "funding": 150,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/RebelMaskedAssassin1.png",
+  "img": "img/RebelMaskedAssassin1.webp",
   "stats": {
     "Attack": 3,
     "Defense": 4,
@@ -1654,7 +1654,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/ShadowArmoredAssassin.png",
+  "img": "img/ShadowArmoredAssassin.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -1689,7 +1689,7 @@ const models = [
   "funding": 200,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/ArmoredAssassin.png",
+  "img": "img/ArmoredAssassin.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -1730,7 +1730,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/GuardianMonk.png",
+  "img": "img/GuardianMonk.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -1766,7 +1766,7 @@ const models = [
   "funding": 0,
   "rank": ["Leader"],
   "faction": ["League of Shadows"],
-  "img": "img/NyssaAlGhulArkhamKnight.png",
+  "img": "img/NyssaAlGhulArkhamKnight.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -1813,7 +1813,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader", "Sidekick"],
     "faction": ["League of Shadows"],
-    "img": "img/HenryDucard.png",
+    "img": "img/HenryDucard.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -1856,7 +1856,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/RavenTrigonDaughter.png",
+    "img": "img/RavenTrigonDaughter.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -1901,7 +1901,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["League of Shadows"],
-    "img": "img/RasalGhulDecoy.png",
+    "img": "img/RasalGhulDecoy.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -1937,7 +1937,7 @@ const models = [
   "funding": 100,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/LeagueOfShadowsNinja1.png",
+  "img": "img/LeagueOfShadowsNinja1.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -1977,7 +1977,7 @@ const models = [
   "funding": 300,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/LeagueOfShadowsNinja3.png",
+  "img": "img/LeagueOfShadowsNinja3.webp",
   "stats": {
     "Attack": 3,
     "Defense": 4,
@@ -2018,7 +2018,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/BruceBatmanBegins.png",
+  "img": "img/BruceBatmanBegins.webp",
   "stats": {
     "Attack": 4,
     "Defense": 5,
@@ -2055,7 +2055,7 @@ const models = [
   "funding": 300,
   "rank": ["Sidekick"],
   "faction": ["GCPD"],
-  "img": "img/GordonInfiltrate.png",
+  "img": "img/GordonInfiltrate.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -2096,7 +2096,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["League of Shadows"],
-  "img": "img/LeagueOfShadowsNinja2.png",
+  "img": "img/LeagueOfShadowsNinja2.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -2134,7 +2134,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/TheDrifterRobertPattinson.png",
+    "img": "img/TheDrifterRobertPattinson.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2165,7 +2165,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanYearOne.png",
+    "img": "img/BatmanYearOne.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -2211,7 +2211,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanRobertPattinson.png",
+    "img": "img/BatmanRobertPattinson.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2257,7 +2257,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanOnBikeRobertPattinson.png",
+    "img": "img/BatmanOnBikeRobertPattinson.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -2297,7 +2297,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/Batman1997.png",
+    "img": "img/Batman1997.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2342,7 +2342,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanMichaelKeaton.png",
+    "img": "img/BatmanMichaelKeaton.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2388,7 +2388,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanRedRain.png",
+    "img": "img/BatmanRedRain.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -2428,7 +2428,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanAdamWest.png",
+    "img": "img/BatmanAdamWest.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2472,7 +2472,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
-    "img": "img/TheWhiteKnight.png",
+    "img": "img/TheWhiteKnight.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2499,7 +2499,7 @@ const models = [
     "funding": 150,
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
-    "img": "img/AaronCash.png",
+    "img": "img/AaronCash.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -2543,7 +2543,7 @@ const models = [
     "funding": 300,
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
-    "img": "img/GreenArrowRebirth.png",
+    "img": "img/GreenArrowRebirth.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2580,7 +2580,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanGaslight.png",
+    "img": "img/BatmanGaslight.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2621,7 +2621,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/CommissionerGordon.png",
+    "img": "img/CommissionerGordon.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2661,7 +2661,7 @@ const models = [
     "funding": 100,
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
-    "img": "img/RobinBurtWard.png",
+    "img": "img/RobinBurtWard.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -2699,7 +2699,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["GCPD"],
-    "img": "img/BatmanDarkKnightRisesBatpod.png",
+    "img": "img/BatmanDarkKnightRisesBatpod.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -2744,7 +2744,7 @@ const models = [
     "funding": 200,
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
-    "img": "img/ChiefMackenzie.png",
+    "img": "img/ChiefMackenzie.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -2778,7 +2778,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
-    "img": "img/Robin1997.png",
+    "img": "img/Robin1997.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -2818,7 +2818,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanMultiverse.png",
+    "img": "img/BatmanMultiverse.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -2856,7 +2856,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family"],
-    "img": "img/BatmanViking.png",
+    "img": "img/BatmanViking.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -2894,7 +2894,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanFrankMillerOnPowerArmor.png",
+    "img": "img/BatmanFrankMillerOnPowerArmor.webp",
     "stats": {
       "Attack": 4,
       "Defense": 2,
@@ -2934,7 +2934,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family"],
-    "img": "img/BatmanTheAnimatedSeries.png",
+    "img": "img/BatmanTheAnimatedSeries.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -2978,7 +2978,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/Batman.png",
+    "img": "img/Batman.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -3019,7 +3019,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick", "Free Agent"],
     "faction": ["Bat Family"],
-    "img": "img/RobinTeenTitans.png",
+    "img": "img/RobinTeenTitans.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -3064,7 +3064,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanTheGothamCityKnight.png",
+    "img": "img/BatmanTheGothamCityKnight.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -3103,7 +3103,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family"],
-    "img": "img/BatmanDeathMetal.png",
+    "img": "img/BatmanDeathMetal.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -3151,7 +3151,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanFrankMillerOnHorse.png",
+    "img": "img/BatmanFrankMillerOnHorse.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3192,7 +3192,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanBeyond.png",
+    "img": "img/BatmanBeyond.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -3239,7 +3239,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanClassic.png",
+    "img": "img/BatmanClassic.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -3280,7 +3280,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/GreenArrowDKR.png",
+    "img": "img/GreenArrowDKR.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3326,7 +3326,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/BatmanFrankMiller.png",
+    "img": "img/BatmanFrankMiller.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3367,7 +3367,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick", "Leader"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/Batwoman.png",
+    "img": "img/Batwoman.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3417,7 +3417,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "Unknown"],
     "rivals": ["GCPD", "Joker"],
-    "img": "img/Catwoman.png",
+    "img": "img/Catwoman.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -3454,7 +3454,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RedHoodRebirth.png",
+    "img": "img/RedHoodRebirth.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3498,7 +3498,7 @@ const models = [
     "funding": 100,
     "rank": ["Sidekick"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RobinClassic.png",
+    "img": "img/RobinClassic.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -3537,7 +3537,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RobinJasonTodd.png",
+    "img": "img/RobinJasonTodd.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3579,7 +3579,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Bat Family"],
-    "img": "img/WonderGirl.png",
+    "img": "img/WonderGirl.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3625,7 +3625,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/MrWayneBeyond.png",
+    "img": "img/MrWayneBeyond.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -3662,7 +3662,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "Unknown"],
     "rivals": ["GCPD"],
-    "img": "img/Clayface.png",
+    "img": "img/Clayface.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -3708,7 +3708,7 @@ const models = [
     "funding": 100,
     "rank": ["Sidekick"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RobinCarrieKelley.png",
+    "img": "img/RobinCarrieKelley.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -3744,7 +3744,7 @@ const models = [
     "funding": 400,
     "rank": ["Sidekick"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RedHoodTheOutlaw.png",
+    "img": "img/RedHoodTheOutlaw.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3791,7 +3791,7 @@ const models = [
     "funding": 300,
     "rank": ["Free Agent"],
     "faction": ["Bat Family"],
-    "img": "img/StarfireTeenTitans.png",
+    "img": "img/StarfireTeenTitans.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3834,7 +3834,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/NightwingRebirth.png",
+    "img": "img/NightwingRebirth.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -3881,7 +3881,7 @@ const models = [
     "funding": 300,
     "rank": ["Sidekick"],
     "faction": ["Bat Family"],
-    "img": "img/GreenArrowAnimated.png",
+    "img": "img/GreenArrowAnimated.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -3923,7 +3923,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/SonOfBatman3.png",
+    "img": "img/SonOfBatman3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -3951,7 +3951,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/Ace.png",
+    "img": "img/Ace.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -3992,7 +3992,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/AlfredPennyworth.png",
+    "img": "img/AlfredPennyworth.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4029,7 +4029,7 @@ const models = [
     "funding": 300,
     "rank": ["Free Agent"],
     "faction": ["Bat Family"],
-    "img": "img/HuntressClassic.png",
+    "img": "img/HuntressClassic.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -4073,7 +4073,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/Raven.png",
+    "img": "img/Raven.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -4117,7 +4117,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/SonOfBatman2.png",
+    "img": "img/SonOfBatman2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -4159,7 +4159,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/Clownhunter.png",
+    "img": "img/Clownhunter.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4194,7 +4194,7 @@ const models = [
     "funding": 200,
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RedRobin.png",
+    "img": "img/RedRobin.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -4240,7 +4240,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/SonOfBatman1.png",
+    "img": "img/SonOfBatman1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -4281,7 +4281,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/AzraelGodsPunishment.png",
+    "img": "img/AzraelGodsPunishment.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -4327,7 +4327,7 @@ const models = [
     "funding": 200,
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RobinTimDrake.png",
+    "img": "img/RobinTimDrake.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -4369,7 +4369,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/LuciusFox.png",
+    "img": "img/LuciusFox.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -4396,7 +4396,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/CatwomanAnimated.png",
+    "img": "img/CatwomanAnimated.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -4430,7 +4430,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/BatgirlAnimated.png",
+    "img": "img/BatgirlAnimated.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -4473,7 +4473,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/HarleyQuinnAnimated.png",
+    "img": "img/HarleyQuinnAnimated.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -4508,7 +4508,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RobinBeyond.png",
+    "img": "img/RobinBeyond.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -4551,7 +4551,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family", "Suicide Squad"],
-    "img": "img/RavagerVanguardTeam.png",
+    "img": "img/RavagerVanguardTeam.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -4585,7 +4585,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/BlackCanaryAnimated.png",
+    "img": "img/BlackCanaryAnimated.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -4625,7 +4625,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/ReneeMontoya.png",
+    "img": "img/ReneeMontoya.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4667,7 +4667,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/HomicideDetective.png",
+    "img": "img/HomicideDetective.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4701,7 +4701,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/GCPDMountedCop.png",
+    "img": "img/GCPDMountedCop.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4735,7 +4735,7 @@ const models = [
     "funding": 400,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/SWATQRT3.png",
+    "img": "img/SWATQRT3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4776,7 +4776,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/OfficerMartinez.png",
+    "img": "img/OfficerMartinez.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4809,7 +4809,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/SWATQRT2.png",
+    "img": "img/SWATQRT2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4850,7 +4850,7 @@ const models = [
     "funding": 150,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/ReinforcementCop.png",
+    "img": "img/ReinforcementCop.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -4883,7 +4883,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/GCPDOfficer1.png",
+    "img": "img/GCPDOfficer1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -4916,7 +4916,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/GildaDent.png",
+    "img": "img/GildaDent.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -4941,7 +4941,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/SWATQRT1.png",
+    "img": "img/SWATQRT1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -4981,7 +4981,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/GCPDOfficer2.png",
+    "img": "img/GCPDOfficer2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -5005,7 +5005,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/BeatCop.png",
+    "img": "img/BeatCop.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5039,7 +5039,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/SgtHarveyBullock.png",
+    "img": "img/SgtHarveyBullock.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5074,7 +5074,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/GCPDDetective.png",
+    "img": "img/GCPDDetective.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5107,7 +5107,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/Sierra.png",
+    "img": "img/Sierra.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5141,7 +5141,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/GCPDCop1.png",
+    "img": "img/GCPDCop1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -5173,7 +5173,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/LtGordonYearOne.png",
+    "img": "img/LtGordonYearOne.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -5216,7 +5216,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/GCPDCop2.png",
+    "img": "img/GCPDCop2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5247,7 +5247,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/LtGordonJeffreyWright.png",
+    "img": "img/LtGordonJeffreyWright.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5284,7 +5284,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/Agent1.png",
+    "img": "img/Agent1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5323,7 +5323,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/OfficerMerkel.png",
+    "img": "img/OfficerMerkel.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5355,7 +5355,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/Agent2.png",
+    "img": "img/Agent2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5393,7 +5393,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/Agent3.png",
+    "img": "img/Agent3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5425,7 +5425,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["GCPD", "Organized Crime"],
-    "img": "img/DetectiveFlassYearOne.png",
+    "img": "img/DetectiveFlassYearOne.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5467,7 +5467,7 @@ const models = [
     "funding": 450,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/Lerida.png",
+    "img": "img/Lerida.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5500,7 +5500,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["GCPD"],
-    "img": "img/Foxtrot.png",
+    "img": "img/Foxtrot.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5542,7 +5542,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
-    "img": "img/AttorneyHarveyDent.png",
+    "img": "img/AttorneyHarveyDent.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5582,7 +5582,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/Bouncer1.png",
+    "img": "img/Bouncer1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5614,7 +5614,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/Bouncer2.png",
+    "img": "img/Bouncer2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5646,7 +5646,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/Bouncer3.png",
+    "img": "img/Bouncer3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5678,7 +5678,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMaskThug6.png",
+    "img": "img/BlackMaskThug6.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -5717,7 +5717,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/TheTwin1.png",
+    "img": "img/TheTwin1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5751,7 +5751,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/TheTwin2.png",
+    "img": "img/TheTwin2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5785,7 +5785,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/KillerCrocThug.png",
+    "img": "img/KillerCrocThug.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -5821,7 +5821,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/DetectiveKenzie.png",
+    "img": "img/DetectiveKenzie.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5863,7 +5863,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/TheFixer.png",
+    "img": "img/TheFixer.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5905,7 +5905,7 @@ const models = [
     "funding": 400,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMaskThug7.png",
+    "img": "img/BlackMaskThug7.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -5937,7 +5937,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/MafiaThug.png",
+    "img": "img/MafiaThug.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -5978,7 +5978,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMaskThug4.png",
+    "img": "img/BlackMaskThug4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -6010,7 +6010,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMaskThug2.png",
+    "img": "img/BlackMaskThug2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -6042,7 +6042,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/TheTailor.png",
+    "img": "img/TheTailor.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -6068,7 +6068,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMaskThug1.png",
+    "img": "img/BlackMaskThug1.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -6101,7 +6101,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/Malatesta.png",
+    "img": "img/Malatesta.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6140,7 +6140,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/TroySins.png",
+    "img": "img/TroySins.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -6171,7 +6171,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMaskThug5.png",
+    "img": "img/BlackMaskThug5.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -6204,7 +6204,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMaskThug3.png",
+    "img": "img/BlackMaskThug3.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -6236,7 +6236,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/TheBull.png",
+    "img": "img/TheBull.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -6260,7 +6260,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/Showtime.png",
+    "img": "img/Showtime.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -6292,7 +6292,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/Vipera.png",
+    "img": "img/Vipera.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -6324,7 +6324,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
-    "img": "img/BlackMask.png",
+    "img": "img/BlackMask.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -6368,7 +6368,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
-    "img": "img/LexLuthor.png",
+    "img": "img/LexLuthor.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6407,7 +6407,7 @@ const models = [
     "funding": 400,
     "rank": ["Sidekick"],
     "faction": ["Organized Crime"],
-    "img": "img/AlexandraKosov.png",
+    "img": "img/AlexandraKosov.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -6450,7 +6450,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
-    "img": "img/SalMaroni.png",
+    "img": "img/SalMaroni.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6486,7 +6486,7 @@ const models = [
     "funding": 150,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/FatJohnny.png",
+    "img": "img/FatJohnny.webp",
     "stats": {
       "Attack": 4,
       "Defense": 2,
@@ -6525,7 +6525,7 @@ const models = [
     "funding": 250,
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
-    "img": "img/Battista.png",
+    "img": "img/Battista.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6557,7 +6557,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
-    "img": "img/TheRoman.png",
+    "img": "img/TheRoman.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6589,7 +6589,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
-    "img": "img/TheVentriloquist.png",
+    "img": "img/TheVentriloquist.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6626,7 +6626,7 @@ const models = [
     "funding": 350,
     "rank": ["Sidekick"],
     "faction": ["Organized Crime"],
-    "img": "img/TheHolidayKiller.png",
+    "img": "img/TheHolidayKiller.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6662,7 +6662,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
-    "img": "img/CarmineFalconeTurturro.png",
+    "img": "img/CarmineFalconeTurturro.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6699,7 +6699,7 @@ const models = [
     "funding": 300,
     "rank": ["Sidekick"],
     "faction": ["Organized Crime"],
-    "img": "img/Fright.png",
+    "img": "img/Fright.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -6737,7 +6737,7 @@ const models = [
     "funding": 300,
     "rank": ["Sidekick"],
     "faction": ["Organized Crime"],
-    "img": "img/ThePenguinFarrell.png",
+    "img": "img/ThePenguinFarrell.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -6777,7 +6777,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["Bat Family", "Organized Crime"],
-    "img": "img/CatwomanZoeKravitz.png",
+    "img": "img/CatwomanZoeKravitz.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -6817,7 +6817,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/BeastBoyTiger.png",
+    "img": "img/BeastBoyTiger.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -6852,7 +6852,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/BeastBoyGorrila.png",
+    "img": "img/BeastBoyGorrila.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -6888,7 +6888,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family"],
-    "img": "img/BeastBoyHawk.png",
+    "img": "img/BeastBoyHawk.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -6915,7 +6915,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family", "Doom Patrol"],
-    "img": "img/BeastBoy_Human.png",
+    "img": "img/BeastBoy_Human.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -6941,7 +6941,7 @@ const models = [
     "funding": 200,
     "rank": ["Leader"],
     "faction": ["Doom Patrol", "GCPD"],
-    "img": "img/The_Chief.png",
+    "img": "img/The_Chief.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -6977,7 +6977,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
-    "img": "img/ElastiGirl.png",
+    "img": "img/ElastiGirl.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -7005,7 +7005,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
-    "img": "img/Crazy_Jane.png",
+    "img": "img/Crazy_Jane.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -7043,7 +7043,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
-    "img": "img/Negative_Man.png",
+    "img": "img/Negative_Man.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -7075,7 +7075,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Doom Patrol", "GCPD"],
-    "img": "img/Robotman.png",
+    "img": "img/Robotman.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -7108,7 +7108,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bane"],
-    "img": "img/BaneUnleashed.png",
+    "img": "img/BaneUnleashed.webp",
     "stats": {
       "Attack": 6,
       "Defense": 2,
@@ -7148,7 +7148,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Bane"],
-    "img": "img/BatmanSword.png",
+    "img": "img/BatmanSword.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -7189,7 +7189,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bane"],
-    "img": "img/BaneTitan.png",
+    "img": "img/BaneTitan.webp",
     "stats": {
       "Attack": 5,
       "Defense": 2,
@@ -7228,7 +7228,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/MedicOP.png",
+    "img": "img/MedicOP.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -7260,7 +7260,7 @@ const models = [
     "funding": 300,
     "rank": ["Sidekick"],
     "faction": ["Bane"],
-    "img": "img/BirdClassic.png",
+    "img": "img/BirdClassic.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -7302,7 +7302,7 @@ const models = [
     "funding": 100,
     "rank": ["Sidekick"],
     "faction": ["Bane"],
-    "img": "img/Bird.png",
+    "img": "img/Bird.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7346,7 +7346,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bane"],
-    "img": "img/BaneRebirth.png",
+    "img": "img/BaneRebirth.webp",
     "stats": {
       "Attack": 6,
       "Defense": 3,
@@ -7379,7 +7379,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bane"],
-    "img": "img/Vengeance.png",
+    "img": "img/Vengeance.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -7411,7 +7411,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bane"],
-    "img": "img/BaneTheBat.png",
+    "img": "img/BaneTheBat.webp",
     "stats": {
       "Attack": 6,
       "Defense": 3,
@@ -7452,7 +7452,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/DreadnoughtOP.png",
+    "img": "img/DreadnoughtOP.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -7485,7 +7485,7 @@ const models = [
     "funding": 600,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/EliteOP.png",
+    "img": "img/EliteOP.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7519,7 +7519,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Bane"],
-    "img": "img/BaneCommander.png",
+    "img": "img/BaneCommander.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -7552,7 +7552,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/LieutenantOP.png",
+    "img": "img/LieutenantOP.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -7592,7 +7592,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/Cuchillo.png",
+    "img": "img/Cuchillo.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7626,7 +7626,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/StealthOP.png",
+    "img": "img/StealthOP.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -7661,7 +7661,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/InfiltrateOP.png",
+    "img": "img/InfiltrateOP.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -7695,7 +7695,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/Macgregor.png",
+    "img": "img/Macgregor.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7728,7 +7728,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/Clover.png",
+    "img": "img/Clover.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7760,7 +7760,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/SharpShooter.png",
+    "img": "img/SharpShooter.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7793,7 +7793,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/Malicia.png",
+    "img": "img/Malicia.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7821,7 +7821,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/TheBuilder.png",
+    "img": "img/TheBuilder.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7856,7 +7856,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/Smash.png",
+    "img": "img/Smash.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7897,7 +7897,7 @@ const models = [
     "funding": 250,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/TedHunter.png",
+    "img": "img/TedHunter.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7939,7 +7939,7 @@ const models = [
     "funding": 400,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/Schoolboy.png",
+    "img": "img/Schoolboy.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -7971,7 +7971,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/SupportOP.png",
+    "img": "img/SupportOP.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8012,7 +8012,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bane"],
-    "img": "img/RedBastard.png",
+    "img": "img/RedBastard.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8052,7 +8052,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Grumpy.png",
+    "img": "img/Grumpy.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -8086,7 +8086,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Happy.png",
+    "img": "img/Happy.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -8119,7 +8119,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/GaggyRebirth.png",
+    "img": "img/GaggyRebirth.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -8155,7 +8155,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersBiker2.png",
+    "img": "img/JokersBiker2.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -8189,7 +8189,7 @@ const models = [
     "funding": 150,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersBusDriver.png",
+    "img": "img/JokersBusDriver.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8223,7 +8223,7 @@ const models = [
     "funding": 500,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersParaMilitary2.png",
+    "img": "img/JokersParaMilitary2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8264,7 +8264,7 @@ const models = [
     "funding": 400,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersParaMilitary3.png",
+    "img": "img/JokersParaMilitary3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8305,7 +8305,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersParaMilitary1.png",
+    "img": "img/JokersParaMilitary1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8339,7 +8339,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Chuckcles.png",
+    "img": "img/Chuckcles.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -8372,7 +8372,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/BlunderbussClown.png",
+    "img": "img/BlunderbussClown.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -8403,7 +8403,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersVictim1.png",
+    "img": "img/JokersVictim1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -8437,7 +8437,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersVictim2.png",
+    "img": "img/JokersVictim2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -8471,7 +8471,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/StreetJester2.png",
+    "img": "img/StreetJester2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8503,7 +8503,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/StreetJester3.png",
+    "img": "img/StreetJester3.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -8535,7 +8535,7 @@ const models = [
     "funding": 100,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/AxeClown.png",
+    "img": "img/AxeClown.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -8566,7 +8566,7 @@ const models = [
     "funding": 100,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/BarrelClown.png",
+    "img": "img/BarrelClown.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -8598,7 +8598,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/StreetJester4.png",
+    "img": "img/StreetJester4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -8631,7 +8631,7 @@ const models = [
     "funding": 350,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/ChainsawClown.png",
+    "img": "img/ChainsawClown.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -8662,7 +8662,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/StreetJester1.png",
+    "img": "img/StreetJester1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -8697,7 +8697,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Thorgon.png",
+    "img": "img/Thorgon.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8734,7 +8734,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersVictim3.png",
+    "img": "img/JokersVictim3.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -8768,7 +8768,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Dynamite.png",
+    "img": "img/Dynamite.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -8800,7 +8800,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/GasPuppet3.png",
+    "img": "img/GasPuppet3.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -8835,7 +8835,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/GasPuppet1.png",
+    "img": "img/GasPuppet1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -8870,7 +8870,7 @@ const models = [
     "funding": 350,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/JokersBiker1.png",
+    "img": "img/JokersBiker1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -8904,7 +8904,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Bouffon.png",
+    "img": "img/Bouffon.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -8935,7 +8935,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/WhiteFace.png",
+    "img": "img/WhiteFace.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -8973,7 +8973,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/GasPuppet2.png",
+    "img": "img/GasPuppet2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -9008,7 +9008,7 @@ const models = [
     "funding": 600,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Rastaclow.png",
+    "img": "img/Rastaclow.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -9039,7 +9039,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/BorgonTheCursed.png",
+    "img": "img/BorgonTheCursed.webp",
     "stats": {
       "Attack": 4,
       "Defense": 2,
@@ -9075,7 +9075,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/HoboClown.png",
+    "img": "img/HoboClown.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -9106,7 +9106,7 @@ const models = [
     "funding": 0,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/AceOfSpades.png",
+    "img": "img/AceOfSpades.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -9138,7 +9138,7 @@ const models = [
     "funding": 200,
 	  "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/SlingyClown.png",
+    "img": "img/SlingyClown.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -9170,7 +9170,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerArkhamAsylum.png",
+    "img": "img/JokerArkhamAsylum.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9205,7 +9205,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerDarkKnightRises.png",
+    "img": "img/JokerDarkKnightRises.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9240,7 +9240,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerRedHood.png",
+    "img": "img/JokerRedHood.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9268,7 +9268,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerClassic.png",
+    "img": "img/JokerClassic.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9303,7 +9303,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerCesarRomero.png",
+    "img": "img/JokerCesarRomero.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9331,7 +9331,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerTheCriminal.png",
+    "img": "img/JokerTheCriminal.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9366,7 +9366,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerTheClown.png",
+    "img": "img/JokerTheClown.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9401,7 +9401,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerTheComedian.png",
+    "img": "img/JokerTheComedian.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9436,7 +9436,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerTitan.png",
+    "img": "img/JokerTitan.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -9464,7 +9464,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerChristmas.png",
+    "img": "img/JokerChristmas.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9499,7 +9499,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerHavingFun.png",
+    "img": "img/JokerHavingFun.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9534,7 +9534,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerExplosiveArrival.png",
+    "img": "img/JokerExplosiveArrival.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9569,7 +9569,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Joker"],
-    "img": "img/JokerBatArmor.png",
+    "img": "img/JokerBatArmor.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9604,7 +9604,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Joker"],
-    "img": "img/Gaggy.png",
+    "img": "img/Gaggy.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -9633,7 +9633,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Joker"],
-    "img": "img/Archie.png",
+    "img": "img/Archie.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -9653,7 +9653,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Joker"],
-    "img": "img/HarleyQuinnBTG.png",
+    "img": "img/HarleyQuinnBTG.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9681,7 +9681,7 @@ const models = [
     "funding": 100,
     "rank": ["Sidekick"],
     "faction": ["Joker"],
-    "img": "img/Punchline.png",
+    "img": "img/Punchline.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9716,7 +9716,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Joker"],
-    "img": "img/HarleyQuinnArkhamAsylum.png",
+    "img": "img/HarleyQuinnArkhamAsylum.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9744,7 +9744,7 @@ const models = [
     "funding": 200,
     "rank": ["Sidekick"],
     "faction": ["Joker"],
-    "img": "img/HarleyQuinnAndTheBoys.png",
+    "img": "img/HarleyQuinnAndTheBoys.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -9779,7 +9779,7 @@ const models = [
     "funding": 250,
     "rank": ["Free Agent"],
     "faction": ["Joker"],
-    "img": "img/TwoFaceDarkKnight.png",
+    "img": "img/TwoFaceDarkKnight.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -9807,7 +9807,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Joker"],
-    "img": "img/RiddlerFrankGorshin.png",
+    "img": "img/RiddlerFrankGorshin.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -9842,7 +9842,7 @@ const models = [
     "funding": 100,
     "rank": ["Free Agent"],
     "faction": ["Joker"],
-    "img": "img/PenguinBurgessMeredith.png",
+    "img": "img/PenguinBurgessMeredith.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -9884,7 +9884,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Mr. Freeze"],
-    "img": "img/MrFreeze1997.png",
+    "img": "img/MrFreeze1997.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -9931,7 +9931,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/FreezeThug1.png",
+    "img": "img/FreezeThug1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -9964,7 +9964,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/FreezeThug2.png",
+    "img": "img/FreezeThug2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -9997,7 +9997,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/FreezeEngineer.png",
+    "img": "img/FreezeEngineer.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -10032,7 +10032,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/FreezeThug5.png",
+    "img": "img/FreezeThug5.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -10071,7 +10071,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/CombatPolarBear.png",
+    "img": "img/CombatPolarBear.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -10111,7 +10111,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/FreezeThug4.png",
+    "img": "img/FreezeThug4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10145,7 +10145,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/FreezeThug3.png",
+    "img": "img/FreezeThug3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10178,7 +10178,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Mr. Freeze"],
-    "img": "img/MrFreezeCryoArmor.png",
+    "img": "img/MrFreezeCryoArmor.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10218,7 +10218,7 @@ const models = [
     "funding": 200,
     "rank": ["Sidekick"],
     "faction": ["Mr. Freeze"],
-    "img": "img/MrsFreeze.png",
+    "img": "img/MrsFreeze.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -10261,7 +10261,7 @@ const models = [
     "funding": 400,
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
-    "img": "img/RangedPolarBear.png",
+    "img": "img/RangedPolarBear.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -10300,7 +10300,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Mr. Freeze"],
-	"img": "img/KillerFrost_Rebirth.png",
+	"img": "img/KillerFrost_Rebirth.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -10343,7 +10343,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz5.png",
+    "img": "img/Quiz5.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -10376,7 +10376,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz7.png",
+    "img": "img/Quiz7.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10408,7 +10408,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Echo.png",
+    "img": "img/Echo.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10436,7 +10436,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz8.png",
+    "img": "img/Quiz8.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -10465,7 +10465,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["The Riddler"],
-    "img": "img/TheRiddlerPaulDano.png",
+    "img": "img/TheRiddlerPaulDano.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10504,7 +10504,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["The Riddler"],
-    "img": "img/TheRiddler.png",
+    "img": "img/TheRiddler.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10542,7 +10542,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/RiddlerFollower1.png",
+    "img": "img/RiddlerFollower1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -10574,7 +10574,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz4.png",
+    "img": "img/Quiz4.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -10610,7 +10610,7 @@ const models = [
     "funding": 400,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Query.png",
+    "img": "img/Query.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10644,7 +10644,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz2.png",
+    "img": "img/Quiz2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -10676,7 +10676,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["The Riddler"],
-    "img": "img/TheRiddlerModernAge.png",
+    "img": "img/TheRiddlerModernAge.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10713,7 +10713,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz6.png",
+    "img": "img/Quiz6.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10744,7 +10744,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/RiddlerFollower2.png",
+    "img": "img/RiddlerFollower2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -10776,7 +10776,7 @@ const models = [
     "funding": 300,
     "rank": ["Free Agent"],
     "faction": ["The Riddler"],
-    "img": "img/TwoFaceTommyLeeJones.png",
+    "img": "img/TwoFaceTommyLeeJones.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -10814,7 +10814,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz3.png",
+    "img": "img/Quiz3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -10845,7 +10845,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["The Riddler"],
-    "img": "img/TheRiddlerJimCarrey.png",
+    "img": "img/TheRiddlerJimCarrey.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -10882,7 +10882,7 @@ const models = [
     "funding": 200,
     "rank": ["Sidekick"],
     "faction": ["The Riddler"],
-    "img": "img/Quelle.png",
+    "img": "img/Quelle.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10919,7 +10919,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/Quiz1.png",
+    "img": "img/Quiz1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -10957,7 +10957,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["The Riddler"],
-    "img": "img/RiddlerFollower3.png",
+    "img": "img/RiddlerFollower3.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -10996,7 +10996,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD", "Penguin"],
     "rivals": "Bat Family",
-    "img": "img/CatwomanMichellePfeiffer.png",
+    "img": "img/CatwomanMichellePfeiffer.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -11041,7 +11041,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/PenguinThug1.png",
+    "img": "img/PenguinThug1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11073,7 +11073,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "img/ThePenguinDannyDeVito.png",
+    "img": "img/ThePenguinDannyDeVito.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11117,7 +11117,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "img/ThePenguinNew52.png",
+    "img": "img/ThePenguinNew52.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11162,7 +11162,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/Lark.png",
+    "img": "img/Lark.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -11196,7 +11196,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "img/ThePenguinArkhamCity.png",
+    "img": "img/ThePenguinArkhamCity.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11240,7 +11240,7 @@ const models = [
     "funding": 50,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/RocketLauncherPenguin.png",
+    "img": "img/RocketLauncherPenguin.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -11273,7 +11273,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/StreetDemonzBiker1.png",
+    "img": "img/StreetDemonzBiker1.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -11309,7 +11309,7 @@ const models = [
     "funding": 200,
     "rank": ["Sidekick"],
     "faction": ["Penguin"],
-    "img": "img/LooseLips.png",
+    "img": "img/LooseLips.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11352,7 +11352,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "img/EmperorPenguinUnchained.png",
+    "img": "img/EmperorPenguinUnchained.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -11392,7 +11392,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/PenguinEliteThug.png",
+    "img": "img/PenguinEliteThug.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -11425,7 +11425,7 @@ const models = [
     "funding": 50,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/MinigunPenguin.png",
+    "img": "img/MinigunPenguin.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -11459,7 +11459,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/ExplosivePenguin.png",
+    "img": "img/ExplosivePenguin.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -11486,7 +11486,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/PenguinLieutenant.png",
+    "img": "img/PenguinLieutenant.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -11514,7 +11514,7 @@ const models = [
     "funding": 200,
     "rank": ["Free Agent"],
     "faction": ["Penguin"],
-    "img": "img/MrToxic.png",
+    "img": "img/MrToxic.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -11549,7 +11549,7 @@ const models = [
     "funding": 600,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/PenguinThug2.png",
+    "img": "img/PenguinThug2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11581,7 +11581,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "img/ThePenguinPenguinsDuck.png",
+    "img": "img/ThePenguinPenguinsDuck.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11627,7 +11627,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Penguin"],
-    "img": "img/ThePenguinArkhamKnight.png",
+    "img": "img/ThePenguinArkhamKnight.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11674,7 +11674,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/StreetDemonz4.png",
+    "img": "img/StreetDemonz4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11715,7 +11715,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/MrCombustible.png",
+    "img": "img/MrCombustible.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11748,7 +11748,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/Hypnotic.png",
+    "img": "img/Hypnotic.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -11773,7 +11773,7 @@ const models = [
     "funding": 150,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/StreetDemonz1.png",
+    "img": "img/StreetDemonz1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11812,7 +11812,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/StreetDemonzBiker2.png",
+    "img": "img/StreetDemonzBiker2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11848,7 +11848,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/StreetDemonzBiker3.png",
+    "img": "img/StreetDemonzBiker3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11884,7 +11884,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/StreetDemonz3.png",
+    "img": "img/StreetDemonz3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -11916,7 +11916,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/StreetDemonz2.png",
+    "img": "img/StreetDemonz2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -11949,7 +11949,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Penguin"],
-    "img": "img/ImperceptibleMan.png",
+    "img": "img/ImperceptibleMan.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -11981,7 +11981,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/LeagueAcolyte1.png",
+    "img": "img/LeagueAcolyte1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -12013,7 +12013,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["League of Shadows", "Bane"],
-    "img": "img/Mercenary1.png",
+    "img": "img/Mercenary1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12045,7 +12045,7 @@ const models = [
     "funding": 250,
     "rank": ["Henchman"],
     "faction": ["League of Shadows", "Bane"],
-    "img": "img/Mercenary2.png",
+    "img": "img/Mercenary2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12079,7 +12079,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/LeagueAcolyte2.png",
+    "img": "img/LeagueAcolyte2.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -12118,7 +12118,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/Ubu.png",
+    "img": "img/Ubu.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -12153,7 +12153,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/Hassassin4.png",
+    "img": "img/Hassassin4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12193,7 +12193,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Bat Family", "GCPD", "League of Shadows"],
-    "img": "img/Goliath.png",
+    "img": "img/Goliath.webp",
     "stats": {
       "Attack": 4,
       "Defense": 2,
@@ -12232,7 +12232,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/Hassassin1.png",
+    "img": "img/Hassassin1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12263,7 +12263,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader", "Sidekick"],
     "faction": ["League of Shadows"],
-    "img": "img/TaliaRebirth.png",
+    "img": "img/TaliaRebirth.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -12302,7 +12302,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["League of Shadows"],
-    "img": "img/TheHeretic.png",
+    "img": "img/TheHeretic.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -12339,7 +12339,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/LeagueAcolyte3.png",
+    "img": "img/LeagueAcolyte3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12378,7 +12378,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/LeagueAcolyte4.png",
+    "img": "img/LeagueAcolyte4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12417,7 +12417,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/Hassassin3.png",
+    "img": "img/Hassassin3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12455,7 +12455,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["League of Shadows"],
-    "img": "img/Cheshire.png",
+    "img": "img/Cheshire.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -12498,7 +12498,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
-    "img": "img/Hassassin2.png",
+    "img": "img/Hassassin2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12530,7 +12530,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["League of Shadows", "Bane"],
-    "img": "img/BaneDKR.png",
+    "img": "img/BaneDKR.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -12560,7 +12560,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["League of Shadows"],
-    "img": "img/RasAlGhul.png",
+    "img": "img/RasAlGhul.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -12601,7 +12601,7 @@ const models = [
     "funding": 600,
     "rank": ["Henchman"],
     "faction": ["League of Shadows", "Bane"],
-    "img": "img/Barsad.png",
+    "img": "img/Barsad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12639,7 +12639,7 @@ const models = [
     "funding": 450,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/Gangster1.png",
+    "img": "img/Gangster1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12673,7 +12673,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/Gangster3.png",
+    "img": "img/Gangster3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12708,7 +12708,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Two-Face"],
-    "img": "img/Sugar.png",
+    "img": "img/Sugar.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -12746,7 +12746,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Two-Face"],
-    "img": "img/TwoFaceTommyLeeJones.png",
+    "img": "img/TwoFaceTommyLeeJones.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -12784,7 +12784,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/Gangster5.png",
+    "img": "img/Gangster5.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12819,7 +12819,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Two-Face"],
-    "img": "img/TwoFace.png",
+    "img": "img/TwoFace.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -12860,7 +12860,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Two-Face"],
-    "img": "img/Spice.png",
+    "img": "img/Spice.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -12905,7 +12905,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/TheHitman.png",
+    "img": "img/TheHitman.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -12947,7 +12947,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/Gangster7.png",
+    "img": "img/Gangster7.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -12981,7 +12981,7 @@ const models = [
     "funding": 450,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/Gangster6.png",
+    "img": "img/Gangster6.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -13015,7 +13015,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/Gangster2.png",
+    "img": "img/Gangster2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -13049,7 +13049,7 @@ const models = [
     "funding": 150,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/Gangster4.png",
+    "img": "img/Gangster4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -13083,7 +13083,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Two-Face"],
-    "img": "img/TwoFaceArkhamCity.png",
+    "img": "img/TwoFaceArkhamCity.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -13121,7 +13121,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/KillerCrocThug.png",
+    "img": "img/KillerCrocThug.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -13157,7 +13157,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Two-Face"],
-    "img": "img/BigJohn.png",
+    "img": "img/BigJohn.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -13197,7 +13197,7 @@ const models = [
   "funding": 0,
   "rank": ["Leader"],
   "faction": ["Birds of Prey"],
-  "img": "img/PoisonIvy_1997.png",
+  "img": "img/PoisonIvy_1997.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -13243,7 +13243,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick", "Leader"],
   "faction": ["Birds of Prey"],
-  "img": "img/HarleyQuinn_RollerDerby.png",
+  "img": "img/HarleyQuinn_RollerDerby.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13281,7 +13281,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick"],
   "faction": ["Birds of Prey"],
-  "img": "img/HarleyQuinn_Kaboom.png",
+  "img": "img/HarleyQuinn_Kaboom.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13319,7 +13319,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick", "Leader"],
   "faction": ["Birds of Prey"],
-  "img": "img/PoisonIvy.png",
+  "img": "img/PoisonIvy.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -13366,7 +13366,7 @@ const models = [
   "funding": 0,
   "rank": ["Free Agent"],
   "faction": ["GCPD", "Birds of Prey"],
-  "img": "img/BlackCanary_Rebirth.png",
+  "img": "img/BlackCanary_Rebirth.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13405,7 +13405,7 @@ const models = [
   "funding": 0,
   "rank": ["Free Agent"],
   "faction": ["Birds of Prey", "Suicide Squad"],
-  "img": "img/HarleyQuinn.png",
+  "img": "img/HarleyQuinn.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13442,7 +13442,7 @@ const models = [
   "funding": 100,
   "rank": ["Free Agent"],
   "faction": ["GCPD", "Suicide Squad", "Birds of Prey"],
-  "img": "img/Katana_Rebirth.png",
+  "img": "img/Katana_Rebirth.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13486,7 +13486,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick"],
   "faction": ["Birds of Prey"],
-  "img": "img/BlackCanary.png",
+  "img": "img/BlackCanary.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13529,7 +13529,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick"],
   "faction": ["League of Shadows", "Birds of Prey"],
-  "img": "img/LadyShiva.png",
+  "img": "img/LadyShiva.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13561,7 +13561,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick", "Free Agent"],
   "faction": ["Bat Family", "GCPD", "Birds of Prey"],
-  "img": "img/Oracle.png",
+  "img": "img/Oracle.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -13596,7 +13596,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick"],
   "faction": ["Birds of Prey"],
-  "img": "img/FloronicMan.png",
+  "img": "img/FloronicMan.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -13634,7 +13634,7 @@ const models = [
   "funding": 100,
   "rank": ["Henchman"],
   "faction": ["Suicide Squad", "Birds of Prey"],
-  "img": "img/KillerFrost_Rebirth.png",
+  "img": "img/KillerFrost_Rebirth.webp",
   "stats": {
     "Attack": 3,
     "Defense": 4,
@@ -13669,7 +13669,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["Birds of Prey"],
-  "img": "img/RabidPlant1.png",
+  "img": "img/RabidPlant1.webp",
   "stats": {
     "Attack": 3,
     "Defense": 2,
@@ -13704,7 +13704,7 @@ const models = [
   "rank": ["Henchman"],
   "faction": ["Birds of Prey"],
   "rivals": "GCPD",
-  "img": "img/RollerDerbyThug4.png",
+  "img": "img/RollerDerbyThug4.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -13738,7 +13738,7 @@ const models = [
   "rank": ["Henchman"],
   "faction": ["Birds of Prey"],
   "rivals": "GCPD",
-  "img": "img/RollerDerbyThug1.png",
+  "img": "img/RollerDerbyThug1.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -13778,7 +13778,7 @@ const models = [
   "rank": ["Henchman"],
   "faction": ["Birds of Prey"],
   "rivals": "GCPD",
-  "img": "img/RollerDerbyThug2.png",
+  "img": "img/RollerDerbyThug2.webp",
   "stats": {
     "Attack": 2,
     "Defense": 3,
@@ -13811,7 +13811,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["Birds of Prey"],
-  "img": "img/RabidPlant2.png",
+  "img": "img/RabidPlant2.webp",
   "stats": {
     "Attack": 3,
     "Defense": 2,
@@ -13845,7 +13845,7 @@ const models = [
   "funding": 400,
   "rank": ["Henchman"],
   "faction": ["Birds of Prey"],
-  "img": "img/Huntress.png",
+  "img": "img/Huntress.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
@@ -13881,7 +13881,7 @@ const models = [
   "rank": ["Henchman"],
   "faction": ["Birds of Prey"],
   "rivals": "GCPD",
-  "img": "img/RollerDerbyThug3.png",
+  "img": "img/RollerDerbyThug3.webp",
   "stats": {
     "Attack": 2,
     "Defense": 2,
@@ -13923,7 +13923,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Bat Family", "Birds of Prey"],
     "rivals": "",
-    "img": "img/Hawk.png",
+    "img": "img/Hawk.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -13961,7 +13961,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Bat Family", "Birds of Prey"],
     "rivals": "",
-    "img": "img/Dove.png",
+    "img": "img/Dove.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -13997,7 +13997,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Lou.png",
+    "img": "img/Lou.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -14026,7 +14026,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Joker"],
-    "img": "img/Bud.png",
+    "img": "img/Bud.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -14056,7 +14056,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "rivals": "",
-    "img": "img/BruceTheHyena.png",
+    "img": "img/BruceTheHyena.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -14085,7 +14085,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "rivals": "",
-    "img": "img/MutatedPlant2.png",
+    "img": "img/MutatedPlant2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -14119,7 +14119,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "rivals": "",
-    "img": "img/CassandraCain.png",
+    "img": "img/CassandraCain.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -14146,7 +14146,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Bat Family", "GCPD", "Birds of Prey"],
     "rivals": "",
-    "img": "img/BatgirlRebirth.png",
+    "img": "img/BatgirlRebirth.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -14184,7 +14184,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Bat Family", "GCPD"],
     "rivals": "",
-    "img": "img/BatgirlVampireQueen.png",
+    "img": "img/BatgirlVampireQueen.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -14233,7 +14233,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "rivals": "",
-    "img": "img/MutatedPlant1.png",
+    "img": "img/MutatedPlant1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -14267,7 +14267,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "rivals": "",
-    "img": "img/FrankThePlant.png",
+    "img": "img/FrankThePlant.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -14303,7 +14303,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "rivals": "",
-    "img": "img/DetectiveMontoya.png",
+    "img": "img/DetectiveMontoya.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -14346,7 +14346,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Bat Family", "GCPD", "Birds of Prey"],
     "rivals": "",
-    "img": "img/BatgirlClassic.png",
+    "img": "img/BatgirlClassic.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -14388,7 +14388,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Court of Owls", "Birds of Prey"],
     "rivals": "",
-    "img": "img/Strix.png",
+    "img": "img/Strix.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -14432,7 +14432,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "rivals": "",
-    "img": "img/MutatedPlant3.png",
+    "img": "img/MutatedPlant3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -14468,7 +14468,7 @@ const models = [
   "funding": 0,
   "rank": ["Leader"],
   "faction": ["Scarecrow"],
-  "img": "img/ScarecrowTheWorstNightmare.png",
+  "img": "img/ScarecrowTheWorstNightmare.webp",
   "stats": {
     "Attack": 3,
     "Defense": 4,
@@ -14503,7 +14503,7 @@ const models = [
   "funding": 0,
   "rank": ["Sidekick"],
   "faction": ["Scarecrow"],
-  "img": "img/DrFriitawa.png",
+  "img": "img/DrFriitawa.webp",
   "stats": {
     "Attack": 2,
     "Defense": 2,
@@ -14531,7 +14531,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["Scarecrow"],
-  "img": "img/NightmareOfFear.png",
+  "img": "img/NightmareOfFear.webp",
   "stats": {
     "Attack": 2,
     "Defense": 2,
@@ -14559,7 +14559,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["Scarecrow"],
-  "img": "img/NightmareOfDemotivation.png",
+  "img": "img/NightmareOfDemotivation.webp",
   "stats": {
     "Attack": 2,
     "Defense": 2,
@@ -14587,7 +14587,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["Scarecrow"],
-  "img": "img/NightmareOfAnger.png",
+  "img": "img/NightmareOfAnger.webp",
   "stats": {
     "Attack": 2,
     "Defense": 2,
@@ -14615,7 +14615,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["Scarecrow"],
-  "img": "img/NightmareOfInsignificance.png",
+  "img": "img/NightmareOfInsignificance.webp",
   "stats": {
     "Attack": 2,
     "Defense": 2,
@@ -14643,7 +14643,7 @@ const models = [
   "funding": 0,
   "rank": ["Henchman"],
   "faction": ["Scarecrow"],
-  "img": "img/FearbeastNightmare.png",
+  "img": "img/FearbeastNightmare.webp",
   "stats": {
     "Attack": 3,
     "Defense": 2,
@@ -14671,7 +14671,7 @@ const models = [
   "funding": 100,
   "rank": ["Henchman"],
   "faction": ["Scarecrow"],
-  "img": "img/LittleNightmare.png",
+  "img": "img/LittleNightmare.webp",
   "stats": {
     "Attack": 2,
     "Defense": 2,
@@ -14703,7 +14703,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Court of Owls"],
-    "img": "img/TheCourt.png",
+    "img": "img/TheCourt.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -14740,7 +14740,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/1890sTalon.png",
+    "img": "img/1890sTalon.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -14781,7 +14781,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad", "Court of Owls"],
-    "img": "img/TheTalon.png",
+    "img": "img/TheTalon.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -14824,7 +14824,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Court of Owls"],
-    "img": "img/GothamButcher.png",
+    "img": "img/GothamButcher.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -14853,7 +14853,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader", "Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/LincolnMarch.png",
+    "img": "img/LincolnMarch.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -14892,7 +14892,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/OMalleysGrandfather.png",
+    "img": "img/OMalleysGrandfather.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -14933,7 +14933,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Court of Owls", "Bat Family"],
-    "img": "img/Talon.png",
+    "img": "img/Talon.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -14971,7 +14971,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/OMalleysFather.png",
+    "img": "img/OMalleysFather.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15013,7 +15013,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/Dementor.png",
+    "img": "img/Dementor.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15057,7 +15057,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Court of Owls", "Cults"],
-    "img": "img/Raptor.png",
+    "img": "img/Raptor.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15100,7 +15100,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/1880sTalon.png",
+    "img": "img/1880sTalon.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15134,7 +15134,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["League of Shadows", "Court of Owls"],
-    "img": "img/RobinDamian.png",
+    "img": "img/RobinDamian.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15177,7 +15177,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick", "Henchman"],
     "faction": ["Bat Family", "GCPD"],
-    "img": "img/RobinDamian.png",
+    "img": "img/RobinDamian.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15222,7 +15222,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/OMalleysSon.png",
+    "img": "img/OMalleysSon.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15262,7 +15262,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["Court of Owls"],
-    "img": "img/EphraimNewhouse.png",
+    "img": "img/EphraimNewhouse.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15309,7 +15309,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Royal Flush"],
-    "img": "img/KingOfSpades.png",
+    "img": "img/KingOfSpades.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -15344,7 +15344,7 @@ const models = [
     "funding": 100,
     "rank": ["Henchman"],
     "faction": ["Royal Flush"],
-    "img": "img/10OfSpades.png",
+    "img": "img/10OfSpades.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -15384,7 +15384,7 @@ const models = [
     "funding": 400,
     "rank": ["Free Agent"],
     "faction": ["Royal Flush"],
-    "img": "img/JackOfSpades.png",
+    "img": "img/JackOfSpades.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15425,7 +15425,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Royal Flush"],
-    "img": "img/AceOfSpades.png",
+    "img": "img/AceOfSpades.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15459,7 +15459,7 @@ const models = [
     "funding": 200,
     "rank": ["Sidekick"],
     "faction": ["Royal Flush"],
-    "img": "img/QueenOfSpades.png",
+    "img": "img/QueenOfSpades.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -15500,7 +15500,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Royal Flush"],
-    "img": "img/5OfSpades.png",
+    "img": "img/5OfSpades.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -15545,7 +15545,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
     "rivals": ["Bat Family", "GCPD", "League of Shadows"],
-    "img": "img/SlipknotSuicideSquad.png",
+    "img": "img/SlipknotSuicideSquad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15579,7 +15579,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/PolkaDotManTheSuicideSquad.png",
+    "img": "img/PolkaDotManTheSuicideSquad.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -15613,7 +15613,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/WeaselTheSuicideSquad.png",
+    "img": "img/WeaselTheSuicideSquad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15643,7 +15643,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/KillerMoth.png",
+    "img": "img/KillerMoth.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15684,7 +15684,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/JohnEconomos.png",
+    "img": "img/JohnEconomos.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -15716,7 +15716,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/EmiliaHarcourt.png",
+    "img": "img/EmiliaHarcourt.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15756,7 +15756,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/KillerCrocSuicideSquad.png",
+    "img": "img/KillerCrocSuicideSquad.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -15783,7 +15783,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/PolkaDotMan.png",
+    "img": "img/PolkaDotMan.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -15817,7 +15817,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/ThinkerTheSuicideSquad.png",
+    "img": "img/ThinkerTheSuicideSquad.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -15843,7 +15843,7 @@ const models = [
     "funding": 200,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/DiabloSuicideSquad.png",
+    "img": "img/DiabloSuicideSquad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15887,7 +15887,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/KatanaSuicideSquad.png",
+    "img": "img/KatanaSuicideSquad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15930,7 +15930,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/SebastianTheRatTheSuicideSquad.png",
+    "img": "img/SebastianTheRatTheSuicideSquad.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -15967,7 +15967,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/Eagly.png",
+    "img": "img/Eagly.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -15997,7 +15997,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/KingSharkTheSuicideSquad.png",
+    "img": "img/KingSharkTheSuicideSquad.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -16036,7 +16036,7 @@ const models = [
     "funding": 200,
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad"],
-    "img": "img/PoisonIvy.png",
+    "img": "img/PoisonIvy.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -16080,7 +16080,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD", "Bane"],
-    "img": "img/KillerCrocArkhamAsylum.png",
+    "img": "img/KillerCrocArkhamAsylum.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -16120,7 +16120,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/TDKTheSuicideSquad.png",
+    "img": "img/TDKTheSuicideSquad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -16154,7 +16154,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/DeathstrokeVanguardTeam.png",
+    "img": "img/DeathstrokeVanguardTeam.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -16198,7 +16198,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/TheRiddlerModernAge.png",
+    "img": "img/TheRiddlerModernAge.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -16231,7 +16231,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/Ratcatcher2TheSuicideSquad.png",
+    "img": "img/Ratcatcher2TheSuicideSquad.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -16258,7 +16258,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Suicide Squad"],
-    "img": "img/CaptainBoomerangVanguardTeam.png",
+    "img": "img/CaptainBoomerangVanguardTeam.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -16300,7 +16300,7 @@ const models = [
     "funding": 350,
     "rank": ["Sidekick"],
     "faction": ["Suicide Squad"],
-    "img": "img/RickFlagInfiltration.png",
+    "img": "img/RickFlagInfiltration.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -16344,7 +16344,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick", "Free Agent"],
     "faction": ["Suicide Squad"],
-    "img": "img/TheRiddler.png",
+    "img": "img/TheRiddler.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -16380,7 +16380,7 @@ const models = [
     "funding": 300,
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad"],
-    "img": "img/Vigilante.png",
+    "img": "img/Vigilante.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -16424,7 +16424,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/CaptainBoomerangSuicideSquad.png",
+    "img": "img/CaptainBoomerangSuicideSquad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -16468,7 +16468,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/KGBeast.png",
+    "img": "img/KGBeast.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -16516,7 +16516,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/Deadshot.png",
+    "img": "img/Deadshot.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -16557,7 +16557,7 @@ const models = [
     "funding": 300,
     "rank": ["Sidekick"],
     "faction": ["Joker", "Suicide Squad"],
-    "img": "img/HarleyQuinnBombshell.png",
+    "img": "img/HarleyQuinnBombshell.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -16602,7 +16602,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/DeadshotSuicideSquad.png",
+    "img": "img/DeadshotSuicideSquad.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -16646,7 +16646,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/DeathstrokeTheTerminator.png",
+    "img": "img/DeathstrokeTheTerminator.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -16679,7 +16679,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Suicide Squad"],
-    "img": "img/AmandaWallerViolaDavis.png",
+    "img": "img/AmandaWallerViolaDavis.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -16718,7 +16718,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD", "Bane"],
-    "img": "img/KillerCroc.png",
+    "img": "img/KillerCroc.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -16750,7 +16750,7 @@ const models = [
     "funding": 150,
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad"],
-    "img": "img/HarleyQuinnTheSuicideSquad.png",
+    "img": "img/HarleyQuinnTheSuicideSquad.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -16795,7 +16795,7 @@ const models = [
     "funding": 350,
     "rank": ["Free Agent", "Sidekick"],
     "faction": ["Suicide Squad"],
-    "img": "img/PeacemakerJohnCena.png",
+    "img": "img/PeacemakerJohnCena.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -16835,7 +16835,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad", "Unknown"],
     "rivals": ["Bat Family", "GCPD"],
-    "img": "img/BloodsportTheSuicideSquad.png",
+    "img": "img/BloodsportTheSuicideSquad.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -16883,7 +16883,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Ratface.png",
+    "img": "img/Ratface.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -16920,7 +16920,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Cults"],
-    "img": "img/Kobra.png",
+    "img": "img/Kobra.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -16964,7 +16964,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/NagaHazardTrooper2.png",
+    "img": "img/NagaHazardTrooper2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -16997,7 +16997,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/TheNagas.png",
+    "img": "img/TheNagas.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -17038,7 +17038,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Cults"],
-    "img": "img/Jake.png",
+    "img": "img/Jake.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -17083,7 +17083,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Underworlder1.png",
+    "img": "img/Underworlder1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17108,7 +17108,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Underworlder3.png",
+    "img": "img/Underworlder3.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17133,7 +17133,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/KobraHybrid.png",
+    "img": "img/KobraHybrid.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -17167,7 +17167,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Cults"],
-    "img": "img/DeaconBlackfire.png",
+    "img": "img/DeaconBlackfire.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -17214,7 +17214,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/UnderworlderVagon1.png",
+    "img": "img/UnderworlderVagon1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17241,7 +17241,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Underworlder2.png",
+    "img": "img/Underworlder2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17266,7 +17266,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/CobraSwarm.png",
+    "img": "img/CobraSwarm.webp",
     "stats": {
       "Attack": 1,
       "Defense": 1,
@@ -17299,7 +17299,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/YoungWoman.png",
+    "img": "img/YoungWoman.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17327,7 +17327,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Lancehead1.png",
+    "img": "img/Lancehead1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17359,7 +17359,7 @@ const models = [
     "funding": 0,
     "rank": ["Sidekick"],
     "faction": ["Cults"],
-    "img": "img/LadyEve.png",
+    "img": "img/LadyEve.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -17402,7 +17402,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Underworlder6.png",
+    "img": "img/Underworlder6.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17435,7 +17435,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Underworlder4.png",
+    "img": "img/Underworlder4.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17468,7 +17468,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Cults"],
-    "img": "img/BatmanTheCult.png",
+    "img": "img/BatmanTheCult.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -17508,7 +17508,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/KobraBestowed.png",
+    "img": "img/KobraBestowed.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -17542,7 +17542,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/UnderworlderVagon2.png",
+    "img": "img/UnderworlderVagon2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -17577,7 +17577,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Underworlder5.png",
+    "img": "img/Underworlder5.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17610,7 +17610,7 @@ const models = [
     "funding": 500,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/NagaHazardTrooper1.png",
+    "img": "img/NagaHazardTrooper1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -17650,7 +17650,7 @@ const models = [
     "funding": 400,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/LanceheadCaptain.png",
+    "img": "img/LanceheadCaptain.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -17682,7 +17682,7 @@ const models = [
     "funding": 350,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/Lancehead2.png",
+    "img": "img/Lancehead2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17714,7 +17714,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Cults"],
-    "img": "img/LanceheadSoldier.png",
+    "img": "img/LanceheadSoldier.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -17753,7 +17753,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Batman Who Laughs"],
     "rivals": ["GCPD", "Joker"],
-    "img": "img/DamianWhoLaughs.png",
+    "img": "img/DamianWhoLaughs.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -17793,7 +17793,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Batman Who Laughs"],
     "rivals": ["GCPD", "Joker"],
-    "img": "img/TheCommissioner.png",
+    "img": "img/TheCommissioner.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -17832,7 +17832,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Batman Who Laughs"],
-    "img": "img/TheMerciless.png",
+    "img": "img/TheMerciless.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -17866,7 +17866,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Batman Who Laughs"],
-    "img": "img/InfectedWhoLaughs.png",
+    "img": "img/InfectedWhoLaughs.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -17901,7 +17901,7 @@ const models = [
     "funding": 500,
     "rank": ["Free Agent"],
     "faction": ["Batman Who Laughs"],
-    "img": "img/TheGrimKnight.png",
+    "img": "img/TheGrimKnight.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -17947,7 +17947,7 @@ const models = [
     "rank": ["Leader", "Free Agent"],
     "faction": ["Batman Who Laughs"],
     "rivals": ["GCPD", "Joker"],
-    "img": "img/TheBatmanWhoLaughs.png",
+    "img": "img/TheBatmanWhoLaughs.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -17995,7 +17995,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Batman Who Laughs"],
-    "img": "img/TheRedDeath.png",
+    "img": "img/TheRedDeath.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -18040,7 +18040,7 @@ const models = [
     "funding": 300,
     "rank": ["Henchman"],
     "faction": ["Batman Who Laughs"],
-    "img": "img/TheDrowned.png",
+    "img": "img/TheDrowned.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -18084,7 +18084,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Batman Who Laughs", "Unknown"],
     "rivals": ["GCPD", "Joker"],
-    "img": "img/RobinWhoLaughs.png",
+    "img": "img/RobinWhoLaughs.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -18125,7 +18125,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Watchmen"],
-    "img": "img/SilkSpectreII.png",
+    "img": "img/SilkSpectreII.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -18152,7 +18152,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Watchmen"],
-    "img": "img/TheComedian.png",
+    "img": "img/TheComedian.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -18196,7 +18196,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Watchmen"],
-    "img": "img/NiteOwl.png",
+    "img": "img/NiteOwl.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -18232,7 +18232,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Watchmen"],
-    "img": "img/Rorschach.png",
+    "img": "img/Rorschach.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -18266,7 +18266,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Watchmen"],
-    "img": "img/Bubastis.png",
+    "img": "img/Bubastis.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -18293,7 +18293,7 @@ const models = [
     "funding": 0,
     "rank": ["Leader"],
     "faction": ["Watchmen"],
-    "img": "img/Ozymandias.png",
+    "img": "img/Ozymandias.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -18328,7 +18328,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/PsychoPirate.png",
+    "img": "img/PsychoPirate.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -18353,7 +18353,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Ratcatcher.png",
+    "img": "img/Ratcatcher.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -18390,7 +18390,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/SolomonGrundy.png",
+    "img": "img/SolomonGrundy.webp",
     "stats": {
       "Attack": 5,
       "Defense": 2,
@@ -18429,7 +18429,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Scarecrow.png",
+    "img": "img/Scarecrow.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -18473,7 +18473,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Hush.png",
+    "img": "img/Hush.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -18518,7 +18518,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/ClockKing.png",
+    "img": "img/ClockKing.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -18546,7 +18546,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/GentlemanGhost.png",
+    "img": "img/GentlemanGhost.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -18588,7 +18588,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/MadHatter.png",
+    "img": "img/MadHatter.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -18625,7 +18625,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/ManBat.png",
+    "img": "img/ManBat.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -18670,7 +18670,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/TenEyedMan.png",
+    "img": "img/TenEyedMan.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -18704,7 +18704,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
-    "img": "img/LoboParamilitary.png",
+    "img": "img/LoboParamilitary.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -18752,7 +18752,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/CalculatorClassic.png",
+    "img": "img/CalculatorClassic.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -18786,7 +18786,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family", "Joker"],
-    "img": "img/CatmanTheHunter.png",
+    "img": "img/CatmanTheHunter.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -18828,7 +18828,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Thug1.png",
+    "img": "img/Thug1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -18859,7 +18859,7 @@ const models = [
     "funding": 0,
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
-    "img": "img/HarleyQuinnBewitched.png",
+    "img": "img/HarleyQuinnBewitched.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -18896,7 +18896,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/DrHugoStrange.png",
+    "img": "img/DrHugoStrange.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -18941,7 +18941,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Thug2.png",
+    "img": "img/Thug2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -18972,7 +18972,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/ScarecrowArkhamAsylum.png",
+    "img": "img/ScarecrowArkhamAsylum.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -19017,7 +19017,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/VictorZsasz.png",
+    "img": "img/VictorZsasz.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -19055,7 +19055,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/CatwomanJulieNewmar.png",
+    "img": "img/CatwomanJulieNewmar.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -19098,7 +19098,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/MrCamera.png",
+    "img": "img/MrCamera.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -19133,7 +19133,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/CondimentKing.png",
+    "img": "img/CondimentKing.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -19174,7 +19174,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/ArkhamAssistant1.png",
+    "img": "img/ArkhamAssistant1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -19217,7 +19217,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Thug5.png",
+    "img": "img/Thug5.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -19256,7 +19256,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Thug3.png",
+    "img": "img/Thug3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -19287,7 +19287,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/CrazyQuilt.png",
+    "img": "img/CrazyQuilt.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -19326,7 +19326,7 @@ const models = [
     "funding": 0,
     "rank": ["Henchman"],
     "faction": ["Unknown"],
-    "img": "img/SewerSwarm.png",
+    "img": "img/SewerSwarm.webp",
     "stats": {
       "Attack": 1,
       "Defense": 2,
@@ -19362,7 +19362,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/ArkhamAssistant2.png",
+    "img": "img/ArkhamAssistant2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -19405,7 +19405,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Thug6.png",
+    "img": "img/Thug6.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -19437,7 +19437,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Thug4.png",
+    "img": "img/Thug4.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -19468,7 +19468,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Eraser.png",
+    "img": "img/Eraser.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -19503,7 +19503,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/KiteMan.png",
+    "img": "img/KiteMan.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -19531,7 +19531,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "rivals": ["GCPD", "Bat Family"],
-    "img": "img/Signalman.png",
+    "img": "img/Signalman.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -19573,7 +19573,7 @@ const models = [
   "rank": ["Henchman"],
   "faction": ["Unknown"],
   "rivals": ["Bat Family", "GCPD"],
-  "img": "img/CalendarMan.png",
+  "img": "img/CalendarMan.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -19613,7 +19613,7 @@ const models = [
     "Bat Family",
     "GCPD"
   ],
-  "img": "img/AbsoluteBatman.png",
+  "img": "img/AbsoluteBatman.webp",
   "stats": {
     "Attack": 5,
     "Defense": 5,
@@ -19664,7 +19664,7 @@ const models = [
   "faction": [
     "Organized Crime"
   ],
-  "img": "img/SofiaGigante.png",
+  "img": "img/SofiaGigante.webp",
   "stats": {
     "Attack": 3,
     "Defense": 3,
@@ -19710,7 +19710,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/MrHammer.png",
+    "img": "img/MrHammer.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -19746,7 +19746,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Arsenal.png",
+    "img": "img/Arsenal.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -19788,7 +19788,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/AlfredPennyworth2.png",
+    "img": "img/AlfredPennyworth2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -19816,7 +19816,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/BlackMask2.png",
+    "img": "img/BlackMask2.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -19860,7 +19860,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["League of Shadows"],
     "eternal": true,
-    "img": "img/NyssaAlGhul.png",
+    "img": "img/NyssaAlGhul.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -19905,7 +19905,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["The Riddler"],
     "eternal": true,
-    "img": "img/TheRiddlerArkhamKnight.png",
+    "img": "img/TheRiddlerArkhamKnight.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -19944,7 +19944,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["The Riddler"],
     "eternal": true,
-    "img": "img/TheRiddlerSMech.png",
+    "img": "img/TheRiddlerSMech.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -19990,7 +19990,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/ArkhamGuard1.png",
+    "img": "img/ArkhamGuard1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20023,7 +20023,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/ArkhamGuard2.png",
+    "img": "img/ArkhamGuard2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20055,7 +20055,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/ArkhamGuard3.png",
+    "img": "img/ArkhamGuard3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20088,7 +20088,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/BatMite.png",
+    "img": "img/BatMite.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -20128,7 +20128,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Batgirl.png",
+    "img": "img/Batgirl.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -20165,7 +20165,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Batman2.png",
+    "img": "img/Batman2.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -20213,7 +20213,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BatmanBenAffleck.png",
+    "img": "img/BatmanBenAffleck.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -20251,7 +20251,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BatmanFlashpoint.png",
+    "img": "img/BatmanFlashpoint.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -20290,7 +20290,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BatmanKnightfall.png",
+    "img": "img/BatmanKnightfall.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -20328,7 +20328,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BatmanModernAge.png",
+    "img": "img/BatmanModernAge.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -20369,7 +20369,7 @@ const models = [
     "faction": ["Suicide Squad","Unknown"],
     "rivals": ["GCPD","Bat Family","Organized Crime"],
     "eternal": true,
-    "img": "img/BlackManta.png",
+    "img": "img/BlackManta.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -20415,7 +20415,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/Bobbie.png",
+    "img": "img/Bobbie.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -20451,7 +20451,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/BobbieMKII.png",
+    "img": "img/BobbieMKII.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -20488,7 +20488,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family","Organized Crime"],
     "eternal": true,
-    "img": "img/CalendarMan2.png",
+    "img": "img/CalendarMan2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20528,7 +20528,7 @@ const models = [
     "faction": ["Mr. Freeze","Unknown"],
     "rivals": ["GCPD","Bat Family","Joker","League of Shadows"],
     "eternal": true,
-    "img": "img/CaptainCold.png",
+    "img": "img/CaptainCold.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -20571,7 +20571,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "eternal": true,
-    "img": "img/CarnivorousPlant.png",
+    "img": "img/CarnivorousPlant.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -20604,7 +20604,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
     "eternal": true,
-    "img": "img/Coldy.png",
+    "img": "img/Coldy.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -20635,7 +20635,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/CommissionerGordon2.png",
+    "img": "img/CommissionerGordon2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20676,7 +20676,7 @@ const models = [
     "faction": ["Suicide Squad","Unknown"],
     "rivals": ["GCPD","Bat Family","Joker"],
     "eternal": true,
-    "img": "img/DeadshotClassic.png",
+    "img": "img/DeadshotClassic.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20721,7 +20721,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD"],
     "eternal": true,
-    "img": "img/Dollotron1.png",
+    "img": "img/Dollotron1.webp",
     "stats": {
       "Attack": 2,
       "Defense": 1,
@@ -20752,7 +20752,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD"],
     "eternal": true,
-    "img": "img/Dollotron2.png",
+    "img": "img/Dollotron2.webp",
     "stats": {
       "Attack": 2,
       "Defense": 1,
@@ -20783,7 +20783,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD"],
     "eternal": true,
-    "img": "img/Dollotron3.png",
+    "img": "img/Dollotron3.webp",
     "stats": {
       "Attack": 2,
       "Defense": 1,
@@ -20813,7 +20813,7 @@ const models = [
     "faction": ["Suicide Squad","Unknown"],
     "rivals": ["Bat Family"],
     "eternal": true,
-    "img": "img/Electrocutioner.png",
+    "img": "img/Electrocutioner.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -20849,7 +20849,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Penguin"],
     "eternal": true,
-    "img": "img/EmperorPenguin.png",
+    "img": "img/EmperorPenguin.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -20888,7 +20888,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Firefly.png",
+    "img": "img/Firefly.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20931,7 +20931,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
     "eternal": true,
-    "img": "img/Freezy.png",
+    "img": "img/Freezy.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -20962,7 +20962,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/GoatHeadPriest.png",
+    "img": "img/GoatHeadPriest.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -20995,7 +20995,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
     "eternal": true,
-    "img": "img/Goro.png",
+    "img": "img/Goro.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -21030,7 +21030,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Suicide Squad","Unknown"],
     "eternal": true,
-    "img": "img/HarleyQuinnRebirth.png",
+    "img": "img/HarleyQuinnRebirth.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -21067,7 +21067,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Joker","Suicide Squad"],
     "eternal": true,
-    "img": "img/HarleyQuinnSuicideSquad.png",
+    "img": "img/HarleyQuinnSuicideSquad.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -21111,7 +21111,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Hawkgirl.png",
+    "img": "img/Hawkgirl.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -21148,7 +21148,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Hawkman.png",
+    "img": "img/Hawkman.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -21187,7 +21187,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family","Joker","League of Shadows"],
     "eternal": true,
-    "img": "img/HeatWave.png",
+    "img": "img/HeatWave.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -21223,7 +21223,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Court of Owls"],
     "eternal": true,
-    "img": "img/HighCourtLady.png",
+    "img": "img/HighCourtLady.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -21258,7 +21258,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Court of Owls"],
     "eternal": true,
-    "img": "img/HighCourtMember.png",
+    "img": "img/HighCourtMember.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -21294,7 +21294,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/HighSecurityHenchman.png",
+    "img": "img/HighSecurityHenchman.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -21328,7 +21328,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Huntress2.png",
+    "img": "img/Huntress2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -21372,7 +21372,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
     "eternal": true,
-    "img": "img/Ichi.png",
+    "img": "img/Ichi.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -21413,7 +21413,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Mr. Freeze"],
     "eternal": true,
-    "img": "img/Icy.png",
+    "img": "img/Icy.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -21446,7 +21446,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/JasonBlood.png",
+    "img": "img/JasonBlood.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -21476,7 +21476,7 @@ const models = [
     "rank": ["Sidekick","Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/JohnConstantine.png",
+    "img": "img/JohnConstantine.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -21522,7 +21522,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/Joker.png",
+    "img": "img/Joker.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -21565,7 +21565,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/JokerJaredLeto.png",
+    "img": "img/JokerJaredLeto.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -21612,7 +21612,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Joker","Suicide Squad"],
     "eternal": true,
-    "img": "img/JokerSDaughter.png",
+    "img": "img/JokerSDaughter.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -21656,7 +21656,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD","Suicide Squad"],
     "eternal": true,
-    "img": "img/Katana.png",
+    "img": "img/Katana.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -21699,7 +21699,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
     "eternal": true,
-    "img": "img/Ki.png",
+    "img": "img/Ki.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -21741,7 +21741,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/Mary.png",
+    "img": "img/Mary.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -21777,7 +21777,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Bane"],
     "eternal": true,
-    "img": "img/MilitiaSoldier1.png",
+    "img": "img/MilitiaSoldier1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -21809,7 +21809,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Bane"],
     "eternal": true,
-    "img": "img/MilitiaSoldier2.png",
+    "img": "img/MilitiaSoldier2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -21848,7 +21848,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Bane"],
     "eternal": true,
-    "img": "img/MilitiaSoldier3.png",
+    "img": "img/MilitiaSoldier3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -21880,7 +21880,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Bane"],
     "eternal": true,
-    "img": "img/MilitiaBrute.png",
+    "img": "img/MilitiaBrute.webp",
     "stats": {
       "Attack": 4,
       "Defense": 2,
@@ -21916,7 +21916,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Mr. Freeze"],
     "eternal": true,
-    "img": "img/MrFreezeArkhamKnight.png",
+    "img": "img/MrFreezeArkhamKnight.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -21955,7 +21955,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/MrGrinBlack.png",
+    "img": "img/MrGrinBlack.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -21988,7 +21988,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/MrGrinWhite.png",
+    "img": "img/MrGrinWhite.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -22021,7 +22021,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/Nen.png",
+    "img": "img/Nen.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -22061,7 +22061,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/PandaMan.png",
+    "img": "img/PandaMan.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -22096,7 +22096,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Prisoner04211.png",
+    "img": "img/Prisoner04211.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -22129,7 +22129,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Prisoner47905.png",
+    "img": "img/Prisoner47905.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -22162,7 +22162,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Prisoner93432.png",
+    "img": "img/Prisoner93432.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -22190,7 +22190,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/ProfessorPyg.png",
+    "img": "img/ProfessorPyg.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -22234,7 +22234,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["League of Shadows"],
     "eternal": true,
-    "img": "img/RaSAlGhulRebirth.png",
+    "img": "img/RaSAlGhulRebirth.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -22274,7 +22274,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/Reaper.png",
+    "img": "img/Reaper.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -22311,7 +22311,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/RedHoodArkhamKnight.png",
+    "img": "img/RedHoodArkhamKnight.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -22356,7 +22356,7 @@ const models = [
     "faction": ["Suicide Squad","Unknown"],
     "rivals": ["GCPD","Bat Family","Joker","League of Shadows"],
     "eternal": true,
-    "img": "img/ReverseFlashTV.png",
+    "img": "img/ReverseFlashTV.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -22387,7 +22387,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD","Suicide Squad"],
     "eternal": true,
-    "img": "img/RickFlag.png",
+    "img": "img/RickFlag.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -22431,7 +22431,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/RobinBoyWonder.png",
+    "img": "img/RobinBoyWonder.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -22472,7 +22472,7 @@ const models = [
     "rank": ["Leader","Sidekick"],
     "faction": ["Bane"],
     "eternal": true,
-    "img": "img/ScarecrowArkhamKnight.png",
+    "img": "img/ScarecrowArkhamKnight.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -22511,7 +22511,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Spartan.png",
+    "img": "img/Spartan.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -22553,7 +22553,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "eternal": true,
-    "img": "img/SpikesPlant.png",
+    "img": "img/SpikesPlant.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -22585,7 +22585,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/Tet.png",
+    "img": "img/Tet.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -22618,7 +22618,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/TheEyeballMan.png",
+    "img": "img/TheEyeballMan.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -22652,7 +22652,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/Vov.png",
+    "img": "img/Vov.webp",
     "stats": {
       "Attack": 3,
       "Defense": 2,
@@ -22685,7 +22685,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Zatanna.png",
+    "img": "img/Zatanna.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -22723,7 +22723,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/TheFlash.png",
+    "img": "img/TheFlash.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -22768,7 +22768,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Nightwing.png",
+    "img": "img/Nightwing.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -22814,7 +22814,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Birds of Prey","Joker","Suicide Squad"],
     "eternal": true,
-    "img": "img/HarleyQuinn2.png",
+    "img": "img/HarleyQuinn2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -22859,7 +22859,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Birds of Prey","Suicide Squad"],
     "eternal": true,
-    "img": "img/PoisonIvy2.png",
+    "img": "img/PoisonIvy2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -22899,7 +22899,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/TwoFace2.png",
+    "img": "img/TwoFace2.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -22939,7 +22939,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/GreenArrow.png",
+    "img": "img/GreenArrow.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -22986,7 +22986,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["Joker"],
     "eternal": true,
-    "img": "img/Catwoman2.png",
+    "img": "img/Catwoman2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -23026,7 +23026,7 @@ const models = [
     "faction": ["Suicide Squad","Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/DeathstrokeArkhamOrigins.png",
+    "img": "img/DeathstrokeArkhamOrigins.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -23071,7 +23071,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["League of Shadows","Organized Crime"],
     "eternal": true,
-    "img": "img/TaliaAlGhul.png",
+    "img": "img/TaliaAlGhul.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -23109,7 +23109,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/Owlman.png",
+    "img": "img/Owlman.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -23156,7 +23156,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/ZurEnArrhBatman.png",
+    "img": "img/ZurEnArrhBatman.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -23198,7 +23198,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Unknown"],
     "eternal": true,
-    "img": "img/QueenHippolita.png",
+    "img": "img/QueenHippolita.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -23239,7 +23239,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "eternal": true,
-    "img": "img/AmazonWarrior1.png",
+    "img": "img/AmazonWarrior1.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -23273,7 +23273,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "eternal": true,
-    "img": "img/AmazonWarrior3.png",
+    "img": "img/AmazonWarrior3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -23308,7 +23308,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "eternal": true,
-    "img": "img/AmazonWarrior2.png",
+    "img": "img/AmazonWarrior2.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -23342,7 +23342,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/JohnnyQuick.png",
+    "img": "img/JohnnyQuick.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -23373,7 +23373,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BatmanRebirth.png",
+    "img": "img/BatmanRebirth.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -23415,7 +23415,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Unknown"],
     "eternal": true,
-    "img": "img/Lobo.png",
+    "img": "img/Lobo.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -23464,7 +23464,7 @@ const models = [
     "faction": ["Mr. Freeze","Suicide Squad","Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/KillerFrost.png",
+    "img": "img/KillerFrost.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -23501,7 +23501,7 @@ const models = [
     "faction": ["Batman Who Laughs","Unknown"],
     "rivals": ["GCPD","Bat Family","Joker"],
     "eternal": true,
-    "img": "img/TheBatmanWhoLaughs2.png",
+    "img": "img/TheBatmanWhoLaughs2.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -23550,7 +23550,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["Joker"],
     "eternal": true,
-    "img": "img/CatwomanModernAge.png",
+    "img": "img/CatwomanModernAge.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -23588,7 +23588,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD","Birds of Prey"],
     "eternal": true,
-    "img": "img/SwampThing.png",
+    "img": "img/SwampThing.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -23637,7 +23637,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Deadman.png",
+    "img": "img/Deadman.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -23666,7 +23666,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD","Suicide Squad"],
     "eternal": true,
-    "img": "img/BlackOrchid.png",
+    "img": "img/BlackOrchid.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -23697,7 +23697,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/LexcorpHeavyTrooper.png",
+    "img": "img/LexcorpHeavyTrooper.webp",
     "stats": {
       "Attack": 4,
       "Defense": 2,
@@ -23732,7 +23732,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/LexCorpTrooper1.png",
+    "img": "img/LexCorpTrooper1.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -23760,7 +23760,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/LexCorpTrooper2.png",
+    "img": "img/LexCorpTrooper2.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -23794,7 +23794,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/LexCorpTrooper3.png",
+    "img": "img/LexCorpTrooper3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -23828,7 +23828,7 @@ const models = [
     "faction": ["Suicide Squad","Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/KingShark.png",
+    "img": "img/KingShark.webp",
     "stats": {
       "Attack": 5,
       "Defense": 3,
@@ -23867,7 +23867,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BatmanKnightmare.png",
+    "img": "img/BatmanKnightmare.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -23912,7 +23912,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BoosterGold.png",
+    "img": "img/BoosterGold.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -23951,7 +23951,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/BlueBeetle.png",
+    "img": "img/BlueBeetle.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -23993,7 +23993,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Birds of Prey","Suicide Squad"],
     "eternal": true,
-    "img": "img/PoisonIvy3.png",
+    "img": "img/PoisonIvy3.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -24040,7 +24040,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/TheDemon.png",
+    "img": "img/TheDemon.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -24080,7 +24080,7 @@ const models = [
     "rank": ["Leader","Sidekick"],
     "faction": ["League of Shadows"],
     "eternal": true,
-    "img": "img/TheWizard.png",
+    "img": "img/TheWizard.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -24127,7 +24127,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/TheFlashTVShow.png",
+    "img": "img/TheFlashTVShow.webp",
     "stats": {
       "Attack": 3,
       "Defense": 5,
@@ -24159,7 +24159,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Vibe.png",
+    "img": "img/Vibe.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -24195,7 +24195,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Harry.png",
+    "img": "img/Harry.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -24238,7 +24238,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/BlackFlash.png",
+    "img": "img/BlackFlash.webp",
     "stats": {
       "Attack": 4,
       "Defense": 5,
@@ -24269,7 +24269,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/JokerTheKillingJoke.png",
+    "img": "img/JokerTheKillingJoke.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -24315,7 +24315,7 @@ const models = [
     "faction": ["Suicide Squad","Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/BronzeTiger.png",
+    "img": "img/BronzeTiger.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -24347,7 +24347,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Mahoney.png",
+    "img": "img/Mahoney.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -24382,7 +24382,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Penguin"],
     "eternal": true,
-    "img": "img/1Dollar.png",
+    "img": "img/1Dollar.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -24417,7 +24417,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Bane"],
     "eternal": true,
-    "img": "img/LiHolidays.png",
+    "img": "img/LiHolidays.webp",
     "stats": {
       "Attack": 3,
       "Defense": 4,
@@ -24461,7 +24461,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Birds of Prey"],
     "eternal": true,
-    "img": "img/Tyrant.png",
+    "img": "img/Tyrant.webp",
     "stats": {
       "Attack": 4,
       "Defense": 2,
@@ -24496,7 +24496,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["Bane"],
     "eternal": true,
-    "img": "img/BigSidekick.png",
+    "img": "img/BigSidekick.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -24540,7 +24540,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["League of Shadows"],
     "eternal": true,
-    "img": "img/Hayabusa.png",
+    "img": "img/Hayabusa.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -24581,7 +24581,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["Organized Crime"],
     "eternal": true,
-    "img": "img/Boogeyman.png",
+    "img": "img/Boogeyman.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -24624,7 +24624,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Joker"],
     "eternal": true,
-    "img": "img/That.png",
+    "img": "img/That.webp",
     "stats": {
       "Attack": 2,
       "Defense": 2,
@@ -24655,7 +24655,7 @@ const models = [
     "faction": ["Unknown"],
     "rivals": ["GCPD","Bat Family"],
     "eternal": true,
-    "img": "img/MatchesMalone.png",
+    "img": "img/MatchesMalone.webp",
     "stats": {
       "Attack": 5,
       "Defense": 5,
@@ -24686,7 +24686,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/Grifter.png",
+    "img": "img/Grifter.webp",
     "stats": {
       "Attack": 5,
       "Defense": 4,
@@ -24731,7 +24731,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["Unknown"],
     "eternal": true,
-    "img": "img/JoeChill.png",
+    "img": "img/JoeChill.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -24767,7 +24767,7 @@ const models = [
     "rank": ["Leader"],
     "faction": ["The Big Bang Theory"],
     "eternal": true,
-    "img": "img/LeonardHofstadter.png",
+    "img": "img/LeonardHofstadter.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -24802,7 +24802,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["The Big Bang Theory"],
     "eternal": true,
-    "img": "img/SheldonCooper.png",
+    "img": "img/SheldonCooper.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -24833,7 +24833,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["The Big Bang Theory"],
     "eternal": true,
-    "img": "img/Penny.png",
+    "img": "img/Penny.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
@@ -24863,7 +24863,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["The Big Bang Theory"],
     "eternal": true,
-    "img": "img/HowardWolowitz.png",
+    "img": "img/HowardWolowitz.webp",
     "stats": {
       "Attack": 2,
       "Defense": 3,
@@ -24892,7 +24892,7 @@ const models = [
     "rank": ["Henchman"],
     "faction": ["The Big Bang Theory"],
     "eternal": true,
-    "img": "img/RajeshKoothrappali.png",
+    "img": "img/RajeshKoothrappali.webp",
     "stats": {
       "Attack": 3,
       "Defense": 3,
@@ -24922,7 +24922,7 @@ const models = [
     "rank": ["Free Agent"],
     "faction": ["The Big Bang Theory"],
     "eternal": true,
-    "img": "img/ZackJohnson.png",
+    "img": "img/ZackJohnson.webp",
     "stats": {
       "Attack": 4,
       "Defense": 3,
@@ -24952,7 +24952,7 @@ const models = [
     "rank": ["Sidekick"],
     "faction": ["GCPD"],
     "eternal": true,
-    "img": "img/GreenArrow2.png",
+    "img": "img/GreenArrow2.webp",
     "stats": {
       "Attack": 4,
       "Defense": 4,
