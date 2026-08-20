@@ -61,7 +61,11 @@ const modelDependencyRules = {
   
   // Dark Knight Rises
   "Gordon (Infiltrate)": { requiredModel: "Batman (Dark Knight Rises)" },
-  "Catwoman (Dark Knight Rises)": { requiredModel: ["Batman (Dark Knight Rises)", "Bane (Dark Knight Rises)"] },
+  // ИСПРАВЛЕНО: "или"-условие должно идти через requiredModels (массив) —
+  // checkModelDependency сравнивает requiredModel строго как строку
+  // (m.name === requiredModel), так что массив под ключом requiredModel
+  // никогда не совпадал ни с одним именем, и модель была вечно ненанимаемой
+  "Catwoman (Dark Knight Rises)": { requiredModels: ["Batman (Dark Knight Rises)", "Bane (Dark Knight Rises)"] },
   
   // Adam West 1966
   "Robin (Burt Ward)": { requiredModel: "Batman (Adam West)" },
@@ -73,8 +77,15 @@ const modelDependencyRules = {
   // The Animated Series
   "Harley Quinn (The Animated Series)": { requiredModel: "Batman (The Animated Series)" },
   
-  // GCPD / Two-Face
-  "Gilda Dent": { requiredModel: "Two-Face" },
+  // GCPD / Harvey Dent. ИСПРАВЛЕНО: у самой Gilda Dent трейт "Required
+  // (Harvey Dent)", а не "Required (Two-Face)" — а requiredModel: "Two-Face"
+  // требовал модель с именем ровно "Two-Face", у которой faction всегда
+  // "Two-Face" или "Organized Crime" (никогда GCPD/Unknown), то есть её
+  // нельзя нанять в отряд GCPD в принципе. В итоге зависимость Gilda Dent
+  // была невыполнима ни при каком составе банды GCPD (её родной и
+  // единственной фракции), и она никогда не появлялась в списке найма.
+  // Заменено на GCPD-нанимаемые версии Harvey Dent, соответствующие трейту.
+  "Gilda Dent": { requiredModels: ["The White Knight", "Attorney Harvey Dent"] },
   
   // Batman Forever: киношный Two-Face (Tommy Lee Jones) нанимается только с Риддлером Джима Керри.
   // Ключ не должен называться просто "Two-Face" — иначе правило блокировало бы и лидера фракции Two-Face
@@ -344,8 +355,15 @@ const equipmentByFaction = {
     { name: "Battle Bot", fundingCost: 250, repCost: 3, maxPerCrew: 1, conditions: ["Model has Bot trait"], effects: ["Model gains the Claws rule."] },
     { name: "Shock Droid", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Model has Bot trait"], effects: ["Model gains the CRT: Stunned rule."] },
     { name: "Improved Chassis MK", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Model has Bot trait"], effects: ["The model gains Tireless rule."] },
-    { name: "Improved Armor", fundingCost: 250, repCost: 2, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight)"], targetModels: ["The Riddler"], effects: ["Bots gain Light Armor Trait."], isUnaffectedByBroken: true },
-    { name: "Enhanced Servo-engines", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight)"], targetModels: ["Riddler's Mech"], effects: ["+1 Movement and Combo: Mechanic Claw."], isUnaffectedByBroken: true }
+    // ИСПРАВЛЕНО: реальная модель называется "The Riddler's Mech" (без суффикса
+    // "(Arkham Knight)" — в отличие от "The Riddler (Arkham Knight)"). Из-за
+    // несовпадения имени ни conditions ("...or The Riddler's Mech (Arkham
+    // Knight)"), ни targetModels ("The Riddler" / "Riddler's Mech" — оба без
+    // ведущего "The ") не совпадали через modelMatchesCharacter ни с одной
+    // реальной моделью, и Мех не мог ни сам купить эти предметы, ни считаться
+    // выполняющим "or"-условие присутствия в банде.
+    { name: "Improved Armor", fundingCost: 250, repCost: 2, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech"], targetModels: ["The Riddler (Arkham Knight)", "The Riddler's Mech"], effects: ["Bots gain Light Armor Trait."], isUnaffectedByBroken: true },
+    { name: "Enhanced Servo-engines", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech"], targetModels: ["The Riddler (Arkham Knight)", "The Riddler's Mech"], effects: ["+1 Movement and Combo: Mechanic Claw."], isUnaffectedByBroken: true }
   ],
   "Mr. Freeze": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },

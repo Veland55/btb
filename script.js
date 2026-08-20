@@ -1551,7 +1551,11 @@ function addModelWithRank(model, chosenRank) {
 
   // Специальное правило для Henry Ducard: может быть Sidekick только если лидером нанят Ra's al Ghul Decoy
   if (model.name === "Henry Ducard" && chosenRank === "Sidekick") {
-    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul Decoy" && BMG_BOSS.rankUsed === "Leader";
+    // ИСПРАВЛЕНО: реальная модель в data.js называется "Ra's al Ghul (Decoy)"
+    // (со скобками, как и другие варианты персонажей) — старое сравнение с
+    // "Ra's al Ghul Decoy" (без скобок) не совпадало никогда, из-за чего
+    // Henry Ducard нельзя было нанять как Sidekick вообще ни при каком составе банды.
+    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul (Decoy)" && BMG_BOSS.rankUsed === "Leader";
     if (!hasRasGhulDecoyAsLeader) {
       alert(t("henry_ducard_sidekick_requires_ras"));
       return;
@@ -1560,6 +1564,28 @@ function addModelWithRank(model, chosenRank) {
 
   const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
   if (!bmgCanAddModel(cloned)) return;
+
+  // Three Jokers: считаем стоимость автодобавляемых напарников ДО фактического
+  // найма. bmgCanAddModel() выше проверяет бюджет только для самого cloned —
+  // а трейт обязательно приводит ещё 65-Rep моделей в отряд без единой
+  // проверки лимита (баг: отряд молча уезжал за Reputation/Funding).
+  if (cloned.traits.includes("Three Jokers")) {
+    const others = models.filter(other =>
+      other.traits && other.traits.includes("Three Jokers") &&
+      other.name !== cloned.name && !crew.some(c => c.name === other.name)
+    );
+    const extraRep = others.reduce((sum, m) => sum + (m.rep || 0), 0);
+    const extraFunding = others.reduce((sum, m) => sum + getEffectiveModelFunding(m), 0);
+    if (getCrewTotalRep() + cloned.rep + extraRep > BMG_REP_LIMIT) {
+      alert(t("rep_exceeded"));
+      return;
+    }
+    if (getCrewUsedFunding() + getEffectiveModelFunding(cloned) + extraFunding > bmgFundingLimit()) {
+      alert(t("funding_insufficient"));
+      return;
+    }
+  }
+
   // ИЗМЕНЕНИЕ: используем unshift вместо push для добавления в начало массива
   crew.unshift(cloned);
   if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick")) {
@@ -1608,7 +1634,11 @@ function showRankSelectionModal(model, ranks) {
 
   // Специальное правило для Henry Ducard: может быть Sidekick только если лидером нанят Ra's al Ghul Decoy
   if (model.name === "Henry Ducard" && availableRanks.includes("Sidekick")) {
-    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul Decoy" && BMG_BOSS.rankUsed === "Leader";
+    // ИСПРАВЛЕНО: реальная модель в data.js называется "Ra's al Ghul (Decoy)"
+    // (со скобками, как и другие варианты персонажей) — старое сравнение с
+    // "Ra's al Ghul Decoy" (без скобок) не совпадало никогда, из-за чего
+    // Henry Ducard нельзя было нанять как Sidekick вообще ни при каком составе банды.
+    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul (Decoy)" && BMG_BOSS.rankUsed === "Leader";
     if (!hasRasGhulDecoyAsLeader) {
       // Если Ra's al Ghul Decoy не лидер, убираем Sidekick из доступных рангов
       availableRanks = availableRanks.filter(r => r !== "Sidekick");
@@ -2809,6 +2839,13 @@ function bmgCanAddModel(model) {
           crew.filter(m => m.hireException === "Criminal Bonds").length < 3) {
         // Criminal Bonds: "If this model is included in your crew..." — носитель любой член отряда
         hireException = "Criminal Bonds"; // до 3 Henchman Organized Crime с трейтом Criminal
+      } else if (bossTraits.includes("Batman Lives") && modelMatchesCharacter(model, "William Cobb")) {
+        // Batman Lives: "Позволяет нанять William Cobb ... без учёта аффилиации".
+        // Билдер уже подмешивал William Cobb (The Talon) в список найма для
+        // такого Босса (см. выше в renderMiniCardsBuilder), но сам найм здесь
+        // всё равно отклонялся обычной проверкой аффилиации — из списка
+        // модель было видно, но нанять нельзя было ни при каком раскладе.
+        hireException = "Batman Lives";
       } else if (model.traits.includes("Vocational") && crew.length &&
           crew.every(m => m.traits.includes("Cop"))) {
         // crew.length: Array.every на пустом отряде истинно, и правило срабатывало впустую
