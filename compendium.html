@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>BMG — Compendium v1.4</title>
+  <!-- Леворукость — общая настройка устройства (см. script.js), читаем тот же
+       ключ localStorage синхронно до отрисовки, чтобы кнопка «назад» сразу
+       встала на нужный край без мигания -->
+  <script>document.documentElement.classList.toggle('left-handed', localStorage.getItem('bmg_left_handed') === '1');</script>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -51,6 +55,7 @@
        разделах приложения, а не в общем ряду с поиском наверху */
     @media (max-width: 699px) {
       .back-btn { position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150; }
+      html.left-handed .back-btn { right:auto; left:16px; }
     }
     .rules-search {
       flex:1; display:flex; align-items:center; background:#222; border:2px solid #e94560; border-radius:50px;

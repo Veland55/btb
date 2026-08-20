@@ -75,14 +75,40 @@ function toggleEternal(on) {
   if (currentMode === 'cards') renderMiniCardsView();
 }
 
-// Компактная «пилюля» над списком фракций: подпись + маленький тумблер.
+// Компактная «пилюля»-тумблер: подпись + маленький переключатель.
 // Полное пояснение — в title, чтобы не занимать две строки на узком экране.
+// Используется и для Eternal, и для леворукости (см. handToggleHTML ниже) —
+// общий компонент, стили в style.css под именем .pill-toggle.
 function eternalToggleHTML() {
   return `
-    <label class="eternal-toggle" title="${t('eternal_hint')}">
+    <label class="pill-toggle" title="${t('eternal_hint')}">
       <input type="checkbox" ${showEternal ? 'checked' : ''} onchange="toggleEternal(this.checked)">
-      <span class="eternal-toggle-track"><span class="eternal-toggle-knob"></span></span>
-      <span class="eternal-toggle-label">${t('eternal_title')}</span>
+      <span class="pill-toggle-track"><span class="pill-toggle-knob"></span></span>
+      <span class="pill-toggle-label">${t('eternal_title')}</span>
+    </label>`;
+}
+
+// ======================== ЛЕВОРУКОСТЬ ========================
+// Плавающие кнопки управления на телефонах (см. .header-buttons в style.css)
+// по умолчанию у правого края — удобно для правой руки. Переключатель в
+// профиле зеркалит их к левому краю. Настройка устройства (localStorage),
+// не аккаунта — общая для всех страниц сайта, в т.ч. compendium.html/rules.html.
+const HAND_KEY = 'bmg_left_handed';
+let leftHanded = localStorage.getItem(HAND_KEY) === '1';
+document.body.classList.toggle('left-handed', leftHanded);
+
+function setLeftHanded(on) {
+  leftHanded = !!on;
+  localStorage.setItem(HAND_KEY, leftHanded ? '1' : '0');
+  document.body.classList.toggle('left-handed', leftHanded);
+}
+
+function handToggleHTML() {
+  return `
+    <label class="pill-toggle" title="${t('left_handed_hint')}">
+      <input type="checkbox" ${leftHanded ? 'checked' : ''} onchange="setLeftHanded(this.checked)">
+      <span class="pill-toggle-track"><span class="pill-toggle-knob"></span></span>
+      <span class="pill-toggle-label">${t('left_handed_title')}</span>
     </label>`;
 }
 
@@ -297,6 +323,8 @@ const translations = {
     eternal_hint: "Показывать модели формата Eternal — снятые с продажи профили. В обычной игре не используются.",
     eternal_crew_warning: "В отряде есть модели формата Eternal. Если выключить формат, они будут убраны из отряда. Продолжить?",
     eternal_badge: "ETERNAL",
+    left_handed_title: "ЛЕВША",
+    left_handed_hint: "Плавающие кнопки управления на телефоне — у левого края экрана вместо правого. Удобно, если держите телефон в левой руке.",
     equipment_for: "Equipment для",
     equipment_available: "Доступно",
     equipment_of_total: "из",
@@ -694,6 +722,8 @@ const translations = {
     eternal_hint: "Show Eternal-format models — retired profiles. Not used in the standard game.",
     eternal_crew_warning: "Your crew contains Eternal-format models. Turning the format off will remove them from the crew. Continue?",
     eternal_badge: "ETERNAL",
+    left_handed_title: "LEFT-HANDED",
+    left_handed_hint: "Floating action buttons on the phone sit at the left edge instead of the right. Handy if you hold the phone in your left hand.",
     equipment_for: "Equipment for",
     equipment_available: "Available",
     equipment_of_total: "of",

@@ -35,6 +35,9 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   }
   .top-bar-content { justify-content:center; }
   .beta-badge { margin-right:0; }
+  /* Левша (переключатель в профиле, body.left-handed — см. script.js) —
+     тот же блок кнопок зеркалится к левому краю экрана */
+  body.left-handed .header-buttons { right:auto; left:16px; }
 }
 /* Пометка «бета-тест» рядом с названием раздела. margin-right:auto прижимает её
    к заголовку, а кнопки топ-бара оставляет у правого края */
@@ -229,6 +232,13 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 .full-card { position:fixed; inset:0; background:#000; z-index:9999; overflow-y:auto; display:none; padding-top:var(--safe-top); padding-bottom:var(--safe-bottom); }
 .full-card.active { display:block; }
 .full-inner { max-width:480px; margin:0 auto; background:#000; overflow:hidden; position:relative; }
+/* На телефонах (<768px — тот же порог, что у getActiveSidePanel() в script.js:
+   ниже него карточка вообще открывается модалкой .full-card, а не боковой
+   панелью) убираем потолок ширины — иначе на широких телефонах по бокам
+   оставались чёрные поля вместо карточки на весь экран. */
+@media (max-width: 767px) {
+  .full-inner { max-width:none; }
+}
 .close-full {
   position:absolute; top:12px; right:12px; width:30px; height:30px;
   display:flex; align-items:center; justify-content:center;
@@ -1166,44 +1176,43 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   .models-list { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
 }
 
-/* ======================== ПЕРЕКЛЮЧАТЕЛЬ ФОРМАТА ETERNAL ========================
-   Живёт в профиле (см. auth.js renderAuthModal) — доступен и без входа в
-   аккаунт, т.к. это настройка устройства (localStorage), а не аккаунта.
-   Выключен по умолчанию: модели Eternal скрыты, пока игрок сам их не включит. */
-.auth-eternal-row { display: flex; justify-content: center; margin-bottom: 4px; }
-.eternal-toggle {
+/* ======================== ПИЛЮЛЯ-ТУМБЛЕР (Eternal, леворукость) ========================
+   Общий компонент для настроек устройства в профиле (см. auth.js
+   renderAuthModal) — доступен и без входа в аккаунт, живёт в localStorage. */
+.auth-settings-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.pill-toggle {
   display: inline-flex; align-items: center; gap: 8px;
   background: #1a1a1a; border: 1px solid #2e2e2e; border-radius: 999px;
   /* по вертикали чуть свободнее, чем нужно визуально — чтобы попадать пальцем */
   padding: 6px 8px 6px 12px; cursor: pointer; user-select: none;
   line-height: 1; transition: border-color .18s;
 }
-.eternal-toggle:hover { border-color: #444; }
-.eternal-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.pill-toggle:hover { border-color: #444; }
+.pill-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
 
 /* order: -1 — подпись слева от тумблера, хотя в разметке идёт после него.
-   Так работает обычный сестринский селектор input:checked ~ .eternal-toggle-label
+   Так работает обычный сестринский селектор input:checked ~ .pill-toggle-label
    и не нужен :has() */
-.eternal-toggle-label {
+.pill-toggle-label {
   order: -1;
   font-size: 11px; font-weight: 700; letter-spacing: .08em;
   color: #8a8a8a; white-space: nowrap; transition: color .18s;
 }
-.eternal-toggle input:checked ~ .eternal-toggle-label { color: #ffc72c; }
+.pill-toggle input:checked ~ .pill-toggle-label { color: #ffc72c; }
 
-.eternal-toggle-track {
+.pill-toggle-track {
   flex: none; position: relative; width: 30px; height: 17px;
   background: #333; border-radius: 999px; transition: background .18s;
 }
-.eternal-toggle-knob {
+.pill-toggle-knob {
   position: absolute; top: 3px; left: 3px; width: 11px; height: 11px;
   background: #888; border-radius: 50%; transition: transform .18s, background .18s;
 }
-.eternal-toggle input:checked + .eternal-toggle-track { background: #7a5c12; }
-.eternal-toggle input:checked + .eternal-toggle-track .eternal-toggle-knob {
+.pill-toggle input:checked + .pill-toggle-track { background: #7a5c12; }
+.pill-toggle input:checked + .pill-toggle-track .pill-toggle-knob {
   transform: translateX(13px); background: #ffc72c;
 }
-.eternal-toggle input:focus-visible + .eternal-toggle-track { outline: 2px solid #ffc72c; outline-offset: 2px; }
+.pill-toggle input:focus-visible + .pill-toggle-track { outline: 2px solid #ffc72c; outline-offset: 2px; }
 
 /* Метка на карточке модели формата Eternal — чтобы в общем списке было видно,
    что профиль не из стандартного формата */
