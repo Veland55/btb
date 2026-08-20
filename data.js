@@ -4398,6 +4398,91 @@ const models = [
     ]
   },
   {
+    "name": "Kid Flash",
+    "realname": "Wally West",
+    "base": "40mm",
+    "rep": 50,
+    "funding": 300,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "img/KidFlash.webp",
+    "stats": {
+      "Attack": 3,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Always on the Move",
+      "Dodge",
+      "Drop It! {SPECIAL_ICON}",
+      "Fast (4)",
+      "Molecular Control (1)",
+      "Speed Force Master (1)",
+      "Speedster",
+      "Super Speed (2)",
+      "Teen Titans"
+    ],
+    "weapons": [
+      {
+        "name": "Speed Force Bolts",
+        "damage": "★",
+        "rof": 3,
+        "ammo": 5,
+        "traits": "S. Range / Silencer / Beam / Throwing / Speed Attack (2) / Fast Combo (1)"
+      },
+      {
+        "name": "Speed Attack",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Overwhelming / Crushing / Fast Combo (1)"
+      }
+    ]
+  },
+  {
+    "name": "Batman (High Seas)",
+    "realname": "Bruce Wayne",
+    "base": "40mm",
+    "rep": 84,
+    "funding": 0,
+    "rank": ["Leader"],
+    "faction": ["Bat Family"],
+    "img": "img/BatmanHighSeas.webp",
+    "stats": {
+      "Attack": 4,
+      "Defense": 5,
+      "Strength": "3+",
+      "Movement": 10,
+      "Willpower": 8,
+      "Endurance": 8
+    },
+    "traits": [
+      "Amphibious",
+      "Bat Cape",
+      "Bat Family",
+      "Detective",
+      "Hardened",
+      "Jump Up",
+      "Rapid Fire {SPECIAL_ICON}",
+      "Reinforced Gloves",
+      "Sturdy",
+      "Thief {SPECIAL_ICON}",
+      "Treasure Hunter"
+    ],
+    "weapons": [
+      {
+        "name": "Pirate's Batlings",
+        "damage": "★★",
+        "rof": 2,
+        "ammo": 3,
+        "traits": "Short Range / Light / Throwing / Steal"
+      }
+    ]
+  },
+  {
     "name": "Lucius Fox",
     "realname": "Lucius Fox",
     "base": "40mm",
@@ -5610,6 +5695,37 @@ const models = [
 //-------------------------------------------------------------------------------------------------------------------------------------
 //Organized Crime
 //-------------------------------------------------------------------------------------------------------------------------------------
+  {
+    "name": "Iceman",
+    "realname": "Rosco Versace",
+    "base": "30mm",
+    "rep": 26,
+    "funding": 600,
+    "rank": ["Henchman"],
+    "faction": ["Organized Crime"],
+    "img": "img/Iceman.webp",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "4+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Criminal",
+      "Self-Discipline"
+    ],
+    "weapons": [
+      {
+        "name": "Rifle",
+        "damage": "🩸🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Firearm"
+      }
+    ]
+  },
   {
     "name": "Bouncer 1",
     "realname": "Unknown",
@@ -8214,6 +8330,104 @@ const models = [
         "rof": "-",
         "ammo": "-",
         "traits": "Handy / Reach (1)"
+      }
+    ]
+  },
+  {
+    "name": "Joker's Biker 3",
+    "realname": "Unknown",
+    "base": "42x75mm",
+    "rep": 32,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "img/JokersBiker3.webp",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 6
+    },
+    "traits": [
+      "Always on the Move",
+      "Bloodthirsty (Mental Disorder)",
+      "Death Pack",
+      "Fast (3)",
+      "Mechanical Mount"
+    ],
+    "weapons": [
+      {
+        "name": "Blade",
+        "damage": "🩸🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Heavy / Overwhelming"
+      }
+    ]
+  },
+  {
+    "name": "Chuckles",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 23,
+    "funding": 200,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "img/Chuckles.webp",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Backpack",
+      "Bank Robber",
+      "Bipolar (Mental Disorder)",
+      "Expendable"
+    ],
+    "weapons": [
+      {
+        "name": "SMG",
+        "damage": "🩸🩸",
+        "rof": 4,
+        "ammo": 1,
+        "traits": "Firearm / S. Range"
+      }
+    ]
+  },
+  {
+    "name": "Rastaclown",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 21,
+    "funding": 600,
+    "rank": ["Henchman"],
+    "faction": ["Joker"],
+    "img": "img/Rastaclown.webp",
+    "stats": {
+      "Attack": 3,
+      "Defense": 2,
+      "Strength": "5+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Bloodthirsty (Mental Disorder)",
+      "Handyman"
+    ],
+    "weapons": [
+      {
+        "name": "Custom Rifle",
+        "damage": "🩸🩸🩸",
+        "rof": 3,
+        "ammo": 2,
+        "traits": "Accurate / Firearm"
       }
     ]
   },
@@ -14731,6 +14945,40 @@ const models = [
 //--------------------------------------------------------------------------------------------------------------------
 //Court of Owls
 //--------------------------------------------------------------------------------------------------------------------
+  {
+    "name": "Henry Ballard",
+    "realname": "Henry Ballard",
+    "base": "30mm",
+    "rep": 46,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Court of Owls"],
+    "img": "img/HenryBallard.webp",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "4+",
+      "Movement": 10,
+      "Willpower": 6,
+      "Endurance": 7
+    },
+    "traits": [
+      "Claws",
+      "Evidence Tampering",
+      "Invulnerability (1)",
+      "Reanimated Owl",
+      "Weakness to Cold"
+    ],
+    "weapons": [
+      {
+        "name": "Owl Knife",
+        "damage": "🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Crushing / Handy / Sharp"
+      }
+    ]
+  },
   {
     "name": "The Court",
     "realname": "Unknown",
