@@ -104,7 +104,6 @@ function buildFactionCardsHTML() {
 function renderFactionCards() {
   const html = buildFactionCardsHTML();
   document.querySelectorAll('.tabs-container .faction-cards').forEach(el => el.innerHTML = html);
-  document.querySelectorAll('.eternal-toggle-slot').forEach(el => el.innerHTML = eternalToggleHTML());
 }
 
 // ======================== ИКОНКИ ========================

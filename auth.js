@@ -424,12 +424,18 @@ function renderAuthLoggedOutHTML() {
     </div>`;
 }
 
+// Формат Eternal — настройка устройства, а не аккаунта, поэтому живёт в
+// профиле, но доступна и без входа (см. showEternal/toggleEternal в script.js)
 function renderAuthModal() {
   const box = document.getElementById('authModalBody');
   if (!box) return;
 
+  const eternalBlock = typeof eternalToggleHTML === 'function' ? `
+    <div class="auth-eternal-row">${eternalToggleHTML()}</div>
+    <p class="auth-note">${t('eternal_hint')}</p>` : '';
+
   if (!currentUser) {
-    box.innerHTML = renderAuthLoggedOutHTML();
+    box.innerHTML = eternalBlock + renderAuthLoggedOutHTML();
     return;
   }
 
@@ -445,7 +451,7 @@ function renderAuthModal() {
       </div>
     </div>`).join('');
 
-  box.innerHTML = `
+  box.innerHTML = eternalBlock + `
     <div class="auth-profile-head">
       <span class="auth-username">👤 ${currentUser}</span>
       <span class="auth-slots">${mySaves.length} / ${MAX_SAVES}</span>

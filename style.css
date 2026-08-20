@@ -15,23 +15,27 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* КНОПКИ ШАПКИ НА ТЕЛЕФОНАХ — тот же самый .header-buttons (назад, ростер,
-   карты целей, сохранить и т.д.), просто перенесённый вниз справа и
-   ставший плавающим: одной рукой на большом экране до него не дотянуться,
-   когда он в шапке. Это не копия — один и тот же блок, поэтому нет
-   дублей и не нужно синхронизировать бейджи/id между двумя версиями. */
-@media (max-width: 699px) {
-  .header-buttons {
-    position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150;
-  }
-}
-
 /* ТОП-БАР */
 .top-bar { background:linear-gradient(#111,#000); padding:calc(10px + var(--safe-top)) 12px 10px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100; box-shadow:0 4px 15px rgba(0,0,0,.6); }
 .top-bar h1 { font-size:22px; letter-spacing:6px; color:#ffd700; text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }
 .top-bar-content { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:0 15px; }
 .top-bar-content h1 { margin-bottom:0; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .header-buttons { display:flex; gap:12px; align-items:center; flex-shrink:0; }
+
+/* КНОПКИ ШАПКИ НА ТЕЛЕФОНАХ — тот же самый .header-buttons (назад, ростер,
+   карты целей, сохранить и т.д.), просто перенесённый вниз справа и
+   ставший плавающим: одной рукой на большом экране до него не дотянуться,
+   когда он в шапке. Это не копия — один и тот же блок, поэтому нет
+   дублей и не нужно синхронизировать бейджи/id между двумя версиями.
+   Заголовок раздела без кнопок рядом смотрелся бы криво прижатым влево —
+   центрируем его (и бейдж «бета-тест», если есть) на освободившемся месте. */
+@media (max-width: 699px) {
+  .header-buttons {
+    position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150;
+  }
+  .top-bar-content { justify-content:center; }
+  .beta-badge { margin-right:0; }
+}
 /* Пометка «бета-тест» рядом с названием раздела. margin-right:auto прижимает её
    к заголовку, а кнопки топ-бара оставляет у правого края */
 .beta-badge {
@@ -1163,10 +1167,10 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
 }
 
 /* ======================== ПЕРЕКЛЮЧАТЕЛЬ ФОРМАТА ETERNAL ========================
-   Компактная пилюля над списком фракций (билдер и раздел КАРТОЧКИ).
-   Выключен по умолчанию: модели Eternal скрыты, пока игрок сам их не включит.
-   Пояснение к формату — в атрибуте title, отдельной строки не занимает. */
-.eternal-toggle-slot { display: flex; justify-content: flex-end; padding: 0 12px 8px; }
+   Живёт в профиле (см. auth.js renderAuthModal) — доступен и без входа в
+   аккаунт, т.к. это настройка устройства (localStorage), а не аккаунта.
+   Выключен по умолчанию: модели Eternal скрыты, пока игрок сам их не включит. */
+.auth-eternal-row { display: flex; justify-content: center; margin-bottom: 4px; }
 .eternal-toggle {
   display: inline-flex; align-items: center; gap: 8px;
   background: #1a1a1a; border: 1px solid #2e2e2e; border-radius: 999px;

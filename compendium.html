@@ -47,6 +47,11 @@
     }
     .back-btn svg { width:24px; height:24px; fill:#fff; }
     .back-btn:hover { background:#ff3366; }
+    /* На телефонах — плавающая кнопка снизу справа, как во всех остальных
+       разделах приложения, а не в общем ряду с поиском наверху */
+    @media (max-width: 699px) {
+      .back-btn { position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150; }
+    }
     .rules-search {
       flex:1; display:flex; align-items:center; background:#222; border:2px solid #e94560; border-radius:50px;
       overflow:hidden; min-width:0;
