@@ -4362,6 +4362,42 @@ const models = [
     ]
   },
   {
+    "name": "Spoiler",
+    "realname": "Stephanie Brown",
+    "base": "40mm",
+    "rep": 32,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Bat Family"],
+    "img": "img/Spoiler.webp",
+    "stats": {
+      "Attack": 3,
+      "Defense": 4,
+      "Strength": "5+",
+      "Movement": 12,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Bat Family",
+      "Combo (Baton)",
+      "Crucial Information",
+      "Detective",
+      "Investigator",
+      "True Love (Tim Drake)",
+      "Unmask the Truth"
+    ],
+    "weapons": [
+      {
+        "name": "Baton",
+        "damage": "★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Handy / Heavy"
+      }
+    ]
+  },
+  {
     "name": "Lucius Fox",
     "realname": "Lucius Fox",
     "base": "40mm",
