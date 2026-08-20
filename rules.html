@@ -8,6 +8,25 @@
        ключ localStorage синхронно до отрисовки, чтобы кнопка «назад» сразу
        встала на нужный край без мигания -->
   <script>document.documentElement.classList.toggle('left-handed', localStorage.getItem('bmg_left_handed') === '1');</script>
+  <!-- Telegram Mini App: см. index.html — тот же приём, страница отдельная,
+       поэтому инициализация продублирована -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    (function () {
+      var tg = window.Telegram && window.Telegram.WebApp;
+      if (!tg) return;
+      try { tg.ready(); tg.expand(); } catch (e) {}
+      if (!tg.initData) return;
+      document.documentElement.classList.add('tg-app');
+      function applyTgInsets() {
+        var sa = tg.safeAreaInset || {}, csa = tg.contentSafeAreaInset || {};
+        document.documentElement.style.setProperty('--tg-top', ((sa.top || 0) + (csa.top || 0)) + 'px');
+        document.documentElement.style.setProperty('--tg-bottom', ((sa.bottom || 0) + (csa.bottom || 0)) + 'px');
+      }
+      applyTgInsets();
+      if (tg.onEvent) { tg.onEvent('safeAreaChanged', applyTgInsets); tg.onEvent('contentSafeAreaChanged', applyTgInsets); }
+    })();
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -16,6 +35,12 @@
     :root {
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    /* Полноэкранный режим Telegram: свой заголовок поверх страницы, его зона
+       не входит в env(safe-area-inset-*) — добавляем отдельно, см. скрипт выше */
+    html.tg-app {
+      --safe-top: calc(env(safe-area-inset-top, 0px) + var(--tg-top, 0px));
+      --safe-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--tg-bottom, 0px));
     }
     body {
       background:#000; color:#ddd;

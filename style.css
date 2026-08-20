@@ -15,6 +15,17 @@ body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* ===== TELEGRAM MINI APP =====
+   В полноэкранном режиме Telegram свой заголовок (кнопка закрытия, меню)
+   рисуется поверх страницы отдельным слоем, который env(safe-area-inset-*)
+   не учитывает — это зона самого Telegram, а не вырез устройства.
+   --tg-top/--tg-bottom выставляет index.html из tg.contentSafeAreaInset
+   (см. <head>), только когда сайт реально открыт внутри Telegram. */
+html.tg-app {
+  --safe-top: calc(env(safe-area-inset-top, 0px) + var(--tg-top, 0px));
+  --safe-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--tg-bottom, 0px));
+}
+
 /* ТОП-БАР */
 .top-bar { background:linear-gradient(#111,#000); padding:calc(10px + var(--safe-top)) 12px 10px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100; box-shadow:0 4px 15px rgba(0,0,0,.6); }
 .top-bar h1 { font-size:22px; letter-spacing:6px; color:#ffd700; text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }

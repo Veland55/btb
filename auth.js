@@ -102,6 +102,23 @@ async function authLogin(name, pass) {
   await refreshSaves();
 }
 
+// Вход через Telegram Mini App: initData подписан ботом на сервере, здесь
+// просто передаём его как есть — ни имени, ни пароля пользователь не вводит
+async function telegramAuth() {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg || !tg.initData) return false;
+  try {
+    const data = await api('/api/telegram-auth', 'POST', { initData: tg.initData });
+    authToken = data.token;
+    applyAuthSession(data);
+    localStorage.setItem(AUTH_TOKEN_KEY, authToken);
+    await refreshSaves();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function authLogout() {
   if (authToken) api('/api/logout', 'POST', {}).catch(() => {});
   authToken = null;
@@ -512,15 +529,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const modal = document.getElementById('authModal');
   if (modal) modal.onclick = e => { if (e.target === modal) closeAuthModal(); };
 
-  if (!authToken) return;
-  try {
-    const me = await api('/api/me');
-    applyAuthSession(me);
-    await refreshSaves();
-  } catch (e) {
-    if (e.status === 401) { // токен протух
-      authToken = null;
-      localStorage.removeItem(AUTH_TOKEN_KEY);
+  if (authToken) {
+    try {
+      const me = await api('/api/me');
+      applyAuthSession(me);
+      await refreshSaves();
+      return;
+    } catch (e) {
+      if (e.status === 401) { // токен протух
+        authToken = null;
+        localStorage.removeItem(AUTH_TOKEN_KEY);
+      }
     }
   }
+
+  // Открыто из Telegram (initData есть только внутри Mini App) и рабочего
+  // токена нет/протух — логинимся ботом молча, без формы регистрации
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (tg && tg.initData) await telegramAuth();
 });

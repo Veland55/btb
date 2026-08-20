@@ -5,18 +5,38 @@
   <!-- viewport-fit=cover — без него env(safe-area-inset-*) всегда 0 и отступы под чёлку не работают -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>BMG Crew Builder</title>
+  <!-- Telegram Mini App SDK: не defer — должен быть готов как можно раньше,
+       чтобы tg.ready()/expand() отработали до первой отрисовки. Вне Telegram
+       определяет безобидную заглушку window.Telegram.WebApp. -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    (function () {
+      var tg = window.Telegram && window.Telegram.WebApp;
+      if (!tg) return;
+      try { tg.ready(); tg.expand(); } catch (e) {}
+      if (!tg.initData) return; // скрипт есть, но открыто не из Telegram — ничего не трогаем
+      document.documentElement.classList.add('tg-app');
+      function applyTgInsets() {
+        var sa = tg.safeAreaInset || {}, csa = tg.contentSafeAreaInset || {};
+        document.documentElement.style.setProperty('--tg-top', ((sa.top || 0) + (csa.top || 0)) + 'px');
+        document.documentElement.style.setProperty('--tg-bottom', ((sa.bottom || 0) + (csa.bottom || 0)) + 'px');
+      }
+      applyTgInsets();
+      if (tg.onEvent) { tg.onEvent('safeAreaChanged', applyTgInsets); tg.onEvent('contentSafeAreaChanged', applyTgInsets); }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.5">
+  <link rel="stylesheet" href="style.css?v=3.6">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
   <script src="data.js?v=3.3" defer></script>
   <script src="data-traits.js?v=2.2" defer></script>
   <script src="script.js?v=1.32" defer></script>
-  <script src="auth.js?v=2.3" defer></script>
+  <script src="auth.js?v=2.4" defer></script>
   <script src="data-cards.js?v=1.5" defer></script>
   <script src="cards.js?v=1.8" defer></script>
   <script src="stats.js?v=1.9" defer></script>

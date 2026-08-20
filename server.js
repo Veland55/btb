@@ -25,6 +25,10 @@ const { DatabaseSync } = require('node:sqlite');
 const PORT = parseInt(process.env.PORT, 10) || 8080;
 const ROOT = __dirname;
 const DATA_DIR = process.env.BMG_DATA_DIR || path.join(ROOT, 'data');
+// Токен бота @batmantelegrambot (BotFather) — нужен только чтобы проверять
+// подпись initData из Telegram Mini App. Без него /api/telegram-auth выключен.
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || null;
+const TG_AUTH_DATE_TTL_MS = 24 * 3600 * 1000; // старше суток initData не принимаем
 
 const MAX_SAVES = 5;                            // лимит сохранений на пользователя
 const MAX_BODY = 32 * 1024;                     // лимит тела запроса
@@ -148,6 +152,8 @@ const MIGRATIONS = [
   'ALTER TABLE tournaments ADD COLUMN winner TEXT',
   'ALTER TABLE tournaments ADD COLUMN roster_lock_days INTEGER NOT NULL DEFAULT 0',
   'ALTER TABLE users ADD COLUMN email TEXT',
+  // привязка аккаунта к Telegram (вход через Mini App без пароля)
+  'ALTER TABLE users ADD COLUMN telegram_id TEXT',
   // снятие с турнира после старта (не пришёл / снялся) — пары его больше не берут,
   // но уже сыгранные туры остаются в таблице
   'ALTER TABLE tournament_players ADD COLUMN dropped INTEGER NOT NULL DEFAULT 0',
@@ -157,6 +163,7 @@ const MIGRATIONS = [
 for (const stmt of MIGRATIONS) {
   try { db.exec(stmt); } catch (e) { /* колонка уже есть */ }
 }
+db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_telegram_id ON users (telegram_id) WHERE telegram_id IS NOT NULL');
 
 // Кэш подготовленных запросов: db.prepare() заново компилирует SQL при каждом
 // вызове, а вызывается он в обработчиках ~60 раз за запрос. Текст запросов —
@@ -410,6 +417,30 @@ function createSession(user) {
   const token = crypto.randomBytes(24).toString('base64url');
   db.prepare('INSERT INTO sessions (token, user, created) VALUES (?, ?, ?)').run(token, user, Date.now());
   return token;
+}
+
+// Проверка initData из Telegram Mini App (см. https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app).
+// Возвращает распарсенный объект user или null, если подпись неверна/просрочена/бота не настроили.
+function verifyTelegramInitData(initData) {
+  if (!TELEGRAM_BOT_TOKEN || typeof initData !== 'string' || !initData) return null;
+  let params;
+  try { params = new URLSearchParams(initData); } catch (e) { return null; }
+  const hash = params.get('hash');
+  if (!hash) return null;
+  params.delete('hash');
+  const pairs = [];
+  for (const key of Array.from(params.keys()).sort()) pairs.push(`${key}=${params.get(key)}`);
+  const dataCheckString = pairs.join('\n');
+  const secretKey = crypto.createHmac('sha256', 'WebAppData').update(TELEGRAM_BOT_TOKEN).digest();
+  const computed = crypto.createHmac('sha256', secretKey).update(dataCheckString).digest('hex');
+  const given = Buffer.from(hash, 'hex'), expected = Buffer.from(computed, 'hex');
+  if (given.length !== expected.length || !crypto.timingSafeEqual(given, expected)) return null;
+  const authDate = parseInt(params.get('auth_date'), 10) * 1000;
+  if (!authDate || Date.now() - authDate > TG_AUTH_DATE_TTL_MS) return null;
+  try {
+    const user = JSON.parse(params.get('user') || 'null');
+    return user && user.id ? user : null;
+  } catch (e) { return null; }
 }
 
 const validName = n => typeof n === 'string' && /^[\w\-. А-Яа-яЁё]{3,20}$/.test(n);
@@ -746,6 +777,33 @@ async function handleApi(req, res, url) {
     }
     authSucceeded(req);
     return send(res, 200, { token: createSession(name), name, country: row.country || null, email: row.email || null });
+  }
+
+  // --- Вход/регистрация через Telegram Mini App: initData подписан ботом,
+  // пароль не нужен — аккаунт привязывается к telegram_id при первом заходе ---
+  if (p === '/api/telegram-auth' && req.method === 'POST') {
+    if (authThrottled(req)) return send(res, 429, { error: 'rate' });
+    if (!TELEGRAM_BOT_TOKEN) return send(res, 503, { error: 'telegram_disabled' });
+    const body = await readBody(req);
+    const tgUser = verifyTelegramInitData(body.initData);
+    if (!tgUser) { authFailed(req); return send(res, 401, { error: 'badcred' }); }
+    const telegramId = String(tgUser.id);
+
+    let row = db.prepare('SELECT name, country, email FROM users WHERE telegram_id = ?').get(telegramId);
+    if (!row) {
+      // Имя из @username Telegram (если есть и подходит под формат), иначе — стабильный tg_<id>
+      let name = tgUser.username ? tgUser.username.replace(/[^\w\-.]/g, '').slice(0, 20) : '';
+      if (!validName(name) || userNameTaken(name)) name = `tg_${telegramId}`.slice(0, 20);
+      if (userNameTaken(name)) name = `tg_${telegramId}`; // крайне маловероятная коллизия — id уникален
+      // Аккаунт telegram-only: пароль случайный и никому не известен, вход только через бота
+      const salt = crypto.randomBytes(8).toString('hex');
+      const randomPass = crypto.randomBytes(32).toString('hex');
+      db.prepare('INSERT INTO users (name, salt, hash, created, telegram_id) VALUES (?, ?, ?, ?, ?)')
+        .run(name, salt, await hashPassword(salt, randomPass), Date.now(), telegramId);
+      row = { name, country: null, email: null };
+    }
+    authSucceeded(req);
+    return send(res, 200, { token: createSession(row.name), name: row.name, country: row.country || null, email: row.email || null });
   }
 
   if (p === '/api/logout' && req.method === 'POST') {
