@@ -423,13 +423,20 @@ body.left-handed .close-full { right:auto; left:12px; }
   border:1px solid #2a2a2a;
 }
 .trait-popup-header {
-  padding:16px 20px 12px; color:#ffd700; display:flex; justify-content:space-between; align-items:flex-start;
+  /* Паддинг одинаковый с обеих сторон — под кнопку закрытия, которая может
+     быть и справа, и слева (левша/правша). Заголовок центрируем в
+     оставшемся симметричном пространстве, а не во flex-строке из двух
+     элементов — так он не съезжает от того, где сидит кнопка. */
+  padding:16px 44px 12px; color:#ffd700; position:relative; text-align:center;
   font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:1px; font-size:16px;
   border-bottom:2px solid #e94560;
 }
 .trait-popup-body { padding:18px 20px; color:#bbb; line-height:1.6; font-size:13.5px; max-height:70vh; overflow-y:auto; }
 .trait-popup-body .inline-icon { background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
-.trait-popup-close { font-size:26px; line-height:1; cursor:pointer; color:#fff; flex-shrink:0; margin-left:12px; transition:color .2s; }
+.trait-popup-close {
+  position:absolute; top:14px; right:16px; font-size:26px; line-height:1; cursor:pointer; color:#fff; transition:color .2s;
+}
+body.left-handed .trait-popup-close { right:auto; left:16px; }
 .trait-popup-close:hover { color:#e94560; }
 
 /* ПРОФИЛЬ И СОХРАНЕНИЯ ОТРЯДОВ (в стиле trait-popup, см. auth.js) */
