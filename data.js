@@ -19977,7 +19977,7 @@ const models = [
     "Bat Family",
     "GCPD"
   ],
-  "img": "img/no.webp",
+  "img": "img/AbsoluteAlfred.webp",
   "stats": {
     "Attack": 4,
     "Defense": 4,
