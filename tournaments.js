@@ -306,7 +306,15 @@ function playerViewHTML() {
 
 // ======================== ХОД ТУРНИРА (туры, таблица, результаты) ========================
 function tnStatusBadge(tn) {
-  if (tn.status === 'active') return `<span class="tn-badge tn-badge-live">▶ ${t('tn_status_active', { round: tn.round })}</span>`;
+  if (tn.status === 'active') {
+    // Если известно общее число туров — сразу "Тур X из Y" одной фразой,
+    // вместо отдельного "осталось туров: 0" рядом, которое на последнем
+    // туре читалось как противоречие с "ИДЁТ ТУР N" (см. roundsLeft ниже).
+    const label = tn.maxRounds
+      ? t('tn_status_active_of', { round: tn.round, max: tn.maxRounds })
+      : t('tn_status_active', { round: tn.round });
+    return `<span class="tn-badge tn-badge-live">▶ ${label}</span>`;
+  }
   if (tn.status === 'finished') return `<span class="tn-badge tn-badge-done">🏁 ${t('tn_status_finished')}</span>`;
   return `<span class="tn-badge tn-badge-open">${t('tn_status_open')}</span>`;
 }
@@ -378,19 +386,31 @@ async function tnResolveDispute(id, round, a, b) {
 function tnStandingsHTML(tn) {
   if (tn.status === 'open' || !(tn.standings || []).length) return '';
   const finished = tn.status === 'finished';
+  // Заголовок колонок — без него строка "▦ 0 🏆 0 Bh 0 0 VP" читалась как
+  // случайный набор символов, а не как понятная таблица (title= на ▦/Bh
+  // работает только по наведению мышью, на телефоне бесполезен вовсе).
+  const header = `
+    <div class="tn-player-row tn-st-row tn-st-header">
+      <span class="tn-player-num"></span>
+      <span class="tn-player-name"></span>
+      <span class="tn-st-cell" title="${t('tn_played')}">${t('tn_played_short')}</span>
+      <span class="tn-st-cell" title="${t('tn_wins')}">${t('tn_wins_short')}</span>
+      <span class="tn-st-cell" title="${t('tn_buchholz')}">${t('tn_buchholz_short')}</span>
+      <span class="tn-st-cell" title="${t('tn_vp_full')}">VP</span>
+    </div>`;
   const rows = tn.standings.map((s, i) => `
     <div class="tn-player-row tn-st-row${finished && i === 0 ? ' tn-st-winner' : ''}">
       <span class="tn-player-num">${i + 1}</span>
       <span class="tn-player-name">${tnEsc(s.name)}${s.name === currentUser ? ` <b>(${t('tn_you')})</b>` : ''}</span>
       <span class="tn-st-cell" title="${t('tn_played')}">▦ ${s.played || 0}</span>
-      <span class="tn-st-cell">🏆 ${s.wins}</span>
+      <span class="tn-st-cell" title="${t('tn_wins')}">🏆 ${s.wins}</span>
       <span class="tn-st-cell" title="${t('tn_buchholz')}">Bh ${s.buchholz || 0}</span>
-      <span class="tn-st-cell">${s.vp} VP</span>
+      <span class="tn-st-cell" title="${t('tn_vp_full')}">${s.vp} VP</span>
     </div>`).join('');
   return `
     ${finished && tn.winner ? `<div class="tn-winner-banner">🏆 ${t('tn_winner')}: <b>${tnEsc(tn.winner)}</b></div>` : ''}
     <div class="saves-title">${t('tn_standings')}</div>
-    <div class="tn-players">${rows}</div>`;
+    <div class="tn-players">${header}${rows}</div>`;
 }
 
 // Форма записи СВОЕГО результата тура (победа/поражение + VP)
@@ -484,8 +504,10 @@ function tournamentCardHTML(tn, asOrganizer) {
   const isFull = tn.players.length >= tn.maxPlayers + tn.reserve;
   const isOpen = tn.status === 'open';
 
-  const roundsLeft = tn.status === 'active' && tn.maxRounds
-    ? Math.max(0, tn.maxRounds - (tn.rounds || []).length) : null;
+  // Число тура из maxRounds теперь показано прямо в бейдже статуса
+  // ("Тур X из Y" — см. tnStatusBadge), отдельная плашка "осталось туров"
+  // убрана — на последнем туре она читалась как противоречие ("ИДЁТ ТУР 1"
+  // рядом с "осталось туров: 0").
 
   const playerRow = (p, num) => `
     <div class="tn-player-row${asOrganizer ? ' tn-player-clickable' : ''}${p.dropped ? ' tn-player-dropped' : ''}"
@@ -506,7 +528,6 @@ function tournamentCardHTML(tn, asOrganizer) {
         ${tnStatusBadge(tn)} &nbsp; 📅 ${tnDate(tn.dateStart)}${tn.dateEnd ? ' — ' + tnDate(tn.dateEnd) : ''}
         &nbsp;•&nbsp; 👤 ${tnEsc(tn.orgNick)} &nbsp;•&nbsp; #${tn.id}
         ${tn.rosterLockDays ? ` &nbsp;•&nbsp; 🔒 ${t('tn_lock_meta', { days: tn.rosterLockDays })}` : ''}
-        ${roundsLeft !== null ? ` &nbsp;•&nbsp; ${t('tn_rounds_left', { n: roundsLeft })}` : ''}
       </div>
       ${tn.info ? `<p class="game-note">${tnEsc(tn.info)}</p>` : ''}
       ${isOpen ? `

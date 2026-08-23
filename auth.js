@@ -55,6 +55,8 @@ function apiErrorText(e) {
     badcred: 'auth_bad_credentials',
     rate: 'auth_rate_limited',
     input: 'auth_fill_fields',
+    name_format: 'auth_bad_name_format',
+    pass_format: 'auth_bad_pass_format',
     limit: 'saves_limit',
     auth: 'login_required',
     notfound: 'game_not_found',
@@ -150,32 +152,54 @@ async function setUserEmail() {
 }
 
 // ======================== ВОССТАНОВЛЕНИЕ И СМЕНА ПАРОЛЯ ========================
+// Обёртка отправки форм авторизации: блокирует кнопки модалки на время
+// запроса — без неё повторный клик (двойной тап, медленная сеть) уходил
+// вторым запросом поверх первого без всякой обратной связи пользователю
+// (см. tnRun в tournaments.js — тот же приём, тут переменных турнирных
+// "ключей" не нужно, действие одно и модалка одна).
+let authBusy = false;
+async function authRun(fn) {
+  if (authBusy) return;
+  authBusy = true;
+  document.querySelectorAll('#authModalBody button').forEach(b => { b.disabled = true; });
+  try {
+    await fn();
+  } finally {
+    authBusy = false;
+    document.querySelectorAll('#authModalBody button').forEach(b => { b.disabled = false; });
+  }
+}
+
 async function requestPasswordReset() {
   const name = (document.getElementById('resetName').value || '').trim();
   if (!name) { alert(t('auth_fill_fields')); return; }
-  try {
-    await api('/api/forgot-password', 'POST', { name });
-    authResetName = name;
-    authView = 'forgot-code';
-    renderAuthModal();
-    alert(t('forgot_code_sent'));
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  await authRun(async () => {
+    try {
+      await api('/api/forgot-password', 'POST', { name });
+      authResetName = name;
+      authView = 'forgot-code';
+      renderAuthModal();
+      alert(t('forgot_code_sent'));
+    } catch (e) {
+      alert(apiErrorText(e));
+    }
+  });
 }
 
 async function submitPasswordReset() {
   const code = (document.getElementById('resetCode').value || '').trim();
   const newPass = document.getElementById('resetNewPass').value;
   if (!code || !newPass) { alert(t('auth_fill_fields')); return; }
-  try {
-    await api('/api/reset-password', 'POST', { name: authResetName, code, newPass });
-    alert(t('forgot_reset_done'));
-    authView = 'login';
-    renderAuthModal();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  await authRun(async () => {
+    try {
+      await api('/api/reset-password', 'POST', { name: authResetName, code, newPass });
+      alert(t('forgot_reset_done'));
+      authView = 'login';
+      renderAuthModal();
+    } catch (e) {
+      alert(apiErrorText(e));
+    }
+  });
 }
 
 // Смена пароля из профиля (пользователь уже вошёл и знает текущий пароль)
@@ -185,13 +209,15 @@ async function submitChangePassword() {
   const confirmPass = document.getElementById('cpConfirm').value;
   if (!oldPass || !newPass) { alert(t('auth_fill_fields')); return; }
   if (newPass !== confirmPass) { alert(t('password_mismatch')); return; }
-  try {
-    await api('/api/change-password', 'POST', { oldPass, newPass });
-    alert(t('password_changed'));
-    ['cpOld', 'cpNew', 'cpConfirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  await authRun(async () => {
+    try {
+      await api('/api/change-password', 'POST', { oldPass, newPass });
+      alert(t('password_changed'));
+      ['cpOld', 'cpNew', 'cpConfirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    } catch (e) {
+      alert(apiErrorText(e));
+    }
+  });
 }
 
 // Страна профиля: селект в модалке профиля, учитывается в разделе СТАТИСТИКА
@@ -214,6 +240,24 @@ async function refreshSaves() {
 
 async function pushSaves() {
   await api('/api/saves', 'PUT', { saves: mySaves });
+}
+
+// s.r хранит ЛИМИТ Rep, который был выставлен при сохранении (нужен, чтобы
+// восстановить его при загрузке — см. loadSavedCrew), а не фактическую
+// стоимость отряда. Список сохранений раньше подписывал s.r просто как
+// "Rep", из-за чего отряд на 206 Rep с лимитом 350 показывал "350 Rep" —
+// цифру лимита, а не реальную цену. Здесь — настоящая сумма: Rep каждой
+// модели плюс Rep купленного снаряжения (equipment иногда тоже стоит Rep,
+// не только Funding — формат [имя, funding, repCost]).
+function crewRepTotal(s) {
+  return (s.m || []).reduce((total, entry) => {
+    const byId = (typeof entry[3] === 'number' && models[entry[3]] && models[entry[3]].name === entry[0])
+      ? models[entry[3]] : null;
+    const base = byId || (typeof findModelByStoredName === 'function' ? findModelByStoredName(entry[0]) : null);
+    if (!base) return total; // модель могла исчезнуть из базы — как и при загрузке, тихо пропускаем
+    const eqRep = (entry[2] || []).reduce((sum, en) => sum + (Array.isArray(en) ? (en[2] || 0) : 0), 0);
+    return total + (base.rep || 0) + eqRep;
+  }, 0);
 }
 
 // ======================== СОХРАНЕНИЯ ========================
@@ -248,7 +292,7 @@ function serializeCrew(name) {
 }
 
 async function saveCurrentCrew() {
-  if (!currentUser) { openAuthModal(); return; }
+  if (!currentUser) { alert(t('save_login_required')); openAuthModal(); return; }
   if (!crew.length) { alert(t('empty_crew_save')); return; }
 
   const def = `${currentFaction} · ${getCrewTotalRep()} Rep`;
@@ -429,6 +473,7 @@ function renderAuthLoggedOutHTML() {
              placeholder="${t('username')}">
       <input type="password" id="authPass" maxlength="64" autocomplete="current-password"
              placeholder="${t('password')}">
+      <p class="auth-note">${t('register_format_hint')}</p>
       <input type="email" id="authEmail" maxlength="254" autocomplete="email"
              placeholder="${t('email_placeholder_optional')}">
       <p class="auth-note">${t('register_email_hint')}</p>
@@ -462,7 +507,7 @@ function renderAuthModal() {
     <div class="save-row">
       <div class="save-info">
         <div class="save-name">${s.n}</div>
-        <div class="save-meta">${s.f} • ${s.m.length} ${t('models_word')} • ${s.r} Rep • ${new Date((s.d || 0) * 86400000).toLocaleDateString()}</div>
+        <div class="save-meta">${s.f} • ${s.m.length} ${t('models_word')} • ${crewRepTotal(s)} / ${s.r} Rep • ${new Date((s.d || 0) * 86400000).toLocaleDateString()}</div>
       </div>
       <div class="save-actions">
         <button class="save-btn" onclick="loadSavedCrew(${i})">${t('load')}</button>
@@ -509,19 +554,21 @@ async function authSubmit(isRegister) {
   const name = document.getElementById('authName').value.trim();
   const pass = document.getElementById('authPass').value;
   if (!name || !pass) { alert(t('auth_fill_fields')); return; }
-  try {
-    if (isRegister) {
-      // Email при регистрации необязателен — только для восстановления пароля
-      const emailInput = document.getElementById('authEmail');
-      const email = emailInput ? emailInput.value.trim() : '';
-      await authRegister(name, pass, email || null);
-    } else {
-      await authLogin(name, pass);
+  await authRun(async () => {
+    try {
+      if (isRegister) {
+        // Email при регистрации необязателен — только для восстановления пароля
+        const emailInput = document.getElementById('authEmail');
+        const email = emailInput ? emailInput.value.trim() : '';
+        await authRegister(name, pass, email || null);
+      } else {
+        await authLogin(name, pass);
+      }
+      renderAuthModal();
+    } catch (e) {
+      alert(apiErrorText(e));
     }
-    renderAuthModal();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  });
 }
 
 // Восстановление сессии при старте (токен проверяется на сервере)

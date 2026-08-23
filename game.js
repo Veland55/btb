@@ -11,6 +11,33 @@ let gamePollTimer = null;
 let activeGame = null; // последнее полученное состояние игры
 let gamePlayTab = 'cards'; // активная вкладка экрана партии: cards | me | opp
 
+// Синхронизация счётчиков партии (WIL/END/KD/KO, раунд и т.п.) между host и
+// guest — раньше gameTrack жил только в localStorage каждого устройства, и
+// два игрока за одной партией расходились в счёте, не видя правок друг друга.
+// lastAppliedTrackUpdated — метка последней версии, которую этот клиент уже
+// применил (свою или чужую) — нужна, чтобы поллинг не путал "оппонент прислал
+// новее" с "это же мой собственный пуш только что вернулся эхом".
+let lastAppliedTrackUpdated = 0;
+let gameTrackPushTimer = null;
+// Пропустить следующий авто-пуш из renderGamePlay(): выставляется прямо перед
+// рендером, вызванным ВХОДЯЩИМ обновлением с сервера — без этого получение
+// чужой правки тут же переотправляло бы её обратно с новым таймстемпом, и
+// оба клиента вечно перекидывались бы одним и тем же состоянием по поллингу.
+let skipNextTrackPush = false;
+
+function pushGameTrackToServer() {
+  if (!activeGame) return;
+  clearTimeout(gameTrackPushTimer);
+  // Дебаунс: серия быстрых кликов (+/- по несколько раз подряд) шлёт один
+  // запрос по затишью, а не запрос на каждый клик
+  gameTrackPushTimer = setTimeout(async () => {
+    try {
+      const { trackUpdated } = await api('/api/games/' + activeGame.code + '/track', 'POST', { track: gameTrack });
+      lastAppliedTrackUpdated = trackUpdated;
+    } catch (e) { /* партия истекла или сеть подвела — локально всё равно сохранено */ }
+  }, 600);
+}
+
 // Переключение вкладок — без полной перерисовки экрана, чтобы не терять
 // прокрутку и состояние открытых элементов
 function setGameTab(id) {
@@ -225,6 +252,23 @@ async function renderGame() {
     }
   }
 
+  // Кода нет на ЭТОМ устройстве (новый браузер/телефон, очищенные данные) —
+  // но партия могла остаться на сервере: спрашиваем сервер, есть ли у этого
+  // аккаунта активная (без результата) игра, и если да — восстанавливаем её,
+  // включая код в localStorage, чтобы дальше работало как обычно.
+  if (!savedCode) {
+    try {
+      const { code } = await api('/api/games/mine');
+      if (code) {
+        const loaded = await api('/api/games/' + code);
+        localStorage.setItem(GAME_CODE_KEY, code);
+        activeGame = loaded;
+        renderGameState();
+        return;
+      }
+    } catch (e) { /* не удалось спросить сервер — просто покажем экран настройки */ }
+  }
+
   renderGameSetup();
 }
 
@@ -325,10 +369,24 @@ function loadGameTrack() {
   try {
     gameTrack = JSON.parse(localStorage.getItem(GAME_STATE_PREFIX + activeGame.code)) || {};
   } catch (e) { gameTrack = {}; }
+  // Сервер знает более новую версию счётчиков, чем эта копия на устройстве —
+  // typично на новом устройстве (см. восстановление игры по /api/games/mine)
+  // или если оппонент правил счёт, пока это устройство было офлайн/закрыто.
+  if (activeGame && activeGame.trackUpdated > lastAppliedTrackUpdated) {
+    gameTrack = activeGame.track || {};
+    lastAppliedTrackUpdated = activeGame.trackUpdated;
+  }
 }
 
-function saveGameTrack() {
-  if (activeGame) localStorage.setItem(GAME_STATE_PREFIX + activeGame.code, JSON.stringify(gameTrack));
+// push=false — применяем версию, только что полученную С сервера (пришедшую
+// поллингом или при загрузке игры): пишем в localStorage, но не отправляем
+// её же обратно, иначе оба клиента бесконечно перекидывались бы одним и тем
+// же состоянием. push=true (по умолчанию) — обычная локальная правка
+// (клик по +/-, смена раунда и т.п.), её нужно и сохранить, и разослать.
+function saveGameTrack(push = true) {
+  if (!activeGame) return;
+  localStorage.setItem(GAME_STATE_PREFIX + activeGame.code, JSON.stringify(gameTrack));
+  if (push) pushGameTrackToServer();
 }
 
 // Запись трекинга модели; при первом обращении инициализируется значениями с карточки.
@@ -732,18 +790,20 @@ function renderScorePanel() {
 async function recordGameResult(winner) {
   const names = { host: activeGame.host.name, guest: activeGame.guest.name };
   if (!confirm(t('confirm_winner', { name: names[winner] }))) return;
-  try {
-    const data = await api('/api/games/' + activeGame.code + '/result', 'POST', {
-      winner, hostVp: vpValue('host'), guestVp: vpValue('guest')
-    });
-    activeGame.result = data.result;
-    gameResultEditing = false;
-    gameFinishing = false;
-    gameResultBackup = null;
-    renderGamePlay();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  await gameRun(async () => {
+    try {
+      const data = await api('/api/games/' + activeGame.code + '/result', 'POST', {
+        winner, hostVp: vpValue('host'), guestVp: vpValue('guest')
+      });
+      activeGame.result = data.result;
+      gameResultEditing = false;
+      gameFinishing = false;
+      gameResultBackup = null;
+      renderGamePlay();
+    } catch (e) {
+      alert(apiErrorText(e));
+    }
+  });
 }
 
 // Исправление ошибочно записанного итога: возвращаем счётчики (сервер хранит
@@ -799,15 +859,25 @@ function renderGamePlay() {
       ${pane('me', rosterColumnHTML(me, 'your_roster', meIsHost ? 'host' : 'guest'))}
       ${pane('opp', rosterColumnHTML(opp, 'opponent_roster', meIsHost ? 'guest' : 'host'))}
     </div>`;
-  saveGameTrack(); // фиксируем инициализированные значения
+  saveGameTrack(!skipNextTrackPush); // фиксируем инициализированные значения
+  skipNextTrackPush = false;
 
-  // Лёгкий поллинг: подтягиваем результат, записанный оппонентом со своего устройства
+  // Лёгкий поллинг: подтягиваем результат и счётчики (WIL/END/KD/KO, раунд),
+  // записанные оппонентом со своего устройства
   stopGamePolling();
   gamePollTimer = setInterval(async () => {
     try {
       const g = await api('/api/games/' + activeGame.code);
-      if (!gameResultEditing && JSON.stringify(g.result) !== JSON.stringify(activeGame.result)) {
-        activeGame = g;
+      const resultChanged = !gameResultEditing && JSON.stringify(g.result) !== JSON.stringify(activeGame.result);
+      const trackChanged = g.trackUpdated > lastAppliedTrackUpdated;
+      activeGame = g;
+      if (resultChanged) {
+        renderGamePlay();
+      } else if (trackChanged) {
+        gameTrack = g.track || {};
+        lastAppliedTrackUpdated = g.trackUpdated;
+        saveGameTrack(false); // уже с сервера — сохранить локально, но не пушить обратно
+        skipNextTrackPush = true; // и вызванный ниже рендер тоже пусть не пушит эхом
         renderGamePlay();
       }
     } catch (e) { /* игра могла истечь — экран не трогаем */ }
@@ -815,6 +885,21 @@ function renderGamePlay() {
 }
 
 // ======================== ДЕЙСТВИЯ ========================
+// Та же защита от двойного клика/повторного запроса, что у tnRun в
+// tournaments.js — тут своя, т.к. модуль игры не подключает tournaments.js.
+let gameBusy = false;
+async function gameRun(fn) {
+  if (gameBusy) return;
+  gameBusy = true;
+  document.querySelectorAll('#gameContent button').forEach(b => { b.disabled = true; });
+  try {
+    await fn();
+  } finally {
+    gameBusy = false;
+    document.querySelectorAll('#gameContent button').forEach(b => { b.disabled = false; });
+  }
+}
+
 async function createGame() {
   const sel = $('gameCreateRoster');
   const roster = sel ? gameRosterByValue(sel.value) : null;
@@ -827,14 +912,16 @@ async function createGame() {
       en: GAME_ENCOUNTERS[gameConditions.en].name
     };
   }
-  try {
-    const { code } = await api('/api/games', 'POST', { roster, conditions });
-    localStorage.setItem(GAME_CODE_KEY, code);
-    activeGame = { code, conditions, host: { name: currentUser, roster }, guest: null };
-    renderGameWait();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  await gameRun(async () => {
+    try {
+      const { code } = await api('/api/games', 'POST', { roster, conditions });
+      localStorage.setItem(GAME_CODE_KEY, code);
+      activeGame = { code, conditions, host: { name: currentUser, roster }, guest: null };
+      renderGameWait();
+    } catch (e) {
+      alert(apiErrorText(e));
+    }
+  });
 }
 
 async function joinGame() {
@@ -843,13 +930,15 @@ async function joinGame() {
   const sel = $('gameJoinRoster');
   const roster = sel ? gameRosterByValue(sel.value) : null;
   if (!roster) { alert(t('no_rosters')); return; }
-  try {
-    activeGame = await api('/api/games/join', 'POST', { code, roster });
-    localStorage.setItem(GAME_CODE_KEY, code);
-    renderGamePlay();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  await gameRun(async () => {
+    try {
+      activeGame = await api('/api/games/join', 'POST', { code, roster });
+      localStorage.setItem(GAME_CODE_KEY, code);
+      renderGamePlay();
+    } catch (e) {
+      alert(apiErrorText(e));
+    }
+  });
 }
 
 function leaveGame() {

@@ -122,6 +122,7 @@ function buildFactionCardsHTML() {
       const bgFile = iconFile.replace(/\.webp$/, "-bg.webp");
       return `
         <div class="faction-card" data-faction="${faction}" style="background-image: url('${base}${bgFile}');">
+          <span class="faction-card-label">${faction}</span>
           <img class="faction-icon" src="${base}${iconFile}" alt="${faction}" loading="lazy" decoding="async">
         </div>`;
     }).join("");
@@ -233,7 +234,8 @@ const translations = {
     treacherous_cannot_be_boss: "Эта модель не может быть боссом отряда (Treacherous)",
     boss_sidekick: "Если босс — Sidekick, модели с Leader/Sidekick можно добавить только как Sidekick",
     rank_not_found: "У модели не указан ранг!",
-    min_limit_100: "Минимальный лимит — 100 Rep",
+    min_limit_100: "Минимальный лимит — 100 Rep. Возвращён прежний лимит: {value}.",
+    max_limit: "Максимальный лимит — {max} Rep. Возвращён прежний лимит: {value}.",
     rep_exceeds: "Внимание! Текущий отряд ({current} Rep) превышает новый лимит ({new} Rep).",
     rank_not_selected: "Ранг модели не выбран!",
     rep_exceeded: "Превышен лимит Reputation (учтено снаряжение)",
@@ -319,9 +321,12 @@ const translations = {
     equipment_insufficient_funds: "Недостаточно Funding для этого equipment!",
     equipment_exceeds_rep: "Этот апгрейд добавляет Rep и выводит отряд за лимит репутации!",
     auth_rate_limited: "Слишком много неудачных попыток входа. Подождите минуту и попробуйте снова.",
+    auth_bad_name_format: "Имя пользователя — от 3 до 20 символов: буквы, цифры, пробел, - _ .",
+    auth_bad_pass_format: "Пароль — от 4 до 64 символов.",
     eternal_title: "ETERNAL",
     eternal_hint: "Показывать модели формата Eternal — снятые с продажи профили. В обычной игре не используются.",
     eternal_crew_warning: "В отряде есть модели формата Eternal. Если выключить формат, они будут убраны из отряда. Продолжить?",
+    confirm_reset_crew: "Очистить весь набранный отряд и колоду карт целей? Это нельзя отменить.",
     eternal_badge: "ETERNAL",
     left_handed_title: "ЛЕВША",
     left_handed_hint: "Плавающие кнопки управления на телефоне — у левого края экрана вместо правого. Удобно, если держите телефон в левой руке.",
@@ -359,6 +364,8 @@ const translations = {
     saves_limit: "Достигнут лимит сохранений (5). Удалите одно из существующих.",
     no_saves: "Пока нет сохранённых отрядов",
     empty_crew_save: "Отряд пуст — нечего сохранять",
+    save_login_required: "Чтобы сохранить отряд, войдите или зарегистрируйтесь.",
+    models_hidden_budget: "Скрыто моделей: {n} — не хватает Rep или Funding.",
     confirm_delete_save: "Удалить сохранение «{name}»?",
     models_skipped: "Часть моделей не найдена в базе и пропущена",
     auth_user_exists: "Пользователь с таким именем уже существует",
@@ -484,6 +491,7 @@ const translations = {
     tn_limit_msg: "Достигнут лимит открытых турниров у организатора (5)",
     tn_status_open: "РЕГИСТРАЦИЯ",
     tn_status_active: "ИДЁТ ТУР {round}",
+    tn_status_active_of: "ИДЁТ ТУР {round} ИЗ {max}",
     tn_status_finished: "ЗАВЕРШЁН",
     tn_start: "НАЧАТЬ ТУРНИР",
     tn_next_round: "СЛЕДУЮЩИЙ ТУР",
@@ -526,8 +534,12 @@ const translations = {
     tn_dropped: "снят",
     tn_drop_confirm: "Снять участника {name} с турнира? Сыгранные им туры останутся в таблице, в новые пары он не попадёт.",
     tn_played: "сыграно партий",
+    tn_played_short: "Игр",
+    tn_wins: "побед",
+    tn_wins_short: "Поб",
     tn_buchholz: "Бухгольц: сумма побед соперников",
-    tn_rounds_left: "осталось туров: {n}",
+    tn_buchholz_short: "Бух",
+    tn_vp_full: "очки победы (VP)",
     footer_opensource: "Проект с открытым исходным кодом",
     forgot_password_link: "Забыли пароль?",
     forgot_request_hint: "Введите имя пользователя — на почту, привязанную к аккаунту, придёт код для сброса пароля.",
@@ -540,6 +552,7 @@ const translations = {
     forgot_reset_done: "Пароль изменён! Теперь можно войти с новым паролем.",
     email_placeholder: "Email (для восстановления пароля)",
     email_placeholder_optional: "Email (необязательно)",
+    register_format_hint: "При регистрации: имя — 3-20 символов, пароль — от 4 символов.",
     register_email_hint: "Email нужен только для восстановления забытого пароля и не обязателен — его можно указать позже в профиле.",
     email_save_btn: "Сохранить",
     email_hint: "Нужен только для восстановления забытого пароля. Не публикуется и не виден другим игрокам.",
@@ -632,7 +645,8 @@ const translations = {
     treacherous_cannot_be_boss: "This model cannot be the Boss of your crew (Treacherous)",
     boss_sidekick: "If boss is Sidekick, models with Leader/Sidekick can only be added as Sidekick",
     rank_not_found: "Model rank not specified!",
-    min_limit_100: "Minimum limit is 100 Rep",
+    min_limit_100: "Minimum limit is 100 Rep. Restored the previous limit: {value}.",
+    max_limit: "Maximum limit is {max} Rep. Restored the previous limit: {value}.",
     rep_exceeds: "Warning! Current crew ({current} Rep) exceeds new limit ({new} Rep).",
     rank_not_selected: "Model rank not selected!",
     rep_exceeded: "Reputation limit exceeded (equipment counted)",
@@ -718,9 +732,12 @@ const translations = {
     equipment_insufficient_funds: "Insufficient Funding for this equipment!",
     equipment_exceeds_rep: "This upgrade adds Rep and would push the crew over the reputation limit!",
     auth_rate_limited: "Too many failed sign-in attempts. Wait a minute and try again.",
+    auth_bad_name_format: "Username must be 3-20 characters: letters, digits, space, - _ .",
+    auth_bad_pass_format: "Password must be 4-64 characters.",
     eternal_title: "ETERNAL",
     eternal_hint: "Show Eternal-format models — retired profiles. Not used in the standard game.",
     eternal_crew_warning: "Your crew contains Eternal-format models. Turning the format off will remove them from the crew. Continue?",
+    confirm_reset_crew: "Clear the whole crew and the objective deck? This cannot be undone.",
     eternal_badge: "ETERNAL",
     left_handed_title: "LEFT-HANDED",
     left_handed_hint: "Floating action buttons on the phone sit at the left edge instead of the right. Handy if you hold the phone in your left hand.",
@@ -758,6 +775,8 @@ const translations = {
     saves_limit: "Save limit reached (5). Delete an existing save first.",
     no_saves: "No saved crews yet",
     empty_crew_save: "Crew is empty — nothing to save",
+    save_login_required: "Sign in or register to save a crew.",
+    models_hidden_budget: "Models hidden: {n} — not enough Rep or Funding.",
     confirm_delete_save: "Delete save \"{name}\"?",
     models_skipped: "Some models were not found in the database and were skipped",
     auth_user_exists: "A user with this name already exists",
@@ -883,6 +902,7 @@ const translations = {
     tn_limit_msg: "Organizer's open tournament limit reached (5)",
     tn_status_open: "REGISTRATION",
     tn_status_active: "ROUND {round} IN PROGRESS",
+    tn_status_active_of: "ROUND {round} OF {max} IN PROGRESS",
     tn_status_finished: "FINISHED",
     tn_start: "START TOURNAMENT",
     tn_next_round: "NEXT ROUND",
@@ -925,8 +945,12 @@ const translations = {
     tn_dropped: "dropped",
     tn_drop_confirm: "Drop {name} from the tournament? Their played rounds stay in the standings, but they will not be paired again.",
     tn_played: "games played",
+    tn_played_short: "Gms",
+    tn_wins: "wins",
+    tn_wins_short: "Win",
     tn_buchholz: "Buchholz: sum of opponents' wins",
-    tn_rounds_left: "rounds left: {n}",
+    tn_buchholz_short: "Bch",
+    tn_vp_full: "victory points (VP)",
     footer_opensource: "Open source project",
     forgot_password_link: "Forgot password?",
     forgot_request_hint: "Enter your username — a reset code will be sent to the email on file for this account.",
@@ -939,6 +963,7 @@ const translations = {
     forgot_reset_done: "Password changed! You can now log in with the new password.",
     email_placeholder: "Email (for password recovery)",
     email_placeholder_optional: "Email (optional)",
+    register_format_hint: "For registration: username 3-20 characters, password 4+ characters.",
     register_email_hint: "Email is only used to recover a forgotten password and is not required — you can add it later in your profile.",
     email_save_btn: "Save",
     email_hint: "Only used to recover a forgotten password. Not published or visible to other players.",
@@ -1438,6 +1463,7 @@ function showRules() {
 }
 
 function backToMenu() {
+  if (currentMode === 'builder' && !confirmDiscardCrew()) return;
   currentMode = 'menu';
   showSection('mainMenu');
   if ($('rosterPreviewSection')) $('rosterPreviewSection').style.display = 'none';
@@ -1455,6 +1481,7 @@ function backToMenu() {
 }
 
 function backToFactionSelect() {
+  if (!confirmDiscardCrew()) return;
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
   if ($('builderCardsPage')) $('builderCardsPage').style.display = 'none';
@@ -1862,8 +1889,13 @@ const renderRankIconsHTML = ranks => ranks.map(rank =>
 // фото слева, справа построчно — имя, ранг текстом, Rep/Funding, купленное снаряжение.
 // showButtons включает кнопку добавить/удалить в правом верхнем углу (только билдер).
 function renderMiniCardHTML(item, showButtons, showStats) {
-  const ranks = getRanks(item);
-  const rankText = ranks.length ? ranks.join(' / ') : '—';
+  // item.rankUsed — конкретный ранг, за который эту модель наняли в отряд
+  // (ставится в hireModel при добавлении). Модель в каталоге (ещё не в
+  // отряде) rankUsed не имеет — там честно показываем все возможные ранги
+  // карточки, как и раньше. Раньше тут всегда брались все ranks разом, из-за
+  // чего Sidekick, нанятый как Leader, подписывался "SIDEKICK / LEADER" —
+  // расходилось с PDF-экспортом, где печатается именно rankUsed.
+  const rankText = item.rankUsed ? item.rankUsed : (getRanks(item).length ? getRanks(item).join(' / ') : '—');
 
   // Основные характеристики модели прямо в мини-карточке — только в просмотре
   // ростера (showStats), чтобы карточку можно было не открывать
@@ -1970,6 +2002,7 @@ const renderMiniCardsView = debounce(() => {
   filteredModels.forEach(model => {
     const div = document.createElement("div");
     div.className = `mini-card`;
+    div.dataset.name = model.name;
     div.innerHTML = renderMiniCardHTML({ ...model, inCrew: false, count: 0 }, false);
     div.onclick = () => showFullCard(model);
     fragment.appendChild(div);
@@ -2066,17 +2099,25 @@ const renderMiniCardsBuilder = debounce(() => {
   }
 
   // Скрываем модели, которые нельзя нанять из-за нехватки Rep и/или Funding —
-  // в списке остаются только реально нанимаемые по бюджету модели
+  // в списке остаются только реально нанимаемые по бюджету модели.
+  // hiddenByBudget считаем отдельно от остальных фильтров выше (те прячут по
+  // игровым правилам — Aversion, зависимости и т.п. — и это ожидаемо; этот
+  // фильтр прячет по деньгам, и при жёстком лимите список мог схлопнуться
+  // до нескольких моделей отряда без единого слова объяснения, выглядя как
+  // будто каталог сломался, а не как «денег не хватает»).
+  let hiddenByBudget = 0;
   {
     const currentRep = getCrewTotalRep();
     const currentFunding = getCrewUsedFunding();
     const repLimit = BMG_REP_LIMIT;
     const fundingLimit = bmgFundingLimit();
+    const beforeCount = filteredModels.length;
     filteredModels = filteredModels.filter(m => {
       const repIfAdded = currentRep + (m.rep || 0);
       const fundingIfAdded = currentFunding + getEffectiveModelFunding(m);
       return repIfAdded <= repLimit && fundingIfAdded <= fundingLimit;
     });
+    hiddenByBudget = beforeCount - filteredModels.length;
   }
 
   // Скрываем модели, у которых заполнены слоты ВСЕХ доступных им рангов —
@@ -2098,6 +2139,7 @@ const renderMiniCardsBuilder = debounce(() => {
   renderArray.forEach(item => {
     const div = document.createElement("div");
     div.className = `mini-card ${item.inCrew ? "in-crew" : ""}`;
+    div.dataset.name = item.name;
     div.innerHTML = renderMiniCardHTML(item, true);
     div.onclick = () => showFullCard(item);
     // У каждой модели отряда — жёлтая панель апгрейдов под карточкой
@@ -2105,6 +2147,12 @@ const renderMiniCardsBuilder = debounce(() => {
   });
 
   grid.innerHTML = "";
+  if (hiddenByBudget > 0) {
+    const notice = document.createElement("div");
+    notice.className = "budget-hidden-notice";
+    notice.textContent = t('models_hidden_budget', { n: hiddenByBudget });
+    grid.appendChild(notice);
+  }
   grid.appendChild(fragment);
 }, 100);
 
@@ -2370,6 +2418,14 @@ const showFullCard = model => {
     panel.scrollTop = 0;
     panel.querySelectorAll('.builder-panel-card, .builder-panel-glossary')
       .forEach(col => col.scrollTop = 0);
+    // Появление панели сужает сетку карточек (на десктопе она отъедает часть
+    // ширины) — сетка перестраивается на меньше колонок, и та же прокрутка
+    // в пикселях после этого указывает на совсем другую модель. Возвращаем
+    // взгляд туда, где действительно лежит открытая модель, а не куда попало.
+    requestAnimationFrame(() => {
+      const openCard = document.querySelector(`.mini-card[data-name="${CSS.escape(model.name)}"]`);
+      if (openCard) openCard.scrollIntoView({ block: 'nearest' });
+    });
     return;
   }
 
@@ -2591,6 +2647,17 @@ function initTabs() {
   });
 }
 
+// Перезагрузка/закрытие вкладки с непустым набранным отрядом теряет его
+// безвозвратно (crew живёт только в памяти страницы) — стандартный браузерный
+// диалог "точно уйти со страницы?" даёт шанс передумать. Текст диалога браузер
+// подставляет свой (returnValue у большинства современных браузеров игнорируется
+// из соображений безопасности), но сам факт вопроса уже спасает от случайного F5.
+window.addEventListener("beforeunload", (e) => {
+  if (!crew.length) return;
+  e.preventDefault();
+  e.returnValue = "";
+});
+
 // ======================== ИНИЦИАЛИЗАЦИЯ ========================
 window.addEventListener("load", () => {
   // Генерируем карточки фракций (одинаковы для cardsSection и builderSection)
@@ -2620,9 +2687,21 @@ window.addEventListener("load", () => {
   if (repLimitInput) {
     repLimitInput.value = BMG_REP_LIMIT; // показываем текущий лимит
     repLimitInput.onchange = function() {
-      const newLimit = parseInt(this.value) || 350;
+      // Пустое поле — это "передумал вводить", а не "хочу 350": раньше оно
+      // молча прыгало на жёстко зашитые 350 вместо текущего лимита, даже
+      // если он был совсем другим. Нечисловой ввод (parseInt даёт NaN) —
+      // та же ситуация, возвращаем как есть.
+      const raw = this.value.trim();
+      const newLimit = raw === "" ? BMG_REP_LIMIT : parseInt(raw, 10);
+      if (isNaN(newLimit)) { this.value = BMG_REP_LIMIT; return; }
+      const REP_LIMIT_MAX = 1000;
       if (newLimit < 100) {
-        alert(t("min_limit_100"));
+        alert(t("min_limit_100", { value: BMG_REP_LIMIT }));
+        this.value = BMG_REP_LIMIT;
+        return;
+      }
+      if (newLimit > REP_LIMIT_MAX) {
+        alert(t("max_limit", { max: REP_LIMIT_MAX, value: BMG_REP_LIMIT }));
         this.value = BMG_REP_LIMIT;
         return;
       }
@@ -3502,6 +3581,13 @@ function openEquipmentMenu(model, cardElement, uid) {
   document.body.appendChild(overlay);
 }
 
+// Спрашивает подтверждение, только если реально есть что терять — пустой
+// отряд можно "сбрасывать" молча сколько угодно раз без назойливых alert'ов.
+function confirmDiscardCrew() {
+  if (!crew.length) return true;
+  return confirm(t('confirm_reset_crew'));
+}
+
 function resetCrew() {
   crew = [];
   BMG_BOSS = null;
@@ -3588,6 +3674,7 @@ function renderRosterPreview() {
     const item = { ...originalModel, inCrew: true, count: countInCrew(originalModel), instance: m };
     const div = document.createElement('div');
     div.className = 'mini-card';
+    div.dataset.name = item.name;
     div.innerHTML = renderMiniCardHTML(item, false, true); // без +/- (просмотр, не найм), с характеристиками
     div.onclick = () => showFullCard(item);
     // Та же панель апгрейдов под карточкой, что и в билдере

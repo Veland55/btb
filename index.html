@@ -31,12 +31,12 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.10">
+  <link rel="stylesheet" href="style.css?v=3.11">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
   <script src="data.js?v=3.8" defer></script>
   <script src="data-traits.js?v=2.2" defer></script>
-  <script src="script.js?v=1.32" defer></script>
-  <script src="auth.js?v=2.4" defer></script>
+  <script src="script.js?v=1.33" defer></script>
+  <script src="auth.js?v=2.5" defer></script>
   <script src="data-cards.js?v=1.5" defer></script>
   <script src="cards.js?v=1.8" defer></script>
   <script src="stats.js?v=1.9" defer></script>
@@ -45,8 +45,8 @@
        ни от чего не зависят снаружи, поэтому их можно отложить безопасно. -->
   <script>
     const BMG_LAZY = {
-      game: ['data-game.js?v=1.4', 'game.js?v=2.5', 'game-cards.js?v=1.7'],
-      tournaments: ['tournaments.js?v=1.8']
+      game: ['data-game.js?v=1.4', 'game.js?v=2.6', 'game-cards.js?v=1.7'],
+      tournaments: ['tournaments.js?v=1.9']
     };
     const _bmgLoading = {};
     function bmgLoad(group) {
@@ -216,7 +216,7 @@
               <svg viewBox="0 0 24 24"><path d="M4 4h9c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2.2 3.5 4.3 2.5-4.3 2.5v-5zM17 3.3l4.1 1.1c1.06.28 1.7 1.38 1.41 2.44l-3.1 11.6-2.41-13.4V3.3z"/></svg>
               <span class="builder-deck-badge" id="builderDeckBadge">0</span>
             </button>
-            <button class="compendium-small-btn" onclick="resetCrew(); backToFactionSelect()">
+            <button class="compendium-small-btn" onclick="backToFactionSelect()">
               <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
           </div>

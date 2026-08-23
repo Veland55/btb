@@ -158,7 +158,13 @@ const MIGRATIONS = [
   // но уже сыгранные туры остаются в таблице
   'ALTER TABLE tournament_players ADD COLUMN dropped INTEGER NOT NULL DEFAULT 0',
   // место в основном составе, фиксируется на старте: резерв в пары не попадает
-  'ALTER TABLE tournament_players ADD COLUMN seat INTEGER'
+  'ALTER TABLE tournament_players ADD COLUMN seat INTEGER',
+  // общие для обоих игроков счётчики партии (WIL/END/KD/KO, раунд, инициатива,
+  // пасс-маркеры) — раньше жили только в localStorage каждого устройства и не
+  // видели друг друга; track_updated — таймстемп последней записи, чтобы клиент
+  // отличал "это моя же правка вернулась поллингом" от "это опубликовал оппонент"
+  'ALTER TABLE games ADD COLUMN track TEXT',
+  'ALTER TABLE games ADD COLUMN track_updated INTEGER NOT NULL DEFAULT 0'
 ];
 for (const stmt of MIGRATIONS) {
   try { db.exec(stmt); } catch (e) { /* колонка уже есть */ }
@@ -499,7 +505,9 @@ function gameToJSON(g) {
     conditions: g.conditions ? JSON.parse(g.conditions) : null,
     result: g.result ? JSON.parse(g.result) : null,
     host: { name: g.host_user, roster: JSON.parse(g.host_roster) },
-    guest: g.guest_user ? { name: g.guest_user, roster: JSON.parse(g.guest_roster) } : null
+    guest: g.guest_user ? { name: g.guest_user, roster: JSON.parse(g.guest_roster) } : null,
+    track: g.track ? JSON.parse(g.track) : null,
+    trackUpdated: g.track_updated || 0
   };
 }
 
@@ -749,7 +757,12 @@ async function handleApi(req, res, url) {
     if (authThrottled(req)) return send(res, 429, { error: 'rate' });
     const body = await readBody(req);
     const name = normName(body.name), pass = body.pass;
-    if (!validName(name) || !validPass(pass)) return send(res, 400, { error: 'input' });
+    // Отдельные коды на имя и пароль — раньше оба несоответствия (в т.ч. при
+    // ЗАПОЛНЕННЫХ полях: слишком короткое имя, короткий пароль) схлопывались
+    // в общий error:'input', а клиент показывал "Введите имя и пароль", что
+    // было прямо неверно и не объясняло, какое именно требование не выполнено.
+    if (!validName(name)) return send(res, 400, { error: 'name_format' });
+    if (!validPass(pass)) return send(res, 400, { error: 'pass_format' });
     // Email при регистрации необязателен (можно указать позже в профиле) —
     // но если прислан, должен быть валидного формата
     const email = body.email ? String(body.email).trim() : null;
@@ -847,9 +860,10 @@ async function handleApi(req, res, url) {
     const body = await readBody(req);
     const name = normName(body.name);
     const code = body.code, newPass = body.newPass;
-    if (!validName(name) || typeof code !== 'string' || !validPass(newPass)) {
+    if (!validName(name) || typeof code !== 'string') {
       return send(res, 400, { error: 'input' });
     }
+    if (!validPass(newPass)) return send(res, 400, { error: 'pass_format' });
     const row = db.prepare('SELECT * FROM password_resets WHERE user = ?').get(name);
     if (!row || row.created < Date.now() - RESET_CODE_TTL_MS || row.attempts >= RESET_MAX_ATTEMPTS) {
       return send(res, 400, { error: 'reset_code_expired' });
@@ -976,7 +990,8 @@ async function handleApi(req, res, url) {
   // --- Смена пароля из профиля (пользователь знает текущий пароль) ---
   if (p === '/api/change-password' && req.method === 'POST') {
     const { oldPass, newPass } = await readBody(req);
-    if (!validPass(oldPass) || !validPass(newPass)) return send(res, 400, { error: 'input' });
+    if (!validPass(oldPass)) return send(res, 400, { error: 'input' });
+    if (!validPass(newPass)) return send(res, 400, { error: 'pass_format' });
     const row = db.prepare('SELECT salt, hash FROM users WHERE name = ?').get(user);
     const given = Buffer.from(await hashPassword(row.salt, oldPass), 'hex');
     const stored = Buffer.from(row.hash, 'hex');
@@ -1032,6 +1047,22 @@ async function handleApi(req, res, url) {
     return send(res, 200, gameToJSON(db.prepare('SELECT * FROM games WHERE code = ?').get(g.code)));
   }
 
+  // Восстановление активной игры на новом устройстве/после очистки localStorage:
+  // код партии раньше жил только в localStorage, так что открыв раздел ИГРА в
+  // другом браузере игрок видел пустой экран, даже если партия всё ещё идёт на
+  // сервере — восстановить её вводом кода тоже было нельзя (свою же игру сервер
+  // отвергал как own_game). Ищем неоконченную (без result) непросроченную игру,
+  // где пользователь — участник; created DESC — если такая как-то не одна
+  // (не должно бывать), берём последнюю начатую.
+  if (p === '/api/games/mine' && req.method === 'GET') {
+    const g = db.prepare(`SELECT code FROM games
+                            WHERE (host_user = ? OR guest_user = ?)
+                              AND result IS NULL AND created >= ?
+                            ORDER BY created DESC LIMIT 1`)
+      .get(user, user, Date.now() - GAME_TTL_MS);
+    return send(res, 200, { code: g ? g.code : null });
+  }
+
   const gameMatch = /^\/api\/games\/([A-Z0-9]{6})$/i.exec(p);
   if (gameMatch && req.method === 'GET') {
     const g = db.prepare('SELECT * FROM games WHERE code = ?').get(gameMatch[1].toUpperCase());
@@ -1039,6 +1070,33 @@ async function handleApi(req, res, url) {
     // Ростеры видят только участники
     if (g.host_user !== user && g.guest_user !== user) return send(res, 403, { error: 'auth' });
     return send(res, 200, gameToJSON(g));
+  }
+
+  // Счётчики партии (WIL/END/KD/KO, раунд, инициатива, пасс-маркеры) — общее
+  // состояние, которое раньше расходилось у host и guest (у каждого своя копия
+  // в localStorage). Запись перезаписывает всё целиком (последняя запись
+  // побеждает — конфликты одновременного редактирования одного счётчика на
+  // практике редки и не стоят сложного слияния); клиент опрашивает GET-эндпоинт
+  // выше и подтягивает track себе, если trackUpdated новее того, что применял сам.
+  const trackMatch = /^\/api\/games\/([A-Z0-9]{6})\/track$/i.exec(p);
+  if (trackMatch && req.method === 'POST') {
+    const g = db.prepare('SELECT host_user, guest_user, created, track_updated FROM games WHERE code = ?')
+      .get(trackMatch[1].toUpperCase());
+    if (!g || g.created < Date.now() - GAME_TTL_MS) return send(res, 404, { error: 'notfound' });
+    if (g.host_user !== user && g.guest_user !== user) return send(res, 403, { error: 'auth' });
+    const { track } = await readBody(req);
+    if (track == null || typeof track !== 'object' || JSON.stringify(track).length > 20000) {
+      return send(res, 400, { error: 'input' });
+    }
+    // Строго больше предыдущего значения, не просто Date.now(): два push подряд
+    // (host и guest шлют почти одновременно) иногда попадают в одну и ту же
+    // миллисекунду — при равных trackUpdated клиентское сравнение "новее ли
+    // это то, что я уже применил" (строгое >) молча отбросило бы такое
+    // обновление как "не новее", и один из игроков не увидел бы правку вовсе.
+    const trackUpdated = Math.max(Date.now(), (g.track_updated || 0) + 1);
+    db.prepare('UPDATE games SET track = ?, track_updated = ? WHERE code = ?')
+      .run(JSON.stringify(track), trackUpdated, trackMatch[1].toUpperCase());
+    return send(res, 200, { ok: true, trackUpdated });
   }
 
   // --- Результат партии: победитель + очки побед (пишет любой из участников) ---

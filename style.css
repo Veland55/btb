@@ -52,6 +52,13 @@ html.tg-app {
   /* Левша (переключатель в профиле, body.left-handed — см. script.js) —
      тот же блок кнопок зеркалится к левому краю экрана */
   body.left-handed .header-buttons { right:auto; left:16px; }
+  /* Плавающий кластер кнопок (40px + отступ от низа) лежит ПОВЕРХ обычного
+     потока страницы — без запаса снизу он перекрывал последнюю карточку
+     в билдере, полосу "АПГРЕЙДЫ" в просмотре отряда, текст чек-листа в
+     турнирах и т.п. Запас с одного места — на body, а не на каждый
+     контейнер отдельно, чтобы не забыть какой-то из них при следующей
+     новой странице. */
+  body { padding-bottom: calc(72px + var(--safe-bottom)); }
 }
 /* Пометка «бета-тест» рядом с названием раздела. margin-right:auto прижимает её
    к заголовку, а кнопки топ-бара оставляет у правого края */
@@ -96,6 +103,16 @@ html.tg-app {
 .faction-card:hover { transform:translateY(-4px); box-shadow:0 0 18px rgba(233,69,96,.7); }
 .faction-card.active { border:4px solid #e94560; box-shadow:0 0 18px rgba(233,69,96,.7); }
 .faction-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); height:80px; width:auto; filter:drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
+/* Раньше плитка фракции была голым фото + логотип без единой буквы текста —
+   для новичка угадайка, что за фракция. Подпись снизу слева, там, где
+   и так есть свободное место (иконка справа, вертикально по центру). */
+.faction-card-label {
+  position:absolute; left:16px; bottom:12px; z-index:1;
+  color:#fff; font-family:'Oswald',sans-serif; font-weight:700; font-size:15px;
+  letter-spacing:.5px; text-transform:uppercase;
+  text-shadow:0 1px 3px rgba(0,0,0,.9), 0 0 12px rgba(0,0,0,.8);
+  max-width:calc(100% - 100px);
+}
 
 /* СПИСОК МОДЕЛЕЙ */
 .models-list { display:flex; flex-direction:column; gap:10px; padding:10px 10px calc(10px + var(--safe-bottom)); }
@@ -113,7 +130,9 @@ html.tg-app {
 
 /* Кнопка добавить/удалить — верхний правый угол (только билдер) */
 .mini-card-corner { position:absolute; top:8px; right:8px; display:flex; align-items:center; gap:6px; z-index:10; }
-.add-btn, .remove-btn { width:34px; height:34px; border-radius:50%; font-size:20px; font-weight:bold; border:none; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; flex-shrink:0; }
+/* 40px — тач-цель на уровне остальных круглых кнопок приложения
+   (.compendium-small-btn), было 34px, заметно ниже рекомендуемого минимума */
+.add-btn, .remove-btn { width:40px; height:40px; border-radius:50%; font-size:20px; font-weight:bold; border:none; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; flex-shrink:0; }
 .add-btn { background:#e94560; color:#fff; }
 .add-btn:hover { background:#ff3366; }
 .remove-btn { background:#c00; color:#fff; }
@@ -385,7 +404,7 @@ body.left-handed .close-full { right:auto; left:12px; }
 .faction-icon-small { height:22px; width:auto; margin:0 4px; vertical-align:middle; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,0.6); }
 
 /* ЛИМИТ REP */
-#repLimit { width:64px; height:32px; background:#111; color:#fff; border:2px solid #e94560; border-radius:12px; font-family:'Oswald',sans-serif; font-size:16px; font-weight:bold; text-align:center; margin:0 6px; outline:none; transition:all 0.3s ease; box-shadow:0 4px 12px rgba(233,69,96,0.2); }
+#repLimit { width:64px; height:38px; background:#111; color:#fff; border:2px solid #e94560; border-radius:12px; font-family:'Oswald',sans-serif; font-size:16px; font-weight:bold; text-align:center; margin:0 6px; outline:none; transition:all 0.3s ease; box-shadow:0 4px 12px rgba(233,69,96,0.2); }
 #repLimit:focus { border-color:#ff3366; box-shadow:0 0 20px rgba(233,69,96,0.7); background:#222; }
 #repLimit::-webkit-inner-spin-button, #repLimit::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
 
@@ -483,6 +502,10 @@ body.left-handed .trait-popup-close { right:auto; left:16px; }
 .game-center { align-items:center; text-align:center; }
 .game-panel-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:16px; border-bottom:2px solid #e94560; padding-bottom:8px; }
 .game-note { color:#999; font-size:13px; line-height:1.5; margin:0; }
+/* Список моделей билдера сократился из-за нехватки Rep/Funding — без этой
+   строки список из нескольких моделей выглядел как сломанный каталог,
+   а не как "просто на всех денег не хватает" */
+.budget-hidden-notice { color:#999; font-size:12.5px; line-height:1.5; padding:10px 4px; text-align:center; }
 .game-waiting { color:#ffd700; font-size:14px; }
 .game-select, .game-code-input {
   background:#1e1e1e; color:#fff; border:2px solid #333; border-radius:12px; padding:11px 14px;
@@ -740,6 +763,9 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .tn-st-row { cursor:default; }
 .tn-st-cell { flex-shrink:0; color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:12.5px; min-width:48px; text-align:right; }
 .tn-st-winner { background:#1f1a0a; box-shadow:0 0 12px rgba(255,215,0,.25); }
+/* Строка заголовков колонок таблицы — приглушённая, не как данные */
+.tn-st-header { opacity:.6; padding-top:4px; padding-bottom:4px; }
+.tn-st-header .tn-st-cell { color:#999; font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; }
 .tn-winner-banner {
   background:linear-gradient(90deg, rgba(255,215,0,.12), transparent); border-left:3px solid #ffd700;
   border-radius:0 10px 10px 0; padding:10px 14px; color:#fff; font-size:15px;
