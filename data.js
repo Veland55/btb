@@ -19965,6 +19965,57 @@ const models = [
   ]
 },
 {
+  "name": "Absolute Alfred",
+  "realname": "Alfred Pennyworth",
+  "base": "40mm",
+  "rep": 70,
+  "funding": 850,
+  "rank": [
+    "Henchman"
+  ],
+  "faction": [
+    "Bat Family",
+    "GCPD"
+  ],
+  "img": "img/no.webp",
+  "stats": {
+    "Attack": 4,
+    "Defense": 4,
+    "Strength": "4+",
+    "Movement": 10,
+    "Willpower": 6,
+    "Endurance": 7
+  },
+  "traits": [
+    "Bat Family",
+    "Hacking",
+    "Informer",
+    "Kevlar Vest",
+    "Lieutenant (Absolute Batman)",
+    "Martial Artist",
+    "Paramedic",
+    "Radio",
+    "Veteran",
+    "Weapon Master"
+  ],
+  "weapons": [
+    {
+      "name": "Vulkan M61",
+      "damage": "🩸🩸🩸",
+      "rof": 4,
+      "ammo": 2,
+      "traits": "Anti-Tank / Firearm / Imprecise / M. Range"
+    },
+    {
+      "name": "Combat Machete",
+      "damage": "🩸★",
+      "rof": "-",
+      "ammo": "-",
+      "traits": "Sharp"
+    }
+  ]
+},
+{
   "name": "Sofia Gigante (The Penguin)",
   "realname": "Sofia Falcone Gigante",
   "base": "40mm",
