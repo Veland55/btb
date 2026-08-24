@@ -215,6 +215,7 @@ function organizerViewHTML() {
     <div class="game-panel tn-create-panel">
       <div class="game-panel-title">${t('tn_create_title')}</div>
       <p class="game-note">${t('tn_create_hint')}</p>
+      <input type="text" id="tnName" class="game-select" maxlength="80" placeholder="${t('tn_name_ph')}">
       <input type="text" id="tnAddress" class="game-select" maxlength="120" placeholder="${t('tn_address_ph')}">
       <div class="tn-form-row">
         <label class="tn-form-label">${t('tn_date_start')}</label>
@@ -239,12 +240,13 @@ function organizerViewHTML() {
              placeholder="${t('tn_org_nick_ph')}" value="${tnEsc(currentUser)}">
       <textarea id="tnInfo" class="game-select tn-textarea" maxlength="600" rows="3"
                 placeholder="${t('tn_info_ph')}"></textarea>
-      <button class="rank-select-btn" onclick="createTournament()">${t('tn_create_btn')}</button>
+      <button class="btn-primary" onclick="createTournament()">${t('tn_create_btn')}</button>
     </div>`;
 }
 
 async function createTournament() {
   const body = {
+    name: ($('tnName').value || '').trim() || null,
     address: ($('tnAddress').value || '').trim(),
     dateStart: ($('tnDateStart').value || '').trim(),
     dateEnd: ($('tnDateEnd').value || '').trim() || null,
@@ -268,7 +270,7 @@ async function createTournament() {
 }
 
 async function deleteTournament(id) {
-  if (!confirm(t('tn_confirm_delete'))) return;
+  if (!(await appConfirm(t('tn_confirm_delete')))) return;
   try {
     await api('/api/tournaments/' + id, 'DELETE');
     renderTournaments();
@@ -309,7 +311,7 @@ function tnStatusBadge(tn) {
   if (tn.status === 'active') {
     // Если известно общее число туров — сразу "Тур X из Y" одной фразой,
     // вместо отдельного "осталось туров: 0" рядом, которое на последнем
-    // туре читалось как противоречие с "ИДЁТ ТУР N" (см. roundsLeft ниже).
+    // туре читалось как противоречие с "ИДЁТ ТУР N".
     const label = tn.maxRounds
       ? t('tn_status_active_of', { round: tn.round, max: tn.maxRounds })
       : t('tn_status_active', { round: tn.round });
@@ -367,19 +369,63 @@ function tnRoundPairsHTML(tn, asOrganizer) {
   return '';
 }
 
-// Организатор разбирает спор: обе стороны заявили один и тот же исход
-async function tnResolveDispute(id, round, a, b) {
-  const winner = prompt(t('tn_resolve_prompt', { a, b }), a);
-  if (!winner) return;
-  if (winner !== a && winner !== b) { alert(t('tn_resolve_bad')); return; }
-  const vpWinner = parseInt(prompt(t('tn_resolve_vp', { name: winner }), '0'), 10);
-  const loser = winner === a ? b : a;
-  const vpLoser = parseInt(prompt(t('tn_resolve_vp', { name: loser }), '0'), 10);
-  if (!Number.isInteger(vpWinner) || !Number.isInteger(vpLoser)) { alert(t('tn_resolve_bad')); return; }
-  await tnRun('resolve-' + id, async () => {
-    await api('/api/tournaments/resolve', 'POST', { id, round, winner, vpWinner, vpLoser });
-    await renderTournaments();
-  });
+// Организатор разбирает спор: обе стороны заявили один и тот же исход.
+// Раньше — три подряд идущих нативных prompt() (кто победил → VP победителя →
+// VP проигравшего); теперь одна форма со всеми тремя полями сразу.
+function tnResolveDispute(id, round, a, b) {
+  const overlay = document.createElement('div');
+  overlay.className = 'rank-select-modal';
+  overlay.innerHTML = `
+    <div class="rank-select-content" role="dialog" aria-modal="true" aria-label="${tnEsc(t('tn_resolve_title', { a, b }))}">
+      <div class="rank-select-header">
+        <span>${t('tn_resolve_title', { a: tnEsc(a), b: tnEsc(b) })}</span>
+        <button type="button" class="rank-select-close" aria-label="${tnEsc(t('close_modal'))}">×</button>
+      </div>
+      <div class="app-modal-body">
+        <div class="app-modal-actions">
+          <button type="button" class="rank-select-btn tn-resolve-pick">${tnEsc(a)}</button>
+          <button type="button" class="rank-select-btn tn-resolve-pick">${tnEsc(b)}</button>
+        </div>
+        <div>
+          <label class="tn-resolve-label">${t('tn_resolve_vp_winner_label')}</label>
+          <input type="number" min="0" class="app-modal-input" id="tnResolveVpWinner" value="0">
+        </div>
+        <div>
+          <label class="tn-resolve-label">${t('tn_resolve_vp_loser_label')}</label>
+          <input type="number" min="0" class="app-modal-input" id="tnResolveVpLoser" value="0">
+        </div>
+        <div class="app-modal-actions">
+          <button type="button" class="save-btn app-modal-cancel">${t('cancel')}</button>
+          <button type="button" class="btn-primary app-modal-ok">${t('tn_resolve_submit')}</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  if (typeof trapFocusInOverlay === 'function') trapFocusInOverlay(overlay);
+  overlay.querySelector('.tn-resolve-pick').focus();
+
+  let winner = null;
+  const pickButtons = overlay.querySelectorAll('.tn-resolve-pick');
+  pickButtons[0].onclick = () => { winner = a; pickButtons.forEach((b, i) => b.classList.toggle('active-pick', i === 0)); };
+  pickButtons[1].onclick = () => { winner = b; pickButtons.forEach((btn, i) => btn.classList.toggle('active-pick', i === 1)); };
+
+  const close = () => overlay.remove();
+  overlay.querySelector('.rank-select-close').onclick = close;
+  overlay.querySelector('.app-modal-cancel').onclick = close;
+  overlay.onclick = e => { if (e.target === overlay) close(); };
+  overlay.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  overlay.querySelector('.app-modal-ok').onclick = async () => {
+    if (!winner) { alert(t('tn_resolve_bad')); return; }
+    const vpWinner = parseInt(overlay.querySelector('#tnResolveVpWinner').value, 10);
+    const vpLoser = parseInt(overlay.querySelector('#tnResolveVpLoser').value, 10);
+    if (!Number.isInteger(vpWinner) || !Number.isInteger(vpLoser)) { alert(t('tn_resolve_bad')); return; }
+    const loser = winner === a ? b : a;
+    close();
+    await tnRun('resolve-' + id, async () => {
+      await api('/api/tournaments/resolve', 'POST', { id, round, winner, vpWinner, vpLoser });
+      await renderTournaments();
+    });
+  };
 }
 
 // Таблица турнира: место, игрок, сыграно, победы, Бухгольц, VP; у завершённого — победитель
@@ -461,13 +507,13 @@ function tnReportFormHTML(tn) {
 // tn_round_open — сервер не даёт закрыть тур с несведёнными парами; переспрашиваем
 // и повторяем с force, чтобы организатор мог продолжить осознанно.
 async function tnAction(pathname, body, confirmKey, confirmParams) {
-  if (confirmKey && !confirm(t(confirmKey, confirmParams || {}))) return;
+  if (confirmKey && !(await appConfirm(t(confirmKey, confirmParams || {})))) return;
   return tnRun(pathname + (body.id || ''), async () => {
     try {
       await api(pathname, 'POST', body);
     } catch (e) {
       if (e && e.error === 'tn_round_open') {
-        if (!confirm(t('tn_confirm_force'))) return;
+        if (!(await appConfirm(t('tn_confirm_force')))) return;
         await api(pathname, 'POST', { ...body, force: true });
       } else {
         throw e;
@@ -523,9 +569,9 @@ function tournamentCardHTML(tn, asOrganizer) {
 
   return `
     <div class="game-panel tn-card">
-      <div class="game-panel-title tn-card-title">📍 ${tnEsc(tn.address)}</div>
+      <div class="game-panel-title tn-card-title">${tn.name ? tnEsc(tn.name) : '📍 ' + tnEsc(tn.address)}</div>
       <div class="tn-card-meta">
-        ${tnStatusBadge(tn)} &nbsp; 📅 ${tnDate(tn.dateStart)}${tn.dateEnd ? ' — ' + tnDate(tn.dateEnd) : ''}
+        ${tn.name ? `📍 ${tnEsc(tn.address)} &nbsp;•&nbsp; ` : ''}${tnStatusBadge(tn)} &nbsp; 📅 ${tnDate(tn.dateStart)}${tn.dateEnd ? ' — ' + tnDate(tn.dateEnd) : ''}
         &nbsp;•&nbsp; 👤 ${tnEsc(tn.orgNick)} &nbsp;•&nbsp; #${tn.id}
         ${tn.rosterLockDays ? ` &nbsp;•&nbsp; 🔒 ${t('tn_lock_meta', { days: tn.rosterLockDays })}` : ''}
       </div>
@@ -550,7 +596,7 @@ function tournamentCardHTML(tn, asOrganizer) {
         ${!asOrganizer && isOpen && me ? `<button class="save-btn save-btn-del" onclick="leaveTournament('${tn.id}')">${t('tn_leave')}</button>` : ''}
         ${asOrganizer && isOpen ? `<button class="rank-select-btn tn-org-btn" onclick="startTournament('${tn.id}')">▶ ${t('tn_start')}</button>` : ''}
         ${asOrganizer && tn.status === 'active' ? `
-          ${roundsLeft ? `<button class="rank-select-btn tn-org-btn" onclick="nextTournamentRound('${tn.id}')">⏭ ${t('tn_next_round')}</button>` : ''}
+          ${(!tn.maxRounds || tn.round < tn.maxRounds) ? `<button class="rank-select-btn tn-org-btn" onclick="nextTournamentRound('${tn.id}')">⏭ ${t('tn_next_round')}</button>` : ''}
           <button class="rank-select-btn tn-org-btn" onclick="finishTournament('${tn.id}')">🏁 ${t('tn_finish')}</button>` : ''}
         ${asOrganizer ? `<button class="save-btn save-btn-del" onclick="deleteTournament('${tn.id}')">✕ ${t('tn_delete')}</button>` : ''}
       </div>
@@ -565,8 +611,8 @@ function joinTournament(id) {
   });
 }
 
-function leaveTournament(id) {
-  if (!confirm(t('tn_confirm_leave'))) return;
+async function leaveTournament(id) {
+  if (!(await appConfirm(t('tn_confirm_leave')))) return;
   return tnRun('leave' + id, async () => {
     await api('/api/tournaments/leave', 'POST', { id });
     if (tnRostersOpenId === id) tnRostersOpenId = null;
@@ -673,7 +719,7 @@ async function submitTournamentRosters(id) {
   const R = TOURNAMENT_RULES;
   const stats = [tournamentRosterStats(s1), tournamentRosterStats(s2)];
   const legal = stats.every(st => st.rep <= R.repLimit && st.funding <= R.fundingLimit && st.cards === R.objectiveCards);
-  if (!legal && !confirm(t('tn_confirm_illegal'))) return;
+  if (!legal && !(await appConfirm(t('tn_confirm_illegal')))) return;
 
   const notes = ($(`tnNotes-${id}`).value || '').trim() || null;
   try {

@@ -104,6 +104,7 @@ db.exec(`
     created     INTEGER NOT NULL,
     organizer   TEXT NOT NULL,
     org_nick    TEXT NOT NULL,
+    name        TEXT,
     address     TEXT NOT NULL,
     date_start  TEXT NOT NULL,
     date_end    TEXT,
@@ -164,10 +165,17 @@ const MIGRATIONS = [
   // видели друг друга; track_updated — таймстемп последней записи, чтобы клиент
   // отличал "это моя же правка вернулась поллингом" от "это опубликовал оппонент"
   'ALTER TABLE games ADD COLUMN track TEXT',
-  'ALTER TABLE games ADD COLUMN track_updated INTEGER NOT NULL DEFAULT 0'
+  'ALTER TABLE games ADD COLUMN track_updated INTEGER NOT NULL DEFAULT 0',
+  // Название турнира — раньше карточка отличалась только по адресу, что не
+  // спасало, если в одном клубе идёт несколько турниров одновременно
+  'ALTER TABLE tournaments ADD COLUMN name TEXT'
 ];
 for (const stmt of MIGRATIONS) {
-  try { db.exec(stmt); } catch (e) { /* колонка уже есть */ }
+  // Глушим только ожидаемую ошибку ("колонка уже есть" — миграция уже применена
+  // раньше); любая другая (опечатка в имени таблицы, диск полон, нет прав) раньше
+  // проглатывалась молча и оставляла схему сломанной без единого сигнала об этом
+  try { db.exec(stmt); }
+  catch (e) { if (!/duplicate column name/i.test(e.message || '')) throw e; }
 }
 db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_telegram_id ON users (telegram_id) WHERE telegram_id IS NOT NULL');
 
@@ -184,6 +192,11 @@ db.prepare = sql => {
   return st;
 };
 
+// node:sqlite бросает обычный Error с текстом SQLite на UNIQUE-конфликт —
+// используется там, где между проверкой "занято ли имя" и INSERT есть await
+// (scrypt-хэш пароля), т.е. окно для гонки параллельных запросов
+const isUniqueViolation = e => typeof e.message === 'string' && /UNIQUE constraint failed/.test(e.message);
+
 // Постоянные счётчики (игры живут в базе сутки, а статистике нужен итог за всё время)
 function bumpCounter(name) {
   db.prepare('INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT(name) DO UPDATE SET value = value + 1').run(name);
@@ -199,11 +212,25 @@ function getCounter(name) {
 const resetRequestTimes = new Map();
 
 // Периодическая чистка протухших сессий, игр и кодов восстановления — база не разрастается
-function cleanup() {
+// DatabaseSync синхронный: один DELETE на сотни тысяч просроченных строк (при
+// накоплении за 30-дневный TTL сессий на активном деплое) блокирует event loop
+// на всё время своей работы — а вместе с ним и ЛЮБОЙ другой запрос в процессе.
+// Чистим пачками с уступкой event loop между ними (setTimeout 0), а не одним
+// синхронным вызовом на всю таблицу сразу.
+function cleanupBatch(sql, param) {
+  return new Promise(resolve => {
+    (function step() {
+      const changes = db.prepare(sql).run(param, 1000).changes;
+      if (changes < 1000) { resolve(); return; }
+      setTimeout(step, 0);
+    })();
+  });
+}
+async function cleanup() {
   const now = Date.now();
-  db.prepare('DELETE FROM sessions WHERE created < ?').run(now - SESSION_TTL_MS);
-  db.prepare('DELETE FROM games WHERE created < ?').run(now - GAME_TTL_MS);
-  db.prepare('DELETE FROM password_resets WHERE created < ?').run(now - RESET_CODE_TTL_MS);
+  await cleanupBatch('DELETE FROM sessions WHERE rowid IN (SELECT rowid FROM sessions WHERE created < ? LIMIT ?)', now - SESSION_TTL_MS);
+  await cleanupBatch('DELETE FROM games WHERE rowid IN (SELECT rowid FROM games WHERE created < ? LIMIT ?)', now - GAME_TTL_MS);
+  await cleanupBatch('DELETE FROM password_resets WHERE rowid IN (SELECT rowid FROM password_resets WHERE created < ? LIMIT ?)', now - RESET_CODE_TTL_MS);
   for (const [name, ts] of resetRequestTimes) {
     if (now - ts > 3600 * 1000) resetRequestTimes.delete(name);
   }
@@ -349,7 +376,22 @@ function hashPassword(salt, password) {
 // целый клуб за одним NAT-адресом иначе упирался бы в лимит на ровном месте.
 const AUTH_MAX_FAILS = 20;                         // неудач в минуту с одного адреса
 const authHits = new Map();
-const authIp = req => req.socket.remoteAddress || '?';
+// В штатной продакшн-топологии (см. README: nginx проксирует на 127.0.0.1:PORT)
+// req.socket.remoteAddress для КАЖДОГО запроса — это сам nginx (127.0.0.1), а не
+// браузер клиента: троттлинг по IP становится общим на весь сайт под одним
+// ключом. TRUST_PROXY=1 включает чтение X-Real-IP/первого адреса из
+// X-Forwarded-For — ставить его ТОЛЬКО когда сервер реально стоит за таким
+// прокси (иначе клиент подделывает заголовок и обходит троттлинг напрямую)
+const TRUST_PROXY = process.env.TRUST_PROXY === '1';
+const authIp = req => {
+  if (TRUST_PROXY) {
+    const real = req.headers['x-real-ip'];
+    if (typeof real === 'string' && real) return real;
+    const fwd = req.headers['x-forwarded-for'];
+    if (typeof fwd === 'string' && fwd) return fwd.split(',')[0].trim();
+  }
+  return req.socket.remoteAddress || '?';
+};
 
 function authThrottled(req) {
   const e = authHits.get(authIp(req));
@@ -367,18 +409,57 @@ function authSucceeded(req) { authHits.delete(authIp(req)); }
 // JSON-ответ. Крупные ответы (списки турниров, статистика) сжимаем: это
 // экономит десятки процентов трафика при поллинге. res.req — сам запрос,
 // его подставляет http-сервер, отдельный аргумент во все вызовы не нужен.
+// Заголовки harden'а, общие для всех ответов. CSP допускает 'unsafe-inline' для
+// script/style, т.к. весь фронтенд построен на onclick="..." и inline style —
+// переписывать это на addEventListener вне рамок текущей задачи; но
+// object-src/base-uri/frame-ancestors уже дают реальную защиту (clickjacking,
+// сторонние <object>/<base>). frame-ancestors разрешает встраивание только в
+// собственный ориджин и клиенты Telegram — приложение работает как Mini App
+// именно во встроенном webview web.telegram.org
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'no-referrer',
+  // index.html/compendium.html/rules.html все грузят Google Fonts (шрифты Oswald/
+  // Inter) — стиль с fonts.googleapis.com и сами файлы шрифтов с fonts.gstatic.com,
+  // без явных style-src/font-src эти домены попали бы под default-src 'self' и шрифт
+  // молча переставал бы грузиться (браузер просто откатывается на fallback-шрифт,
+  // без видимой ошибки в UI — легко было бы не заметить при поверхностной проверке)
+  'Content-Security-Policy': "default-src 'self'; base-uri 'none'; object-src 'none'; "
+    + "img-src 'self' data:; script-src 'self' https://telegram.org 'unsafe-inline'; "
+    + "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; "
+    + "frame-ancestors 'self' https://web.telegram.org https://telegram.org"
+};
+
+// Простая проверка Accept-Encoding с учётом q=0 (клиент, явно отключивший
+// кодирование через "br;q=0", раньше всё равно получал brotli — substring-тест
+// видел "br" в строке и не смотрел на q-значение)
+function acceptsEncoding(accept, encoding) {
+  const qOf = token => {
+    for (const part of accept.split(',')) {
+      const [tokenRaw, ...params] = part.trim().split(';');
+      if (tokenRaw.trim().toLowerCase() !== token) continue;
+      const qParam = params.map(p => p.trim()).find(p => p.startsWith('q='));
+      return qParam ? parseFloat(qParam.slice(2)) : 1;
+    }
+    return null;
+  };
+  const exact = qOf(encoding);
+  const q = exact !== null ? exact : qOf('*');
+  return q !== null && q > 0;
+}
+
 function send(res, code, obj) {
   const body = Buffer.from(JSON.stringify(obj), 'utf8');
   const head = {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store',
     'Vary': 'Accept-Encoding',
-    'X-Content-Type-Options': 'nosniff'
+    ...SECURITY_HEADERS
   };
   const accept = (res.req && res.req.headers['accept-encoding']) || '';
   const enc = body.length < 1024 ? null
-            : /\bbr\b/.test(accept) ? 'br'
-            : /\bgzip\b/.test(accept) ? 'gzip' : null;
+            : acceptsEncoding(accept, 'br') ? 'br'
+            : acceptsEncoding(accept, 'gzip') ? 'gzip' : null;
   if (!enc) {
     head['Content-Length'] = body.length;
     res.writeHead(code, head);
@@ -396,15 +477,27 @@ function send(res, code, obj) {
 function readBody(req) {
   return new Promise((resolve, reject) => {
     let size = 0;
+    let tooLarge = false;
     const chunks = [];
     req.on('data', c => {
+      if (tooLarge) return; // остаток тела молча отбрасываем, ответ 413 уже готовится
       size += c.length;
-      if (size > MAX_BODY) { reject(new Error('too_large')); req.destroy(); return; }
+      // req.destroy() тут же рвал соединение — клиент получал голый connection
+      // reset вместо HTTP 413 (curl: "Empty reply from server"), т.к. сокет
+      // закрывался раньше, чем внешний catch успевал отправить ответ
+      if (size > MAX_BODY) { tooLarge = true; reject(new Error('too_large')); return; }
       chunks.push(c);
     });
     req.on('end', () => {
-      try { resolve(chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {}); }
-      catch (e) { reject(new Error('bad_json')); }
+      if (tooLarge) return;
+      let parsed;
+      try { parsed = chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {}; }
+      catch (e) { reject(new Error('bad_json')); return; }
+      if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        reject(new Error('bad_json'));
+        return;
+      }
+      resolve(parsed);
     });
     req.on('error', reject);
   });
@@ -449,7 +542,11 @@ function verifyTelegramInitData(initData) {
   } catch (e) { return null; }
 }
 
-const validName = n => typeof n === 'string' && /^[\w\-. А-Яа-яЁё]{3,20}$/.test(n);
+// __proto__/constructor/prototype как имя ломает сведение результатов турнира
+// (obj[user] = ... подменяет прототип вместо обычного свойства) — запрещаем явно
+const RESERVED_NAMES = new Set(['__proto__', 'constructor', 'prototype']);
+const validName = n => typeof n === 'string' && /^[\w\-. А-Яа-яЁё]{3,20}$/.test(n)
+  && !RESERVED_NAMES.has(n.toLowerCase());
 const validPass = p => typeof p === 'string' && p.length >= 4 && p.length <= 64;
 
 // Имя как его ввёл пользователь → каноничный вид для проверок:
@@ -469,12 +566,25 @@ const validCountry = c => c == null || (typeof c === 'string' && /^[A-Z]{2}$/.te
 const validEmail = e => typeof e === 'string' && e.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
 // Валидация ростера/сохранения (компактный формат из auth.js)
+// Ростер попадает в игровую комнату и рендерится другому игроку — запрещаем
+// угловые скобки во всех текстовых полях (защита от XSS на случай, если клиент
+// когда-нибудь забудет экранировать при выводе)
+// Элемент снаряжения: имя строкой, либо [имя, стоимостьFunding, стоимостьRep]
+// (см. serializeCrew в auth.js) — оба варианта попадают в DOM у соперника
+const validEquipItem = it =>
+  (typeof it === 'string' && it.length <= 80 && !/[<>]/.test(it))
+  || (Array.isArray(it) && typeof it[0] === 'string' && it[0].length <= 80 && !/[<>]/.test(it[0])
+      && (it[1] == null || typeof it[1] === 'number') && (it[2] == null || typeof it[2] === 'number'));
 function validSave(s) {
   return s && typeof s === 'object'
-    && typeof s.n === 'string' && s.n.length <= 60
-    && typeof s.f === 'string' && s.f.length <= 40
+    && typeof s.n === 'string' && s.n.length <= 60 && !/[<>]/.test(s.n)
+    && typeof s.f === 'string' && s.f.length <= 40 && !/[<>]/.test(s.f)
     && Array.isArray(s.m) && s.m.length >= 1 && s.m.length <= 40
-    && s.m.every(e => Array.isArray(e) && typeof e[0] === 'string' && e[0].length <= 80);
+    && s.m.every(e => Array.isArray(e)
+      && typeof e[0] === 'string' && e[0].length <= 80 && !/[<>]/.test(e[0])
+      && typeof e[1] === 'string' && e[1].length <= 20 && !/[<>]/.test(e[1])
+      && (e[2] == null || (Array.isArray(e[2]) && e[2].length <= 20 && e[2].every(validEquipItem)))
+      && (e[3] == null || typeof e[3] === 'number'));
 }
 function validSavesArray(arr) {
   return Array.isArray(arr) && arr.length <= MAX_SAVES
@@ -524,7 +634,7 @@ function validConditions(c) {
   if (c == null) return true;
   return typeof c === 'object' && !Array.isArray(c)
     && Object.keys(c).every(k => ['ev', 'en'].includes(k))
-    && ['ev', 'en'].every(k => c[k] == null || (typeof c[k] === 'string' && c[k].length <= 60));
+    && ['ev', 'en'].every(k => c[k] == null || (typeof c[k] === 'string' && c[k].length <= 60 && !/[<>]/.test(c[k])));
 }
 
 // ======================== ТУРНИРЫ ========================
@@ -542,6 +652,7 @@ function validTournament(tn) {
     && reqStr(tn.address, 120)
     && !/[<>]/.test(tn.address)                 // адрес попадает в публичную статистику
     && !/[<>]/.test(tn.orgNick || '')
+    && optStr(tn.name, 80) && !/[<>]/.test(tn.name || '')
     && reqStr(tn.dateStart, 40) && validDate(tn.dateStart)
     && optStr(tn.dateEnd, 40)
     && (tn.dateEnd == null || tn.dateEnd === '' ||
@@ -715,6 +826,7 @@ function tournamentToJSON(tn, user, opts) {
     created: tn.created,
     organizer: tn.organizer,
     orgNick: tn.org_nick,
+    name: tn.name || null,
     address: tn.address,
     dateStart: tn.date_start,
     dateEnd: tn.date_end || null,
@@ -769,8 +881,14 @@ async function handleApi(req, res, url) {
     if (email != null && !validEmail(email)) return send(res, 400, { error: 'input' });
     if (userNameTaken(name)) { authFailed(req); return send(res, 409, { error: 'exists' }); }
     const salt = crypto.randomBytes(8).toString('hex');
-    db.prepare('INSERT INTO users (name, salt, hash, created, email) VALUES (?, ?, ?, ?, ?)')
-      .run(name, salt, await hashPassword(salt, pass), Date.now(), email);
+    const hash = await hashPassword(salt, pass); // ~40мс scrypt — окно для гонки с параллельной регистрацией того же имени
+    try {
+      db.prepare('INSERT INTO users (name, salt, hash, created, email) VALUES (?, ?, ?, ?, ?)')
+        .run(name, salt, hash, Date.now(), email);
+    } catch (e) {
+      if (isUniqueViolation(e)) { authFailed(req); return send(res, 409, { error: 'exists' }); }
+      throw e;
+    }
     return send(res, 200, { token: createSession(name), name, country: null, email });
   }
 
@@ -811,9 +929,17 @@ async function handleApi(req, res, url) {
       // Аккаунт telegram-only: пароль случайный и никому не известен, вход только через бота
       const salt = crypto.randomBytes(8).toString('hex');
       const randomPass = crypto.randomBytes(32).toString('hex');
-      db.prepare('INSERT INTO users (name, salt, hash, created, telegram_id) VALUES (?, ?, ?, ?, ?)')
-        .run(name, salt, await hashPassword(salt, randomPass), Date.now(), telegramId);
-      row = { name, country: null, email: null };
+      const hash = await hashPassword(salt, randomPass); // await-разрыв — окно для гонки при двойном тапе в Mini App
+      try {
+        db.prepare('INSERT INTO users (name, salt, hash, created, telegram_id) VALUES (?, ?, ?, ?, ?)')
+          .run(name, salt, hash, Date.now(), telegramId);
+        row = { name, country: null, email: null };
+      } catch (e) {
+        if (!isUniqueViolation(e)) throw e;
+        // Параллельный запрос уже создал аккаунт для этого telegram_id — просто входим в него
+        row = db.prepare('SELECT name, country, email FROM users WHERE telegram_id = ?').get(telegramId);
+        if (!row) throw e;
+      }
     }
     authSucceeded(req);
     return send(res, 200, { token: createSession(row.name), name: row.name, country: row.country || null, email: row.email || null });
@@ -830,28 +956,27 @@ async function handleApi(req, res, url) {
     const body = await readBody(req);
     const name = normName(body.name);
     if (!validName(name)) return send(res, 400, { error: 'input' });
+    // Ответ намеренно одинаков независимо от того, существует ли юзер и указан
+    // ли у него email — иначе статус/тело ответа становится оракулом для
+    // перебора логинов и раскрывает наличие email на аккаунте (см. аудит безопасности)
     const row = db.prepare('SELECT email FROM users WHERE name = ?').get(name);
-    if (!row) return send(res, 404, { error: 'reset_user_notfound' });
-    if (!row.email) return send(res, 400, { error: 'reset_no_email' });
-    if (resetRateLimited(name)) return send(res, 429, { error: 'reset_rate_limited' });
-    resetRequestTimes.set(name, Date.now());
-
-    const code = generateResetCode();
-    db.prepare(`INSERT INTO password_resets (user, code_hash, created, attempts) VALUES (?, ?, ?, 0)
-                ON CONFLICT(user) DO UPDATE SET code_hash = excluded.code_hash, created = excluded.created, attempts = 0`)
-      .run(name, hashResetCode(code), Date.now());
-
-    try {
-      const sent = await sendMail({
-        to: row.email,
-        subject: 'BMG Crew Builder — код восстановления пароля',
-        text: `Код для сброса пароля аккаунта "${name}": ${code}\n\n`
-          + `Код действителен 15 минут. Если вы не запрашивали сброс пароля — просто проигнорируйте это письмо.`
-      });
-      if (!sent) console.log(`[mail] SMTP не настроен — код восстановления для "${name}" (${row.email}): ${code}`);
-    } catch (e) {
-      console.error('Ошибка отправки письма восстановления пароля:', e.message);
-      return send(res, 500, { error: 'reset_mail_failed' });
+    if (row && row.email && !resetRateLimited(name)) {
+      resetRequestTimes.set(name, Date.now());
+      const code = generateResetCode();
+      db.prepare(`INSERT INTO password_resets (user, code_hash, created, attempts) VALUES (?, ?, ?, 0)
+                  ON CONFLICT(user) DO UPDATE SET code_hash = excluded.code_hash, created = excluded.created, attempts = 0`)
+        .run(name, hashResetCode(code), Date.now());
+      try {
+        const sent = await sendMail({
+          to: row.email,
+          subject: 'BMG Crew Builder — код восстановления пароля',
+          text: `Код для сброса пароля аккаунта "${name}": ${code}\n\n`
+            + `Код действителен 15 минут. Если вы не запрашивали сброс пароля — просто проигнорируйте это письмо.`
+        });
+        if (!sent) console.log(`[mail] SMTP не настроен — код восстановления для "${name}" (${row.email}): ${code}`);
+      } catch (e) {
+        console.error('Ошибка отправки письма восстановления пароля:', e.message);
+      }
     }
     return send(res, 200, { ok: true });
   }
@@ -1140,19 +1265,23 @@ async function handleApi(req, res, url) {
   }
 
   // --- Турниры ---
-  // Лента турниров. ?scope=mine — все свои (организатор + участие), без лимита;
+  // Лента турниров. ?scope=mine — свои (организатор + участие), тоже постранично
+  // (у постоянного организатора клуба со временем накапливаются сотни турниров —
+  // без лимита весь список улетал клиенту целиком при каждом открытии вкладки);
   // иначе страница общего списка. Ростеры в списке не отдаются — их тянет
   // /api/tournaments/:id при открытии карточки.
   if (p === '/api/tournaments' && req.method === 'GET') {
     const scope = url.searchParams.get('scope');
     const limit = Math.min(Math.max(parseInt(url.searchParams.get('limit'), 10) || 50, 1), 100);
     const offset = Math.max(parseInt(url.searchParams.get('offset'), 10) || 0, 0);
+    const mineWhere = `organizer = ? OR id IN (SELECT tid FROM tournament_players WHERE user = ?)`;
     const rows = scope === 'mine'
-      ? db.prepare(`SELECT * FROM tournaments WHERE organizer = ?
-                      OR id IN (SELECT tid FROM tournament_players WHERE user = ?)
-                    ORDER BY created DESC`).all(user, user)
+      ? db.prepare(`SELECT * FROM tournaments WHERE ${mineWhere}
+                    ORDER BY created DESC LIMIT ? OFFSET ?`).all(user, user, limit, offset)
       : db.prepare('SELECT * FROM tournaments ORDER BY created DESC LIMIT ? OFFSET ?').all(limit, offset);
-    const total = db.prepare('SELECT COUNT(*) AS c FROM tournaments').get().c;
+    const total = scope === 'mine'
+      ? db.prepare(`SELECT COUNT(*) AS c FROM tournaments WHERE ${mineWhere}`).get(user, user).c
+      : db.prepare('SELECT COUNT(*) AS c FROM tournaments').get().c;
     return send(res, 200, {
       tournaments: rows.map(tn => tournamentToJSON(tn, user, { rosters: false })),
       total, offset, limit
@@ -1175,9 +1304,10 @@ async function handleApi(req, res, url) {
     if (mine >= MAX_TOURNAMENTS_PER_ORG) return send(res, 400, { error: 'tn_limit' });
     const id = newCode('tournaments', 'id');
     if (!id) return send(res, 500, { error: 'server' });
-    db.prepare(`INSERT INTO tournaments (id, created, organizer, org_nick, address, date_start,
-                  date_end, max_players, reserve, info, roster_lock_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-      .run(id, Date.now(), user, tn.orgNick.trim(), tn.address.trim(), tn.dateStart.trim(),
+    db.prepare(`INSERT INTO tournaments (id, created, organizer, org_nick, name, address, date_start,
+                  date_end, max_players, reserve, info, roster_lock_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(id, Date.now(), user, tn.orgNick.trim(), tn.name ? tn.name.trim() || null : null,
+           tn.address.trim(), tn.dateStart.trim(),
            tn.dateEnd ? tn.dateEnd.trim() : null, tn.maxPlayers, tn.reserve,
            tn.info ? tn.info.trim() : null, tn.rosterLockDays);
     return send(res, 200, { id });
@@ -1245,12 +1375,19 @@ async function handleApi(req, res, url) {
     if (tn.status !== 'open') return send(res, 400, { error: 'input' });
     if (names.length < 2) return send(res, 400, { error: 'tn_few' });
     // Фиксируем основной состав: с этого момента порядок регистрации ничего
-    // не меняет, а резерв в пары не попадает
-    const seatStmt = db.prepare('UPDATE tournament_players SET seat = ? WHERE tid = ? AND user = ?');
-    names.forEach((n, i) => seatStmt.run(i, tn.id, n));
+    // не меняет, а резерв в пары не попадает. Транзакция — без неё падение
+    // процесса между рассадкой игроков и переводом турнира в 'active' оставляло
+    // часть игроков с местом при статусе всё ещё 'open', и новый игрок мог
+    // присоединиться к уже стартовавшему туру
     const rounds = pushRound(tn, names);
-    db.prepare("UPDATE tournaments SET status = 'active', round = 1, rounds = ? WHERE id = ?")
-      .run(JSON.stringify(rounds), tn.id);
+    db.exec('BEGIN');
+    try {
+      const seatStmt = db.prepare('UPDATE tournament_players SET seat = ? WHERE tid = ? AND user = ?');
+      names.forEach((n, i) => seatStmt.run(i, tn.id, n));
+      db.prepare("UPDATE tournaments SET status = 'active', round = 1, rounds = ? WHERE id = ?")
+        .run(JSON.stringify(rounds), tn.id);
+      db.exec('COMMIT');
+    } catch (e) { db.exec('ROLLBACK'); throw e; }
     return send(res, 200, tournamentToJSON(db.prepare('SELECT * FROM tournaments WHERE id = ?').get(tn.id), user));
   }
 
@@ -1377,8 +1514,17 @@ async function handleApi(req, res, url) {
     const tn = db.prepare('SELECT * FROM tournaments WHERE id = ?').get(tnDeleteMatch[1].toUpperCase());
     if (!tn) return send(res, 404, { error: 'notfound' });
     if (tn.organizer !== user) return send(res, 403, { error: 'auth' });
-    db.prepare('DELETE FROM tournament_players WHERE tid = ?').run(tn.id);
-    db.prepare('DELETE FROM tournaments WHERE id = ?').run(tn.id);
+    // Транзакция: без неё падение между двумя DELETE могло оставить либо
+    // осиротевших tournament_players (турнир уже удалён), либо, при обратном
+    // порядке, турнир без игроков — порядок ниже выбран так, чтобы недоделанное
+    // удаление было безопаснее (осиротевшие игроки, а не турнир-призрак), но
+    // транзакция избавляет от этого выбора вообще
+    db.exec('BEGIN');
+    try {
+      db.prepare('DELETE FROM tournament_players WHERE tid = ?').run(tn.id);
+      db.prepare('DELETE FROM tournaments WHERE id = ?').run(tn.id);
+      db.exec('COMMIT');
+    } catch (e) { db.exec('ROLLBACK'); throw e; }
     return send(res, 200, { ok: true });
   }
 
@@ -1405,11 +1551,18 @@ const MIME = {
 // Что не отдаём наружу никогда
 const DENY = [/^\/data(\/|$)/i, /^\/server\.js$/i, /^\/\.git(\/|$)/i, /\.db(-|$)/i, /^\/node_modules(\/|$)/i, /^\/\.env$/i];
 
+// Текстовый ответ об ошибке статики — с теми же security-заголовками, что и
+// у обычных ответов (раньше отдавались вообще без Content-Type/nosniff)
+function staticErr(res, code, text) {
+  res.writeHead(code, { 'Content-Type': 'text/plain; charset=utf-8', ...SECURITY_HEADERS });
+  res.end(text);
+}
+
 function serveStatic(req, res, url) {
   let pathname;
   try { pathname = decodeURIComponent(url.pathname); }
-  catch (e) { res.writeHead(400); return res.end('Bad request'); }        // битый %-escape
-  if (pathname.indexOf('\0') !== -1) { res.writeHead(400); return res.end('Bad request'); }
+  catch (e) { return staticErr(res, 400, 'Bad request'); }        // битый %-escape
+  if (pathname.indexOf('\0') !== -1) { return staticErr(res, 400, 'Bad request'); }
   if (pathname === '/') pathname = '/index.html';
 
   // ВАЖЕН ПОРЯДОК: сначала нормализуем путь, и только потом проверяем DENY.
@@ -1417,12 +1570,12 @@ function serveStatic(req, res, url) {
   // decodeURIComponent превращался в "/a/../server.js" — этот вид не совпадал
   // ни с одним якорным правилом DENY и отдавал исходники (включая .git).
   const filePath = path.normalize(path.join(ROOT, pathname));
-  if (filePath !== ROOT && !filePath.startsWith(ROOT + path.sep)) { res.writeHead(403); return res.end('Forbidden'); }
+  if (filePath !== ROOT && !filePath.startsWith(ROOT + path.sep)) { return staticErr(res, 403, 'Forbidden'); }
   const rel = '/' + path.relative(ROOT, filePath).split(path.sep).join('/');
-  if (DENY.some(rx => rx.test(rel))) { res.writeHead(404); return res.end('Not found'); }
+  if (DENY.some(rx => rx.test(rel))) { return staticErr(res, 404, 'Not found'); }
 
   fs.stat(filePath, (err, st) => {
-    if (err || !st.isFile()) { res.writeHead(404); return res.end('Not found'); }
+    if (err || !st.isFile()) { return staticErr(res, 404, 'Not found'); }
 
     const mtime = new Date(st.mtimeMs);
     mtime.setMilliseconds(0);
@@ -1446,8 +1599,8 @@ function serveStatic(req, res, url) {
     // Brotli на quality 5: почти как gzip по цене и заметно лучше по размеру.
     const accept = req.headers['accept-encoding'] || '';
     const enc = (isImage || st.size < 1024) ? null
-              : /\bbr\b/.test(accept) ? 'br'
-              : /\bgzip\b/.test(accept) ? 'gzip' : null;
+              : acceptsEncoding(accept, 'br') ? 'br'
+              : acceptsEncoding(accept, 'gzip') ? 'gzip' : null;
 
     const head = {
       'Content-Type': mime,
@@ -1455,7 +1608,7 @@ function serveStatic(req, res, url) {
       'ETag': etag,
       'Cache-Control': cache,
       'Vary': 'Accept-Encoding',
-      'X-Content-Type-Options': 'nosniff'
+      ...SECURITY_HEADERS
     };
     if (enc) head['Content-Encoding'] = enc; else head['Content-Length'] = st.size;
     res.writeHead(200, head);
@@ -1484,11 +1637,15 @@ const server = http.createServer(async (req, res) => {
     } else if (req.method === 'GET' || req.method === 'HEAD') {
       serveStatic(req, res, url);
     } else {
-      res.writeHead(405);
-      res.end();
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', 'Allow': 'GET, HEAD', ...SECURITY_HEADERS });
+      res.end('Method Not Allowed');
     }
   } catch (e) {
     const code = e.message === 'too_large' ? 413 : e.message === 'bad_json' ? 400 : 500;
+    // Без этого лога любая необработанная ошибка в handleApi (баг в коде,
+    // сбой БД, неожиданный ввод) была видна клиенту только как "500 server" и
+    // нигде не оставляла следа — отличить ожидаемую 500 от реального бага было нечем
+    if (code === 500) console.error(e);
     try { send(res, code, { error: 'server' }); } catch (_) { /* соединение уже закрыто */ }
   }
 });

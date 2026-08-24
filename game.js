@@ -8,6 +8,7 @@
 
 const GAME_CODE_KEY = 'bmg_game_code';
 let gamePollTimer = null;
+let gamePollBackoff = 0; // растёт при ошибках поллинга (см. scheduleTnPoll в tournaments.js — тот же приём)
 let activeGame = null; // последнее полученное состояние игры
 let gamePlayTab = 'cards'; // активная вкладка экрана партии: cards | me | opp
 
@@ -25,16 +26,41 @@ let gameTrackPushTimer = null;
 // оба клиента вечно перекидывались бы одним и тем же состоянием по поллингу.
 let skipNextTrackPush = false;
 
+// Точка у кода игры (см. .game-play-code): без неё во время обмена счётом
+// игрок не знал, отправилась ли только что нанесённая правка и увидит ли её
+// оппонент, или это ещё не улетело — обновление приходит поллингом раз в 5с.
+// Статус раньше передавался только цветом точки (WCAG 1.4.1) и title-тултипом,
+// который на тач-устройстве (это Telegram Mini App) почти никогда не всплывает —
+// добавлен текстовый лейбл рядом, видимый и озвучиваемый скринридером
+function setSyncIndicator(state) {
+  const dot = document.getElementById('gameSyncDot');
+  const label = document.getElementById('gameSyncLabel');
+  if (!dot) return;
+  dot.className = 'game-sync-dot' + (state ? ' game-sync-' + state : '');
+  if (label) label.textContent = state === 'pending' ? t('game_sync_pending') : state === 'synced' ? t('game_sync_synced') : '';
+  clearTimeout(setSyncIndicator._t);
+  if (state === 'synced') {
+    setSyncIndicator._t = setTimeout(() => {
+      dot.className = 'game-sync-dot';
+      if (label) label.textContent = '';
+    }, 1500);
+  }
+}
+
 function pushGameTrackToServer() {
   if (!activeGame) return;
   clearTimeout(gameTrackPushTimer);
+  setSyncIndicator('pending');
   // Дебаунс: серия быстрых кликов (+/- по несколько раз подряд) шлёт один
   // запрос по затишью, а не запрос на каждый клик
   gameTrackPushTimer = setTimeout(async () => {
     try {
       const { trackUpdated } = await api('/api/games/' + activeGame.code + '/track', 'POST', { track: gameTrack });
       lastAppliedTrackUpdated = trackUpdated;
-    } catch (e) { /* партия истекла или сеть подвела — локально всё равно сохранено */ }
+      setSyncIndicator('synced');
+    } catch (e) {
+      setSyncIndicator(null); // партия истекла или сеть подвела — локально всё равно сохранено
+    }
   }, 600);
 }
 
@@ -143,7 +169,9 @@ function showGameConditionByIndex(type) {
 function showGameCondition(type, name) {
   const card = typeof GAME_EVENTS !== 'undefined' ? conditionPool(type).find(c => c.name === name) : null;
   if (card) showTraitPopup(conditionTitle(type, card), conditionPopupBody(type, card), false);
-  else showTraitPopup(name, '—', false); // карта не найдена в локальной базе (устаревший клиент)
+  // карта не найдена в локальной базе (устаревший клиент) — name пришло от соперника
+  // через сервер и рендерится showTraitPopup без экранирования, поэтому чистим здесь
+  else showTraitPopup(escHtml(name), '—', false);
 }
 
 // Ряд настройки: подпись, выбор карты, переброс, просмотр
@@ -167,9 +195,9 @@ function conditionRowHTML(type) {
 function conditionsChipsHTML(conditions) {
   if (!conditions || (!conditions.ev && !conditions.en)) return '';
   const chip = (type, name) => name ? `
-    <span class="game-cond-chip" onclick="showGameCondition('${type}', '${name.replace(/'/g, "\\'")}')"
-          title="${conditionTypeLabel(type)}: ${name}">
-      <b>${t(type === 'ev' ? 'game_chip_ev' : 'game_chip_en')}</b><span class="game-cond-chip-name">${name}</span>
+    <span class="game-cond-chip" onclick="${escHtml(`showGameCondition('${type}', '${name.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}')`)}"
+          title="${escHtml(`${conditionTypeLabel(type)}: ${name}`)}">
+      <b>${t(type === 'ev' ? 'game_chip_ev' : 'game_chip_en')}</b><span class="game-cond-chip-name">${escHtml(name)}</span>
     </span>` : '';
   return chip('ev', conditions.ev) + chip('en', conditions.en);
 }
@@ -180,9 +208,9 @@ function conditionsChipsHTML(conditions) {
 function conditionsBarHTML(conditions) {
   if (!conditions || (!conditions.ev && !conditions.en)) return '';
   const card = (type, name) => name ? `
-    <div class="game-cond-card" onclick="showGameCondition('${type}', '${name.replace(/'/g, "\\'")}')">
+    <div class="game-cond-card" onclick="${escHtml(`showGameCondition('${type}', '${name.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}')`)}">
       <div class="game-cond-card-label">${conditionTypeLabel(type)}</div>
-      <div class="game-cond-card-name">${name}</div>
+      <div class="game-cond-card-name">${escHtml(name)}</div>
       <div class="game-cond-card-hint">📖 ${t('tap_to_read')}</div>
     </div>` : '';
   return `<div class="game-cond-bar">${card('ev', conditions.ev)}${card('en', conditions.en)}</div>`;
@@ -197,7 +225,7 @@ function showGame() {
 }
 
 function stopGamePolling() {
-  if (gamePollTimer) { clearInterval(gamePollTimer); gamePollTimer = null; }
+  if (gamePollTimer) { clearTimeout(gamePollTimer); gamePollTimer = null; }
 }
 
 // ======================== РЕНДЕР ========================
@@ -340,22 +368,34 @@ function renderGameWait() {
 
   // Поллинг: ждём присоединения оппонента.
   // stopGamePolling обязателен: повторный вход в этот экран иначе оставлял
-  // предыдущий таймер сиротой, и опросы копились по одному на каждый вход
+  // предыдущий таймер сиротой, и опросы копились по одному на каждый вход.
+  // setTimeout с backoff и паузой на document.hidden — как scheduleTnPoll в
+  // tournaments.js: без этого свёрнутая в Telegram вкладка продолжала опрашивать
+  // сервер каждые 3с впустую, а упавший сервер получал этот же залп от каждой
+  // открытой вкладки без отката.
   stopGamePolling();
-  gamePollTimer = setInterval(async () => {
+  gamePollBackoff = 0;
+  scheduleGameWaitPoll();
+}
+
+function scheduleGameWaitPoll() {
+  const delay = Math.min(3000 * Math.pow(2, gamePollBackoff), 60000);
+  gamePollTimer = setTimeout(async () => {
+    if (document.hidden) { scheduleGameWaitPoll(); return; }
     try {
       activeGame = await api('/api/games/' + activeGame.code);
+      gamePollBackoff = 0;
       if (activeGame.guest) {
         stopGamePolling();
         renderGamePlay();
+        return;
       }
     } catch (e) {
-      if (e.status === 404) { // игра истекла
-        stopGamePolling();
-        leaveGame();
-      }
+      if (e.status === 404) { stopGamePolling(); leaveGame(); return; } // игра истекла
+      gamePollBackoff = Math.min(gamePollBackoff + 1, 4); // сервер мог мигнуть — экран не трогаем
     }
-  }, 3000);
+    scheduleGameWaitPoll();
+  }, delay);
 }
 
 // ======================== ТРЕКИНГ СОСТОЯНИЯ МОДЕЛЕЙ В ИГРЕ ========================
@@ -448,8 +488,8 @@ const END_OF_ROUND_STATUSES = ['Acid', 'Blind', 'Paralyze', 'Scared', 'Stunned']
 
 // Новый раунд — шаг Recount по правилам: снять отметки Activated и Audacity,
 // сбросить пасс-маркеры, убрать статусы «до конца раунда»
-function gmNextRound() {
-  if (!confirm(t('game_confirm_next_round'))) return;
+async function gmNextRound() {
+  if (!await appConfirm(t('game_confirm_next_round'))) return;
   const m = gameMeta();
   m.round = Math.min(99, m.round + 1);
   m.init = null;
@@ -619,6 +659,9 @@ function trackCountersHTML(side, index, st) {
     </span>`;
 }
 
+// Элемент снаряжения в ростере — строка (имя) либо [имя, funding, rep] (см. serializeCrew в auth.js)
+const eqDisplayName = en => typeof en === 'string' ? en : (Array.isArray(en) ? (en[0] || '') : '');
+
 function trackExtrasHTML(side, index, model, st, eqNames) {
   const status = (field, label, title) => `
     <button class="gm-status${st[field] ? ' on' : ''}" id="gm-${side}-${index}-${field}"
@@ -630,7 +673,7 @@ function trackExtrasHTML(side, index, model, st, eqNames) {
       ${status('aud', 'AUD', t('game_aud_title'))}
       ${ammoControlsHTML(side, index, model, st)}
       <span class="gm-fx-row" id="gm-fx-${side}-${index}">${gmFxRowInnerHTML(side, index)}</span>
-      ${eqNames && eqNames.length ? `<span class="game-model-eq">${eqNames.join(', ')}</span>` : ''}
+      ${eqNames && eqNames.length ? `<span class="game-model-eq">${eqNames.map(eqDisplayName).map(escHtml).join(', ')}</span>` : ''}
     </div>`;
 }
 
@@ -659,7 +702,7 @@ function rosterColumnHTML(player, titleKey, side) {
     <div class="game-roster">
       <div class="game-roster-head">
         <div class="game-roster-title">${t(titleKey)}</div>
-        <div class="game-roster-sub">👤 ${player.name} • ${player.roster.f} • ${totalRep} Rep</div>
+        <div class="game-roster-sub">👤 ${escHtml(player.name)} • ${escHtml(player.roster.f)} • ${totalRep} Rep</div>
       </div>
       ${rows.map((r, i) => {
         const st = trackEntry(side, i, r.model);
@@ -667,11 +710,11 @@ function rosterColumnHTML(player, titleKey, side) {
         <div class="game-model-row${r.model ? '' : ' game-model-missing'}${st.ko ? ' game-model-ko' : ''}"
              id="gm-row-${side}-${i}"
              ${r.model ? `onclick="showFullCard(models[${r.model._id}])"` : ''}>
-          <img src="${r.model ? r.model.img : 'img/no.webp'}" loading="lazy" decoding="async"
+          <img src="${r.model ? r.model.img : 'img/no.webp'}" alt="${escHtml(r.name)}" loading="lazy" decoding="async"
                onerror="this.src='img/no.webp'">
           <div class="game-model-info">
             <div class="game-model-line1">
-              <span class="game-model-name">${r.name}</span>
+              <span class="game-model-name">${escHtml(r.name)}</span>
               <span class="game-model-meta">${r.rank} • ${r.rep} Rep</span>
               ${trackCountersHTML(side, i, st)}
             </div>
@@ -789,7 +832,7 @@ function renderScorePanel() {
 
 async function recordGameResult(winner) {
   const names = { host: activeGame.host.name, guest: activeGame.guest.name };
-  if (!confirm(t('confirm_winner', { name: names[winner] }))) return;
+  if (!await appConfirm(t('confirm_winner', { name: names[winner] }))) return;
   await gameRun(async () => {
     try {
       const data = await api('/api/games/' + activeGame.code + '/result', 'POST', {
@@ -840,7 +883,7 @@ function renderGamePlay() {
 
   box.innerHTML = `
     <div class="game-play-bar">
-      <span class="game-play-code">${t('game_code')}: <b>${activeGame.code}</b></span>
+      <span class="game-play-code">${t('game_code')}: <b>${activeGame.code}</b><span id="gameSyncDot" class="game-sync-dot" title="${t('game_sync_hint')}"></span><span id="gameSyncLabel" class="game-sync-label" aria-live="polite"></span></span>
       ${conditionsChipsHTML(activeGame.conditions)}
       <button class="save-btn save-btn-del game-leave-btn" onclick="leaveGame()">${t('leave_game')}</button>
     </div>
@@ -863,25 +906,39 @@ function renderGamePlay() {
   skipNextTrackPush = false;
 
   // Лёгкий поллинг: подтягиваем результат и счётчики (WIL/END/KD/KO, раунд),
-  // записанные оппонентом со своего устройства
+  // записанные оппонентом со своего устройства. setTimeout с backoff и паузой
+  // на document.hidden — см. комментарий у scheduleGameWaitPoll выше.
   stopGamePolling();
-  gamePollTimer = setInterval(async () => {
+  gamePollBackoff = 0;
+  scheduleGamePlayPoll();
+}
+
+function scheduleGamePlayPoll() {
+  const delay = Math.min(5000 * Math.pow(2, gamePollBackoff), 60000);
+  gamePollTimer = setTimeout(async () => {
+    if (document.hidden) { scheduleGamePlayPoll(); return; }
     try {
       const g = await api('/api/games/' + activeGame.code);
+      gamePollBackoff = 0;
       const resultChanged = !gameResultEditing && JSON.stringify(g.result) !== JSON.stringify(activeGame.result);
       const trackChanged = g.trackUpdated > lastAppliedTrackUpdated;
       activeGame = g;
       if (resultChanged) {
         renderGamePlay();
+        return; // renderGamePlay уже перепланирует поллинг
       } else if (trackChanged) {
         gameTrack = g.track || {};
         lastAppliedTrackUpdated = g.trackUpdated;
         saveGameTrack(false); // уже с сервера — сохранить локально, но не пушить обратно
         skipNextTrackPush = true; // и вызванный ниже рендер тоже пусть не пушит эхом
         renderGamePlay();
+        return;
       }
-    } catch (e) { /* игра могла истечь — экран не трогаем */ }
-  }, 5000);
+    } catch (e) {
+      gamePollBackoff = Math.min(gamePollBackoff + 1, 4); // игра могла истечь/сервер мигнул — экран не трогаем
+    }
+    scheduleGamePlayPoll();
+  }, delay);
 }
 
 // ======================== ДЕЙСТВИЯ ========================

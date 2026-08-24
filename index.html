@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <!-- viewport-fit=cover — без него env(safe-area-inset-*) всегда 0 и отступы под чёлку не работают -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>BMG Crew Builder</title>
   <!-- Telegram Mini App SDK: не defer — должен быть готов как можно раньше,
        чтобы tg.ready()/expand() отработали до первой отрисовки. Вне Telegram
@@ -31,12 +31,12 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.11">
+  <link rel="stylesheet" href="style.css?v=3.14">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
   <script src="data.js?v=3.8" defer></script>
   <script src="data-traits.js?v=2.2" defer></script>
-  <script src="script.js?v=1.33" defer></script>
-  <script src="auth.js?v=2.5" defer></script>
+  <script src="script.js?v=1.36" defer></script>
+  <script src="auth.js?v=2.6" defer></script>
   <script src="data-cards.js?v=1.5" defer></script>
   <script src="cards.js?v=1.8" defer></script>
   <script src="stats.js?v=1.9" defer></script>
@@ -45,8 +45,8 @@
        ни от чего не зависят снаружи, поэтому их можно отложить безопасно. -->
   <script>
     const BMG_LAZY = {
-      game: ['data-game.js?v=1.4', 'game.js?v=2.6', 'game-cards.js?v=1.7'],
-      tournaments: ['tournaments.js?v=1.9']
+      game: ['data-game.js?v=1.4', 'game.js?v=2.7', 'game-cards.js?v=1.7'],
+      tournaments: ['tournaments.js?v=1.10']
     };
     const _bmgLoading = {};
     function bmgLoad(group) {
@@ -88,35 +88,35 @@
       </div>
       <div class="menu-buttons">
         <button class="menu-btn" onclick="showCards()">
-          <span class="btn-icon">🃏</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M4 4h9c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2.2 3.5 4.3 2.5-4.3 2.5v-5zM17 3.3l4.1 1.1c1.06.28 1.7 1.38 1.41 2.44l-3.1 11.6-2.41-13.4V3.3z"/></svg></span>
           <span class="btn-text" data-i18n="cards">CARDS</span>
         </button>
         <button class="menu-btn" onclick="showBuilder()">
-          <span class="btn-icon">👥</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span>
           <span class="btn-text" data-i18n="crews">CREWS</span>
         </button>
         <button class="menu-btn" onclick="bmgShowGame()">
-          <span class="btn-icon">🎲</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8.5 15.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-7a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3.5 3.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3.5 3.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-7a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></span>
           <span class="btn-text" data-i18n="game">ИГРА</span>
         </button>
         <button class="menu-btn" onclick="showRules()">
-          <span class="btn-icon">📖</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg></span>
           <span class="btn-text" data-i18n="rules">RULES</span>
         </button>
         <button class="menu-btn" onclick="window.location.href='compendium.html'">
-          <span class="btn-icon">📚</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9-3-1.78L13 11V4h6v7zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/></svg></span>
           <span class="btn-text" data-i18n="compendium">СПРАВОЧНИК</span>
         </button>
         <button class="menu-btn" onclick="bmgShowTournaments()">
-          <span class="btn-icon">🏆</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.95V18H8v2h8v-2h-3v-2.11c1.63-.32 2.98-1.45 3.61-2.95C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg></span>
           <span class="btn-text" data-i18n="tournaments">ТУРНИРЫ</span>
         </button>
         <button class="menu-btn" onclick="showStats()">
-          <span class="btn-icon">📊</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg></span>
           <span class="btn-text" data-i18n="stats">СТАТИСТИКА</span>
         </button>
         <button class="menu-btn" onclick="openAuthModal()">
-          <span class="btn-icon">👤</span>
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
           <span class="btn-text" data-i18n="profile">ПРОФИЛЬ</span>
         </button>
       </div>
@@ -153,6 +153,14 @@
       <!-- ВКЛАДКИ ФРАКЦИЙ (генерируются в script.js из FACTION_ICON_MAP, см. renderFactionCards()) -->
       <div class="tabs-container hidden" id="cardsTabsContainer">
         <div class="faction-cards"></div>
+      </div>
+
+      <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно -->
+      <div class="model-search-wrapper">
+        <input type="text" id="cardsSearchInput" class="model-search-input" autocomplete="off"
+               data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
+               data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
+               oninput="cardsSearchQuery=this.value; renderMiniCardsView();">
       </div>
 
       <!-- Список моделей + боковая панель просмотра карточки (как в билдере, видна на ПК/планшетах) -->
@@ -225,6 +233,14 @@
           <span data-i18n="crew">ОТРЯД</span>: <span id="crewCount">0</span> | <span data-i18n="rep">REP</span>: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350"> | $<span id="totalFunding">0 / 1500</span>
           <span id="charismaticIndicator">✨ CHARISMATIC: <span id="charismaticStatus">AVAILABLE</span></span>
         </div>
+      </div>
+
+      <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно -->
+      <div class="model-search-wrapper">
+        <input type="text" id="builderSearchInput" class="model-search-input" autocomplete="off"
+               data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
+               data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
+               oninput="builderSearchQuery=this.value; renderMiniCardsBuilder();">
       </div>
 
       <!-- Список моделей + боковая панель просмотра карточки (панель видна только на ПК/планшетах) -->

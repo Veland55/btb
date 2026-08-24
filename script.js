@@ -11,6 +11,17 @@ let modifiers = {
   extraMinions: {}
 };
 let currentFaction = null; // Изменено: null по умолчанию (нет фракции)
+// Поиск по имени модели в каталоге/билдере — отдельные строки на случай,
+// если пользователь вернётся с одного экрана на другой с разным контекстом
+let cardsSearchQuery = '';
+let builderSearchQuery = '';
+function matchesModelSearch(model, query) {
+  if (!query) return true;
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  return (model.name && model.name.toLowerCase().includes(q))
+    || (model.realname && model.realname.toLowerCase().includes(q));
+}
 let compendiumKeys = [];
 let specialTraitNames = new Set(); // Кэш специальных трейтов
 
@@ -57,11 +68,11 @@ function factionHasVisibleModels(faction) {
   return models.some(m => !(m.eternal && !showEternal) && getFactions(m).includes(faction));
 }
 
-function toggleEternal(on) {
+async function toggleEternal(on) {
   // Выключаем формат, а в отряде уже есть Eternal-модели — предупреждаем:
   // молча оставить их означало бы нелегальный по формату отряд
   if (!on && crew.some(m => m.eternal)) {
-    if (!confirm(t('eternal_crew_warning'))) { renderFactionCards(); return; }
+    if (!(await appConfirm(t('eternal_crew_warning')))) { renderFactionCards(); return; }
     crew = crew.filter(m => !m.eternal);
     if (BMG_BOSS && BMG_BOSS.eternal) { crew = []; BMG_BOSS = null; BMG_AFFILIATIONS = null; }
     updateCrewEquipmentCounts();
@@ -122,7 +133,6 @@ function buildFactionCardsHTML() {
       const bgFile = iconFile.replace(/\.webp$/, "-bg.webp");
       return `
         <div class="faction-card" data-faction="${faction}" style="background-image: url('${base}${bgFile}');">
-          <span class="faction-card-label">${faction}</span>
           <img class="faction-icon" src="${base}${iconFile}" alt="${faction}" loading="lazy" decoding="async">
         </div>`;
     }).join("");
@@ -365,7 +375,10 @@ const translations = {
     no_saves: "Пока нет сохранённых отрядов",
     empty_crew_save: "Отряд пуст — нечего сохранять",
     save_login_required: "Чтобы сохранить отряд, войдите или зарегистрируйтесь.",
-    models_hidden_budget: "Скрыто моделей: {n} — не хватает Rep или Funding.",
+    model_search_placeholder: "Поиск модели по имени…",
+    cancel: "Отмена",
+    close_modal: "Закрыть",
+    ok: "ОК",
     confirm_delete_save: "Удалить сохранение «{name}»?",
     models_skipped: "Часть моделей не найдена в базе и пропущена",
     auth_user_exists: "Пользователь с таким именем уже существует",
@@ -382,6 +395,10 @@ const translations = {
     join_game: "ПРИСОЕДИНИТЬСЯ",
     join_game_hint: "Введите код, полученный от оппонента, и выберите свой ростер.",
     game_code: "Код игры",
+    models_hidden_budget: "Скрыто моделей: {n} — не хватает Rep/Funding",
+    game_sync_hint: "Серая точка — счёт сохраняется; зелёная — сохранено, оппонент увидит в течение ~5 секунд.",
+    game_sync_pending: "сохранение…",
+    game_sync_synced: "сохранено",
     game_code_placeholder: "КОД",
     current_crew: "Текущий отряд из билдера",
     no_rosters: "Нет доступных ростеров: соберите отряд в билдере или сохраните его в профиле.",
@@ -447,6 +464,7 @@ const translations = {
     tn_change_role: "Выбор роли",
     tn_create_title: "НОВЫЙ ТУРНИР",
     tn_create_hint: "Адрес мероприятия попадает в статистику «Где играют турниры».",
+    tn_name_ph: "Название турнира (необязательно)",
     tn_address_ph: "Адрес мероприятия (город, клуб, улица)",
     tn_date_start: "Начало",
     tn_date_end: "Конец (необязательно)",
@@ -529,6 +547,10 @@ const translations = {
     tn_resolve_prompt: "Кто победил в паре {a} — {b}? Введите имя победителя.",
     tn_resolve_vp: "Сколько VP набрал {name}?",
     tn_resolve_bad: "Некорректный ввод",
+    tn_resolve_title: "Спор: {a} — {b}. Кто победил?",
+    tn_resolve_vp_winner_label: "VP победителя",
+    tn_resolve_vp_loser_label: "VP проигравшего",
+    tn_resolve_submit: "Сохранить итог",
     tn_dispute_note: "Оба игрока заявили один и тот же исход. Результат засчитает организатор.",
     tn_claim_pending: "Заявлено: {res}, {vp} VP. Ждём подтверждения соперника.",
     tn_dropped: "снят",
@@ -553,9 +575,10 @@ const translations = {
     email_placeholder: "Email (для восстановления пароля)",
     email_placeholder_optional: "Email (необязательно)",
     register_format_hint: "При регистрации: имя — 3-20 символов, пароль — от 4 символов.",
-    register_email_hint: "Email нужен только для восстановления забытого пароля и не обязателен — его можно указать позже в профиле.",
+    register_email_hint: "Укажите email — без него при забытом пароле доступ к аккаунту и сохранённым отрядам будет утерян навсегда, восстановить будет нечем.",
     email_save_btn: "Сохранить",
     email_hint: "Нужен только для восстановления забытого пароля. Не публикуется и не виден другим игрокам.",
+    email_hint_missing: "⚠ Email не указан — если забудете пароль, доступ к аккаунту будет утерян навсегда.",
     email_saved: "Email сохранён",
     change_password_title: "СМЕНА ПАРОЛЯ",
     current_password: "Текущий пароль",
@@ -776,7 +799,10 @@ const translations = {
     no_saves: "No saved crews yet",
     empty_crew_save: "Crew is empty — nothing to save",
     save_login_required: "Sign in or register to save a crew.",
-    models_hidden_budget: "Models hidden: {n} — not enough Rep or Funding.",
+    model_search_placeholder: "Search model by name…",
+    cancel: "Cancel",
+    close_modal: "Close",
+    ok: "OK",
     confirm_delete_save: "Delete save \"{name}\"?",
     models_skipped: "Some models were not found in the database and were skipped",
     auth_user_exists: "A user with this name already exists",
@@ -793,6 +819,10 @@ const translations = {
     join_game: "JOIN GAME",
     join_game_hint: "Enter the code from your opponent and choose your roster.",
     game_code: "Game code",
+    models_hidden_budget: "Models hidden: {n} — not enough Rep/Funding",
+    game_sync_hint: "Grey dot — saving; green — saved, your opponent will see it within ~5 seconds.",
+    game_sync_pending: "saving…",
+    game_sync_synced: "saved",
     game_code_placeholder: "CODE",
     current_crew: "Current crew from the builder",
     no_rosters: "No rosters available: build a crew in the builder or save one to your profile.",
@@ -858,6 +888,7 @@ const translations = {
     tn_change_role: "Choose role",
     tn_create_title: "NEW TOURNAMENT",
     tn_create_hint: "The event address feeds the “Where tournaments are played” statistics.",
+    tn_name_ph: "Tournament name (optional)",
     tn_address_ph: "Event address (city, club, street)",
     tn_date_start: "Starts",
     tn_date_end: "Ends (optional)",
@@ -940,6 +971,10 @@ const translations = {
     tn_resolve_prompt: "Who won the pair {a} — {b}? Enter the winner's name.",
     tn_resolve_vp: "How many VP did {name} score?",
     tn_resolve_bad: "Invalid input",
+    tn_resolve_title: "Dispute: {a} — {b}. Who won?",
+    tn_resolve_vp_winner_label: "Winner's VP",
+    tn_resolve_vp_loser_label: "Loser's VP",
+    tn_resolve_submit: "Save result",
     tn_dispute_note: "Both players reported the same outcome. The organizer will settle the result.",
     tn_claim_pending: "Reported: {res}, {vp} VP. Waiting for your opponent to confirm.",
     tn_dropped: "dropped",
@@ -964,9 +999,10 @@ const translations = {
     email_placeholder: "Email (for password recovery)",
     email_placeholder_optional: "Email (optional)",
     register_format_hint: "For registration: username 3-20 characters, password 4+ characters.",
-    register_email_hint: "Email is only used to recover a forgotten password and is not required — you can add it later in your profile.",
+    register_email_hint: "Add an email — without it, a forgotten password means permanently losing your account and saved crews, with no way to recover them.",
     email_save_btn: "Save",
     email_hint: "Only used to recover a forgotten password. Not published or visible to other players.",
+    email_hint_missing: "⚠ No email set — if you forget your password, you will permanently lose access to your account.",
     email_saved: "Email saved",
     change_password_title: "CHANGE PASSWORD",
     current_password: "Current password",
@@ -1072,6 +1108,15 @@ function setLanguage(lang) {
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.dataset.i18nPlaceholder;
     el.placeholder = t(key);
+  });
+
+  // Обновляем aria-label — полям без видимого <label> (например, поиск по
+  // модели) нужно постоянное доступное имя: placeholder исчезает, как только
+  // пользователь начинает печатать, и в этот момент у скринридера/автозаполнения
+  // не остаётся никакого объявленного назначения поля
+  document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+    const key = el.dataset.i18nAriaLabel;
+    el.setAttribute('aria-label', t(key));
   });
 
   // Сохраняем в localStorage
@@ -1462,8 +1507,8 @@ function showRules() {
   window.location.href = 'rules.html';
 }
 
-function backToMenu() {
-  if (currentMode === 'builder' && !confirmDiscardCrew()) return;
+async function backToMenu() {
+  if (currentMode === 'builder' && !(await confirmDiscardCrew())) return;
   currentMode = 'menu';
   showSection('mainMenu');
   if ($('rosterPreviewSection')) $('rosterPreviewSection').style.display = 'none';
@@ -1480,8 +1525,8 @@ function backToMenu() {
   }
 }
 
-function backToFactionSelect() {
-  if (!confirmDiscardCrew()) return;
+async function backToFactionSelect() {
+  if (!(await confirmDiscardCrew())) return;
   $('factionSelect').style.display = 'block';
   $('builderMain').style.display = 'none';
   if ($('builderCardsPage')) $('builderCardsPage').style.display = 'none';
@@ -1523,6 +1568,9 @@ function selectFaction(faction) {
   $('factionSelect').style.display = 'none';
   $('builderFactionCards').classList.add('hidden'); // Скрываем вкладки фракций
   $('builderMain').style.display = 'block';
+  builderSearchQuery = '';
+  const builderSearchEl = $('builderSearchInput');
+  if (builderSearchEl) builderSearchEl.value = '';
   // Кнопка с правилами набора — видна только если у фракции есть особые правила
   $('factionRulesBtn').style.display = getFactionRulesLines(faction).length ? 'flex' : 'none';
   renderMiniCardsBuilder();
@@ -1728,6 +1776,93 @@ function showRankSelectionModal(model, ranks) {
   document.body.appendChild(overlay);
 };
 
+// ======================== ОБЩИЕ МОДАЛКИ (замена нативных prompt/confirm) ========================
+// Нативные window.prompt/confirm блокируют всю страницу и выглядят чужеродно
+// на фоне уже стилизованных модалок приложения — переиспользуем ту же
+// оболочку, что и rank-select-modal, для двух самых частых точек: ввод текста
+// и подтверждение действия.
+// Простой focus trap для модалок-оверлеев (appPrompt/appConfirm/tnResolveDispute):
+// нативные confirm()/prompt(), которые они заменяют, сами не выпускали Tab за
+// пределы диалога — самодельная замена без этого была шагом назад в доступности
+function trapFocusInOverlay(overlay) {
+  overlay.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const focusable = Array.from(overlay.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])'))
+      .filter(el => !el.disabled && el.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+}
+
+function appPrompt(message, defaultValue = '') {
+  return new Promise(resolve => {
+    const overlay = document.createElement('div');
+    overlay.className = 'rank-select-modal';
+    overlay.innerHTML = `
+      <div class="rank-select-content" role="dialog" aria-modal="true" aria-label="${escHtml(message)}">
+        <div class="rank-select-header">
+          <span>${escHtml(message)}</span>
+          <button type="button" class="rank-select-close" aria-label="${escHtml(t('close_modal'))}">×</button>
+        </div>
+        <div class="app-modal-body">
+          <input type="text" class="app-modal-input" maxlength="60" value="${escHtml(defaultValue)}">
+          <div class="app-modal-actions">
+            <button class="save-btn app-modal-cancel">${t('cancel')}</button>
+            <button class="btn-primary app-modal-ok">${t('ok')}</button>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    trapFocusInOverlay(overlay);
+    const input = overlay.querySelector('.app-modal-input');
+    input.focus();
+    input.select();
+    const finish = value => { overlay.remove(); resolve(value); };
+    overlay.querySelector('.rank-select-close').onclick = () => finish(null);
+    overlay.querySelector('.app-modal-cancel').onclick = () => finish(null);
+    overlay.querySelector('.app-modal-ok').onclick = () => finish(input.value);
+    overlay.onclick = e => { if (e.target === overlay) finish(null); };
+    overlay.addEventListener('keydown', e => { if (e.key === 'Escape') finish(null); });
+    input.onkeydown = e => {
+      if (e.key === 'Enter') finish(input.value);
+    };
+  });
+}
+
+function appConfirm(message, confirmLabel) {
+  return new Promise(resolve => {
+    const overlay = document.createElement('div');
+    overlay.className = 'rank-select-modal';
+    overlay.innerHTML = `
+      <div class="rank-select-content" role="dialog" aria-modal="true" aria-label="${escHtml(message)}">
+        <div class="rank-select-header">
+          <span>${escHtml(message)}</span>
+          <button type="button" class="rank-select-close" aria-label="${escHtml(t('close_modal'))}">×</button>
+        </div>
+        <div class="app-modal-body">
+          <div class="app-modal-actions">
+            <button class="save-btn app-modal-cancel">${t('cancel')}</button>
+            <button class="btn-primary app-modal-ok">${confirmLabel || t('ok')}</button>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    trapFocusInOverlay(overlay);
+    // Фокус на Cancel, а не на подтверждающую кнопку: appConfirm часто вызывается
+    // для необратимых действий (отмена турнира, удаление сохранения), и Enter,
+    // случайно нажатый сразу после открытия, не должен подтверждать их по умолчанию
+    overlay.querySelector('.app-modal-cancel').focus();
+    const finish = value => { overlay.remove(); resolve(value); };
+    overlay.querySelector('.rank-select-close').onclick = () => finish(false);
+    overlay.querySelector('.app-modal-cancel').onclick = () => finish(false);
+    overlay.querySelector('.app-modal-ok').onclick = () => finish(true);
+    overlay.onclick = e => { if (e.target === overlay) finish(false); };
+    overlay.addEventListener('keydown', e => { if (e.key === 'Escape') finish(false); });
+  });
+}
+
 const removeFromCrew = m => {
   // Если передан конкретный экземпляр отряда — убираем именно его: иначе при
   // нескольких копиях (Horde/Minion) удалялась последняя, а снаряжение
@@ -1926,7 +2061,7 @@ function renderMiniCardHTML(item, showButtons, showStats) {
   return `
 ${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 <div class="mini-photo-wrap">
-  <img src="${item.img}" width="74" height="94" loading="lazy" decoding="async" onerror="this.src='img/no.webp'">
+  <img src="${item.img}" width="74" height="94" alt="${escHtml(item.name)}" loading="lazy" decoding="async" onerror="this.src='img/no.webp'">
   ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
 </div>
 <div class="mini-right-col">
@@ -1996,6 +2131,7 @@ const renderMiniCardsView = debounce(() => {
   // В режиме просмотра НЕ применяем правила factionCrewRules и modelDependencyRules
   // Эти правила работают только в билдере
   let filteredModels = sortModelsByRank(models.filter(m => canViewInFaction(m, currentFaction)));
+  filteredModels = filteredModels.filter(m => matchesModelSearch(m, cardsSearchQuery));
 
   const fragment = document.createDocumentFragment();
 
@@ -2034,6 +2170,7 @@ const renderMiniCardsBuilder = debounce(() => {
   
   // === ИСПРАВЛЕНО: используем canHireInFaction для режима билдера ===
   let filteredModels = models.filter(m => canHireInFaction(m, currentFaction) && !hasInCrew(m));
+  filteredModels = filteredModels.filter(m => matchesModelSearch(m, builderSearchQuery));
 
   // Скрываем модели, которые нельзя нанять напрямую (Swarm, Kobra Swarm, Shapeshifting-формы и т.п.)
   filteredModels = filteredModels.filter(m => !isUnrecruitable(m));
@@ -2099,13 +2236,10 @@ const renderMiniCardsBuilder = debounce(() => {
   }
 
   // Скрываем модели, которые нельзя нанять из-за нехватки Rep и/или Funding —
-  // в списке остаются только реально нанимаемые по бюджету модели.
-  // hiddenByBudget считаем отдельно от остальных фильтров выше (те прячут по
-  // игровым правилам — Aversion, зависимости и т.п. — и это ожидаемо; этот
-  // фильтр прячет по деньгам, и при жёстком лимите список мог схлопнуться
-  // до нескольких моделей отряда без единого слова объяснения, выглядя как
-  // будто каталог сломался, а не как «денег не хватает»).
-  let hiddenByBudget = 0;
+  // в списке остаются только реально нанимаемые по бюджету модели. Без счётчика
+  // ниже список рядом с лимитом выглядит как урезанный/сломанный каталог —
+  // непонятно, пропала ли модель из-за фильтра или её вообще нет в игре.
+  let hiddenByBudgetCount = 0;
   {
     const currentRep = getCrewTotalRep();
     const currentFunding = getCrewUsedFunding();
@@ -2117,7 +2251,7 @@ const renderMiniCardsBuilder = debounce(() => {
       const fundingIfAdded = currentFunding + getEffectiveModelFunding(m);
       return repIfAdded <= repLimit && fundingIfAdded <= fundingLimit;
     });
-    hiddenByBudget = beforeCount - filteredModels.length;
+    hiddenByBudgetCount = beforeCount - filteredModels.length;
   }
 
   // Скрываем модели, у которых заполнены слоты ВСЕХ доступных им рангов —
@@ -2147,13 +2281,13 @@ const renderMiniCardsBuilder = debounce(() => {
   });
 
   grid.innerHTML = "";
-  if (hiddenByBudget > 0) {
+  grid.appendChild(fragment);
+  if (hiddenByBudgetCount > 0) {
     const notice = document.createElement("div");
     notice.className = "budget-hidden-notice";
-    notice.textContent = t('models_hidden_budget', { n: hiddenByBudget });
+    notice.textContent = t('models_hidden_budget', { n: hiddenByBudgetCount });
     grid.appendChild(notice);
   }
-  grid.appendChild(fragment);
 }, 100);
 
 // ======================== ПОЛНАЯ КАРТОЧКА ========================
@@ -2296,8 +2430,8 @@ const buildFullCardHTML = model => {
           <span class="official-weapon-name">${(w.name || "Unnamed").toUpperCase()}</span>
           <span class="official-weapon-stats">
             ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
-            ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="img/rof.webp" class="stat-icon"></span>` : ""}
-            ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="img/ammo.webp" class="stat-icon"></span>` : ""}
+            ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="img/rof.webp" class="stat-icon" alt="RoF"></span>` : ""}
+            ${w.ammo && w.ammo !== "-" ? `<span class="official-weapon-ammo">${w.ammo}<img src="img/ammo.webp" class="stat-icon" alt="Ammo"></span>` : ""}
           </span>
         </div>
         ${traits.length ? `<div class="official-weapon-traits-line">${traits.map(tr => `<span class="weapon-trait-text" onclick="event.stopPropagation(); showTraitDesc('${tr.replace(/'/g, "\\'")}')">${tr.toUpperCase()}</span>`).join(" / ")}</div>` : ""}
@@ -2352,7 +2486,7 @@ const buildFullCardHTML = model => {
 
       <div class="official-main">
         <div class="official-img-wrapper">
-          <img src="${model.img}" class="official-img" decoding="async" onerror="this.src='img/no.webp'">
+          <img src="${model.img}" class="official-img" alt="${escHtml(model.name)}" decoding="async" onerror="this.src='img/no.webp'">
         </div>
         <div class="official-info-col">
           <div class="official-aff-riv-row">
@@ -2366,10 +2500,10 @@ const buildFullCardHTML = model => {
           <div class="official-stats-grid">
             <div class="stat-badge stat-big stat-yellow"><span class="stat-num">${model.stats.Willpower || "-"}</span><span class="stat-name">WILLPOWER</span></div>
             <div class="stat-badge stat-big stat-black"><span class="stat-num">${model.stats.Endurance || "-"}</span><span class="stat-name">ENDURANCE</span></div>
-            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="${STAT_ICONS.Attack}"><span class="stat-num">${model.stats.Attack || "-"}</span></div>
-            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="${STAT_ICONS.Defense}"><span class="stat-num">${model.stats.Defense || "-"}</span></div>
-            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="${STAT_ICONS.Strength}"><span class="stat-num">${model.stats.Strength || "-"}</span></div>
-            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="${STAT_ICONS.Movement}"><span class="stat-num">${model.stats.Movement || "-"}</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="${STAT_ICONS.Attack}" alt="Attack"><span class="stat-num">${model.stats.Attack || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="${STAT_ICONS.Defense}" alt="Defense"><span class="stat-num">${model.stats.Defense || "-"}</span></div>
+            <div class="stat-badge stat-small stat-yellow"><img class="stat-badge-icon" src="${STAT_ICONS.Strength}" alt="Strength"><span class="stat-num">${model.stats.Strength || "-"}</span></div>
+            <div class="stat-badge stat-small stat-black"><img class="stat-badge-icon" src="${STAT_ICONS.Movement}" alt="Movement"><span class="stat-num">${model.stats.Movement || "-"}</span></div>
           </div>
         </div>
       </div>
@@ -2640,6 +2774,9 @@ function initTabs() {
       $('cardsTabsContainer').classList.add('hidden');
       closeBuilderCardPanel(); // карточка предыдущей фракции в панели больше не актуальна
       if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'flex'; // карты миссий банды
+      cardsSearchQuery = '';
+      const cardsSearchEl = $('cardsSearchInput');
+      if (cardsSearchEl) cardsSearchEl.value = '';
       renderMiniCardsView(); // Рендерим модели только после выбора
     } else if (card.closest('#factionSelect')) {
       selectFaction(card.dataset.faction);
@@ -3583,9 +3720,9 @@ function openEquipmentMenu(model, cardElement, uid) {
 
 // Спрашивает подтверждение, только если реально есть что терять — пустой
 // отряд можно "сбрасывать" молча сколько угодно раз без назойливых alert'ов.
-function confirmDiscardCrew() {
+async function confirmDiscardCrew() {
   if (!crew.length) return true;
-  return confirm(t('confirm_reset_crew'));
+  return appConfirm(t('confirm_reset_crew'));
 }
 
 function resetCrew() {
@@ -3839,14 +3976,14 @@ function exportRoster() {
   let cardPages = '';
   if (typeof objDeckList === 'function') {
     const cardImgs = [
-      ...mandatoryCardsForFaction().map(c => c.img),
-      ...objDeckList().flatMap(e => Array(e.count).fill(e.card.img))
+      ...mandatoryCardsForFaction().map(c => ({ src: c.img, name: c.name })),
+      ...objDeckList().flatMap(e => Array(e.count).fill({ src: e.card.img, name: e.card.name }))
     ];
     const perPage = 6;
     for (let i = 0; i < cardImgs.length; i += perPage) {
       cardPages += `
     <section class="print-page print-cards">
-      ${cardImgs.slice(i, i + perPage).map(src => `<img src="${src}">`).join('')}
+      ${cardImgs.slice(i, i + perPage).map(c => `<img src="${c.src}" alt="${escHtml(c.name || '')}">`).join('')}
     </section>`;
     }
   }

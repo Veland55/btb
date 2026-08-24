@@ -6,7 +6,19 @@
 * { margin:0; padding:0; box-sizing:border-box; touch-action:manipulation; }
 /* Без этого браузер красит нативные виджеты (списки select, скроллбары)
    под светлую тему ОС по умолчанию, что на тёмном сайте выглядит багом */
-:root { color-scheme:dark; }
+:root {
+  color-scheme:dark;
+  /* Единые токены цвета — раньше «опасный» красный существовал в трёх
+     несогласованных вариантах (#c00/#f00, #ff0000/#ff3333, плюс основной
+     бренд-акцент), из-за чего одинаковые по смыслу кнопки удаления в разных
+     местах выглядели визуально разными красными. */
+  --danger: #e94560;
+  --danger-hover: #ff3366;
+  --gold: #ffd700;
+  --gold-dim: #ffc72c;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+}
 body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:100vh; -webkit-tap-highlight-color:transparent; }
 
 /* ===== БЕЗОПАСНЫЕ ЗОНЫ ТЕЛЕФОНА =====
@@ -31,7 +43,7 @@ html.tg-app {
 
 /* ТОП-БАР */
 .top-bar { background:linear-gradient(#111,#000); padding:calc(10px + var(--safe-top)) 12px 10px; text-align:center; border-bottom:4px solid #e94560; position:sticky; top:0; z-index:100; box-shadow:0 4px 15px rgba(0,0,0,.6); }
-.top-bar h1 { font-size:22px; letter-spacing:6px; color:#ffd700; text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }
+.top-bar h1 { font-size:22px; letter-spacing:6px; color:var(--gold); text-shadow:0 0 20px rgba(233,69,96,.7); margin-bottom:6px; }
 .top-bar-content { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:0 15px; }
 .top-bar-content h1 { margin-bottom:0; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .header-buttons { display:flex; gap:12px; align-items:center; flex-shrink:0; }
@@ -59,6 +71,14 @@ html.tg-app {
      контейнер отдельно, чтобы не забыть какой-то из них при следующей
      новой странице. */
   body { padding-bottom: calc(72px + var(--safe-bottom)); }
+  /* Мягкая подложка под плавающим кластером — без неё нижняя кромка длинных
+     списков (билдер, просмотр отряда, чек-лист турнира) на миг видна прямо
+     под кнопками при скролле, ощущаясь так, будто интерфейс "протыкает" контент */
+  body::after {
+    content:''; position:fixed; left:0; right:0; bottom:0;
+    height:calc(90px + var(--safe-bottom)); z-index:140; pointer-events:none;
+    background:linear-gradient(transparent, rgba(0,0,0,.85) 60%);
+  }
 }
 /* Пометка «бета-тест» рядом с названием раздела. margin-right:auto прижимает её
    к заголовку, а кнопки топ-бара оставляет у правого края */
@@ -89,7 +109,7 @@ html.tg-app {
 .funds { font-size:14px; font-weight:bold; margin-top:8px; }
 .funds span { color:#e94560; margin:0 10px; }
 #repLimit { width:50px; background:#222; color:#fff; border:1px solid #e94560; }
-#charismaticIndicator { margin-left:15px; color:#ffd700; font-weight:bold; display:none; }
+#charismaticIndicator { margin-left:15px; color:var(--gold); font-weight:bold; display:none; }
 
 /* ВКЛАДКИ ФРАКЦИЙ */
 .tabs-container { background:#111; padding:10px 0 8px; border-bottom:3px solid #222; overflow-y:auto; display:none; }
@@ -103,16 +123,6 @@ html.tg-app {
 .faction-card:hover { transform:translateY(-4px); box-shadow:0 0 18px rgba(233,69,96,.7); }
 .faction-card.active { border:4px solid #e94560; box-shadow:0 0 18px rgba(233,69,96,.7); }
 .faction-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); height:80px; width:auto; filter:drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
-/* Раньше плитка фракции была голым фото + логотип без единой буквы текста —
-   для новичка угадайка, что за фракция. Подпись снизу слева, там, где
-   и так есть свободное место (иконка справа, вертикально по центру). */
-.faction-card-label {
-  position:absolute; left:16px; bottom:12px; z-index:1;
-  color:#fff; font-family:'Oswald',sans-serif; font-weight:700; font-size:15px;
-  letter-spacing:.5px; text-transform:uppercase;
-  text-shadow:0 1px 3px rgba(0,0,0,.9), 0 0 12px rgba(0,0,0,.8);
-  max-width:calc(100% - 100px);
-}
 
 /* СПИСОК МОДЕЛЕЙ */
 .models-list { display:flex; flex-direction:column; gap:10px; padding:10px 10px calc(10px + var(--safe-bottom)); }
@@ -135,8 +145,8 @@ html.tg-app {
 .add-btn, .remove-btn { width:40px; height:40px; border-radius:50%; font-size:20px; font-weight:bold; border:none; box-shadow:0 3px 10px rgba(0,0,0,.6); transition:all .3s; cursor:pointer; flex-shrink:0; }
 .add-btn { background:#e94560; color:#fff; }
 .add-btn:hover { background:#ff3366; }
-.remove-btn { background:#c00; color:#fff; }
-.remove-btn:hover { background:#f00; }
+.remove-btn { background:var(--danger); color:#fff; }
+.remove-btn:hover { background:var(--danger-hover); }
 .mini-card-corner .count { background:rgba(0,0,0,0.7); color:#fff; font-size:12px; font-weight:bold; padding:3px 8px; border-radius:12px; min-width:20px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.78); text-shadow:1px 1px 2px #000; pointer-events:none; }
 
 .mini-photo-wrap { position:relative; flex-shrink:0; }
@@ -149,6 +159,10 @@ html.tg-app {
 .mini-rank-text { color:#bbb; font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
 .mini-rep { color:#e94560; font-weight:bold; font-size:12.5px; }
 
+/* Модели, скрытые из списка билдера из-за нехватки Rep/Funding — без этой
+   строки список рядом с лимитом выглядит как урезанный/сломанный каталог */
+.budget-hidden-notice { grid-column:1/-1; color:#999; font-size:12.5px; text-align:center; padding:10px 6px; }
+
 /* ПАНЕЛЬ АПГРЕЙДОВ: жёлтый «язычок», выглядывающий из-под нижнего края
    карточки. Есть у КАЖДОЙ модели отряда (билдер и просмотр ростера):
    купленные апгрейды, их удаление и кнопка покупки нового */
@@ -157,7 +171,7 @@ html.tg-app {
 .mini-card-wrap > .mini-card:hover { transform:none; } /* иначе карточка «отрывается» от панели */
 .mini-upgrades-flap {
   margin:-12px 10px 0; padding:16px 10px 7px;
-  background:linear-gradient(#ffd700, #dfae00);
+  background:linear-gradient(var(--gold), var(--gold-dim));
   border-radius:0 0 14px 14px;
   box-shadow:0 5px 12px rgba(0,0,0,.45);
   display:flex; flex-wrap:wrap; align-items:center; gap:6px;
@@ -167,7 +181,7 @@ html.tg-app {
 .flap-title { color:#000; font-family:'Oswald',sans-serif; font-weight:700; font-size:10px; letter-spacing:1.5px; opacity:.7; }
 .flap-chip {
   display:inline-flex; align-items:center; gap:5px; min-width:0; max-width:100%;
-  background:#111; color:#ffd700; border-radius:10px; padding:4px 8px;
+  background:#111; color:var(--gold); border-radius:10px; padding:4px 8px;
   font-size:10.5px; font-weight:bold; cursor:pointer; transition:background .15s;
 }
 .flap-chip:hover { background:#2a2a2a; }
@@ -175,12 +189,12 @@ html.tg-app {
 .flap-chip b { color:#fff; font-size:10px; flex-shrink:0; }
 .flap-chip-remove {
   display:flex; align-items:center; justify-content:center; width:15px; height:15px; flex-shrink:0;
-  background:#c00; color:#fff; border-radius:50%; font-size:10px; line-height:1; cursor:pointer;
+  background:var(--danger); color:#fff; border-radius:50%; font-size:10px; line-height:1; cursor:pointer;
 }
-.flap-chip-remove:hover { background:#f00; }
+.flap-chip-remove:hover { background:var(--danger-hover); }
 .flap-add {
   margin-left:auto; width:26px; height:26px; border:none; border-radius:50%; flex-shrink:0;
-  background:#000; color:#ffd700; font-size:16px; font-weight:bold; cursor:pointer; line-height:1;
+  background:#000; color:var(--gold); font-size:16px; font-weight:bold; cursor:pointer; line-height:1;
   box-shadow:0 2px 6px rgba(0,0,0,.4); transition:background .15s;
 }
 .flap-add:hover { background:#333; }
@@ -197,7 +211,7 @@ html.tg-app {
 }
 
 .obj-cards-page { padding:10px 10px calc(10px + var(--safe-bottom)); max-width:1500px; margin:0 auto; }
-.obj-section-title { color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:2px; font-size:14px; margin:14px 4px 8px; }
+.obj-section-title { color:var(--gold); font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:2px; font-size:14px; margin:14px 4px 8px; }
 .obj-cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px; align-items:start; }
 
 /* Карта каталога: скан + бейджи, +/− в углу — как у мини-карточек моделей */
@@ -209,16 +223,16 @@ html.tg-app {
 .obj-card.in-crew { border-color:#e94560; box-shadow:0 0 18px rgba(233,69,96,.6); }
 .obj-card img { width:100%; display:block; }
 .obj-card-req-missing img { opacity:.5; }
-.obj-card-mandatory { border-color:#ffd700; }
+.obj-card-mandatory { border-color:var(--gold); }
 .obj-card-footer { padding:6px 8px 8px; display:flex; flex-direction:column; gap:2px; }
 .obj-card-name { color:#fff; font-weight:700; font-size:11.5px; }
 .obj-card-info { color:#e94560; font-weight:700; font-size:10.5px; }
-.obj-card-mandatory .obj-card-info { color:#ffd700; }
+.obj-card-mandatory .obj-card-info { color:var(--gold); }
 .obj-card-info-row { display:flex; align-items:center; justify-content:space-between; gap:6px; }
 /* Значок «!» — у карты есть требования; красный, если они не выполнены */
 .obj-card-req-btn {
   display:flex; align-items:center; justify-content:center; width:18px; height:18px; flex-shrink:0;
-  border-radius:50%; border:2px solid #ffd700; color:#ffd700;
+  border-radius:50%; border:2px solid var(--gold); color:var(--gold);
   font-weight:700; font-size:12px; line-height:1; cursor:pointer; transition:all .15s;
 }
 .obj-card-req-btn:hover { background:rgba(255,215,0,.15); }
@@ -248,7 +262,7 @@ html.tg-app {
 }
 .roster-card-chip:hover { border-color:#e94560; }
 .roster-card-chip b { color:#e94560; }
-.roster-card-chip.is-mandatory { color:#ffd700; border-color:#5a4d00; }
+.roster-card-chip.is-mandatory { color:var(--gold); border-color:#5a4d00; }
 
 /* Строка характеристик в мини-карточке (Movement/Attack/Defense/Strength + WIL/END) */
 .rp-stats { display:flex; flex-wrap:wrap; gap:4px; margin-top:2px; }
@@ -258,7 +272,7 @@ html.tg-app {
   font-family:'Oswald',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:.5px;
 }
 .rp-stat img { width:13px; height:13px; }
-.rp-stat-wil { color:#ffd700; border-color:#5a4d00; }
+.rp-stat-wil { color:var(--gold); border-color:#5a4d00; }
 .rp-stat-end { color:#e94560; border-color:#5a1a26; }
 
 /* ПОЛНАЯ КАРТОЧКА */
@@ -307,7 +321,7 @@ body.left-handed .close-full { right:auto; left:12px; }
 
 .sidebar-section + .sidebar-section { margin-top:20px; }
 .sidebar-title {
-  color:#ffd700; font-weight:700; letter-spacing:2px; font-size:15px;
+  color:var(--gold); font-weight:700; letter-spacing:2px; font-size:15px;
   border-bottom:2px solid #e94560; padding-bottom:8px; margin-bottom:12px;
 }
 .sidebar-entry { margin-bottom:14px; }
@@ -320,7 +334,7 @@ body.left-handed .close-full { right:auto; left:12px; }
 .official-card { background:#f2ede2; color:#000; border-radius:18px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.6); margin:10px; font-family:'Oswald',sans-serif; }
 
 .official-header {
-  background:linear-gradient(115deg, #ffd700 0%, #ffd700 42%, #fff9e0 100%);
+  background:linear-gradient(115deg, var(--gold) 0%, var(--gold) 42%, #fff9e0 100%);
   color:#111; padding:14px 52px 14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px;
 }
 .official-header-text { min-width:0; }
@@ -335,8 +349,8 @@ body.left-handed .close-full { right:auto; left:12px; }
 .official-main {
   display:flex; gap:10px; padding:10px; min-height:220px;
   background:url('img/card-bg.webp') center/cover no-repeat #f5f5f5;
-  border-top:3px solid #e6c200;
-  border-bottom:3px solid #e6c200;
+  border-top:3px solid var(--gold-dim);
+  border-bottom:3px solid var(--gold-dim);
 }
 /* Фото занимает 40.5% ширины карточки (было 45%) — уменьшено на 10%,
    вместе с ним пропорционально уменьшен и потолок ширины */
@@ -358,13 +372,13 @@ body.left-handed .close-full { right:auto; left:12px; }
   font-size:clamp(13px,3.6vw,15px); font-weight:700; color:#fff;
   background:#1a1a1a; padding:5px 10px; border-radius:10px; align-self:flex-start;
 }
-.official-rep-funding span { color:#ffd700; }
+.official-rep-funding span { color:var(--gold); }
 .rep-funding-sep { color:#888 !important; margin:0 2px; }
 
 .official-stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 6px; margin-top:auto; }
 .stat-badge { border-radius:14px; display:flex; align-items:center; justify-content:center; gap:6px; text-align:center; box-shadow:0 3px 8px rgba(0,0,0,.35); }
-.stat-badge.stat-yellow { background:#ffd700; color:#000; }
-.stat-badge.stat-black { background:#111; color:#ffd700; }
+.stat-badge.stat-yellow { background:var(--gold); color:#000; }
+.stat-badge.stat-black { background:#111; color:var(--gold); }
 .stat-badge.stat-big { padding:10px 6px; flex-direction:column; clip-path:polygon(3% 8%,97% 2%,100% 55%,95% 98%,5% 100%,0% 48%); }
 .stat-badge.stat-big .stat-num { font-size:clamp(22px,6vw,32px); font-weight:700; line-height:1; }
 .stat-badge.stat-big .stat-name { font-size:9.5px; font-weight:700; letter-spacing:1.5px; margin-top:3px; }
@@ -375,19 +389,19 @@ body.left-handed .close-full { right:auto; left:12px; }
 .official-section { padding:4px 8px 8px; background:#f2ede2; }
 /* Секции без заголовка (оружие, трейты) — отступ сверху вместо чёрной плашки */
 .official-section.no-title { padding-top:10px; }
-.official-section-title { background:#000; color:#ffd700; padding:8px; font-size:15px; font-weight:700; letter-spacing:2px; text-align:center; }
+.official-section-title { background:#000; color:var(--gold); padding:8px; font-size:15px; font-weight:700; letter-spacing:2px; text-align:center; }
 
 .official-weapon { background:#232323; color:#fff; padding:10px 12px; border-radius:12px; margin:8px 0; box-shadow:0 4px 6px rgba(0,0,0,.5); }
 .official-weapon-first-line { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-weight:700; }
-.official-weapon-name { color:#ffd700; font-size:15px; letter-spacing:.5px; }
+.official-weapon-name { color:var(--gold); font-size:15px; letter-spacing:.5px; }
 .official-weapon-stats { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 .official-weapon-damage { font-size:16px; }
 .official-weapon-rof, .official-weapon-ammo { color:#fff; display:flex; align-items:center; gap:4px; font-size:14px; }
 .official-weapon-traits-line { margin-top:8px; padding-top:8px; border-top:1px dashed #444; text-align:center; font-size:12px; letter-spacing:.5px; }
-.weapon-trait-text { color:#ffd700; cursor:pointer; }
+.weapon-trait-text { color:var(--gold); cursor:pointer; }
 .weapon-trait-text:hover { text-decoration:underline; }
 
-.official-section.yellow { background:#ffd700; margin:0; padding:0 0 12px; }
+.official-section.yellow { background:var(--gold); margin:0; padding:0 0 12px; }
 .official-section.yellow.no-title { padding:12px 0; }
 .official-section.yellow .official-section-title { margin-bottom:8px; }
 .official-traits-list { display:grid; grid-template-columns:1fr 1fr; gap:2px 14px; padding:0 16px; }
@@ -416,20 +430,40 @@ body.left-handed .close-full { right:auto; left:12px; }
   border:1px solid #2a2a2a;
 }
 .rank-select-header {
-  padding:16px 20px 12px; color:#ffd700; display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+  padding:16px 20px 12px; color:var(--gold); display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
   font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:1px; font-size:clamp(14px,4vw,17px);
   border-bottom:2px solid #e94560; word-break:break-word; flex-shrink:0;
 }
 .rank-select-header strong { color:#fff; }
-.rank-select-close { font-size:26px; line-height:1; cursor:pointer; color:#fff; flex-shrink:0; transition:color .2s; }
+.rank-select-close {
+  font: inherit; font-size:26px; line-height:1; cursor:pointer; color:#fff; flex-shrink:0;
+  transition:color .2s; background:none; border:none; padding:0; margin:0;
+}
 .rank-select-close:hover { color:#e94560; }
 .rank-select-buttons { display:flex; flex-direction:column; gap:12px; padding:18px 20px; overflow-y:auto; }
+.app-modal-body { display:flex; flex-direction:column; gap:14px; padding:18px 20px; overflow-y:auto; }
+.app-modal-input {
+  width:100%; background:#1e1e1e; color:#eee; border:2px solid #333; border-radius:var(--radius-md);
+  padding:12px 14px; font-family:'Oswald',sans-serif; font-size:15px;
+}
+.app-modal-input:focus { outline:none; border-color:var(--danger); }
+.app-modal-actions { display:flex; gap:12px; }
+.app-modal-actions .save-btn, .app-modal-actions .btn-primary { flex:1; padding:11px; font-size:14px; border-radius:var(--radius-md); }
+.app-modal-actions .tn-resolve-pick { flex:1; padding:11px; font-size:14px; }
+.app-modal-actions .tn-resolve-pick.active-pick { border-color:var(--danger); background:#2a1418; color:#fff; }
+.tn-resolve-label { display:block; color:#888; font-size:11.5px; margin-bottom:4px; }
 .rank-select-btn { background:#1e1e1e; color:#eee; border:2px solid #333; border-radius:12px; padding:14px; font-size:16px; font-weight:700; font-family:'Oswald',sans-serif; cursor:pointer; transition:all 0.25s; }
 .rank-select-btn:hover { border-color:#e94560; background:#2a1418; transform:translateY(-1px); }
+/* Первичное действие экрана (регистрация, создать турнир/игру и т.п.) — то же
+   тело кнопки, что и .rank-select-btn, но сплошная заливка вместо тёмно-серой
+   рамки, чтобы главное действие визуально не терялось рядом со второстепенными */
+.btn-primary { background:var(--danger); color:#fff; border:2px solid var(--danger); border-radius:12px; padding:14px; font-size:16px; font-weight:700; font-family:'Oswald',sans-serif; cursor:pointer; transition:all 0.25s; }
+.btn-primary:hover { background:var(--danger-hover); border-color:var(--danger-hover); transform:translateY(-1px); }
+.auth-buttons .btn-primary, .game-finish-row .btn-primary, .tn-card-actions .btn-primary { flex:1; padding:11px; font-size:14px; }
 
 /* УДАЛЕНИЕ EQUIPMENT */
-.remove-eq { position:absolute; top:-10px; right:-10px; background:#ff0000; color:#fff; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold; cursor:pointer; box-shadow:0 3px 8px rgba(255,0,0,0.8); z-index:12; transition:all 0.3s; }
-.remove-eq:hover { background:#ff3333; transform:scale(1.2); }
+.remove-eq { position:absolute; top:-10px; right:-10px; background:var(--danger); color:#fff; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold; cursor:pointer; box-shadow:0 3px 8px rgba(233,69,96,0.8); z-index:12; transition:all 0.3s; }
+.remove-eq:hover { background:var(--danger-hover); transform:scale(1.2); }
 
 /* ИКОНКИ В ТЕКСТЕ */
 .inline-icon { display:inline-block; height:1.1em; width:auto; vertical-align:middle; margin:0 2px; }
@@ -446,7 +480,7 @@ body.left-handed .close-full { right:auto; left:12px; }
      быть и справа, и слева (левша/правша). Заголовок центрируем в
      оставшемся симметричном пространстве, а не во flex-строке из двух
      элементов — так он не съезжает от того, где сидит кнопка. */
-  padding:16px 44px 12px; color:#ffd700; position:relative; text-align:center;
+  padding:16px 44px 12px; color:var(--gold); position:relative; text-align:center;
   font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:1px; font-size:16px;
   border-bottom:2px solid #e94560;
 }
@@ -471,10 +505,11 @@ body.left-handed .trait-popup-close { right:auto; left:16px; }
 .auth-buttons { display:flex; gap:10px; }
 .auth-buttons .rank-select-btn { flex:1; padding:11px; font-size:14px; }
 .auth-note { color:#888; font-size:11.5px; line-height:1.5; margin:2px 0 0; }
+.auth-note-warn { color:#ff6b6b; font-weight:600; }
 .auth-profile-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
 .auth-username { color:#fff; font-weight:700; font-size:15px; flex:1; word-break:break-word; }
-.auth-slots { color:#ffd700; font-weight:700; font-size:13px; }
-.saves-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:13px; border-bottom:2px solid #e94560; padding-bottom:6px; margin-bottom:10px; }
+.auth-slots { color:var(--gold); font-weight:700; font-size:13px; }
+.saves-title { color:var(--gold); font-weight:700; letter-spacing:2px; font-size:13px; border-bottom:2px solid #e94560; padding-bottom:6px; margin-bottom:10px; }
 .save-row {
   display:flex; align-items:center; gap:10px; background:#1e1e1e;
   border-radius:12px; padding:10px 12px; margin-bottom:8px; transition:background .2s;
@@ -490,7 +525,7 @@ body.left-handed .trait-popup-close { right:auto; left:16px; }
 }
 .save-btn:hover { background:#ff3366; }
 .save-btn-del { background:#333; padding:7px 10px; }
-.save-btn-del:hover { background:#c00; }
+.save-btn-del:hover { background:var(--danger); }
 
 /* РАЗДЕЛ ИГРА (game.js): обмен ростерами по коду */
 .game-content { padding:16px 12px 80px; max-width:1100px; margin:0 auto; }
@@ -500,13 +535,19 @@ body.left-handed .trait-popup-close { right:auto; left:16px; }
   display:flex; flex-direction:column; gap:12px; box-shadow:0 6px 20px rgba(0,0,0,.5);
 }
 .game-center { align-items:center; text-align:center; }
-.game-panel-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:16px; border-bottom:2px solid #e94560; padding-bottom:8px; }
+.game-panel-title { color:var(--gold); font-weight:700; letter-spacing:2px; font-size:16px; border-bottom:2px solid #e94560; padding-bottom:8px; }
 .game-note { color:#999; font-size:13px; line-height:1.5; margin:0; }
 /* Список моделей билдера сократился из-за нехватки Rep/Funding — без этой
    строки список из нескольких моделей выглядел как сломанный каталог,
    а не как "просто на всех денег не хватает" */
-.budget-hidden-notice { color:#999; font-size:12.5px; line-height:1.5; padding:10px 4px; text-align:center; }
-.game-waiting { color:#ffd700; font-size:14px; }
+.model-search-wrapper { padding:10px 12px 0; max-width:1500px; margin:0 auto; }
+.model-search-input {
+  width:100%; background:#141414; color:#eee; border:2px solid #2a2a2a; border-radius:var(--radius-md);
+  padding:11px 14px; font-family:'Oswald',sans-serif; font-size:14px; letter-spacing:.3px; transition:border-color .2s;
+}
+.model-search-input::placeholder { color:#777; }
+.model-search-input:focus { outline:none; border-color:var(--danger); }
+.game-waiting { color:var(--gold); font-size:14px; }
 .game-select, .game-code-input {
   background:#1e1e1e; color:#fff; border:2px solid #333; border-radius:12px; padding:11px 14px;
   font-family:'Oswald',sans-serif; font-size:15px; outline:none; width:100%;
@@ -525,7 +566,7 @@ select.game-select {
 select.game-select option { background:#1e1e1e; color:#fff; }
 .game-code-input { text-transform:uppercase; letter-spacing:6px; text-align:center; font-weight:700; }
 .game-code-display {
-  font-size:44px; font-weight:700; letter-spacing:12px; color:#ffd700;
+  font-size:44px; font-weight:700; letter-spacing:12px; color:var(--gold);
   background:#000; border-radius:16px; padding:14px 20px 14px 32px;
   user-select:all; /* клик — и код выделен целиком для копирования */
 }
@@ -549,8 +590,8 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 }
 .game-cond-card:hover { background:#2a1418; transform:translateY(-2px); box-shadow:0 6px 18px rgba(233,69,96,.3); }
 .game-cond-card-label { color:#e94560; font-size:10.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
-.game-cond-card-name { color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:17px; letter-spacing:.5px; margin:3px 0; }
-.game-cond-card-hint { color:#777; font-size:10.5px; }
+.game-cond-card-name { color:var(--gold); font-family:'Oswald',sans-serif; font-weight:700; font-size:17px; letter-spacing:.5px; margin:3px 0; }
+.game-cond-card-hint { color:#9a9a9a; font-size:10.5px; }
 
 /* Скан карты условия в попапе (см. conditionPopupBody в game.js) */
 .game-cond-popup-img-wrap { text-align:center; }
@@ -561,7 +602,12 @@ select.game-select option { background:#1e1e1e; color:#fff; }
    На телефоне переносится по строкам, чипы ужимаются с многоточием */
 .game-play-bar { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
 .game-play-code { color:#999; font-size:13px; flex-shrink:0; }
-.game-play-code b { color:#ffd700; letter-spacing:3px; }
+.game-play-code b { color:var(--gold); letter-spacing:3px; }
+.game-sync-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-left:8px; vertical-align:middle; background:transparent; transition:background .2s; }
+.game-sync-dot.game-sync-pending { background:#666; animation:gameSyncPulse 1s ease-in-out infinite; }
+.game-sync-dot.game-sync-synced { background:#4caf6d; animation:none; }
+@keyframes gameSyncPulse { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+.game-sync-label { margin-left:5px; font-size:11px; color:#999; vertical-align:middle; }
 .game-leave-btn { margin-left:auto; flex-shrink:0; }
 .game-cond-chip {
   display:inline-flex; align-items:center; gap:6px; min-width:0; max-width:190px;
@@ -571,7 +617,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .game-cond-chip:hover { border-color:#e94560; }
 .game-cond-chip b { color:#e94560; font-size:10px; letter-spacing:1px; flex-shrink:0; }
 .game-cond-chip-name {
-  color:#ffd700; font-size:11.5px; font-weight:700;
+  color:var(--gold); font-size:11.5px; font-weight:700;
   min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
 
@@ -593,7 +639,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 
 .game-roster { background:#141414; border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.5); }
 .game-roster-head { background:#1a1a1a; border-bottom:2px solid #e94560; padding:12px 16px; }
-.game-roster-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:14px; }
+.game-roster-title { color:var(--gold); font-weight:700; letter-spacing:2px; font-size:14px; }
 .game-roster-sub { color:#999; font-size:12.5px; margin-top:3px; }
 .game-model-row {
   display:flex; align-items:center; gap:10px; padding:8px 10px; cursor:pointer;
@@ -612,7 +658,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .game-model-counters .gm-counter b { font-size:16px; min-width:20px; }
 .game-model-counters .gm-counter button { width:26px; height:26px; font-size:15px; }
 /* Вторая строка: статусы, патроны, эффекты, снаряжение */
-.game-model-eq { color:#777; font-size:10.5px; font-style:italic; min-width:0; }
+.game-model-eq { color:#9a9a9a; font-size:10.5px; font-style:italic; min-width:0; }
 .game-model-missing { opacity:.5; cursor:default; }
 .game-model-ko { opacity:.45; }
 
@@ -648,7 +694,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .gm-fx-chip:hover { border-color:#e94560; }
 .gm-fx-chip b {
   display:flex; align-items:center; justify-content:center; width:15px; height:15px;
-  background:#c00; color:#fff; border-radius:50%; font-size:10px; line-height:1; cursor:pointer;
+  background:var(--danger); color:#fff; border-radius:50%; font-size:10px; line-height:1; cursor:pointer;
 }
 .gm-fx-add {
   background:#111; color:#999; border:1px solid #383838; border-radius:9px; padding:5px 6px;
@@ -663,7 +709,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
    Компактный вид: обе стороны и кнопка завершения в одну строку */
 .game-score-panel { margin-bottom:14px; gap:8px; padding:10px 12px; }
 .game-score-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px 10px; }
-.game-score-label { color:#ffd700; font-weight:700; font-size:12px; letter-spacing:2px; flex-shrink:0; }
+.game-score-label { color:var(--gold); font-weight:700; font-size:12px; letter-spacing:2px; flex-shrink:0; }
 .game-score-sep { color:#666; font-weight:700; }
 .game-score-panel .game-vp-box {
   flex:0 1 auto; min-width:0; flex-direction:row; align-items:center; gap:8px;
@@ -686,10 +732,10 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   padding:10px 12px; display:flex; flex-direction:column; align-items:center; gap:6px;
 }
 .game-vp-name { color:#fff; font-weight:700; font-size:13px; letter-spacing:.5px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.game-vp-box .gm-counter b { color:#ffd700; font-size:24px; min-width:34px; }
+.game-vp-box .gm-counter b { color:var(--gold); font-size:24px; min-width:34px; }
 .game-finish-row { display:flex; gap:10px; flex-wrap:wrap; }
 .game-finish-row .rank-select-btn { flex:1; min-width:140px; padding:11px; font-size:14px; }
-.game-result-winner { color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; letter-spacing:1px; }
+.game-result-winner { color:var(--gold); font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; letter-spacing:1px; }
 .game-result-score { color:#ccc; font-size:15px; }
 .game-result-score b { color:#e94560; font-size:18px; }
 
@@ -719,7 +765,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .tn-card-title { word-break:break-word; }
 .tn-card-meta { color:#999; font-size:13px; }
 .tn-card-slots { color:#ccc; font-size:14px; }
-.tn-card-slots b { color:#ffd700; }
+.tn-card-slots b { color:var(--gold); }
 .tn-card-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 .tn-card-actions .rank-select-btn { padding:10px 16px; font-size:14px; }
 
@@ -733,14 +779,14 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .tn-player-clickable:hover { background:#2a1418; }
 .tn-player-num { color:#777; font-family:'Oswald',sans-serif; font-weight:700; font-size:12px; width:18px; text-align:center; flex-shrink:0; }
 .tn-player-name { color:#fff; font-weight:700; font-size:13px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.tn-player-name b { color:#ffd700; font-weight:700; }
+.tn-player-name b { color:var(--gold); font-weight:700; }
 .tn-badge {
   flex-shrink:0; font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
   border-radius:8px; padding:3px 7px; border:1px solid #333; color:#999;
 }
 .tn-badge-ok { color:#7ddf7d; border-color:#2e5a2e; }
 .tn-badge-wait { color:#ffb84d; border-color:#5a4d00; }
-.tn-badge-reserve { color:#ffd700; border-color:#5a4d00; }
+.tn-badge-reserve { color:var(--gold); border-color:#5a4d00; }
 
 /* Статусы турнира */
 .tn-badge-open { color:#7ddf7d; border-color:#2e5a2e; }
@@ -761,24 +807,24 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 
 /* Таблица турнира и победитель */
 .tn-st-row { cursor:default; }
-.tn-st-cell { flex-shrink:0; color:#ffd700; font-family:'Oswald',sans-serif; font-weight:700; font-size:12.5px; min-width:48px; text-align:right; }
+.tn-st-cell { flex-shrink:0; color:var(--gold); font-family:'Oswald',sans-serif; font-weight:700; font-size:12.5px; min-width:48px; text-align:right; }
 .tn-st-winner { background:#1f1a0a; box-shadow:0 0 12px rgba(255,215,0,.25); }
 /* Строка заголовков колонок таблицы — приглушённая, не как данные */
 .tn-st-header { opacity:.6; padding-top:4px; padding-bottom:4px; }
 .tn-st-header .tn-st-cell { color:#999; font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; }
 .tn-winner-banner {
-  background:linear-gradient(90deg, rgba(255,215,0,.12), transparent); border-left:3px solid #ffd700;
+  background:linear-gradient(90deg, rgba(255,215,0,.12), transparent); border-left:3px solid var(--gold);
   border-radius:0 10px 10px 0; padding:10px 14px; color:#fff; font-size:15px;
 }
-.tn-winner-banner b { color:#ffd700; font-family:'Oswald',sans-serif; letter-spacing:1px; }
+.tn-winner-banner b { color:var(--gold); font-family:'Oswald',sans-serif; letter-spacing:1px; }
 
 /* Запись своего результата тура */
 .tn-report-form { display:flex; flex-direction:column; gap:10px; border-top:2px solid #e94560; padding-top:12px; }
 .tn-report-done { display:flex; align-items:center; gap:10px; flex-wrap:wrap; color:#7ddf7d; font-weight:700; font-size:13.5px; }
 
 /* Кнопки управления ходом турнира (организатор) */
-.tn-org-btn { border-color:#5a4d00; color:#ffd700; }
-.tn-org-btn:hover { border-color:#ffd700; background:#2a2414; }
+.tn-org-btn { border-color:#5a4d00; color:var(--gold); }
+.tn-org-btn:hover { border-color:var(--gold); background:#2a2414; }
 
 /* Форма подачи турнирных ростеров + чек-лист правил */
 .tn-rosters-form { display:flex; flex-direction:column; gap:10px; border-top:2px solid #e94560; padding-top:12px; }
@@ -792,27 +838,33 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .game-model-track { display:flex; align-items:center; gap:6px 8px; margin-top:5px; flex-wrap:wrap; cursor:default; }
 .game-model-track .gm-status { padding:5px 9px; font-size:11.5px; }
 .gm-counter { display:inline-flex; align-items:center; gap:6px; color:#999; font-size:12px; letter-spacing:1px; font-weight:700; font-family:'Oswald',sans-serif; }
-.gm-counter b { color:#ffd700; font-size:19px; min-width:26px; text-align:center; }
+.gm-counter b { color:var(--gold); font-size:19px; min-width:26px; text-align:center; }
 .gm-counter button {
   width:34px; height:34px; border-radius:9px; background:#222; color:#fff; border:1px solid #383838;
   cursor:pointer; font-size:19px; line-height:1; display:flex; align-items:center; justify-content:center;
-  transition:border-color .15s; touch-action:manipulation;
+  transition:border-color .15s; touch-action:manipulation; position:relative;
 }
 .gm-counter button:hover { border-color:#e94560; }
+/* Счётчики в трекере партии тапаются часто и быстро прямо во время игры —
+   в плотных панелях (раунд/счёт/модели) визуальный размер кнопки сжимается
+   до 26-28px, заметно меньше рекомендованного минимума тач-цели (~44px).
+   Увеличиваем именно область попадания через ::after, не трогая видимый
+   размер кнопки — плотность экрана не страдает, а промахов становится меньше. */
+.gm-counter button::after { content:''; position:absolute; inset:-9px; }
 .gm-status {
   background:#111; color:#777; border:2px solid #333; border-radius:9px; padding:7px 12px;
   font-family:'Oswald',sans-serif; font-weight:700; font-size:13px; letter-spacing:1px;
   cursor:pointer; transition:all .15s; touch-action:manipulation;
 }
 .gm-status:hover { border-color:#666; }
-.gm-status.on { background:#ffd700; color:#000; border-color:#ffd700; }
+.gm-status.on { background:var(--gold); color:#000; border-color:var(--gold); }
 
 /* КОЛОДА ЦЕЛЕЙ НА ЭКРАНЕ ИГРЫ (game-cards.js): рука, зоны, фишки.
    Панель видна только своему игроку — рука по правилам скрыта от оппонента. */
 .gc-panel { margin-bottom:16px; }
 .gc-stats { display:flex; flex-wrap:wrap; gap:8px 16px; }
 .gc-stat { color:#999; font-size:12px; letter-spacing:1px; font-weight:700; text-transform:uppercase; }
-.gc-stat b { color:#ffd700; font-size:16px; }
+.gc-stat b { color:var(--gold); font-size:16px; }
 .gc-tokens { display:flex; flex-wrap:wrap; gap:10px 16px; padding:10px 0; border-top:1px solid #222; border-bottom:1px solid #222; }
 .gc-token { text-transform:none; }
 .gc-warn { color:#ff6b6b; }
@@ -834,11 +886,11 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   display:flex; align-items:center; justify-content:center; transition:border-color .15s;
 }
 .gc-card-actions button:hover { border-color:#e94560; }
-.gc-vp { color:#ffd700; font-weight:700; font-size:12px; letter-spacing:1px; }
+.gc-vp { color:var(--gold); font-weight:700; font-size:12px; letter-spacing:1px; }
 .gc-trait-chips { display:flex; flex-wrap:wrap; gap:6px; }
 .gc-trait-chip {
   background:#1e1e1e; border:1px solid #383838; border-radius:10px; padding:5px 10px;
-  color:#ffd700; font-size:11.5px; font-weight:700; cursor:pointer; transition:border-color .15s;
+  color:var(--gold); font-size:11.5px; font-weight:700; cursor:pointer; transition:border-color .15s;
 }
 .gc-trait-chip:hover { border-color:#e94560; }
 
@@ -871,7 +923,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   box-shadow:0 4px 12px rgba(0,0,0,.45);
 }
 .stats-tile-icon { font-size:20px; line-height:1; margin-bottom:4px; }
-.stats-tile-value { font-family:'Oswald',sans-serif; font-weight:700; font-size:26px; line-height:1; color:#ffd700; }
+.stats-tile-value { font-family:'Oswald',sans-serif; font-weight:700; font-size:26px; line-height:1; color:var(--gold); }
 .stats-tile-label { color:#999; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
 
 /* Панели-рейтинги: место, картинка, название + полоса, число */
@@ -882,19 +934,19 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   font-family:'Oswald',sans-serif; font-weight:700; font-size:14px; color:#777;
   width:20px; text-align:center; flex-shrink:0;
 }
-.stats-row.is-top .stats-row-place { color:#ffd700; }
+.stats-row.is-top .stats-row-place { color:var(--gold); }
 .stats-row-img { flex-shrink:0; }
 .stats-row-faction { width:32px; height:32px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,.6)); }
 .stats-row-photo { width:34px; height:42px; object-fit:cover; object-position:center top; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.5); }
 .stats-row-flag { font-size:24px; line-height:1; flex-shrink:0; width:32px; text-align:center; }
 .stats-row-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:5px; }
 .stats-row-name { color:#fff; font-weight:700; font-size:13px; letter-spacing:.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.stats-row.is-top .stats-row-name { color:#ffd700; }
+.stats-row.is-top .stats-row-name { color:var(--gold); }
 .stats-row-bar { height:8px; background:#000; border:1px solid #333; border-radius:6px; overflow:hidden; }
 .stats-row-fill { height:100%; background:linear-gradient(90deg, #e94560, #ff3366); border-radius:6px; }
-.stats-row.is-top .stats-row-fill { background:linear-gradient(90deg, #ffd700, #ffaa00); }
+.stats-row.is-top .stats-row-fill { background:linear-gradient(90deg, var(--gold), var(--gold-dim)); }
 .stats-row-count { font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; color:#e94560; flex-shrink:0; min-width:26px; text-align:right; }
-.stats-row.is-top .stats-row-count { color:#ffd700; }
+.stats-row.is-top .stats-row-count { color:var(--gold); }
 
 /* Планшет/ПК: плитки шире (6 плиток: 2→3→6 колонок) */
 @media (min-width: 700px) {
@@ -920,7 +972,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 /* Смена пароля — сворачиваемый блок в профиле, как остальные тёмные панели */
 .auth-change-pass { margin:16px 0; border-top:1px solid #2a2a2a; padding-top:12px; }
 .auth-change-pass summary {
-  color:#ffd700; font-weight:700; letter-spacing:1px; font-size:12.5px; cursor:pointer;
+  color:var(--gold); font-weight:700; letter-spacing:1px; font-size:12.5px; cursor:pointer;
   list-style:none; text-transform:uppercase;
 }
 .auth-change-pass summary::-webkit-details-marker { display:none; }
@@ -930,7 +982,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 
 /* СВЯЗАННЫЕ ПРАВИЛА В ПОПАПАХ (расшифровка трейтов, упомянутых в апгрейде/трейте) */
 .popup-related { margin-top:16px; border-top:2px solid #e94560; padding-top:12px; }
-.popup-related-title { color:#ffd700; font-weight:700; letter-spacing:2px; font-size:12px; margin-bottom:10px; }
+.popup-related-title { color:var(--gold); font-weight:700; letter-spacing:2px; font-size:12px; margin-bottom:10px; }
 .popup-related-entry { margin-bottom:12px; }
 .popup-related-entry:last-child { margin-bottom:0; }
 .popup-related-name { color:#fff; font-weight:700; font-size:13px; margin-bottom:3px; }
@@ -945,7 +997,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   border:1px solid #2a2a2a;
 }
 .equipment-modal-header {
-  padding:16px 20px 12px; color:#ffd700; display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+  padding:16px 20px 12px; color:var(--gold); display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
   font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:1px; font-size:clamp(14px,4vw,17px);
   border-bottom:2px solid #e94560; word-break:break-word; flex-shrink:0;
 }
@@ -953,7 +1005,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .equipment-modal-close { font-size:26px; line-height:1; cursor:pointer; color:#fff; flex-shrink:0; transition:color .2s; }
 .equipment-modal-close:hover { color:#e94560; }
 .equipment-modal-funding { background:#1a1a1a; padding:10px 20px; text-align:center; border-bottom:2px solid #e94560; flex-shrink:0; }
-.equipment-modal-funding .avail { color:#ffd700; font-weight:bold; font-size:14px; }
+.equipment-modal-funding .avail { color:var(--gold); font-weight:bold; font-size:14px; }
 .equipment-modal-funding .total { color:#aaa; font-size:12px; margin-left:8px; }
 .equipment-modal-list { padding:16px 20px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
 .equipment-modal-empty { text-align:center; color:#aaa; padding:10px 0; }
@@ -964,11 +1016,11 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .equipment-item-btn:hover:not(:disabled) { border-color:#e94560; background:#2a1418; transform:translateY(-1px); }
 .equipment-item-btn:disabled { opacity:0.5; cursor:not-allowed; }
 .equipment-item-name { font-weight:700; font-size:14.5px; word-break:break-word; color:#fff; }
-.equipment-item-price { color:#ffd700; font-weight:600; font-size:13px; }
+.equipment-item-price { color:var(--gold); font-weight:600; font-size:13px; }
 .equipment-item-effects { display:block; opacity:0.85; font-size:12.5px; margin-top:5px; color:#bbb; line-height:1.5; }
-.equipment-item-req { color:#ffd700; display:block; margin-top:5px; font-size:11.5px; }
+.equipment-item-req { color:var(--gold); display:block; margin-top:5px; font-size:11.5px; }
 .equipment-item-warning { color:#ff6b6b; display:block; margin-top:5px; font-size:11.5px; }
-.equipment-item-special { color:#ffd700; font-size:11px; margin-left:6px; }
+.equipment-item-special { color:var(--gold); font-size:11px; margin-left:6px; }
 
 @media (max-width: 480px) {
   /* Размер кнопок не трогаем — они всегда 40×40, меняется только зазор */
@@ -1019,7 +1071,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   letter-spacing: 10px;
   padding-left: 10px; /* компенсация letter-spacing для оптического центра */
   margin: 0;
-  color: #ffd700;
+  color: var(--gold);
   text-shadow: 0 0 16px rgba(233, 69, 96, 0.65);
   font-family: 'Oswald', sans-serif;
 }
@@ -1080,7 +1132,12 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   box-shadow: 0 6px 16px rgba(233, 69, 96, 0.25);
 }
 .menu-btn:active { transform: translateY(0) scale(0.98); }
-.btn-icon { font-size: 22px; line-height: 1; }
+/* Раньше — платформенные emoji (разный вид на iOS/Android/Telegram, цветные,
+   выбивались из красно-золотой палитры). Монохромные SVG вместо них держат
+   единый визуальный язык с иконками фракций и рисуются одинаково везде. */
+.btn-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+.btn-icon svg { width: 26px; height: 26px; fill: var(--gold); transition: fill .2s; }
+.menu-btn:hover .btn-icon svg { fill: var(--danger-hover); }
 .btn-text { font-size: 13px; letter-spacing: 2px; }
 
 .main-menu-footer { margin-top: 14px; text-align: center; }
@@ -1098,6 +1155,14 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 @media (max-width: 360px) {
   .main-logo h1 { font-size: 38px; letter-spacing: 7px; }
   .btn-text { font-size: 12px; letter-spacing: 1.5px; }
+}
+
+/* На высоких телефонных экранах строгое центрирование по вертикали оставляет
+   заметно пустые зоны сверху и особенно снизу под футером — логотип и 8 кнопок
+   меню выглядят потерянными посреди экрана. Прижимаем контент ближе к верху,
+   когда высота экрана это позволяет. */
+@media (max-width: 699px) and (min-height: 700px) {
+  .main-menu { justify-content: flex-start; padding-top: calc(56px + var(--safe-top)); }
 }
 
 /* Планшет/ПК — меню чуть крупнее */
@@ -1268,7 +1333,7 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   font-size: 11px; font-weight: 700; letter-spacing: .08em;
   color: #8a8a8a; white-space: nowrap; transition: color .18s;
 }
-.pill-toggle input:checked ~ .pill-toggle-label { color: #ffc72c; }
+.pill-toggle input:checked ~ .pill-toggle-label { color: var(--gold-dim); }
 
 .pill-toggle-track {
   flex: none; position: relative; width: 30px; height: 17px;
@@ -1280,16 +1345,16 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 }
 .pill-toggle input:checked + .pill-toggle-track { background: #7a5c12; }
 .pill-toggle input:checked + .pill-toggle-track .pill-toggle-knob {
-  transform: translateX(13px); background: #ffc72c;
+  transform: translateX(13px); background: var(--gold-dim);
 }
-.pill-toggle input:focus-visible + .pill-toggle-track { outline: 2px solid #ffc72c; outline-offset: 2px; }
+.pill-toggle input:focus-visible + .pill-toggle-track { outline: 2px solid var(--gold-dim); outline-offset: 2px; }
 
 /* Метка на карточке модели формата Eternal — чтобы в общем списке было видно,
    что профиль не из стандартного формата */
 .eternal-badge {
   display: inline-block; vertical-align: middle;
   font-size: 9px; font-weight: 700; letter-spacing: .08em;
-  color: #ffc72c; background: rgba(255, 199, 44, .12);
+  color: var(--gold-dim); background: rgba(255, 199, 44, .12);
   border: 1px solid rgba(255, 199, 44, .45); border-radius: 4px;
   padding: 1px 5px; margin-left: 6px; white-space: nowrap;
 }

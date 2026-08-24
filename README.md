@@ -216,7 +216,9 @@ node server.js
 - `PORT` — порт сервера;
 - `BMG_DATA_DIR` — каталог базы данных (по умолчанию `data/` рядом с server.js);
 - `SMTP_HOST` — адрес SMTP-сервера; без него письма не отправляются, а код
-  восстановления пароля просто пишется в лог сервера (удобно для разработки);
+  восстановления пароля просто пишется в лог сервера (удобно для разработки).
+  **Должен быть доменным именем, не IP** — TLS-проверка сертификата сверяет имя
+  из SAN, а не IP-адрес, и почти гарантированно провалится с голым IP;
 - `SMTP_PORT` — порт (587 по умолчанию — STARTTLS; 465 — неявный TLS);
 - `SMTP_USER` / `SMTP_PASS` — логин и пароль (или app-пароль) на SMTP-сервере;
 - `SMTP_FROM` — обратный адрес письма (по умолчанию — `SMTP_USER`).
@@ -304,6 +306,17 @@ User=bmg
 WorkingDirectory=/opt/bmg/app
 ExecStart=/usr/bin/node server.js
 Environment=PORT=8080
+# TRUST_PROXY=1 — обязательно при деплое за nginx из раздела 4 ниже: без него
+# троттлинг попыток входа считает IP-адресом сам nginx (127.0.0.1) для ЛЮБОГО
+# посетителя сайта, и лимит становится общим на всех сразу, а не per-visitor.
+# Ставить TRUST_PROXY=1 ТОЛЬКО когда порт сервера закрыт для прямого доступа
+# извне (см. раздел 5) — иначе X-Real-IP подделывается напрямую.
+# TRUST_PROXY=1 — required when deployed behind the nginx from section 4 below:
+# without it, login throttling counts nginx itself (127.0.0.1) as the IP for
+# EVERY visitor, making the rate limit shared across all users at once. Set
+# TRUST_PROXY=1 ONLY when the app port is not directly reachable from outside
+# (see section 5) — otherwise X-Real-IP can be spoofed directly.
+Environment=TRUST_PROXY=1
 Restart=always
 
 [Install]
@@ -339,6 +352,19 @@ certbot --nginx -d your-domain.com   # сертификат + редирект �
 ```
 
 ### 5. Файрвол и бэкап / Firewall & backup
+
+**Важно:** порт приложения (8080) не должен быть доступен напрямую из интернета —
+только через nginx на 127.0.0.1. Команды ниже полагаются на ufw default-deny:
+порт 8080 никогда явно не открывается, поэтому он закрыт снаружи. Если вы
+временно добавляете `ufw allow 8080` для отладки — не забудьте убрать это
+правило, иначе TLS-терминация обходится, а API (включая пароли в теле
+`POST /api/login`) отдаётся открытым текстом. / **Important:** the app port
+(8080) must never be reachable directly from the internet — only via nginx on
+127.0.0.1. The commands below rely on ufw's default-deny: port 8080 is never
+explicitly opened, so it stays closed from outside. If you temporarily add
+`ufw allow 8080` for debugging, remove that rule afterwards — otherwise TLS
+termination is bypassed and the API (including passwords in `POST
+/api/login` bodies) is served in plaintext.
 
 ```bash
 apt install -y ufw && ufw allow OpenSSH && ufw allow "Nginx Full" && ufw enable

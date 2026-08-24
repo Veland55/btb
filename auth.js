@@ -145,6 +145,7 @@ async function setUserEmail() {
   try {
     await api('/api/profile', 'PUT', { email: email || null });
     currentUserEmail = email || null;
+    renderAuthModal(); // иначе плашка "email не указан" остаётся висеть после успешного сохранения
     alert(t('email_saved'));
   } catch (e) {
     alert(apiErrorText(e));
@@ -291,12 +292,22 @@ function serializeCrew(name) {
   return record;
 }
 
+// Отряд, который нужно сохранить сразу после входа/регистрации — намерение
+// иначе терялось: пользователь логинился из формы сохранения и видел
+// "МОИ ОТРЯДЫ: 0/5", думая, что отряд уже сохранён.
+let pendingCrewSaveAfterAuth = false;
+
 async function saveCurrentCrew() {
-  if (!currentUser) { alert(t('save_login_required')); openAuthModal(); return; }
+  if (!currentUser) {
+    pendingCrewSaveAfterAuth = true;
+    alert(t('save_login_required'));
+    openAuthModal();
+    return;
+  }
   if (!crew.length) { alert(t('empty_crew_save')); return; }
 
   const def = `${currentFaction} · ${getCrewTotalRep()} Rep`;
-  const input = prompt(t('save_name_prompt'), def);
+  const input = await appPrompt(t('save_name_prompt'), def);
   if (input === null) return;
   const name = (input.trim() || def).slice(0, 40);
 
@@ -324,7 +335,7 @@ async function saveCurrentCrew() {
 
 async function deleteSavedCrew(index) {
   const s = mySaves[index];
-  if (!s || !confirm(t('confirm_delete_save', { name: s.n }))) return;
+  if (!s || !(await appConfirm(t('confirm_delete_save', { name: s.n })))) return;
   const backup = mySaves.slice();
   mySaves.splice(index, 1);
   try {
@@ -432,6 +443,10 @@ function closeAuthModal() {
   // Следующее открытие модалки для незалогиненного — снова обычный вход,
   // а не середина прерванного восстановления пароля
   authView = 'login';
+  // Закрыли модалку, не залогинившись — намерение "сохранить отряд после входа"
+  // больше не актуально; без сброса оно всплывало при следующем, никак не
+  // связанном входе (например, просто открыли профиль) неожиданным prompt'ом
+  pendingCrewSaveAfterAuth = false;
   // Если модалку открывали из раздела ИГРА — после входа перерисовываем его
   if (typeof renderGame === 'function' && currentMode === 'game') renderGame();
 }
@@ -479,7 +494,7 @@ function renderAuthLoggedOutHTML() {
       <p class="auth-note">${t('register_email_hint')}</p>
       <div class="auth-buttons">
         <button class="rank-select-btn" onclick="authSubmit(false)">${t('login')}</button>
-        <button class="rank-select-btn" onclick="authSubmit(true)">${t('register')}</button>
+        <button class="btn-primary" onclick="authSubmit(true)">${t('register')}</button>
       </div>
       <p class="auth-forgot-link" onclick="authView='forgot-request';renderAuthModal()">${t('forgot_password_link')}</p>
       <p class="auth-note">${t('auth_server_note')}</p>
@@ -534,7 +549,7 @@ function renderAuthModal() {
              placeholder="${t('email_placeholder')}" value="${authEsc(currentUserEmail)}">
       <button class="save-btn" onclick="setUserEmail()">${t('email_save_btn')}</button>
     </div>
-    <p class="auth-note">${t('email_hint')}</p>
+    <p class="auth-note${currentUserEmail ? '' : ' auth-note-warn'}">${currentUserEmail ? t('email_hint') : t('email_hint_missing')}</p>
 
     <details class="auth-change-pass">
       <summary>${t('change_password_title')}</summary>
@@ -565,6 +580,10 @@ async function authSubmit(isRegister) {
         await authLogin(name, pass);
       }
       renderAuthModal();
+      if (pendingCrewSaveAfterAuth) {
+        pendingCrewSaveAfterAuth = false;
+        await saveCurrentCrew();
+      }
     } catch (e) {
       alert(apiErrorText(e));
     }

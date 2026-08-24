@@ -109,12 +109,12 @@ function gcShuffle(arr) {
 }
 
 // Первичная раздача: тасуем колоду и берём руку. Мулиган остаётся доступен.
-function gcStart(roster) {
+async function gcStart(roster) {
   const ids = gcDeckFromRoster(roster);
   if (!ids) { alert(t('gc_no_deck')); return; }
   const legalSize = (typeof OBJECTIVE_DECK !== 'undefined' ? OBJECTIVE_DECK.size : 30);
   if (ids.length !== legalSize &&
-      !confirm(t('gc_deck_size_warn', { count: ids.length, need: legalSize }))) return;
+      !(await appConfirm(t('gc_deck_size_warn', { count: ids.length, need: legalSize })))) return;
   gameTrack.deck = {
     draw: gcShuffle(ids.slice()),
     hand: [], play: [], scored: [], removed: [],
@@ -165,11 +165,11 @@ function gcMulliganDone() {
 }
 
 // Remove: карта выбывает из партии совсем (в отличие от Discard)
-function gcRemove(handIdx) {
+async function gcRemove(handIdx) {
   const d = gcState();
   if (!d || !d.hand[handIdx]) return;
   const id = d.hand[handIdx];
-  if (!confirm(t('gc_confirm_remove', { name: gcCardName(id) }))) return;
+  if (!(await appConfirm(t('gc_confirm_remove', { name: gcCardName(id) })))) return;
   d.removed.push(id);
   d.hand.splice(handIdx, 1);
   gcRefill();
@@ -184,12 +184,12 @@ function gcRemove(handIdx) {
 // несколько копий в игре законно — на этом прямо построены правила про вторую
 // копию, нацеленную на ту же модель, и ответ FAQ про несколько Paying Tribute
 // в игре. Поэтому здесь предупреждение, а не запрет.
-function gcPlayObjective(handIdx) {
+async function gcPlayObjective(handIdx) {
   const d = gcState();
   if (!d || !d.hand[handIdx]) return;
   const id = d.hand[handIdx];
   if (d.play.some(pid => gcCardName(pid) === gcCardName(id)) &&
-      !confirm(t('gc_same_name', { name: gcCardName(id) }))) return;
+      !(await appConfirm(t('gc_same_name', { name: gcCardName(id) })))) return;
   d.play.push(id);
   d.hand.splice(handIdx, 1);
   gcRefill();
@@ -199,10 +199,10 @@ function gcPlayObjective(handIdx) {
 
 // Розыгрыш как Ресурса: стоимость печатается на карте, поэтому Resource Point
 // списываются вручную кнопкой «−» — здесь только предупреждаем, если их нет.
-function gcPlayResource(handIdx) {
+async function gcPlayResource(handIdx) {
   const d = gcState();
   if (!d || !d.hand[handIdx]) return;
-  if (!d.rp && !confirm(t('gc_no_rp'))) return;
+  if (!d.rp && !(await appConfirm(t('gc_no_rp')))) return;
   // Ресурс после розыгрыша уходит под низ колоды
   d.draw.push(d.hand.splice(handIdx, 1)[0]);
   gcRefill();
@@ -214,12 +214,12 @@ function gcPlayResource(handIdx) {
 // Требования выполнены — карта уходит в забитые, её VP идут в счёт.
 // Шаг 3 фазы Recount: нельзя забить две одноимённые карты одновременно,
 // поэтому при второй копии в игре переспрашиваем
-function gcScore(playIdx) {
+async function gcScore(playIdx) {
   const d = gcState();
   if (!d || !d.play[playIdx]) return;
   const name = gcCardName(d.play[playIdx]);
   if (d.play.some((pid, i) => i !== playIdx && gcCardName(pid) === name) &&
-      !confirm(t('gc_score_same_name', { name }))) return;
+      !(await appConfirm(t('gc_score_same_name', { name })))) return;
   d.scored.push(d.play.splice(playIdx, 1)[0]);
   saveGameTrack();
   gcRender();
@@ -287,9 +287,9 @@ function gcEndOfRound() {
 }
 
 // Пересдача всей колоды (например, партию начали заново)
-function gcReset(roster) {
-  if (!confirm(t('gc_confirm_reset'))) return;
-  gcStart(roster);
+async function gcReset(roster) {
+  if (!(await appConfirm(t('gc_confirm_reset')))) return;
+  await gcStart(roster);
 }
 
 // Сумма VP забитых целей
@@ -305,10 +305,10 @@ function gcScoredVp() {
 // Перенос суммы VP забитых целей в счётчик партии. Счётчик именно
 // ПЕРЕЗАПИСЫВАЕТСЯ, поэтому спрашиваем: очки, набитые вручную (например за цель,
 // забитую прямо из колоды трейтом), иначе молча пропадут
-function gcApplyVp(side) {
+async function gcApplyVp(side) {
   const total = gcScoredVp();
   const current = (gameTrack['vp:' + side] && gameTrack['vp:' + side].v) || 0;
-  if (current !== total && !confirm(t('gc_apply_vp_confirm', { from: current, to: total }))) return;
+  if (current !== total && !(await appConfirm(t('gc_apply_vp_confirm', { from: current, to: total })))) return;
   if (!gameTrack['vp:' + side]) gameTrack['vp:' + side] = { v: 0 };
   gameTrack['vp:' + side].v = Math.min(200, total);
   saveGameTrack();
