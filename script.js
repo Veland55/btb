@@ -1486,6 +1486,7 @@ function showCards() {
   currentFaction = null;
   $('modelsGridCards').innerHTML = '';
   $('cardsTabsContainer').classList.remove('hidden');
+  if ($('cardsSearchWrapper')) $('cardsSearchWrapper').style.display = 'none'; // до выбора фракции — искать негде
   if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'none'; // до выбора фракции
   if ($('cardsMissionsPage')) { $('cardsMissionsPage').style.display = 'none'; $('cardsMain').style.display = 'block'; }
   closeBuilderCardPanel();
@@ -1523,6 +1524,7 @@ async function backToMenu() {
     $('cardsTabsContainer').classList.remove('hidden');
     $('modelsGridCards').innerHTML = '';
   }
+  if ($('cardsSearchWrapper')) $('cardsSearchWrapper').style.display = 'none';
 }
 
 async function backToFactionSelect() {
@@ -2773,6 +2775,7 @@ function initTabs() {
       // Скрываем вкладки фракций после выбора
       $('cardsTabsContainer').classList.add('hidden');
       closeBuilderCardPanel(); // карточка предыдущей фракции в панели больше не актуальна
+      if ($('cardsSearchWrapper')) $('cardsSearchWrapper').style.display = 'block'; // теперь есть что искать
       if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'flex'; // карты миссий банды
       cardsSearchQuery = '';
       const cardsSearchEl = $('cardsSearchInput');

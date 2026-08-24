@@ -155,8 +155,11 @@
         <div class="faction-cards"></div>
       </div>
 
-      <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно -->
-      <div class="model-search-wrapper">
+      <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно.
+           Скрыт, пока фракция не выбрана: до этого модели не отрисованы и искать
+           нечего (см. renderMiniCardsView — при currentFaction=null список не строится),
+           поле просто ничего не делало и путало на первом экране раздела. -->
+      <div class="model-search-wrapper" id="cardsSearchWrapper" style="display:none;">
         <input type="text" id="cardsSearchInput" class="model-search-input" autocomplete="off"
                data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
                data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
