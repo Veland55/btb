@@ -1388,14 +1388,6 @@ function canHireInFaction(model, faction) {
   return modelFactions.includes(faction);
 }
 
-// Проверить может ли модель быть просмотрена в текущей фракции (для режима карточек)
-function canViewInFaction(model, faction) {
-  if (!faction) return false;
-  
-  // Для просмотра используем более мягкие правила - показываем все модели которые могут быть наняты
-  return canHireInFaction(model, faction);
-}
-
 // ======================== ПРОВЕРКА ЗАВИСИМОСТЕЙ МОДЕЛЕЙ ========================
 // Возвращает true, если зависимость модели выполнена (требуемая модель есть в отряде)
 // Также проверяет правила Aversion — если в отряде есть модель из списка Aversion, возвращает false
@@ -2184,6 +2176,68 @@ function wrapCardWithUpgrades(cardDiv, item) {
 }
 
 // Версия для просмотра (без +/-)
+// Кто вообще принадлежит фракции по правилам найма (Required/Aversion/Affinity/
+// onlyAffiliationMembers/rivalsExclusion/isUnrecruitable) — общая логика для
+// "Карт" и билдера. Раньше режим "Карты" использовал отдельный, более мягкий
+// путь (canViewInFaction) и не применял эти правила вовсе: в двух режимах для
+// одной фракции показывался РАЗНЫЙ список моделей (например Sebastian the Rat
+// в билдере скрыт без Ratcatcher 2 в отряде, а в Картах виден всегда) — что
+// выглядело как баг, а не как осознанное решение. Механические фильтры самого
+// билдера (уже в отряде / не хватает бюджета / заняты все ранги) сюда
+// намеренно не входят — это состояние ТЕКУЩЕГО отряда, а не свойство модели,
+// и в справочном режиме "Карты" им не место.
+function getFactionEligibleModels(faction) {
+  let filteredModels = models.filter(m => canHireInFaction(m, faction));
+  filteredModels = filteredModels.filter(m => !isUnrecruitable(m));
+  filteredModels = filteredModels.filter(m => checkModelDependency(m));
+  filteredModels = filteredModels.filter(m => !checkAversionHidden(m));
+
+  // Affinity (X) — дополнительное право наняться в чужую фракцию, а не
+  // ограничение для родной: проверяем требование только когда модель как раз
+  // и используется ради этого межфракционного разрешения.
+  filteredModels = filteredModels.filter(m => {
+    if (!m.traits || !Array.isArray(m.traits)) return true;
+    if (getFactions(m).includes(faction)) return true;
+    const affinityTraits = m.traits.filter(t => t.startsWith("Affinity (") && t.endsWith(")"));
+    for (const trait of affinityTraits) {
+      const targetModelName = trait.replace("Affinity (", "").replace(")", "");
+      if (!crew.some(crewMember => crewMember.name === targetModelName)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // Batman Lives: Boss с этим трейтом открывает William Cobb вне обычной аффилиации
+  if (BMG_BOSS && BMG_BOSS.traits && BMG_BOSS.traits.includes("Batman Lives")) {
+    const williamCobb = models.find(m => modelMatchesCharacter(m, "William Cobb"));
+    if (williamCobb && !filteredModels.some(m => sameModel(m, williamCobb))) {
+      filteredModels.push(williamCobb);
+    }
+  }
+
+  {
+    const factionRules = factionCrewRules[faction] || {};
+    // Закрытые фракции (Court of Owls, Suicide Squad и т.п.) — только свои
+    if (factionRules.onlyAffiliationMembers) {
+      filteredModels = filteredModels.filter(m => getFactions(m).includes(faction));
+    }
+    // Взаимоисключение Rivals/Affiliation (Birds of Prey ↔ GCPD)
+    if (factionRules.rivalsExclusion) {
+      const rx = factionRules.rivalsExclusion;
+      const crewHasRival = crew.some(m => getRivals(m).includes(rx));
+      const crewHasAff = crew.some(m => getFactions(m).includes(rx));
+      filteredModels = filteredModels.filter(m => {
+        if (crewHasAff && getRivals(m).includes(rx)) return false;
+        if (crewHasRival && getFactions(m).includes(rx)) return false;
+        return true;
+      });
+    }
+  }
+
+  return filteredModels;
+}
+
 const renderMiniCardsView = debounce(() => {
   if (!currentFaction) {
     // Если фракция не выбрана, не рендерим ничего
@@ -2193,10 +2247,7 @@ const renderMiniCardsView = debounce(() => {
 
   const grid = $("modelsGridCards");
 
-  // === ИСПРАВЛЕНО: используем canViewInFaction для режима просмотра ===
-  // В режиме просмотра НЕ применяем правила factionCrewRules и modelDependencyRules
-  // Эти правила работают только в билдере
-  let filteredModels = sortModelsByRank(models.filter(m => canViewInFaction(m, currentFaction)));
+  let filteredModels = sortModelsByRank(getFactionEligibleModels(currentFaction));
   filteredModels = filteredModels.filter(m => matchesModelSearch(m, cardsSearchQuery));
 
   const fragment = document.createDocumentFragment();
@@ -2234,72 +2285,11 @@ const renderMiniCardsBuilder = debounce(() => {
     instance: m // ссылка на экземпляр в отряде
   })));
   
-  // === ИСПРАВЛЕНО: используем canHireInFaction для режима билдера ===
-  let filteredModels = models.filter(m => canHireInFaction(m, currentFaction) && !hasInCrew(m));
+  // Та же логика "кому вообще место в этой фракции", что и в режиме "Карты"
+  // (getFactionEligibleModels) — дальше только механика текущего отряда:
+  // уже нанят / не хватает бюджета / заняты все ранги.
+  let filteredModels = getFactionEligibleModels(currentFaction).filter(m => !hasInCrew(m));
   filteredModels = filteredModels.filter(m => matchesModelSearch(m, builderSearchQuery));
-
-  // Скрываем модели, которые нельзя нанять напрямую (Swarm, Kobra Swarm, Shapeshifting-формы и т.п.)
-  filteredModels = filteredModels.filter(m => !isUnrecruitable(m));
-
-  // Скрываем модели с невыполненными зависимостями
-  filteredModels = filteredModels.filter(m => checkModelDependency(m));
-
-  // Скрываем модели из-за правил Aversion (если в отряде есть модель, для которой эта модель в списке Aversion)
-  filteredModels = filteredModels.filter(m => !checkAversionHidden(m));
-
-  // Скрываем модели с Affinity, если требуемая модель отсутствует в отряде.
-  // Affinity — это ДОПОЛНИТЕЛЬНОЕ право наняться в чужую фракцию ("even if they
-  // would not ordinarily be permitted to join that crew"), а не ограничение
-  // найма в свою родную фракцию. Проверяем требование только тогда, когда модель
-  // используется как раз ради этого — т.е. её родная фракция не совпадает с текущей.
-  filteredModels = filteredModels.filter(m => {
-    if (!m.traits || !Array.isArray(m.traits)) return true;
-    if (getFactions(m).includes(currentFaction)) return true;
-    const affinityTraits = m.traits.filter(t => t.startsWith("Affinity (") && t.endsWith(")"));
-    for (const trait of affinityTraits) {
-      const targetModelName = trait.replace("Affinity (", "").replace(")", "");
-      // Модель должна быть скрыта если требуемой модели нет в отряде
-      if (!crew.some(crewMember => crewMember.name === targetModelName)) {
-        return false;
-      }
-    }
-    return true;
-  });
-
-  // Обработка Batman Lives: если Boss имеет Batman Lives, показываем William Cobb даже если не совпадает аффилиация
-  if (BMG_BOSS && BMG_BOSS.traits && BMG_BOSS.traits.includes("Batman Lives")) {
-    // Добавляем William Cobb в доступные модели если его еще нет в отряде
-    // "William Cobb" — это realname модели "The Talon", отдельной модели с таким
-    // именем в data.js нет: поиск по name всегда возвращал undefined и всё
-    // правило Batman Lives не работало
-    const williamCobb = models.find(m => modelMatchesCharacter(m, "William Cobb"));
-    if (williamCobb && !hasInCrew(williamCobb) && !filteredModels.some(m => sameModel(m, williamCobb))) {
-      filteredModels.push(williamCobb);
-    }
-  }
-
-  // Фракции с правилом "нельзя нанимать вне аффилиации" (Court of Owls, Suicide Squad,
-  // Batman Who Laughs, Watchmen, Doom Patrol): скрываем модели, не входящие
-  // в саму фракцию (обход через Unknown не работает)
-  {
-    const factionRules = factionCrewRules[currentFaction] || {};
-    if (factionRules.onlyAffiliationMembers) {
-      filteredModels = filteredModels.filter(m => getFactions(m).includes(currentFaction));
-    }
-
-    // Взаимоисключение Rivals/Affiliation (Birds of Prey ↔ GCPD): скрываем модели,
-    // конфликтующие с уже нанятыми по этому правилу
-    if (factionRules.rivalsExclusion) {
-      const rx = factionRules.rivalsExclusion;
-      const crewHasRival = crew.some(m => getRivals(m).includes(rx));
-      const crewHasAff = crew.some(m => getFactions(m).includes(rx));
-      filteredModels = filteredModels.filter(m => {
-        if (crewHasAff && getRivals(m).includes(rx)) return false;
-        if (crewHasRival && getFactions(m).includes(rx)) return false;
-        return true;
-      });
-    }
-  }
 
   // Скрываем модели, которые нельзя нанять из-за нехватки Rep и/или Funding —
   // в списке остаются только реально нанимаемые по бюджету модели. Без счётчика
