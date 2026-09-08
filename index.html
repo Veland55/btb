@@ -76,7 +76,8 @@
         await bmgLoad(group);
         show();
       } catch (e) {
-        alert(typeof t === 'function' ? t('section_load_failed') : 'Не удалось загрузить раздел');
+        const msg = typeof t === 'function' ? t('section_load_failed') : 'Не удалось загрузить раздел';
+        if (typeof showErrorToast === 'function') showErrorToast(msg); else alert(msg);
       } finally {
         btn.disabled = false;
         btn.classList.remove('menu-btn-loading');
