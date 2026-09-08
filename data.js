@@ -21760,9 +21760,8 @@ const models = [
     "base": "30mm",
     "rep": 30,
     "funding": 0,
-    "rank": ["Free Agent"],
+    "rank": ["Sidekick"],
     "faction": ["Court of Owls"],
-    "eternal": true,
     "img": "img/HighCourtLady.webp",
     "stats": {
       "Attack": 2,
