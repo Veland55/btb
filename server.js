@@ -1558,6 +1558,49 @@ function staticErr(res, code, text) {
   res.end(text);
 }
 
+// Кэш уже сжатых версий статических файлов. Раньше data.js/script.js/data-traits.js
+// (сотни КБ текста) заново гонялись через brotli/gzip на КАЖДЫЙ запрос одного и
+// того же неизменного файла — под конкурентной нагрузкой на слабой VPS это
+// чистая трата CPU впустую. Ключ — путь файла, инвалидация — по mtimeMs+size
+// (эти данные и так уже есть из fs.stat() ниже, отдельный syscall не нужен).
+// zlib.brotliCompress/gzip (НЕ *Sync) считают в пуле потоков libuv, а не в
+// event loop — первый запрос к файлу после старта/деплоя не блокирует остальные
+// соединения. pending — чтобы параллельные промахи по одному и тому же файлу
+// (обычно сразу после рестарта) не паковали его по второму разу одновременно.
+const staticCompressCache = new Map(); // filePath -> { mtimeMs, size, buffers: Map<enc,Buffer>, pending: Map<enc,Promise> }
+
+function compressAsync(buf, enc) {
+  return new Promise((resolve, reject) => {
+    if (enc === 'br') {
+      zlib.brotliCompress(buf, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 5 } }, (e, out) => e ? reject(e) : resolve(out));
+    } else {
+      zlib.gzip(buf, { level: 6 }, (e, out) => e ? reject(e) : resolve(out));
+    }
+  });
+}
+
+// Сжатый буфер файла в нужной кодировке — из кэша, либо считает и кладёт в кэш.
+// Запись, чей mtime/size разошёлся с текущим fs.stat (файл переписан деплоем),
+// молча заменяется свежей — старые буферы просто уходят под GC.
+function getCompressed(filePath, st, enc) {
+  let entry = staticCompressCache.get(filePath);
+  if (!entry || entry.mtimeMs !== st.mtimeMs || entry.size !== st.size) {
+    entry = { mtimeMs: st.mtimeMs, size: st.size, buffers: new Map(), pending: new Map() };
+    staticCompressCache.set(filePath, entry);
+  }
+  if (entry.buffers.has(enc)) return Promise.resolve(entry.buffers.get(enc));
+  if (entry.pending.has(enc)) return entry.pending.get(enc);
+  const p = (async () => {
+    const raw = await fs.promises.readFile(filePath);
+    const packed = await compressAsync(raw, enc);
+    entry.buffers.set(enc, packed);
+    entry.pending.delete(enc);
+    return packed;
+  })();
+  entry.pending.set(enc, p);
+  return p;
+}
+
 function serveStatic(req, res, url) {
   let pathname;
   try { pathname = decodeURIComponent(url.pathname); }
@@ -1574,7 +1617,7 @@ function serveStatic(req, res, url) {
   const rel = '/' + path.relative(ROOT, filePath).split(path.sep).join('/');
   if (DENY.some(rx => rx.test(rel))) { return staticErr(res, 404, 'Not found'); }
 
-  fs.stat(filePath, (err, st) => {
+  fs.stat(filePath, async (err, st) => {
     if (err || !st.isFile()) { return staticErr(res, 404, 'Not found'); }
 
     const mtime = new Date(st.mtimeMs);
@@ -1610,21 +1653,38 @@ function serveStatic(req, res, url) {
       'Vary': 'Accept-Encoding',
       ...SECURITY_HEADERS
     };
-    if (enc) head['Content-Encoding'] = enc; else head['Content-Length'] = st.size;
-    res.writeHead(200, head);
-    if (req.method === 'HEAD') return res.end();
-
     // .pipe() НЕ пробрасывает ошибки: без этого обработчика один нечитаемый файл
     // (или EMFILE под нагрузкой) роняет весь процесс
-    const stream = fs.createReadStream(filePath);
-    stream.on('error', () => { res.end(); });
-    res.on('close', () => stream.destroy());
-    if (!enc) return stream.pipe(res);
-    const zc = enc === 'br'
-      ? zlib.createBrotliCompress({ params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 5 } })
-      : zlib.createGzip({ level: 6 });
-    zc.on('error', () => res.end());
-    stream.pipe(zc).pipe(res);
+    const streamPlain = () => {
+      if (enc) head['Content-Encoding'] = enc; // клиент всё равно ждёт эту кодировку
+      res.writeHead(200, head);
+      if (req.method === 'HEAD') return res.end();
+      const stream = fs.createReadStream(filePath);
+      stream.on('error', () => { res.end(); });
+      res.on('close', () => stream.destroy());
+      if (!enc) return stream.pipe(res);
+      const zc = enc === 'br'
+        ? zlib.createBrotliCompress({ params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 5 } })
+        : zlib.createGzip({ level: 6 });
+      zc.on('error', () => res.end());
+      stream.pipe(zc).pipe(res);
+    };
+
+    if (!enc) { head['Content-Length'] = st.size; return streamPlain(); }
+
+    // Сжатая версия — из кэша (обычный случай) либо считаем один раз и кладём в кэш.
+    // Ошибка (файл пропал/поменялся между stat и read, сбой zlib) — не 500,
+    // а откат на потоковую отдачу как раньше.
+    try {
+      const packed = await getCompressed(filePath, st, enc);
+      head['Content-Encoding'] = enc;
+      head['Content-Length'] = packed.length;
+      res.writeHead(200, head);
+      if (req.method === 'HEAD') return res.end();
+      res.end(packed);
+    } catch (e) {
+      streamPlain();
+    }
   });
 }
 
