@@ -83,8 +83,15 @@
         btn.classList.remove('menu-btn-loading');
       }
     }
-    async function bmgShowGame(btn) { return bmgShowSection('game', btn, showGame); }
-    async function bmgShowTournaments(btn) { return bmgShowSection('tournaments', btn, showTournaments); }
+    // showGame/showTournaments передаём обёрнутыми в стрелочную функцию, а не
+    // голым именем: голое имя вычисляется здесь и сейчас, при первом клике до
+    // загрузки game.js/tournaments.js — global showGame ещё не существует,
+    // и это ReferenceError внутри async function, то есть тихий отказ без
+    // единого признака ошибки на экране (кнопка просто не реагирует). Обёртка
+    // откладывает поиск имени до вызова show() внутри bmgShowSection — там он
+    // происходит уже после await bmgLoad(), когда функция точно определена.
+    async function bmgShowGame(btn) { return bmgShowSection('game', btn, () => showGame()); }
+    async function bmgShowTournaments(btn) { return bmgShowSection('tournaments', btn, () => showTournaments()); }
   </script>
 </head>
 <body>
