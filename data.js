@@ -15104,12 +15104,13 @@ const models = [
     },
     "traits": [
       "Combo (Owl Knife)",
-      "Martial Artist",
-      "Reanimated Owl",
-      "Weakness to Cold",
+      "Embrace the Shadows",
       "Exhaustive Planner",
+      "Martial Artist",
       "Precise Blow",
-      "Undercover"
+      "Reanimated Owl",
+      "Shadowed Nightmare",
+      "Weakness to Cold"
     ],
     "weapons": [
       {
@@ -15124,7 +15125,7 @@ const models = [
         "damage": "🩸",
         "rof": 2,
         "ammo": 2,
-        "traits": "Sharp / S. Range / Throwing"
+        "traits": "S. Range / Sharp / Throwing"
       }
     ]
   },
@@ -15176,14 +15177,15 @@ const models = [
     },
     "traits": [
       "Combo (Unarmed)",
-      "Fly",
-      "Martial Artist",
-      "Reanimated Owl",
-      "Strategist",
       "Court of Owls Crew",
+      "Fly",
       "Joy for the Victory",
+      "Martial Artist",
       "Power Armor",
+      "Reanimated Owl",
       "Retractable Claws",
+      "Strategist",
+      "Vengeance",
       "Weakness to Cold"
     ],
     "weapons": [
@@ -15196,6 +15198,181 @@ const models = [
       }
     ]
   },
+
+  // New Models 07-26 / 03-26 — Court of Owls
+
+  {
+    "name": "Police Officer Infiltrated",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Court of Owls"],
+    "img": "img/PoliceOfficerInfiltrated.webp",
+    "stats": {
+      "Attack": 3,
+      "Defense": 3,
+      "Strength": "5+",
+      "Movement": 10,
+      "Willpower": 5,
+      "Endurance": 5
+    },
+    "traits": [
+      "Arrest",
+      "Detective",
+      "Radio",
+      "The Owl's Precinct"
+    ],
+    "weapons": [
+      {
+        "name": "Automatic Gun",
+        "damage": "🩸★",
+        "rof": "3",
+        "ammo": "2",
+        "traits": "Firearm / Light / S. Range"
+      },
+      {
+        "name": "Brass Knuckles",
+        "damage": "★★",
+        "rof": "-",
+        "ammo": "-",
+        "traits": ""
+      }
+    ]
+  },
+  {
+    "name": "Court's Rioter",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 10,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Court of Owls"],
+    "img": "img/CourtsRioter.webp",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 10,
+      "Willpower": 4,
+      "Endurance": 4
+    },
+    "traits": [
+      "Disturb",
+      "Dumpster Diving",
+      "Instigator"
+    ],
+    "weapons": [
+      {
+        "name": "Gotham Greet",
+        "damage": "★",
+        "rof": 1,
+        "ammo": 1,
+        "traits": "Enervating (1) / Heavy / S. Range / Throwing"
+      }
+    ]
+  },
+  {
+    "name": "Cryogenic Boss",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 0,
+    "rank": ["Henchman"],
+    "faction": ["Court of Owls"],
+    "img": "img/CryogenicBoss.webp",
+    "stats": {
+      "Attack": 2,
+      "Defense": 2,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 5,
+      "Endurance": 4
+    },
+    "traits": [
+      "Enhanced Reanimation",
+      "Hacking",
+      "Protect Me!",
+      "Reanimation Protocols"
+    ],
+    "weapons": []
+  },
+  {
+    "name": "Infiltrated Organized Crime",
+    "realname": "Unknown",
+    "base": "30mm",
+    "rep": 15,
+    "funding": 350,
+    "rank": ["Henchman"],
+    "faction": ["Court of Owls"],
+    "img": "img/InfiltratedOrganizedCrime.webp",
+    "stats": {
+      "Attack": 2,
+      "Defense": 3,
+      "Strength": "6+",
+      "Movement": 8,
+      "Willpower": 4,
+      "Endurance": 5
+    },
+    "traits": [
+      "Court's Grease",
+      "Shady Dealings"
+    ],
+    "weapons": [
+      {
+        "name": "Thompson",
+        "damage": "🩸🩸★",
+        "rof": "3",
+        "ammo": "2",
+        "traits": "Firearm / High Caliber / M. Range / Reload"
+      }
+    ]
+  },
+  {
+    "name": "Gray Son",
+    "realname": "Richard Grayson",
+    "base": "40mm",
+    "rep": 65,
+    "funding": 0,
+    "rank": ["Free Agent", "Sidekick"],
+    "faction": ["Court of Owls"],
+    "img": "img/GraySon.webp",
+    "stats": {
+      "Attack": 4,
+      "Defense": 4,
+      "Strength": "6+",
+      "Movement": 12,
+      "Willpower": 7,
+      "Endurance": 7
+    },
+    "traits": [
+      "Acrobat",
+      "Brutal Investigator",
+      "Enforcer of the State",
+      "Required (Lincoln March)",
+      "The Gray Son",
+      "Totalitarian Order",
+      "Tracking Device"
+    ],
+    "weapons": [
+      {
+        "name": "Gray Son Sabre",
+        "damage": "🩸 🩸",
+        "rof": "-",
+        "ammo": "-",
+        "traits": "Sharp / Suggest / Red Dot"
+      },
+      {
+        "name": "Throwing Knives",
+        "damage": "🩸",
+        "rof": 4,
+        "ammo": 2,
+        "traits": "S. Range / Sharp / Throwing"
+      }
+    ]
+  },
+
   {
     "name": "O'Malley's Grandfather",
     "realname": "James O'Malley",
@@ -21582,8 +21759,8 @@ const models = [
     "realname": "Unknown",
     "base": "30mm",
     "rep": 30,
-    "funding": 150,
-    "rank": ["Sidekick"],
+    "funding": 0,
+    "rank": ["Free Agent"],
     "faction": ["Court of Owls"],
     "eternal": true,
     "img": "img/HighCourtLady.webp",
@@ -21596,19 +21773,18 @@ const models = [
       "Endurance": 5
     },
     "traits": [
-      "Boss’s Orders {SPECIAL_ICON}",
+      "Court of Owls Crew",
       "Invaluable",
       "Protect Me!",
-      "Court of Owls Crew",
-      "Enemies of the Court"
+      "Shadows Command"
     ],
     "weapons": [
       {
-        "name": "Hidden Gun",
-        "damage": "🩸★",
+        "name": "Derringer",
+        "damage": "🩸 🩸",
         "rof": 3,
-        "ammo": 1,
-        "traits": "Firearm / Light / S. Range"
+        "ammo": 2,
+        "traits": "Firearm / Reload / S. Range / Small Caliber"
       }
     ]
   },

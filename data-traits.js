@@ -1331,6 +1331,21 @@ const traitDescriptions = {
     "Hook Arrow {SPECIAL_ICON} (Batclaw)": "Once per round, this model gains +6” to its basic move distance, and can move in any direction (including vertically). When using this ability, the model can move over obstacles and Difficult Ground without penalty. However, the model cannot use this rule in two consecutive activations. *Some models list this trait as ‘Grapple Gun’, and others as ‘Batclaw’. The rules are the same in both instances - the distinction is just for fun!",
     "Speed Force Absorption": "This model can steal 1 Speed Force marker from another model with the Speedster trait at the end of the Drain Speed Force subphase. This marker may cause the model to exceed the normal maximum reserve of Speed Force markers.",
     "Amazon’s Wig": "This model may make an Effort to activate this trait, which will remain active until the start of this model’s next activation. Enemy models roll 2 fewer Attack dice when attacking this model, but this model suffers Slow 4.",
+
+    // --- Новые трейты Court of Owls: The Talon, High Court Lady, Lincoln March,
+    // Police Officer Infiltrated, Court's Rioter, Cryogenic Boss,
+    // Infiltrated Organized Crime, Gray Son (карты 07-26 / 03-26) ---
+    "Embrace the Shadows": "Once per round, when you score an Objective card, after the current action is resolved, this model may be removed from the gaming area and use the Shadowed Nightmare trait to enter again later.",
+    "The Owl's Precinct": "When this model takes the Manipulate action, you can target a friendly model within 8” of this model with the Reanimated Owl trait, and Set the Suspect within 3” of the target. The target model counts as the model that Sets that Suspect.",
+    "Dumpster Diving": "Once per round, during this model's activation, you can remove a Suspect in contact to recover 1 of Ammunition of this model's ranged weapon.",
+    "Instigator": "When this model Sets or Reveals a Suspect, you can target an enemy model within 8” and LoS of a friendly model with the Reanimated Owl trait. The target gains the Quarry (2) Status.",
+    "Enhanced Reanimation": "Friendly models within 8” and LoS that remove Damage with the Reanimated Owl trait remove 1 additional Damage.",
+    "Reanimation Protocols {SPECIAL_ICON}": "Target a friendly Suspect within 8” of this model and a model with the Reanimated Owl trait that was removed from play as a Casualty. Remove all the Damage from the targeted model and place it in contact with the targeted Suspect, then remove the Suspect. Remove all the Damage from the targeted friendly model. If this trait is used to recover a model that is yet to activate that round, the opponent gains a Pass marker.",
+    "Court's Grease": "When this model Sets or Removes a Suspect, you may target 1 or 2 friendly models within 8” with the Reanimated Owl trait. If you targeted 1, Move the target 8”. If you targeted 2, Move both targets 4”.",
+    "Brutal Investigator": "This model places an additional Counter when Setting, Revealing or dealing Damage/removing enemies as Casualties for the purpose of Objective Cards.",
+    "Enforcer of the State {SPECIAL_ICON}": "Target a Suspect within 8” and LoS to this model or an Owl marker. Place that Suspect in contact with an Owl marker.",
+    "The Gray Son": "While this model is within 4” of a Suspect, it gains 2 free Efforts and in addition may be placed within 4” of a Suspect that is within 4” of this model at the start or the end of a Movement action.",
+    "Totalitarian Order": "While there are fewer friendly Suspects than enemy Suspects, this model may perform an extra Manipulate action.",
 };
 
 // Экспорт: window.compendium — база, по которой ищут описания трейтов/правил
