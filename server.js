@@ -168,7 +168,16 @@ const MIGRATIONS = [
   'ALTER TABLE games ADD COLUMN track_updated INTEGER NOT NULL DEFAULT 0',
   // Название турнира — раньше карточка отличалась только по адресу, что не
   // спасало, если в одном клубе идёт несколько турниров одновременно
-  'ALTER TABLE tournaments ADD COLUMN name TEXT'
+  'ALTER TABLE tournaments ADD COLUMN name TEXT',
+  // Регистронезависимое имя для поиска занятости ника (userNameTaken) — SQLite
+  // COLLATE NOCASE/lower() ASCII-only, кириллицу не сворачивает, поэтому раньше
+  // проверка делалась в JS полным сканом ВСЕЙ таблицы users на каждую регистрацию
+  // (SELECT name FROM users без WHERE) — под нагрузкой это блокирует event loop
+  // целиком (better-sqlite3/node:sqlite синхронны), замораживая всех остальных
+  // пользователей на время скана. name_lc считается один раз в JS при записи
+  // (name.toLowerCase() корректно сворачивает и кириллицу), дальше ищется по
+  // индексу.
+  'ALTER TABLE users ADD COLUMN name_lc TEXT'
 ];
 for (const stmt of MIGRATIONS) {
   // Глушим только ожидаемую ошибку ("колонка уже есть" — миграция уже применена
@@ -178,6 +187,17 @@ for (const stmt of MIGRATIONS) {
   catch (e) { if (!/duplicate column name/i.test(e.message || '')) throw e; }
 }
 db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_telegram_id ON users (telegram_id) WHERE telegram_id IS NOT NULL');
+
+// Разовый бэкфилл name_lc для строк, созданных до этой миграции (свежая база —
+// цикл пустой). SQL lower() тут не подходит по той же причине, что и выше.
+{
+  const stale = db.prepare('SELECT name FROM users WHERE name_lc IS NULL').all();
+  if (stale.length) {
+    const fill = db.prepare('UPDATE users SET name_lc = ? WHERE name = ?');
+    for (const { name } of stale) fill.run(name.toLowerCase(), name);
+  }
+}
+db.exec('CREATE INDEX IF NOT EXISTS idx_users_name_lc ON users (name_lc)');
 
 // Кэш подготовленных запросов: db.prepare() заново компилирует SQL при каждом
 // вызове, а вызывается он в обработчиках ~60 раз за запрос. Текст запросов —
@@ -554,11 +574,15 @@ const validPass = p => typeof p === 'string' && p.length >= 4 && p.length <= 64;
 const normName = n => typeof n === 'string' ? n.trim() : n;
 
 // Занято ли имя БЕЗ учёта регистра: "TestUser"/"testuser"/"ТестЮзер"/"тестюзер" —
-// один пользователь. Сравнение в JS, т.к. SQLite NOCASE/lower() не сворачивают
-// регистр не-ASCII символов (кириллицы); таблица пользователей небольшая
+// один пользователь. Свёртку регистра (name.toLowerCase(), корректно для
+// кириллицы, в отличие от SQLite NOCASE/lower() — они ASCII-only) делаем в JS
+// один раз при записи в колонку name_lc и ищем по индексу — раньше здесь был
+// SELECT name FROM users без WHERE и сравнение в JS для КАЖДОЙ строки на
+// каждую регистрацию: при заметной базе пользователей это блокирует event
+// loop (better-sqlite3/node:sqlite синхронны) на десятки-сотни миллисекунд,
+// замораживая вообще всех остальных, кто в этот момент на сайте.
 function userNameTaken(name) {
-  const lc = name.toLowerCase();
-  return db.prepare('SELECT name FROM users').all().some(r => r.name.toLowerCase() === lc);
+  return !!db.prepare('SELECT 1 FROM users WHERE name_lc = ?').get(name.toLowerCase());
 }
 // Страна профиля: ISO 3166-1 alpha-2 либо null (не указана)
 const validCountry = c => c == null || (typeof c === 'string' && /^[A-Z]{2}$/.test(c));
@@ -892,12 +916,18 @@ async function handleApi(req, res, url) {
     const salt = crypto.randomBytes(8).toString('hex');
     const hash = await hashPassword(salt, pass); // ~40мс scrypt — окно для гонки с параллельной регистрацией того же имени
     try {
-      db.prepare('INSERT INTO users (name, salt, hash, created, email) VALUES (?, ?, ?, ?, ?)')
-        .run(name, salt, hash, Date.now(), email);
+      db.prepare('INSERT INTO users (name, salt, hash, created, email, name_lc) VALUES (?, ?, ?, ?, ?, ?)')
+        .run(name, salt, hash, Date.now(), email, name.toLowerCase());
     } catch (e) {
       if (isUniqueViolation(e)) { authFailed(req); return send(res, 409, { error: 'exists' }); }
       throw e;
     }
+    // Раньше authFailed() вызывался только при отказе (занятое имя) — успешные
+    // регистрации в счётчик не попадали вовсе, и скрипт со свежими именами на
+    // каждый запрос мог штамповать аккаунты без единого отказа. Общий с
+    // логином IP-лимит (те же 20/мин, уже рассчитанные на "целый клуб за NAT")
+    // закрывает и этот путь.
+    authFailed(req);
     return send(res, 200, { token: createSession(name), name, country: null, email });
   }
 
@@ -940,8 +970,8 @@ async function handleApi(req, res, url) {
       const randomPass = crypto.randomBytes(32).toString('hex');
       const hash = await hashPassword(salt, randomPass); // await-разрыв — окно для гонки при двойном тапе в Mini App
       try {
-        db.prepare('INSERT INTO users (name, salt, hash, created, telegram_id) VALUES (?, ?, ?, ?, ?)')
-          .run(name, salt, hash, Date.now(), telegramId);
+        db.prepare('INSERT INTO users (name, salt, hash, created, telegram_id, name_lc) VALUES (?, ?, ?, ?, ?, ?)')
+          .run(name, salt, hash, Date.now(), telegramId, name.toLowerCase());
         row = { name, country: null, email: null };
       } catch (e) {
         if (!isUniqueViolation(e)) throw e;
@@ -962,6 +992,12 @@ async function handleApi(req, res, url) {
 
   // --- Восстановление пароля по коду, отправленному на email аккаунта ---
   if (p === '/api/forgot-password' && req.method === 'POST') {
+    // Раньше троттлился только конкретный аккаунт (resetRateLimited, 1 запрос
+    // в минуту НА ИМЯ) — по IP лимита не было вовсе: список реальных ников/email
+    // и один скрипт позволяли слать письма восстановления без остановки. Общий
+    // с логином/регистрацией IP-счётчик (authThrottled/authFailed) закрывает это.
+    if (authThrottled(req)) return send(res, 429, { error: 'rate' });
+    authFailed(req);
     const body = await readBody(req);
     const name = normName(body.name);
     if (!validName(name)) return send(res, 400, { error: 'input' });
@@ -1357,7 +1393,14 @@ async function handleApi(req, res, url) {
     // Листы подаются только до старта: иначе игрок менял бы банду между турами
     if (tn.status !== 'open') return send(res, 409, { error: 'tn_started' });
     if (rostersLocked(tn)) return send(res, 409, { error: 'tn_locked' }); // дедлайн организатора прошёл
-    if (!validSave(roster1) || !validSave(roster2) || !optStr(notes, 400)) return send(res, 400, { error: 'input' });
+    // notes — единственное текстовое поле в проекте, полагавшееся ИСКЛЮЧИТЕЛЬНО
+    // на клиентское экранирование (tnEsc/escHtml) без серверного фильтра "<>",
+    // который есть у всех остальных (адрес турнира, ник организатора и т.д.,
+    // см. optStr-проверки ниже по файлу) — defense-in-depth на случай, если
+    // это поле однажды попадёт в вывод без экранирования (другой клиент, экспорт)
+    if (!validSave(roster1) || !validSave(roster2) || !optStr(notes, 400) || (notes && /[<>]/.test(notes))) {
+      return send(res, 400, { error: 'input' });
+    }
     if (roster1.f !== roster2.f) return send(res, 400, { error: 'input' }); // одна банда для обоих листов
     db.prepare('UPDATE tournament_players SET roster1 = ?, roster2 = ?, notes = ? WHERE tid = ? AND user = ?')
       .run(JSON.stringify(roster1), JSON.stringify(roster2), notes ? notes.trim() : null, tn.id, user);
