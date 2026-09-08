@@ -388,6 +388,7 @@ const translations = {
     login_required: "Требуется вход в профиль",
     server_unreachable: "Сервер недоступен. Приложение должно быть открыто через свой сервер (node server.js).",
     server_error: "Ошибка сервера, попробуйте ещё раз",
+    section_load_failed: "Не удалось загрузить раздел. Проверьте связь и попробуйте ещё раз.",
     game: "ИГРА",
     game_login_note: "Для игры нужен профиль — войдите или зарегистрируйтесь.",
     create_game: "СОЗДАТЬ ИГРУ",
@@ -812,6 +813,7 @@ const translations = {
     login_required: "Login required",
     server_unreachable: "Server unreachable. The app must be opened through its own server (node server.js).",
     server_error: "Server error, please try again",
+    section_load_failed: "Failed to load this section. Check your connection and try again.",
     game: "GAME",
     game_login_note: "A profile is required to play — log in or register.",
     create_game: "CREATE GAME",
@@ -1144,6 +1146,26 @@ function escHtml(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Ненавязчивая замена alert() для ошибок сети/сервера (см. apiErrorText в
+// auth.js) — alert() блокирует весь UI-поток и на плохой связи, где такие
+// ошибки как раз и случаются, выглядит как "сайт сломан", а не как временный
+// сбой сети. Тост сам исчезает и не мешает продолжать работать с формой.
+let _appToastTimer = null;
+function showErrorToast(message) {
+  let el = document.getElementById('appToast');
+  if (el) { clearTimeout(_appToastTimer); el.remove(); }
+  el = document.createElement('div');
+  el.id = 'appToast';
+  el.className = 'app-toast';
+  el.setAttribute('role', 'alert');
+  el.textContent = message;
+  document.body.appendChild(el);
+  _appToastTimer = setTimeout(() => {
+    el.classList.add('app-toast-out');
+    setTimeout(() => el.remove(), 250);
+  }, 4000);
 }
 
 // Верхнеуровневые разделы приложения (переключаются взаимоисключающе)

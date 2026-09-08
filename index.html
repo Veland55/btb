@@ -63,13 +63,27 @@
       return _bmgLoading[group];
     }
     // Имена шимов отличаются от showGame/showTournaments: после загрузки
-    // настоящие функции перекрывают глобальные, и вызов уходит уже в них
-    async function bmgShowGame() {
-      try { await bmgLoad('game'); showGame(); } catch (e) { alert('Не удалось загрузить раздел'); }
+    // настоящие функции перекрывают глобальные, и вызов уходит уже в них.
+    // bmgLoad — реальный сетевой запрос (см. BMG_LAZY выше), на медленной
+    // связи он может занять несколько секунд: крутим иконку кнопки и гасим
+    // её на это время, иначе тап выглядит так, будто ничего не произошло,
+    // и провоцирует повторный клик.
+    async function bmgShowSection(group, btn, show) {
+      if (btn.disabled) return;
+      btn.disabled = true;
+      btn.classList.add('menu-btn-loading');
+      try {
+        await bmgLoad(group);
+        show();
+      } catch (e) {
+        alert(typeof t === 'function' ? t('section_load_failed') : 'Не удалось загрузить раздел');
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove('menu-btn-loading');
+      }
     }
-    async function bmgShowTournaments() {
-      try { await bmgLoad('tournaments'); showTournaments(); } catch (e) { alert('Не удалось загрузить раздел'); }
-    }
+    async function bmgShowGame(btn) { return bmgShowSection('game', btn, showGame); }
+    async function bmgShowTournaments(btn) { return bmgShowSection('tournaments', btn, showTournaments); }
   </script>
 </head>
 <body>
@@ -95,7 +109,7 @@
           <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span>
           <span class="btn-text" data-i18n="crews">CREWS</span>
         </button>
-        <button class="menu-btn" onclick="bmgShowGame()">
+        <button class="menu-btn" onclick="bmgShowGame(this)">
           <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8.5 15.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-7a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3.5 3.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3.5 3.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-7a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></span>
           <span class="btn-text" data-i18n="game">ИГРА</span>
         </button>
@@ -107,7 +121,7 @@
           <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9-3-1.78L13 11V4h6v7zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/></svg></span>
           <span class="btn-text" data-i18n="compendium">СПРАВОЧНИК</span>
         </button>
-        <button class="menu-btn" onclick="bmgShowTournaments()">
+        <button class="menu-btn" onclick="bmgShowTournaments(this)">
           <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.95V18H8v2h8v-2h-3v-2.11c1.63-.32 2.98-1.45 3.61-2.95C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg></span>
           <span class="btn-text" data-i18n="tournaments">ТУРНИРЫ</span>
         </button>
@@ -279,7 +293,7 @@
       <div class="top-bar-content">
         <h1 data-i18n="roster_preview">ПРОСМОТР ОТРЯДА</h1>
         <div class="header-buttons">
-          <button class="compendium-small-btn" onclick="saveCurrentCrew()" data-i18n-title="save_crew" title="Сохранить отряд">
+          <button id="saveCrewBtn" class="compendium-small-btn" onclick="saveCurrentCrew()" data-i18n-title="save_crew" title="Сохранить отряд">
             <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
           </button>
           <button class="compendium-small-btn" onclick="exportRoster()" data-i18n-title="export_title" title="Экспорт ростера в PDF">

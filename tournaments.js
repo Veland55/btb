@@ -68,7 +68,7 @@ async function tnRun(key, fn) {
     await fn();
     return true;
   } catch (e) {
-    alert(apiErrorText(e));
+    showErrorToast(apiErrorText(e));
     return false;
   } finally {
     tnBusy.delete(key);
@@ -260,23 +260,21 @@ async function createTournament() {
     alert(t('tn_fill_fields'));
     return;
   }
-  try {
+  // tnRun — та же защита от двойного тапа, что и у остальных действий
+  // раздела (раньше создание и удаление турнира её не использовали)
+  await tnRun('create-tournament', async () => {
     await api('/api/tournaments', 'POST', body);
     alert(t('tn_created'));
     renderTournaments();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  });
 }
 
 async function deleteTournament(id) {
   if (!(await appConfirm(t('tn_confirm_delete')))) return;
-  try {
+  await tnRun('delete' + id, async () => {
     await api('/api/tournaments/' + id, 'DELETE');
     renderTournaments();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  });
 }
 
 // Попап организатора: поданные ростеры и заметки участника.
@@ -722,12 +720,12 @@ async function submitTournamentRosters(id) {
   if (!legal && !(await appConfirm(t('tn_confirm_illegal')))) return;
 
   const notes = ($(`tnNotes-${id}`).value || '').trim() || null;
-  try {
+  // tnRun — та же защита от двойного тапа, что и у остальных действий
+  // раздела (раньше подача ростеров её не использовала)
+  await tnRun('submit-rosters-' + id, async () => {
     await api('/api/tournaments/rosters', 'PUT', { id, roster1: s1, roster2: s2, notes });
     alert(t('tn_submitted'));
     tnRostersOpenId = null;
     renderTournaments();
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  });
 }

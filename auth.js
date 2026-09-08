@@ -172,14 +172,18 @@ function authLogout() {
 async function setUserEmail() {
   const input = document.getElementById('authEmailInput');
   const email = (input.value || '').trim();
-  try {
-    await api('/api/profile', 'PUT', { email: email || null });
-    currentUserEmail = email || null;
-    renderAuthModal(); // иначе плашка "email не указан" остаётся висеть после успешного сохранения
-    alert(t('email_saved'));
-  } catch (e) {
-    alert(apiErrorText(e));
-  }
+  // authRun — та же защита от двойного тапа, что и у остальных действий
+  // модалки профиля (раньше эта функция её не использовала)
+  await authRun(async () => {
+    try {
+      await api('/api/profile', 'PUT', { email: email || null });
+      currentUserEmail = email || null;
+      renderAuthModal(); // иначе плашка "email не указан" остаётся висеть после успешного сохранения
+      alert(t('email_saved'));
+    } catch (e) {
+      showErrorToast(apiErrorText(e));
+    }
+  });
 }
 
 // ======================== ВОССТАНОВЛЕНИЕ И СМЕНА ПАРОЛЯ ========================
@@ -212,7 +216,7 @@ async function requestPasswordReset() {
       renderAuthModal();
       alert(t('forgot_code_sent'));
     } catch (e) {
-      alert(apiErrorText(e));
+      showErrorToast(apiErrorText(e));
     }
   });
 }
@@ -228,7 +232,7 @@ async function submitPasswordReset() {
       authView = 'login';
       renderAuthModal();
     } catch (e) {
-      alert(apiErrorText(e));
+      showErrorToast(apiErrorText(e));
     }
   });
 }
@@ -246,7 +250,7 @@ async function submitChangePassword() {
       alert(t('password_changed'));
       ['cpOld', 'cpNew', 'cpConfirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     } catch (e) {
-      alert(apiErrorText(e));
+      showErrorToast(apiErrorText(e));
     }
   });
 }
@@ -259,7 +263,7 @@ async function setUserCountry(code) {
     await api('/api/profile', 'PUT', { country: currentUserCountry });
   } catch (e) {
     currentUserCountry = prev; // сервер отказал — откатываем
-    alert(apiErrorText(e));
+    showErrorToast(apiErrorText(e));
     renderAuthModal();
   }
 }
@@ -327,6 +331,12 @@ function serializeCrew(name) {
 // "МОИ ОТРЯДЫ: 0/5", думая, что отряд уже сохранён.
 let pendingCrewSaveAfterAuth = false;
 
+// Кнопка "Сохранить отряд" живёт в шапке экрана предпросмотра ростера, вне
+// #authModalBody — общий authRun её не гасит, поэтому своя защита: без неё
+// повторный тап, пока висит appPrompt или ждём ответа сервера, на медленной
+// сети открывал бы второй prompt поверх первого и мог отправить два PUT
+// /api/saves подряд с рассинхронизированным mySaves.
+let crewSaveBusy = false;
 async function saveCurrentCrew() {
   if (!currentUser) {
     pendingCrewSaveAfterAuth = true;
@@ -335,46 +345,58 @@ async function saveCurrentCrew() {
     return;
   }
   if (!crew.length) { alert(t('empty_crew_save')); return; }
-
-  const def = `${currentFaction} · ${getCrewTotalRep()} Rep`;
-  const input = await appPrompt(t('save_name_prompt'), def);
-  if (input === null) return;
-  const name = (input.trim() || def).slice(0, 40);
-
-  const record = serializeCrew(name);
-  const existing = mySaves.findIndex(s => s.n === name);
-  const backup = mySaves.slice();
-  if (existing !== -1) {
-    mySaves[existing] = record; // то же имя — перезапись, слот не тратится
-  } else if (mySaves.length >= MAX_SAVES) {
-    alert(t('saves_limit'));
-    openAuthModal();
-    return;
-  } else {
-    mySaves.push(record);
-  }
-
+  if (crewSaveBusy) return;
+  crewSaveBusy = true;
+  const btn = document.getElementById('saveCrewBtn');
+  if (btn) btn.disabled = true;
   try {
-    await pushSaves();
-    alert(t('save_done'));
-  } catch (e) {
-    mySaves = backup; // сервер отказал — откатываем кэш
-    alert(apiErrorText(e));
+    const def = `${currentFaction} · ${getCrewTotalRep()} Rep`;
+    const input = await appPrompt(t('save_name_prompt'), def);
+    if (input === null) return;
+    const name = (input.trim() || def).slice(0, 40);
+
+    const record = serializeCrew(name);
+    const existing = mySaves.findIndex(s => s.n === name);
+    const backup = mySaves.slice();
+    if (existing !== -1) {
+      mySaves[existing] = record; // то же имя — перезапись, слот не тратится
+    } else if (mySaves.length >= MAX_SAVES) {
+      alert(t('saves_limit'));
+      openAuthModal();
+      return;
+    } else {
+      mySaves.push(record);
+    }
+
+    try {
+      await pushSaves();
+      alert(t('save_done'));
+    } catch (e) {
+      mySaves = backup; // сервер отказал — откатываем кэш
+      showErrorToast(apiErrorText(e));
+    }
+  } finally {
+    crewSaveBusy = false;
+    if (btn) btn.disabled = false;
   }
 }
 
 async function deleteSavedCrew(index) {
   const s = mySaves[index];
   if (!s || !(await appConfirm(t('confirm_delete_save', { name: s.n })))) return;
-  const backup = mySaves.slice();
-  mySaves.splice(index, 1);
-  try {
-    await pushSaves();
-  } catch (e) {
-    mySaves = backup;
-    alert(apiErrorText(e));
-  }
-  renderAuthModal();
+  // authRun — та же защита от двойного тапа, что и у остальных действий
+  // модалки профиля (раньше эта функция её не использовала)
+  await authRun(async () => {
+    const backup = mySaves.slice();
+    mySaves.splice(index, 1);
+    try {
+      await pushSaves();
+    } catch (e) {
+      mySaves = backup;
+      showErrorToast(apiErrorText(e));
+    }
+    renderAuthModal();
+  });
 }
 
 // Восстановление отряда из сохранения в билдер
@@ -615,7 +637,7 @@ async function authSubmit(isRegister) {
         await saveCurrentCrew();
       }
     } catch (e) {
-      alert(apiErrorText(e));
+      showErrorToast(apiErrorText(e));
     }
   });
 }

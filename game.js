@@ -844,7 +844,7 @@ async function recordGameResult(winner) {
       gameResultBackup = null;
       renderGamePlay();
     } catch (e) {
-      alert(apiErrorText(e));
+      showErrorToast(apiErrorText(e));
     }
   });
 }
@@ -976,7 +976,7 @@ async function createGame() {
       activeGame = { code, conditions, host: { name: currentUser, roster }, guest: null };
       renderGameWait();
     } catch (e) {
-      alert(apiErrorText(e));
+      showErrorToast(apiErrorText(e));
     }
   });
 }
@@ -993,7 +993,7 @@ async function joinGame() {
       localStorage.setItem(GAME_CODE_KEY, code);
       renderGamePlay();
     } catch (e) {
-      alert(apiErrorText(e));
+      showErrorToast(apiErrorText(e));
     }
   });
 }
