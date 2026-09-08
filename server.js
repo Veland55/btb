@@ -1600,11 +1600,19 @@ function getCompressed(filePath, st, enc) {
   if (entry.buffers.has(enc)) return Promise.resolve(entry.buffers.get(enc));
   if (entry.pending.has(enc)) return entry.pending.get(enc);
   const p = (async () => {
-    const raw = await fs.promises.readFile(filePath);
-    const packed = await compressAsync(raw, enc);
-    entry.buffers.set(enc, packed);
-    entry.pending.delete(enc);
-    return packed;
+    // finally, а не только успешный путь: без него один сбой (файл пропал
+    // между stat и read, временный EMFILE, ошибка zlib) навсегда оставлял в
+    // pending уже отклонённый промис — до следующей смены mtime/size файла
+    // (то есть до деплоя) КАЖДЫЙ следующий запрос сразу получал ту же ошибку
+    // из кэша и уходил в потоковый фоллбэк, так и не пробуя сжать заново.
+    try {
+      const raw = await fs.promises.readFile(filePath);
+      const packed = await compressAsync(raw, enc);
+      entry.buffers.set(enc, packed);
+      return packed;
+    } finally {
+      entry.pending.delete(enc);
+    }
   })();
   entry.pending.set(enc, p);
   return p;
