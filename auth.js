@@ -12,6 +12,13 @@
 const MAX_SAVES = 5;
 const AUTH_TOKEN_KEY = 'bmg_token';
 
+// Таймаут одной попытки запроса и пауза перед повтором. На мобильном интернете
+// (особенно через VPN/прокси за столом на турнире) fetch() без сигнала может
+// висеть заметно дольше нормального времени ответа сервера, вместо того чтобы
+// упасть в понятную сетевую ошибку — таймаут переводит зависание в 'network'.
+const API_TIMEOUT_MS = 15000;
+const API_RETRY_DELAY_MS = 1000;
+
 // Короткие коды рангов — экономия места в сохранениях
 const RANK_TO_CODE = { "Leader": "L", "Sidekick": "S", "Henchman": "H", "Free Agent": "F", "Vehicle": "V" };
 const CODE_TO_RANK = { L: "Leader", S: "Sidekick", H: "Henchman", F: "Free Agent", V: "Vehicle" };
@@ -28,19 +35,42 @@ let authView = 'login';   // 'login' | 'forgot-request' | 'forgot-code'
 let authResetName = '';   // имя аккаунта, для которого запрошен код (шаг 2)
 
 // ======================== API-КЛИЕНТ ========================
+// Одна попытка запроса с таймаутом через AbortController — без него fetch()
+// на плохой сети может висеть намного дольше, чем стоит ждать ответа.
+function apiAttempt(pathname, method, body) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+  return fetch(pathname, {
+    method,
+    headers: {
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+      ...(authToken ? { 'Authorization': 'Bearer ' + authToken } : {})
+    },
+    body: body ? JSON.stringify(body) : undefined,
+    signal: controller.signal
+  }).finally(() => clearTimeout(timer));
+}
+
 async function api(pathname, method = 'GET', body) {
   let res;
   try {
-    res = await fetch(pathname, {
-      method,
-      headers: {
-        ...(body ? { 'Content-Type': 'application/json' } : {}),
-        ...(authToken ? { 'Authorization': 'Bearer ' + authToken } : {})
-      },
-      body: body ? JSON.stringify(body) : undefined
-    });
+    res = await apiAttempt(pathname, method, body);
   } catch (e) {
-    throw { error: 'network' }; // сервер недоступен / открыто без сервера
+    // GET ничего не меняет на сервере, поэтому его безопасно повторить молча:
+    // один обрыв/затык на нестабильном мобильном соединении — обычное дело
+    // (см. /api/me на старте страницы — раньше единственный сбой сети здесь
+    // на весь сеанс показывал реально залогиненного игрока как разлогиненного).
+    // POST/PUT/DELETE не ретраим сами — повтор мог бы задвоить действие.
+    if (method === 'GET') {
+      await new Promise(r => setTimeout(r, API_RETRY_DELAY_MS));
+      try {
+        res = await apiAttempt(pathname, method, body);
+      } catch (e2) {
+        throw { error: 'network' };
+      }
+    } else {
+      throw { error: 'network' }; // сервер недоступен / открыто без сервера
+    }
   }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw { status: res.status, error: data.error || 'server' };
