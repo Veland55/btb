@@ -801,24 +801,33 @@ const maxRounds = n => Math.max(1, Math.ceil(Math.log2(Math.max(2, n))));
 // поздние изменения состава не переставляли уже сыгранные пары.
 //   dropped:false — кто играет дальше (для жеребьёвки)
 //   dropped:true  — плюс снятые: их сыгранные туры остаются в таблице
-function tournamentSeated(tid, maxPlayers, withDropped) {
-  const rows = db.prepare('SELECT user, dropped, seat FROM tournament_players WHERE tid = ? ORDER BY joined').all(tid);
+// rows — уже прочитанные строки tournament_players (например, из tournamentToJSON),
+// чтобы не бить в базу второй/третий раз за один и тот же tid; если не передали,
+// читаем сами (это по-прежнему нужно вызывающим без готовых rows под рукой)
+function tournamentSeated(tid, maxPlayers, withDropped, rows) {
+  rows = rows || db.prepare('SELECT user, dropped, seat FROM tournament_players WHERE tid = ? ORDER BY joined').all(tid);
   const seated = rows.some(r => r.seat != null)
     ? rows.filter(r => r.seat != null).sort((a, b) => a.seat - b.seat)
     : rows.slice(0, maxPlayers);
   return seated.filter(r => withDropped || !r.dropped).map(r => r.user);
 }
 // Кого жеребьюем в следующем туре
-const tournamentEntrants = (tid, maxPlayers) => tournamentSeated(tid, maxPlayers, false);
+const tournamentEntrants = (tid, maxPlayers, rows) => tournamentSeated(tid, maxPlayers, false, rows);
 // Кого показываем в итоговой таблице
-const tournamentTableNames = (tid, maxPlayers) => tournamentSeated(tid, maxPlayers, true);
+const tournamentTableNames = (tid, maxPlayers, rows) => tournamentSeated(tid, maxPlayers, true, rows);
 
 // Турнир + участники; свои ростеры видит их владелец, все ростеры — организатор
 function tournamentToJSON(tn, user, opts) {
+  // Раньше здесь было 3 отдельных SELECT по tournament_players (players,
+  // tournamentEntrants, tournamentTableNames — два из них с ИДЕНТИЧНЫМ SQL),
+  // хотя все три производных списка вычислимы из одной и той же выборки.
+  // Список турниров опрашивается клиентом каждые 8с и на каждую строку списка
+  // звал эту функцию — так лишние 2 запроса на tournament_players умножались
+  // на число турниров на странице (до 50) каждый цикл поллинга.
   const players = db.prepare('SELECT * FROM tournament_players WHERE tid = ? ORDER BY joined').all(tn.id);
   const isOrganizer = tn.organizer === user;
-  const names = tournamentEntrants(tn.id, tn.max_players);
-  const tableNames = tournamentTableNames(tn.id, tn.max_players);
+  const names = tournamentEntrants(tn.id, tn.max_players, players);
+  const tableNames = tournamentTableNames(tn.id, tn.max_players, players);
   // Списком турниров ростеры не отдаём: на каждый опрос это мегабайты чужого JSON
   const withRosters = !opts || opts.rosters !== false;
   return {
