@@ -31,11 +31,11 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.14">
+  <link rel="stylesheet" href="style.css?v=3.15">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
-  <script src="data.js?v=3.8" defer></script>
+  <script src="data.js?v=3.9" defer></script>
   <script src="data-traits.js?v=2.2" defer></script>
-  <script src="script.js?v=1.36" defer></script>
+  <script src="script.js?v=1.37" defer></script>
   <script src="auth.js?v=2.7" defer></script>
   <script src="data-cards.js?v=1.5" defer></script>
   <script src="cards.js?v=1.8" defer></script>
@@ -376,7 +376,7 @@
     <div class="trait-popup-content auth-modal-content">
       <div class="trait-popup-header">
         <strong data-i18n="profile">ПРОФИЛЬ</strong>
-        <div class="trait-popup-close" onclick="closeAuthModal()">×</div>
+        <button type="button" class="trait-popup-close" onclick="closeAuthModal()" data-i18n-aria-label="close_modal" aria-label="Закрыть">×</button>
       </div>
       <div class="trait-popup-body" id="authModalBody"></div>
     </div>
@@ -384,7 +384,7 @@
 
   <!-- ПОЛНАЯ КАРТОЧКА -->
   <div class="full-card" id="fullCard">
-    <div class="close-full" onclick="closeFullCard()">X</div>
+    <button type="button" class="close-full" onclick="closeFullCard()" data-i18n-aria-label="close_modal" aria-label="Закрыть">X</button>
     <div class="full-inner" id="fullCardContent"></div>
     <!-- Показывается только на широких экранах (планшет/ПК) — расшифровка трейтов и правил оружия -->
     <div class="full-card-sidebar" id="fullCardSidebar"></div>

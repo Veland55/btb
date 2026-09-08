@@ -72,7 +72,15 @@ async function toggleEternal(on) {
   // Выключаем формат, а в отряде уже есть Eternal-модели — предупреждаем:
   // молча оставить их означало бы нелегальный по формату отряд
   if (!on && crew.some(m => m.eternal)) {
-    if (!(await appConfirm(t('eternal_crew_warning')))) { renderFactionCards(); return; }
+    // Чекбокс — обычный <input type="checkbox"> внутри модалки профиля,
+    // браузер уже переключил его DOM-состояние в момент клика. Если тут выйти
+    // без renderAuthModal(), showEternal не поменяется, а галочка на экране
+    // всё равно останется снятой — расхождение видимого состояния с реальным.
+    if (!(await appConfirm(t('eternal_crew_warning')))) {
+      renderFactionCards();
+      if (typeof renderAuthModal === 'function') renderAuthModal();
+      return;
+    }
     crew = crew.filter(m => !m.eternal);
     if (BMG_BOSS && BMG_BOSS.eternal) { crew = []; BMG_BOSS = null; BMG_AFFILIATIONS = null; }
     updateCrewEquipmentCounts();
@@ -1457,10 +1465,19 @@ function getUnmetDependency(model) {
   if (!dependency) return null;
 
   const requiredModel = dependency.requiredModel;
-  if (!requiredModel) return null;
-
-  if (!crew.some(m => m.name === requiredModel)) {
+  if (requiredModel && !crew.some(m => m.name === requiredModel)) {
     return requiredModel;
+  }
+
+  // requiredModels — условие "или": достаточно хотя бы одной модели из списка.
+  // Раньше здесь не проверялось вовсе, из-за чего Arkham Assistant 1/2, Gilda
+  // Dent и Catwoman (Dark Knight Rises) проходили эту функцию как "зависимость
+  // выполнена" даже без единой требуемой модели в отряде — их фактически
+  // страховал только параллельный список-фильтр checkModelDependency, а не эта
+  // функция (её же вызывает bmgCanAddModel как основной gate при найме).
+  const requiredModels = dependency.requiredModels;
+  if (requiredModels && Array.isArray(requiredModels) && !crew.some(m => requiredModels.includes(m.name))) {
+    return requiredModels.join(" / ");
   }
 
   return null;
@@ -1761,24 +1778,34 @@ function showRankSelectionModal(model, ranks) {
     }
   }
 
-  // Создаём overlay
+  // Создаём overlay. role/aria-label/focus trap/Escape — как у appPrompt/
+  // appConfirm (см. ниже): это самая частая модалка в приложении (открывается
+  // при КАЖДОМ найме модели с выбором ранга), а раньше именно она была
+  // единственной без клавиатурной доступности — ни ловушки фокуса, ни
+  // Escape, ни role="dialog" для скринридера, а кнопка закрытия была
+  // <div onclick> без tabindex/role, недоступная с клавиатуры.
   const overlay = document.createElement("div");
   overlay.className = "rank-select-modal";
+  const modalLabel = `${t('rank_label')}: ${model.name}`;
   overlay.innerHTML = `
-    <div class="rank-select-content">
+    <div class="rank-select-content" role="dialog" aria-modal="true" aria-label="${escHtml(modalLabel)}">
       <div class="rank-select-header">
-        <span>${t('rank_label')}: <strong>${model.name}</strong></span>
-        <div class="rank-select-close" onclick="this.closest('.rank-select-modal').remove()">×</div>
+        <span>${t('rank_label')}: <strong>${escHtml(model.name)}</strong></span>
+        <button type="button" class="rank-select-close" aria-label="${escHtml(t('close_modal'))}">×</button>
       </div>
       <div class="rank-select-buttons">
         ${availableRanks.map(rank => `
-          <button class="rank-select-btn" data-rank="${rank}">
-            ${rank}
+          <button class="rank-select-btn" data-rank="${escHtml(rank)}">
+            ${escHtml(rank)}
           </button>
         `).join("")}
       </div>
     </div>
   `;
+
+  document.body.appendChild(overlay);
+  trapFocusInOverlay(overlay);
+  const finish = () => overlay.remove();
 
   // Обработчик выбора
   overlay.querySelectorAll(".rank-select-btn").forEach(btn => {
@@ -1788,16 +1815,15 @@ function showRankSelectionModal(model, ranks) {
       modifiers = calculateModifiers();
       updateCrewBar();
       renderMiniCardsBuilder();
-      overlay.remove();
+      finish();
     };
   });
+  overlay.querySelector(".rank-select-close").onclick = finish;
+  overlay.querySelector(".rank-select-buttons").firstElementChild?.focus();
 
-  // Клик вне окна — закрыть
-  overlay.onclick = e => {
-    if (e.target === overlay) overlay.remove();
-  };
-
-  document.body.appendChild(overlay);
+  // Клик вне окна / Escape — закрыть
+  overlay.onclick = e => { if (e.target === overlay) finish(); };
+  overlay.addEventListener('keydown', e => { if (e.key === 'Escape') finish(); });
 };
 
 // ======================== ОБЩИЕ МОДАЛКИ (замена нативных prompt/confirm) ========================
@@ -1905,6 +1931,22 @@ const removeFromCrew = m => {
       BMG_BOSS = null;
       BMG_AFFILIATIONS = null;
       crew = [];  // Полностью очищаем отряд при удалении босса
+    }
+    // Требуемая модель (modelDependencyRules) могла уйти вместе с удалённой —
+    // раньше зависимые модели (например Gray Son после удаления Lincoln March)
+    // оставались в отряде, и его можно было сохранить/экспортировать нелегальным:
+    // ревалидации состава не было вовсе, кроме двух частных случаев выше.
+    // Цикл — на случай цепочки зависимостей (A требует B, B требует C).
+    let removedDependent = true;
+    while (removedDependent && crew.length) {
+      removedDependent = false;
+      for (const dep of crew) {
+        if (getUnmetDependency(dep)) {
+          crew = crew.filter(x => x !== dep);
+          removedDependent = true;
+          break;
+        }
+      }
     }
     updateCrewEquipmentCounts();
     modifiers = calculateModifiers();
@@ -2565,7 +2607,7 @@ const showFullCard = model => {
     // на широких экранах (см. style.css) глоссарий встаёт справа от карточки
     // и скроллится независимо от неё, на узких планшетах — под ней
     panel.innerHTML = `
-      <div class="close-full builder-panel-close" onclick="closeBuilderCardPanel()">X</div>
+      <button type="button" class="close-full builder-panel-close" onclick="closeBuilderCardPanel()" aria-label="${t('close_modal')}">X</button>
       <div class="builder-panel-body">
         <div class="builder-panel-card">${cardHTML}</div>
         ${glossaryHTML ? `<div class="builder-panel-glossary">${glossaryHTML}</div>` : ''}
@@ -2697,7 +2739,7 @@ function showTraitDesc(traitName) {
     <div class="trait-popup-content">
       <div class="trait-popup-header">
         <strong>${formattedTitle}</strong>
-        <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
+        <button type="button" class="trait-popup-close" onclick="this.closest('.trait-popup').remove()" aria-label="${t('close_modal')}">×</button>
       </div>
       <div class="trait-popup-body">
         ${formattedBody}
@@ -2727,7 +2769,7 @@ function showTraitPopup(name, desc, showRelated = true) {
     <div class="trait-popup-content">
       <div class="trait-popup-header">
         <strong>${processedName}</strong>
-        <div class="trait-popup-close" onclick="this.closest('.trait-popup').remove()">×</div>
+        <button type="button" class="trait-popup-close" onclick="this.closest('.trait-popup').remove()" aria-label="${t('close_modal')}">×</button>
       </div>
       <div class="trait-popup-body">
         ${processedDesc}
@@ -3280,16 +3322,29 @@ function bmgCanAddModel(model) {
       }
     }
 
-    // Required (X): Требует X в отряде (поддержка нескольких имён через "or")
+    // Required (X): Требует X в отряде (поддержка нескольких имён через "or").
+    // Свободный текст трейта — единственный источник для моделей без записи в
+    // modelDependencyRules, но у уже описанных там моделей часто расходится с
+    // полем name (нет скобок: "Batman Dark Knight Rises" вместо "Batman (Dark
+    // Knight Rises)", или указан realname: "Terry McGinnis" вместо "Mr. Wayne
+    // (Beyond)") — из-за этого 8 моделей были ненанимаемыми, хотя их запись в
+    // modelDependencyRules (проверяется отдельно через getUnmetDependency выше)
+    // уже была корректной. Нормализуем скобки и сверяем ещё и с realname —
+    // это только расширяет совпадения, ничего не отбирает у уже работавших.
     const requiredMatch = modelTrait.match(/^Required \((.+)\)$/);
     if (requiredMatch) {
       const required = requiredMatch[1];
       // Разбиваем на варианты по " or " (например: "Dr. Hugo Strange or SCARECROW")
       const requiredOptions = required.split(/\s+or\s+/).map(s => s.trim());
+      const normalizeReq = s => s.replace(/[()]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
       // Проверяем, есть ли в отряде хотя бы один из требуемых вариантов
-      const hasRequired = requiredOptions.some(req =>
-        crew.some(m => m.name === req || m.name.includes(req) || getFactions(m).includes(req))
-      );
+      const hasRequired = requiredOptions.some(req => {
+        const reqNorm = normalizeReq(req);
+        return crew.some(m =>
+          m.name === req || m.name.includes(req) || getFactions(m).includes(req) ||
+          normalizeReq(m.name) === reqNorm || (m.realname && normalizeReq(m.realname) === reqNorm)
+        );
+      });
       if (!hasRequired) {
         alert(t("required_cannot_add", { required }));
         exceeded = true;
@@ -3662,7 +3717,7 @@ function openEquipmentMenu(model, cardElement, uid) {
     <div class="equipment-modal-content">
       <div class="equipment-modal-header">
         <span>${equipmentTitle} <strong>${model.name}</strong></span>
-        <div class="equipment-modal-close" onclick="this.closest('.equipment-modal').remove()">×</div>
+        <button type="button" class="equipment-modal-close" onclick="this.closest('.equipment-modal').remove()" aria-label="${t('close_modal')}">×</button>
       </div>
       <div class="equipment-modal-funding">
         <span class="avail">${t('equipment_available')}: $${availableFunding}</span>

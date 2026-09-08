@@ -99,6 +99,13 @@ const modelDependencyRules = {
   // становился ненанимаемым, а Себастьян — вообще без ограничения
   "Sebastian the Rat (The Suicide Squad)": { requiredModel: "Ratcatcher 2 (The Suicide Squad)" },
   "Eagly": { requiredModel: "Peacemaker (John Cena)" },
+
+  // Court of Owls: у Gray Son трейт "Required (Lincoln March)" уже блокировал
+  // сам найм без записи здесь (текст совпадает с name дословно) — но без этой
+  // записи список найма показывал модель кликабельной ДО выполнения условия
+  // (checkModelDependency её не прятал), и отказ игрок видел только после
+  // клика через alert. Несогласованность двух параллельных проверок.
+  "Gray Son": { requiredModel: "Lincoln March" },
   
   // League of Shadows / Batman Begins
   "Bruce (Batman Begins)": { requiredModel: "Henry Ducard" },
@@ -11071,7 +11078,7 @@ const models = [
       "Vengeance",
       "Bipolar (Mental Disorder)",
       "Judgment",
-      "Required (The Riddler (Jim Carrey)",
+      "Required (The Riddler (Jim Carrey))",
       "Support (The Riddler)"
     ],
     "weapons": [

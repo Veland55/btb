@@ -292,8 +292,8 @@ html.tg-app {
      как и остальные плавающие элементы (.header-buttons и т.п.) */
   position:absolute; top:calc(12px + var(--safe-top)); right:12px; width:30px; height:30px;
   display:flex; align-items:center; justify-content:center;
-  font-size:18px; font-weight:bold; color:#fff; background:rgba(0,0,0,.55);
-  border-radius:50%; cursor:pointer; z-index:10; line-height:1;
+  font: inherit; font-size:18px; font-weight:bold; color:#fff; background:rgba(0,0,0,.55);
+  border:none; border-radius:50%; cursor:pointer; z-index:10; line-height:1; padding:0; margin:0;
 }
 /* Левша — тот же приём, что у .header-buttons: зеркалим к левому краю */
 body.left-handed .close-full { right:auto; left:12px; }
@@ -486,7 +486,8 @@ body.left-handed .close-full { right:auto; left:12px; }
 .trait-popup-body { padding:18px 20px; color:#bbb; line-height:1.6; font-size:13.5px; max-height:70vh; overflow-y:auto; }
 .trait-popup-body .inline-icon { background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
 .trait-popup-close {
-  position:absolute; top:14px; right:16px; font-size:26px; line-height:1; cursor:pointer; color:#fff; transition:color .2s;
+  position:absolute; top:14px; right:16px; font: inherit; font-size:26px; line-height:1; cursor:pointer;
+  color:#fff; transition:color .2s; background:none; border:none; padding:0; margin:0;
 }
 body.left-handed .trait-popup-close { right:auto; left:16px; }
 .trait-popup-close:hover { color:#e94560; }
@@ -1026,7 +1027,10 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   border-bottom:2px solid #e94560; word-break:break-word; flex-shrink:0;
 }
 .equipment-modal-header strong { color:#fff; }
-.equipment-modal-close { font-size:26px; line-height:1; cursor:pointer; color:#fff; flex-shrink:0; transition:color .2s; }
+.equipment-modal-close {
+  font: inherit; font-size:26px; line-height:1; cursor:pointer; color:#fff; flex-shrink:0; transition:color .2s;
+  background:none; border:none; padding:0; margin:0;
+}
 .equipment-modal-close:hover { color:#e94560; }
 .equipment-modal-funding { background:#1a1a1a; padding:10px 20px; text-align:center; border-bottom:2px solid #e94560; flex-shrink:0; }
 .equipment-modal-funding .avail { color:var(--gold); font-weight:bold; font-size:14px; }
