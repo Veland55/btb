@@ -15348,7 +15348,7 @@ const models = [
     "stats": {
       "Attack": 4,
       "Defense": 4,
-      "Strength": "6+",
+      "Strength": "4+",
       "Movement": 12,
       "Willpower": 7,
       "Endurance": 7
