@@ -296,6 +296,7 @@ const translations = {
     export_title: "Экспорт ростера в PDF",
     roster_preview: "ПРОСМОТР ОТРЯДА",
     upgrades_flap: "АПГРЕЙДЫ",
+    switch_faction_title: "Сменить фракцию",
     obj_cards_title: "КАРТЫ ЦЕЛЕЙ",
     obj_deck: "Колода",
     obj_deck_general: "Общие",
@@ -342,6 +343,7 @@ const translations = {
     auth_rate_limited: "Слишком много неудачных попыток входа. Подождите минуту и попробуйте снова.",
     auth_bad_name_format: "Имя пользователя — от 3 до 20 символов: буквы, цифры, пробел, - _ .",
     auth_bad_pass_format: "Пароль — от 4 до 64 символов.",
+    auth_bad_email_format: "Некорректный формат email.",
     eternal_title: "ETERNAL",
     eternal_hint: "Показывать модели формата Eternal — снятые с продажи профили. В обычной игре не используются.",
     eternal_crew_warning: "В отряде есть модели формата Eternal. Если выключить формат, они будут убраны из отряда. Продолжить?",
@@ -608,7 +610,9 @@ const translations = {
     reset_rate_limited: "Код уже отправлен — подождите минуту перед повторной отправкой",
     reset_mail_failed: "Не удалось отправить письмо. Попробуйте позже или обратитесь к администратору",
     reset_code_expired: "Код истёк или не запрошен — запросите новый",
+    reset_too_many_attempts: "Слишком много неверных попыток — запросите новый код",
     reset_bad_code: "Неверный код",
+    old_password_bad: "Неверный текущий пароль",
     stats_top_players: "ЛУЧШИЕ ИГРОКИ",
     stats_top_players_note: "Победители турниров; флаг — страна игрока из профиля.",
     game_round: "РАУНД",
@@ -727,6 +731,7 @@ const translations = {
     export_title: "Export roster to PDF",
     roster_preview: "ROSTER PREVIEW",
     upgrades_flap: "UPGRADES",
+    switch_faction_title: "Switch faction",
     obj_cards_title: "OBJECTIVE CARDS",
     obj_deck: "Deck",
     obj_deck_general: "General",
@@ -773,6 +778,7 @@ const translations = {
     auth_rate_limited: "Too many failed sign-in attempts. Wait a minute and try again.",
     auth_bad_name_format: "Username must be 3-20 characters: letters, digits, space, - _ .",
     auth_bad_pass_format: "Password must be 4-64 characters.",
+    auth_bad_email_format: "Invalid email format.",
     eternal_title: "ETERNAL",
     eternal_hint: "Show Eternal-format models — retired profiles. Not used in the standard game.",
     eternal_crew_warning: "Your crew contains Eternal-format models. Turning the format off will remove them from the crew. Continue?",
@@ -1039,7 +1045,9 @@ const translations = {
     reset_rate_limited: "A code was already sent — wait a minute before requesting another",
     reset_mail_failed: "Failed to send the email. Try again later or contact the administrator",
     reset_code_expired: "The code expired or wasn't requested — request a new one",
+    reset_too_many_attempts: "Too many wrong attempts — request a new code",
     reset_bad_code: "Incorrect code",
+    old_password_bad: "Wrong current password",
     stats_top_players: "TOP PLAYERS",
     stats_top_players_note: "Tournament winners; the flag is the player's profile country.",
     game_round: "ROUND",
@@ -1104,6 +1112,19 @@ function t(key, params = {}) {
     text = text.replace(new RegExp(`\\{${param}\\}`, 'g'), value);
   }
   return text;
+}
+
+// Склонение "модель/модели/моделей" по числу — t('models_word') была
+// фиксированной строкой без учёта числа ("1 моделей" в списке сохранённых
+// отрядов из одной модели).
+function modelsWord(n) {
+  if (currentLang === 'en') return n === 1 ? 'model' : 'models';
+  const abs = Math.abs(n) % 100;
+  const last = abs % 10;
+  if (abs >= 11 && abs <= 14) return 'моделей';
+  if (last === 1) return 'модель';
+  if (last >= 2 && last <= 4) return 'модели';
+  return 'моделей';
 }
 
 function setLanguage(lang) {
@@ -1532,9 +1553,27 @@ function showCards() {
   $('cardsTabsContainer').classList.remove('hidden');
   if ($('cardsSearchWrapper')) $('cardsSearchWrapper').style.display = 'none'; // до выбора фракции — искать негде
   if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'none'; // до выбора фракции
+  if ($('cardsSwitchFactionBtn')) $('cardsSwitchFactionBtn').style.display = 'none'; // до выбора фракции
   if ($('cardsMissionsPage')) { $('cardsMissionsPage').style.display = 'none'; $('cardsMain').style.display = 'block'; }
   closeBuilderCardPanel();
   initTabs();
+}
+
+// Сменить фракцию, не выходя в главное меню — та же идея, что и
+// backToFactionSelect() в билдере, но без confirmDiscardCrew: в просмотре
+// карточек нет набранного отряда, терять нечего
+function backToCardsFactionSelect() {
+  currentFaction = null;
+  $('modelsGridCards').innerHTML = '';
+  $('cardsTabsContainer').classList.remove('hidden');
+  if ($('cardsSearchWrapper')) $('cardsSearchWrapper').style.display = 'none';
+  if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'none';
+  if ($('cardsSwitchFactionBtn')) $('cardsSwitchFactionBtn').style.display = 'none';
+  cardsSearchQuery = '';
+  const cardsSearchEl = $('cardsSearchInput');
+  if (cardsSearchEl) cardsSearchEl.value = '';
+  document.querySelectorAll('#cardsTabsContainer .faction-card').forEach(c => c.classList.remove('active'));
+  closeBuilderCardPanel();
 }
 
 function showBuilder() {
@@ -1569,6 +1608,7 @@ async function backToMenu() {
     $('modelsGridCards').innerHTML = '';
   }
   if ($('cardsSearchWrapper')) $('cardsSearchWrapper').style.display = 'none';
+  if ($('cardsSwitchFactionBtn')) $('cardsSwitchFactionBtn').style.display = 'none';
 }
 
 async function backToFactionSelect() {
@@ -2874,6 +2914,7 @@ function initTabs() {
       closeBuilderCardPanel(); // карточка предыдущей фракции в панели больше не актуальна
       if ($('cardsSearchWrapper')) $('cardsSearchWrapper').style.display = 'block'; // теперь есть что искать
       if ($('cardsMissionsBtn')) $('cardsMissionsBtn').style.display = 'flex'; // карты миссий банды
+      if ($('cardsSwitchFactionBtn')) $('cardsSwitchFactionBtn').style.display = 'flex'; // сменить фракцию
       cardsSearchQuery = '';
       const cardsSearchEl = $('cardsSearchInput');
       if (cardsSearchEl) cardsSearchEl.value = '';

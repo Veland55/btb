@@ -457,6 +457,7 @@ function gameMeta() {
 }
 
 function gmRound(delta) {
+  if (gmLocked()) return;
   const m = gameMeta();
   m.round = Math.max(1, Math.min(99, m.round + delta));
   const el = $('game-round-num');
@@ -466,6 +467,7 @@ function gmRound(delta) {
 
 // Инициатива раунда: чей ход первый (повторный тап — снять отметку)
 function gmInitiative(side) {
+  if (gmLocked()) return;
   const m = gameMeta();
   m.init = m.init === side ? null : side;
   ['host', 'guest'].forEach(s => {
@@ -476,6 +478,7 @@ function gmInitiative(side) {
 }
 
 function gmPass(side, delta) {
+  if (gmLocked()) return;
   const m = gameMeta();
   m.pass[side] = Math.max(0, Math.min(20, (m.pass[side] || 0) + delta));
   const el = $('game-pass-' + side);
@@ -489,6 +492,7 @@ const END_OF_ROUND_STATUSES = ['Acid', 'Blind', 'Paralyze', 'Scared', 'Stunned']
 // Новый раунд — шаг Recount по правилам: снять отметки Activated и Audacity,
 // сбросить пасс-маркеры, убрать статусы «до конца раунда»
 async function gmNextRound() {
+  if (gmLocked()) return;
   if (!await appConfirm(t('game_confirm_next_round'))) return;
   const m = gameMeta();
   m.round = Math.min(99, m.round + 1);
@@ -541,7 +545,16 @@ function gameRoundPanelHTML() {
     </div>`;
 }
 
+// Счётчики партии закрыты для правок после записи результата — сервер это
+// тоже отклоняет (см. /api/games/:code/track, error:'game_finished'), но
+// без проверки здесь UI сначала визуально применял бы правку (title/класс
+// меняются раньше saveGameTrack), а уже потом она молча не сохранялась.
+function gmLocked() {
+  return !!(activeGame && activeGame.result);
+}
+
 function gmAdjust(side, index, field, delta) {
+  if (gmLocked()) return;
   const st = gameTrack[side + ':' + index];
   if (!st) return;
   // WIL/END нельзя поднять выше значения с карточки модели
@@ -553,6 +566,7 @@ function gmAdjust(side, index, field, delta) {
 }
 
 function gmToggle(side, index, field) {
+  if (gmLocked()) return;
   const st = gameTrack[side + ':' + index];
   if (!st) return;
   st[field] = st[field] ? 0 : 1;
@@ -574,6 +588,7 @@ const GAME_STATUSES = ['Acid', 'Blind', 'Enervating', 'Fire', 'Freeze', 'Hypnoti
 
 // Магазины: по правилам Ammo — число использований оружия за игру
 function gmAmmo(side, index, wIdx, delta) {
+  if (gmLocked()) return;
   const st = gameTrack[side + ':' + index];
   if (!st || !st.am) return;
   const max = (st.amx && st.amx[wIdx]) || 9;
@@ -584,7 +599,7 @@ function gmAmmo(side, index, wIdx, delta) {
 }
 
 function gmAddFx(side, index, name) {
-  if (!name) return;
+  if (!name || gmLocked()) return;
   const st = gameTrack[side + ':' + index];
   if (!st) return;
   // повторное добавление копит счётчик (Poison — до 4, остальные практично до 9)
@@ -594,6 +609,7 @@ function gmAddFx(side, index, name) {
 }
 
 function gmRemoveFx(side, index, name) {
+  if (gmLocked()) return;
   const st = gameTrack[side + ':' + index];
   if (!st || !st.fx) return;
   delete st.fx[name];

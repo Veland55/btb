@@ -443,7 +443,7 @@ function tnStandingsHTML(tn) {
       <span class="tn-st-cell" title="${t('tn_vp_full')}">VP</span>
     </div>`;
   const rows = tn.standings.map((s, i) => `
-    <div class="tn-player-row tn-st-row${finished && i === 0 ? ' tn-st-winner' : ''}">
+    <div class="tn-player-row tn-st-row${finished && s.name === tn.winner ? ' tn-st-winner' : ''}">
       <span class="tn-player-num">${i + 1}</span>
       <span class="tn-player-name">${tnEsc(s.name)}${s.name === currentUser ? ` <b>(${t('tn_you')})</b>` : ''}</span>
       <span class="tn-st-cell" title="${t('tn_played')}">▦ ${s.played || 0}</span>

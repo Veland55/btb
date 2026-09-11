@@ -88,6 +88,7 @@ function apiErrorText(e) {
     input: 'auth_fill_fields',
     name_format: 'auth_bad_name_format',
     pass_format: 'auth_bad_pass_format',
+    email_format: 'auth_bad_email_format',
     limit: 'saves_limit',
     collection_limit: 'collection_limit',
     auth: 'login_required',
@@ -108,7 +109,9 @@ function apiErrorText(e) {
     reset_rate_limited: 'reset_rate_limited',
     reset_mail_failed: 'reset_mail_failed',
     reset_code_expired: 'reset_code_expired',
-    reset_bad_code: 'reset_bad_code'
+    reset_too_many_attempts: 'reset_too_many_attempts',
+    reset_bad_code: 'reset_bad_code',
+    old_password_bad: 'old_password_bad'
   };
   return t(map[e && e.error] || 'server_error');
 }
@@ -314,6 +317,25 @@ async function refreshCollection() {
   myCollection = new Set((await api('/api/collection')).modelIds || []);
 }
 
+// Сетевые вызовы toggleCollection для ОДНОГО И ТОГО ЖЕ ключа — по очереди, не
+// параллельно: два быстрых клика по одной звёздочке до ответа сервера иначе
+// могли обогнать друг друга в сети (мобильный интернет, ретраи) — запрос,
+// отправленный вторым, но дошедший до сервера первым, молча расходился с
+// тем, что в итоге показывает UI (сервер помнил обратное состояние против
+// экрана, без единой ошибки — нашли скриптом, что принудительно тормозит
+// первый запрос). Разных ключей друг друга не ждут.
+const _collectionInFlight = new Map();
+
+function _renderCollectionUI(modelName) {
+  if (typeof refreshBuilderCardPanel === 'function') refreshBuilderCardPanel(modelName);
+  if (typeof renderMiniCardsView === 'function' && currentMode === 'cards') renderMiniCardsView();
+  if (typeof renderCollectionModal === 'function') renderCollectionModal();
+  // Счётчик "МОЯ КОЛЛЕКЦИЯ (n)" живёт в теле модалки профиля — без этого он
+  // не обновлялся сразу при удалении модели через попап коллекции, только
+  // после закрытия/повторного открытия профиля
+  if (typeof renderAuthModal === 'function') renderAuthModal();
+}
+
 // Оптимистичное переключение: сразу меняем локальный Set и перерисовываем
 // карточку, не дожидаясь ответа сервера (иначе на среднем мобильном интернете
 // звёздочка "зависает" на четверть секунды при каждом клике) — при отказе
@@ -321,20 +343,29 @@ async function refreshCollection() {
 async function toggleCollection(m) {
   const key = modelCollectionKey(m);
   const wasIn = myCollection.has(key);
-  if (wasIn) myCollection.delete(key); else myCollection.add(key);
-  if (typeof refreshBuilderCardPanel === 'function') refreshBuilderCardPanel(m.name);
-  if (typeof renderMiniCardsView === 'function' && currentMode === 'cards') renderMiniCardsView();
-  if (typeof renderCollectionModal === 'function') renderCollectionModal();
-  try {
-    if (wasIn) await api('/api/collection', 'DELETE', { modelId: key });
-    else await api('/api/collection', 'POST', { modelId: key });
-  } catch (e) {
-    if (wasIn) myCollection.add(key); else myCollection.delete(key);
-    if (typeof refreshBuilderCardPanel === 'function') refreshBuilderCardPanel(m.name);
-    if (typeof renderMiniCardsView === 'function' && currentMode === 'cards') renderMiniCardsView();
-    if (typeof renderCollectionModal === 'function') renderCollectionModal();
-    showErrorToast(apiErrorText(e));
-  }
+  const nowIn = !wasIn;
+  if (nowIn) myCollection.add(key); else myCollection.delete(key);
+  _renderCollectionUI(m.name);
+
+  const prev = _collectionInFlight.get(key) || Promise.resolve();
+  const run = prev.catch(() => {}).then(async () => {
+    try {
+      if (nowIn) await api('/api/collection', 'POST', { modelId: key });
+      else await api('/api/collection', 'DELETE', { modelId: key });
+    } catch (e) {
+      // Откатываем, только если это состояние ещё актуально — пока мы ждали
+      // своей очереди, могли прийти более поздние клики по той же модели,
+      // откат чужого (уже неактуального) шага задвоил бы рассинхронизацию,
+      // а не исправил её
+      if (myCollection.has(key) === nowIn) {
+        if (nowIn) myCollection.delete(key); else myCollection.add(key);
+        _renderCollectionUI(m.name);
+      }
+      showErrorToast(apiErrorText(e));
+    }
+  });
+  _collectionInFlight.set(key, run);
+  await run;
 }
 
 function openCollectionModal() {
@@ -671,7 +702,7 @@ function renderAuthModal() {
     <div class="save-row">
       <div class="save-info">
         <div class="save-name">${s.n}</div>
-        <div class="save-meta">${s.f} • ${s.m.length} ${t('models_word')} • ${crewRepTotal(s)} / ${s.r} Rep • ${new Date((s.d || 0) * 86400000).toLocaleDateString()}</div>
+        <div class="save-meta">${s.f} • ${s.m.length} ${modelsWord(s.m.length)} • ${crewRepTotal(s)} / ${s.r} Rep • ${new Date((s.d || 0) * 86400000).toLocaleDateString()}</div>
       </div>
       <div class="save-actions">
         <button class="save-btn" onclick="loadSavedCrew(${i})">${t('load')}</button>

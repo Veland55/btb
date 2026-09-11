@@ -933,7 +933,10 @@ async function handleApi(req, res, url) {
     // Email при регистрации необязателен (можно указать позже в профиле) —
     // но если прислан, должен быть валидного формата
     const email = body.email ? String(body.email).trim() : null;
-    if (email != null && !validEmail(email)) return send(res, 400, { error: 'input' });
+    // Отдельный код (не 'input' — см. комментарий выше про name_format/
+    // pass_format): иначе клиент показывал "Введите имя пользователя и
+    // пароль" при верно заполненных обоих полях и только email с опечаткой.
+    if (email != null && !validEmail(email)) return send(res, 400, { error: 'email_format' });
     if (userNameTaken(name)) { authFailed(req); return send(res, 409, { error: 'exists' }); }
     const salt = crypto.randomBytes(8).toString('hex');
     const hash = await hashPassword(salt, pass); // ~40мс scrypt — окно для гонки с параллельной регистрацией того же имени
@@ -957,8 +960,13 @@ async function handleApi(req, res, url) {
     if (authThrottled(req)) return send(res, 429, { error: 'rate' });
     const body = await readBody(req);
     const name = normName(body.name), pass = body.pass;
+    // По name_lc, не по точному name: регистрация блокирует регистро-варианты
+    // одного имени как один аккаунт (userNameTaken ищет по name_lc) — вход
+    // должен находить тот же аккаунт независимо от регистра, иначе логин
+    // с другим регистром ника (тот же человек, тот же пароль) выглядел бы
+    // как обычный неверный пароль.
     const row = validName(name) && validPass(pass)
-      ? db.prepare('SELECT salt, hash, country, email FROM users WHERE name = ?').get(name) : null;
+      ? db.prepare('SELECT name, salt, hash, country, email FROM users WHERE name_lc = ?').get(name.toLowerCase()) : null;
     if (!row) { authFailed(req); return send(res, 401, { error: 'badcred' }); }
     // timingSafeEqual — сравнение хэшей без утечки по времени ответа
     const given = Buffer.from(await hashPassword(row.salt, pass), 'hex');
@@ -968,7 +976,8 @@ async function handleApi(req, res, url) {
       return send(res, 401, { error: 'badcred' });
     }
     authSucceeded(req);
-    return send(res, 200, { token: createSession(name), name, country: row.country || null, email: row.email || null });
+    // row.name — каноническая запись ника из БД, а не то, что ввёл пользователь
+    return send(res, 200, { token: createSession(row.name), name: row.name, country: row.country || null, email: row.email || null });
   }
 
   // --- Вход/регистрация через Telegram Mini App: initData подписан ботом,
@@ -1057,8 +1066,15 @@ async function handleApi(req, res, url) {
     }
     if (!validPass(newPass)) return send(res, 400, { error: 'pass_format' });
     const row = db.prepare('SELECT * FROM password_resets WHERE user = ?').get(name);
-    if (!row || row.created < Date.now() - RESET_CODE_TTL_MS || row.attempts >= RESET_MAX_ATTEMPTS) {
+    // Два разных кода: настоящий TTL-протух/нет запроса — 'reset_code_expired'
+    // (нужен новый код), исчерпанные попытки ввода — 'reset_too_many_attempts'
+    // (код тот же ещё жив, но уже заблокирован — раньше оба схлопывались в
+    // один и тот же "код истёк", хотя причина отказа разная).
+    if (!row || row.created < Date.now() - RESET_CODE_TTL_MS) {
       return send(res, 400, { error: 'reset_code_expired' });
+    }
+    if (row.attempts >= RESET_MAX_ATTEMPTS) {
+      return send(res, 400, { error: 'reset_too_many_attempts' });
     }
     const given = Buffer.from(hashResetCode(code), 'hex');
     const stored = Buffer.from(row.code_hash, 'hex');
@@ -1173,7 +1189,7 @@ async function handleApi(req, res, url) {
     }
     if ('email' in body) {
       const email = body.email ? String(body.email).trim() : null;
-      if (email != null && !validEmail(email)) return send(res, 400, { error: 'input' });
+      if (email != null && !validEmail(email)) return send(res, 400, { error: 'email_format' });
       db.prepare('UPDATE users SET email = ? WHERE name = ?').run(email, user);
     }
     return send(res, 200, { ok: true });
@@ -1188,7 +1204,11 @@ async function handleApi(req, res, url) {
     const given = Buffer.from(await hashPassword(row.salt, oldPass), 'hex');
     const stored = Buffer.from(row.hash, 'hex');
     if (given.length !== stored.length || !crypto.timingSafeEqual(given, stored)) {
-      return send(res, 401, { error: 'badcred' });
+      // Отдельный код от логина: пользователь уже аутентифицирован (this
+      // whole block требует user), утечки о существовании аккаунта тут нет —
+      // общий с /api/login 'badcred' давал сообщение про "неверное имя
+      // пользователя", хотя в форме смены пароля поля имени вообще нет.
+      return send(res, 401, { error: 'old_password_bad' });
     }
     const salt = crypto.randomBytes(8).toString('hex');
     db.prepare('UPDATE users SET salt = ?, hash = ? WHERE name = ?').run(salt, await hashPassword(salt, newPass), user);
@@ -1255,7 +1275,7 @@ async function handleApi(req, res, url) {
     if (typeof code !== 'string' || !validSave(roster)) return send(res, 400, { error: 'input' });
     const g = db.prepare('SELECT * FROM games WHERE code = ?').get(code.toUpperCase().trim());
     if (!g || g.created < Date.now() - GAME_TTL_MS) return send(res, 404, { error: 'notfound' });
-    if (g.host_user === user) return send(res, 400, { error: 'own_game' });
+    if (g.host_user === user) return send(res, 409, { error: 'own_game' });
     if (g.guest_user && g.guest_user !== user) return send(res, 409, { error: 'full' });
     db.prepare('UPDATE games SET guest_user = ?, guest_roster = ? WHERE code = ?')
       .run(user, JSON.stringify(roster), g.code);
@@ -1295,10 +1315,14 @@ async function handleApi(req, res, url) {
   // выше и подтягивает track себе, если trackUpdated новее того, что применял сам.
   const trackMatch = /^\/api\/games\/([A-Z0-9]{6})\/track$/i.exec(p);
   if (trackMatch && req.method === 'POST') {
-    const g = db.prepare('SELECT host_user, guest_user, created, track_updated FROM games WHERE code = ?')
+    const g = db.prepare('SELECT host_user, guest_user, created, track_updated, result FROM games WHERE code = ?')
       .get(trackMatch[1].toUpperCase());
     if (!g || g.created < Date.now() - GAME_TTL_MS) return send(res, 404, { error: 'notfound' });
     if (g.host_user !== user && g.guest_user !== user) return send(res, 403, { error: 'auth' });
+    // Партия с зафиксированным результатом закрыта для правок счётчиков —
+    // иначе после записи итога оппонент мог молча дальше крутить WIL/END/
+    // KD/KO, и это тихо сохранялось поверх уже показанного обоим результата
+    if (g.result) return send(res, 409, { error: 'game_finished' });
     const { track } = await readBody(req);
     if (track == null || typeof track !== 'object' || JSON.stringify(track).length > 20000) {
       return send(res, 400, { error: 'input' });
