@@ -19,7 +19,18 @@
   --radius-sm: 8px;
   --radius-md: 12px;
 }
-body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:100vh; -webkit-tap-highlight-color:transparent; }
+body { background:#000; color:#fff; font-family:'Oswald',sans-serif; min-height:100vh; min-height:100dvh; -webkit-tap-highlight-color:transparent; }
+
+/* Экран главного меню всегда целиком помещается в экран (.main-menu сам на
+   100dvh + overflow:hidden) — но на мобильных body всё равно мог оказаться
+   выше видимой области (100vh на телефоне — это "большая" высота вьюпорта,
+   как будто адресная строка уже свёрнута, а не то, что видно сейчас), и
+   страницу можно было прокрутить, хотя прокручивать нечего. Жёстко запираем
+   body только пока показано главное меню (см. showSection() в script.js) —
+   более надёжно, чем подбор единиц высоты, и не трогает остальные разделы:
+   у них есть свои собственные прокручиваемые области (списки моделей,
+   таблицы турниров и т.п.), которым body-скролл не нужен и не мешает. */
+body.on-main-menu { overflow:hidden; position:fixed; inset:0; width:100%; }
 
 /* Кнопки гасятся через disabled на время запроса (authRun/gameRun/tnRun и
    т.п. — защита от двойного тапа на медленной сети), но у них у всех своя

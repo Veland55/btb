@@ -1217,6 +1217,10 @@ function showSection(id) {
     const el = $(sec);
     if (el) el.style.display = sec !== id ? 'none' : (sec === 'mainMenu' ? 'flex' : 'block');
   });
+  // body.on-main-menu запирает прокрутку страницы (см. style.css) — нужна
+  // только на самом главном меню, у остальных разделов есть свои
+  // прокручиваемые области
+  document.body.classList.toggle('on-main-menu', id === 'mainMenu');
 }
 // Сравнение по _id (индекс в models), а не по имени: шесть имён в data.js
 // дублируются с разными характеристиками, и сравнение по имени путало их
