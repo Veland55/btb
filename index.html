@@ -31,12 +31,12 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.15">
+  <link rel="stylesheet" href="style.css?v=3.16">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
   <script src="data.js?v=3.10" defer></script>
   <script src="data-traits.js?v=2.2" defer></script>
-  <script src="script.js?v=1.38" defer></script>
-  <script src="auth.js?v=2.7" defer></script>
+  <script src="script.js?v=1.39" defer></script>
+  <script src="auth.js?v=2.8" defer></script>
   <script src="data-cards.js?v=1.5" defer></script>
   <script src="cards.js?v=1.8" defer></script>
   <script src="stats.js?v=1.9" defer></script>
@@ -266,6 +266,12 @@
                data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
                data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
                oninput="builderSearchQuery=this.value; renderMiniCardsBuilder();">
+        <!-- Только для авторизованных — гостю нечего фильтровать (см. updateBuilderCollectionFilterVisibility) -->
+        <label class="collection-filter-label" id="builderCollectionFilterWrap" style="display:none;">
+          <input type="checkbox" id="builderCollectionFilterInput"
+                 onchange="builderCollectionFilterOn=this.checked; renderMiniCardsBuilder();">
+          <span data-i18n="collection_filter_label">Только модели из моей коллекции</span>
+        </label>
       </div>
 
       <!-- Список моделей + боковая панель просмотра карточки (панель видна только на ПК/планшетах) -->
@@ -379,6 +385,17 @@
         <button type="button" class="trait-popup-close" onclick="closeAuthModal()" data-i18n-aria-label="close_modal" aria-label="Закрыть">×</button>
       </div>
       <div class="trait-popup-body" id="authModalBody"></div>
+    </div>
+  </div>
+
+  <!-- МОЯ КОЛЛЕКЦИЯ: список моделей, отмеченных в разделе "Карточки" (см. auth.js) -->
+  <div id="collectionModal" class="auth-modal">
+    <div class="trait-popup-content auth-modal-content">
+      <div class="trait-popup-header">
+        <strong data-i18n="my_collection">МОЯ КОЛЛЕКЦИЯ</strong>
+        <button type="button" class="trait-popup-close" onclick="closeCollectionModal()" data-i18n-aria-label="close_modal" aria-label="Закрыть">×</button>
+      </div>
+      <div class="trait-popup-body" id="collectionModalBody"></div>
     </div>
   </div>
 

@@ -148,6 +148,17 @@ html.tg-app {
 .remove-btn:hover { background:var(--danger-hover); }
 .mini-card-corner .count { background:rgba(0,0,0,0.7); color:#fff; font-size:12px; font-weight:bold; padding:3px 8px; border-radius:12px; min-width:20px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.78); text-shadow:1px 1px 2px #000; pointer-events:none; }
 
+/* Звезда "в моей коллекции" — раздел "Карточки" (просмотр, не билдер), только
+   для авторизованных (см. renderMiniCardHTML/isInCollection). Отдельный вид
+   от add-btn/remove-btn — это не набор отряда, а личная пометка. */
+.collection-btn {
+  width:40px; height:40px; border-radius:50%; font-size:20px; border:none; cursor:pointer;
+  background:rgba(0,0,0,.65); color:#ffd166; box-shadow:0 3px 10px rgba(0,0,0,.6);
+  transition:all .2s; flex-shrink:0; line-height:1;
+}
+.collection-btn:hover { background:rgba(0,0,0,.85); transform:scale(1.08); }
+.collection-btn.in-collection { color:#ffd166; background:rgba(233,69,96,.25); }
+
 .mini-photo-wrap { position:relative; flex-shrink:0; }
 .mini-photo-wrap img { width:74px; height:94px; object-fit:cover; border-radius:10px; display:block; }
 .boss-crown { position:absolute; top:-8px; left:-8px; font-size:22px; filter:drop-shadow(0 2px 4px rgba(0,0,0,.8)); }
@@ -551,6 +562,10 @@ body.left-handed .trait-popup-close { right:auto; left:16px; }
 .save-btn:hover { background:#ff3366; }
 .save-btn-del { background:#333; padding:7px 10px; }
 .save-btn-del:hover { background:var(--danger); }
+.auth-collection-row { margin-bottom:14px; }
+.auth-collection-row .save-btn { width:100%; padding:10px; font-size:13px; }
+.collection-row-img { width:36px; height:46px; object-fit:cover; border-radius:6px; flex-shrink:0; }
+.save-info-collection { display:flex; align-items:center; gap:10px; }
 
 /* РАЗДЕЛ ИГРА (game.js): обмен ростерами по коду */
 .game-content { padding:16px 12px 80px; max-width:1100px; margin:0 auto; }
@@ -572,6 +587,11 @@ body.left-handed .trait-popup-close { right:auto; left:16px; }
 }
 .model-search-input::placeholder { color:#777; }
 .model-search-input:focus { outline:none; border-color:var(--danger); }
+.collection-filter-label {
+  display:flex; align-items:center; gap:8px; color:#ccc; font-size:13px;
+  margin-top:8px; cursor:pointer; user-select:none;
+}
+.collection-filter-label input[type="checkbox"] { width:18px; height:18px; accent-color:#e94560; cursor:pointer; }
 .game-waiting { color:var(--gold); font-size:14px; }
 .game-select, .game-code-input {
   background:#1e1e1e; color:#fff; border:2px solid #333; border-radius:12px; padding:11px 14px;

@@ -28,6 +28,7 @@ let currentUserCountry = null; // ISO-код страны из профиля (�
 let currentUserEmail = null;   // email из профиля (нужен для восстановления пароля)
 let authToken = localStorage.getItem(AUTH_TOKEN_KEY) || null;
 let mySaves = [];        // локальный кэш сохранений текущего пользователя
+let myCollection = new Set(); // локальный кэш ключей моделей личной коллекции (см. modelCollectionKey)
 
 // Экран модалки для незалогиненного пользователя: обычный вход/регистрация
 // или один из двух шагов восстановления пароля по коду с почты
@@ -88,6 +89,7 @@ function apiErrorText(e) {
     name_format: 'auth_bad_name_format',
     pass_format: 'auth_bad_pass_format',
     limit: 'saves_limit',
+    collection_limit: 'collection_limit',
     auth: 'login_required',
     notfound: 'game_not_found',
     full: 'game_full',
@@ -124,6 +126,7 @@ async function authRegister(name, pass, email) {
   applyAuthSession(data);
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   mySaves = [];
+  myCollection = new Set();
 }
 
 async function authLogin(name, pass) {
@@ -132,6 +135,7 @@ async function authLogin(name, pass) {
   applyAuthSession(data);
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
   await refreshSaves();
+  await refreshCollection();
 }
 
 // Вход через Telegram Mini App: initData подписан ботом на сервере, здесь
@@ -145,6 +149,7 @@ async function telegramAuth() {
     applyAuthSession(data);
     localStorage.setItem(AUTH_TOKEN_KEY, authToken);
     await refreshSaves();
+    await refreshCollection();
     return true;
   } catch (e) {
     return false;
@@ -158,6 +163,7 @@ function authLogout() {
   currentUserCountry = null;
   currentUserEmail = null;
   mySaves = [];
+  myCollection = new Set();
   localStorage.removeItem(AUTH_TOKEN_KEY);
   // Раздел турниров держит свой поллинг и кэш чужих ростеров — без сброса
   // он продолжал бы опрашивать сервер мёртвым токеном и показывать данные
@@ -165,6 +171,13 @@ function authLogout() {
   if (typeof resetTournamentsState === 'function') resetTournamentsState();
   if (typeof currentMode !== 'undefined' && currentMode === 'tournaments'
       && typeof renderTournaments === 'function') renderTournaments();
+  // Кнопка коллекции на карточках скрыта для гостя — без перерисовки она
+  // осталась бы видна до следующего захода в раздел "Карточки"
+  if (typeof currentMode !== 'undefined' && currentMode === 'cards'
+      && typeof renderMiniCardsView === 'function') renderMiniCardsView();
+  if (typeof updateBuilderCollectionFilterVisibility === 'function') updateBuilderCollectionFilterVisibility();
+  if (typeof currentMode !== 'undefined' && currentMode === 'builder'
+      && typeof renderMiniCardsBuilder === 'function') renderMiniCardsBuilder();
   renderAuthModal();
 }
 
@@ -275,6 +288,90 @@ async function refreshSaves() {
 
 async function pushSaves() {
   await api('/api/saves', 'PUT', { saves: mySaves });
+}
+
+// ======================== КОЛЛЕКЦИЯ МОДЕЛЕЙ ========================
+// Личная отметка "эта модель у меня есть" (раздел "Карточки" → звёздочка на
+// карточке, посмотреть/убрать список — в профиле). Хранится на сервере по
+// пользователю, как и сохранения отрядов.
+//
+// Ключ модели для сервера: имени недостаточно — 18 моделей в data.js делят
+// имя с другим вариантом (разная фракция/стоимость/арт, например два разных
+// "Batman" или "The Riddler") — сервер видел бы их как одну и ту же запись.
+// Комбинация всех этих полей уникальна для каждой из 673 моделей на момент
+// написания (проверено скриптом по всему data.js); сервер ключ не разбирает,
+// хранит как непрозрачную строку.
+function modelCollectionKey(m) {
+  return [m.name, (m.faction || []).slice().sort().join(','), m.rep, m.funding, m.img].join('::');
+}
+
+function isInCollection(m) {
+  return myCollection.has(modelCollectionKey(m));
+}
+
+async function refreshCollection() {
+  if (!currentUser) { myCollection = new Set(); return; }
+  myCollection = new Set((await api('/api/collection')).modelIds || []);
+}
+
+// Оптимистичное переключение: сразу меняем локальный Set и перерисовываем
+// карточку, не дожидаясь ответа сервера (иначе на среднем мобильном интернете
+// звёздочка "зависает" на четверть секунды при каждом клике) — при отказе
+// сервера откатываем и показываем тост, как остальные профильные действия.
+async function toggleCollection(m) {
+  const key = modelCollectionKey(m);
+  const wasIn = myCollection.has(key);
+  if (wasIn) myCollection.delete(key); else myCollection.add(key);
+  if (typeof refreshBuilderCardPanel === 'function') refreshBuilderCardPanel(m.name);
+  if (typeof renderMiniCardsView === 'function' && currentMode === 'cards') renderMiniCardsView();
+  if (typeof renderCollectionModal === 'function') renderCollectionModal();
+  try {
+    if (wasIn) await api('/api/collection', 'DELETE', { modelId: key });
+    else await api('/api/collection', 'POST', { modelId: key });
+  } catch (e) {
+    if (wasIn) myCollection.add(key); else myCollection.delete(key);
+    if (typeof refreshBuilderCardPanel === 'function') refreshBuilderCardPanel(m.name);
+    if (typeof renderMiniCardsView === 'function' && currentMode === 'cards') renderMiniCardsView();
+    if (typeof renderCollectionModal === 'function') renderCollectionModal();
+    showErrorToast(apiErrorText(e));
+  }
+}
+
+function openCollectionModal() {
+  if (typeof renderCollectionModal === 'function') renderCollectionModal();
+  const modal = document.getElementById('collectionModal');
+  if (modal) modal.classList.add('active');
+}
+function closeCollectionModal() {
+  const modal = document.getElementById('collectionModal');
+  if (modal) modal.classList.remove('active');
+}
+
+// Список моделей коллекции для показа в модалке — сопоставляем сохранённые
+// ключи с актуальными объектами models (см. modelCollectionKey); ключ, для
+// которого модель не нашлась (данные обновились и модель убрали/переименовали),
+// молча пропускаем — это не ошибка, просто устаревшая запись.
+function collectionModels() {
+  if (typeof models === 'undefined') return [];
+  const byKey = new Map(models.map(m => [modelCollectionKey(m), m]));
+  return Array.from(myCollection).map(k => byKey.get(k)).filter(Boolean)
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function renderCollectionModal() {
+  const box = document.getElementById('collectionModalBody');
+  if (!box) return;
+  const list = collectionModels();
+  box.innerHTML = list.length ? list.map(m => `
+    <div class="save-row">
+      <div class="save-info save-info-collection">
+        <img src="${m.img}" alt="${escHtml(m.name)}" class="collection-row-img" loading="lazy" onerror="this.src='img/no.webp'">
+        <div class="save-name">${escHtml(m.name)}</div>
+      </div>
+      <div class="save-actions">
+        <button class="save-btn save-btn-del" onclick="toggleCollection(models[${m._id}])">✕</button>
+      </div>
+    </div>`).join('') : `<p class="auth-note">${t('no_collection')}</p>`;
 }
 
 // s.r хранит ЛИМИТ Rep, который был выставлен при сохранении (нужен, чтобы
@@ -588,6 +685,9 @@ function renderAuthModal() {
       <span class="auth-slots">${mySaves.length} / ${MAX_SAVES}</span>
       <button class="save-btn" onclick="authLogout()">${t('logout')}</button>
     </div>
+    <div class="auth-collection-row">
+      <button class="save-btn" onclick="openCollectionModal()">⭐ ${t('my_collection')} (${myCollection.size})</button>
+    </div>
     <div class="auth-country-row">
       <span class="auth-country-label">${t('your_country')}</span>
       <select class="game-select auth-country-select" onchange="setUserCountry(this.value)">
@@ -632,6 +732,9 @@ async function authSubmit(isRegister) {
         await authLogin(name, pass);
       }
       renderAuthModal();
+      // Билдер мог быть открыт под модалкой профиля — чекбокс фильтра
+      // коллекции должен появиться сразу, не только при следующем выборе фракции
+      if (typeof updateBuilderCollectionFilterVisibility === 'function') updateBuilderCollectionFilterVisibility();
       if (pendingCrewSaveAfterAuth) {
         pendingCrewSaveAfterAuth = false;
         await saveCurrentCrew();
@@ -646,12 +749,21 @@ async function authSubmit(isRegister) {
 document.addEventListener('DOMContentLoaded', async () => {
   const modal = document.getElementById('authModal');
   if (modal) modal.onclick = e => { if (e.target === modal) closeAuthModal(); };
+  const collModal = document.getElementById('collectionModal');
+  if (collModal) collModal.onclick = e => { if (e.target === collModal) closeCollectionModal(); };
 
   if (authToken) {
     try {
       const me = await api('/api/me');
       applyAuthSession(me);
       await refreshSaves();
+      await refreshCollection();
+      // Раздел "Карточки" мог отрисоваться до того, как коллекция подгрузилась
+      // с сервера (async) — без этого звёздочки на карточках молча не
+      // появлялись до следующего действия, менявшего сетку
+      if (typeof currentMode !== 'undefined' && currentMode === 'cards'
+          && typeof renderMiniCardsView === 'function') renderMiniCardsView();
+      if (typeof updateBuilderCollectionFilterVisibility === 'function') updateBuilderCollectionFilterVisibility();
       return;
     } catch (e) {
       if (e.status === 401) { // токен протух

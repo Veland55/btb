@@ -31,6 +31,9 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || null;
 const TG_AUTH_DATE_TTL_MS = 24 * 3600 * 1000; // старше суток initData не принимаем
 
 const MAX_SAVES = 5;                            // лимит сохранений на пользователя
+// С запасом над текущими ~673 моделями в data.js — не тюнинг под точный
+// размер каталога, а просто потолок от намеренного злоупотребления запросами
+const MAX_COLLECTION = 2000;                    // лимит моделей в личной коллекции
 const MAX_BODY = 32 * 1024;                     // лимит тела запроса
 const MAX_SAVES_JSON = 20 * 1024;               // лимит суммарного размера сохранений
 const GAME_TTL_MS = 24 * 3600 * 1000;           // игры живут сутки
@@ -67,6 +70,18 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS saves (
     user TEXT PRIMARY KEY,
     data TEXT NOT NULL
+  );
+  -- Личная коллекция моделей (раздел "Карточки" → отметить понравившуюся
+  -- модель у себя, посмотреть/убрать в профиле). model_id — не имя модели
+  -- (некоторые имена в data.js встречаются дважды у разных вариантов с
+  -- разной стоимостью/фракцией), а составной ключ, который клиент считает
+  -- сам из полей модели (см. modelCollectionKey в auth.js) — сервер его не
+  -- разбирает, хранит как непрозрачную строку.
+  CREATE TABLE IF NOT EXISTS collection (
+    user     TEXT NOT NULL,
+    model_id TEXT NOT NULL,
+    added    INTEGER NOT NULL,
+    PRIMARY KEY (user, model_id)
   );
   CREATE TABLE IF NOT EXISTS sessions (
     token   TEXT PRIMARY KEY,
@@ -614,6 +629,13 @@ function validSavesArray(arr) {
   return Array.isArray(arr) && arr.length <= MAX_SAVES
     && JSON.stringify(arr).length <= MAX_SAVES_JSON
     && arr.every(validSave);
+}
+
+// modelId — непрозрачный ключ, который клиент считает из полей модели
+// (см. modelCollectionKey в auth.js); сервер только ограничивает разумной
+// длиной/символами, не разбирает содержимое
+function validModelId(v) {
+  return typeof v === 'string' && v.length > 0 && v.length <= 300 && !/[<>]/.test(v);
 }
 
 // Код игры/турнира: 6 символов без визуально похожих (0/O, 1/I/L).
@@ -1190,6 +1212,29 @@ async function handleApi(req, res, url) {
     if (saves.length && !validSavesArray(saves)) return send(res, 400, { error: 'input' });
     db.prepare('INSERT INTO saves (user, data) VALUES (?, ?) ON CONFLICT(user) DO UPDATE SET data = excluded.data')
       .run(user, JSON.stringify(saves));
+    return send(res, 200, { ok: true });
+  }
+
+  // --- Личная коллекция моделей (раздел "Карточки") ---
+  if (p === '/api/collection' && req.method === 'GET') {
+    const rows = db.prepare('SELECT model_id FROM collection WHERE user = ?').all(user);
+    return send(res, 200, { modelIds: rows.map(r => r.model_id) });
+  }
+
+  if (p === '/api/collection' && req.method === 'POST') {
+    const { modelId } = await readBody(req);
+    if (!validModelId(modelId)) return send(res, 400, { error: 'input' });
+    const { c } = db.prepare('SELECT COUNT(*) AS c FROM collection WHERE user = ?').get(user);
+    if (c >= MAX_COLLECTION) return send(res, 400, { error: 'collection_limit' });
+    db.prepare('INSERT OR IGNORE INTO collection (user, model_id, added) VALUES (?, ?, ?)')
+      .run(user, modelId, Date.now());
+    return send(res, 200, { ok: true });
+  }
+
+  if (p === '/api/collection' && req.method === 'DELETE') {
+    const { modelId } = await readBody(req);
+    if (!validModelId(modelId)) return send(res, 400, { error: 'input' });
+    db.prepare('DELETE FROM collection WHERE user = ? AND model_id = ?').run(user, modelId);
     return send(res, 200, { ok: true });
   }
 

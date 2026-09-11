@@ -15,6 +15,7 @@ let currentFaction = null; // Изменено: null по умолчанию (н
 // если пользователь вернётся с одного экрана на другой с разным контекстом
 let cardsSearchQuery = '';
 let builderSearchQuery = '';
+let builderCollectionFilterOn = false; // билдер: показывать только модели из личной коллекции (см. auth.js)
 function matchesModelSearch(model, query) {
   if (!query) return true;
   const q = query.trim().toLowerCase();
@@ -382,6 +383,12 @@ const translations = {
     saves_limit: "Достигнут лимит сохранений (5). Удалите одно из существующих.",
     no_saves: "Пока нет сохранённых отрядов",
     empty_crew_save: "Отряд пуст — нечего сохранять",
+    collection_add_title: "Добавить в коллекцию",
+    collection_remove_title: "Убрать из коллекции",
+    my_collection: "МОЯ КОЛЛЕКЦИЯ",
+    no_collection: "Пока нет моделей в коллекции — отмечайте их звёздочкой в разделе «Карточки»",
+    collection_limit: "Достигнут лимит коллекции",
+    collection_filter_label: "Только модели из моей коллекции",
     save_login_required: "Чтобы сохранить отряд, войдите или зарегистрируйтесь.",
     model_search_placeholder: "Поиск модели по имени…",
     cancel: "Отмена",
@@ -807,6 +814,12 @@ const translations = {
     saves_limit: "Save limit reached (5). Delete an existing save first.",
     no_saves: "No saved crews yet",
     empty_crew_save: "Crew is empty — nothing to save",
+    collection_add_title: "Add to collection",
+    collection_remove_title: "Remove from collection",
+    my_collection: "MY COLLECTION",
+    no_collection: "No models in your collection yet — star them in the \"Cards\" section",
+    collection_limit: "Collection limit reached",
+    collection_filter_label: "Only models from my collection",
     save_login_required: "Sign in or register to save a crew.",
     model_search_placeholder: "Search model by name…",
     cancel: "Cancel",
@@ -1596,6 +1609,21 @@ function showFactionRules() {
   showTraitPopup(t("crew_building_rules"), body);
 }
 
+// Чекбокс "только моя коллекция" виден только авторизованным (гостю нечего
+// фильтровать — коллекция всегда пуста) — вызывается при входе в билдер и
+// при смене состояния входа, пока билдер уже открыт (см. auth.js)
+function updateBuilderCollectionFilterVisibility() {
+  const wrap = $('builderCollectionFilterWrap');
+  if (!wrap) return;
+  const loggedIn = typeof currentUser !== 'undefined' && !!currentUser;
+  wrap.style.display = loggedIn ? 'flex' : 'none';
+  if (!loggedIn) {
+    builderCollectionFilterOn = false;
+    const cb = $('builderCollectionFilterInput');
+    if (cb) cb.checked = false;
+  }
+}
+
 function selectFaction(faction) {
   currentFaction = faction;
   $('factionSelect').style.display = 'none';
@@ -1604,6 +1632,7 @@ function selectFaction(faction) {
   builderSearchQuery = '';
   const builderSearchEl = $('builderSearchInput');
   if (builderSearchEl) builderSearchEl.value = '';
+  updateBuilderCollectionFilterVisibility();
   // Кнопка с правилами набора — видна только если у фракции есть особые правила
   $('factionRulesBtn').style.display = getFactionRulesLines(faction).length ? 'flex' : 'none';
   renderMiniCardsBuilder();
@@ -2081,7 +2110,10 @@ const renderRankIconsHTML = ranks => ranks.map(rank =>
 // Общая разметка мини-карточки для разделов "Карточки" и "Билдер":
 // фото слева, справа построчно — имя, ранг текстом, Rep/Funding, купленное снаряжение.
 // showButtons включает кнопку добавить/удалить в правом верхнем углу (только билдер).
-function renderMiniCardHTML(item, showButtons, showStats) {
+// showCollectionBtn включает звёздочку "моя коллекция" в том же углу (только
+// раздел "Карточки", showButtons там всегда false — конфликта нет) и только
+// для авторизованных: гостю попросту нечего сохранять на сервере.
+function renderMiniCardHTML(item, showButtons, showStats, showCollectionBtn) {
   // item.rankUsed — конкретный ранг, за который эту модель наняли в отряд
   // (ставится в hireModel при добавлении). Модель в каталоге (ещё не в
   // отряде) rankUsed не имеет — там честно показываем все возможные ранги
@@ -2114,10 +2146,13 @@ function renderMiniCardHTML(item, showButtons, showStats) {
     } else {
       cornerHTML = `<button class="${item.inCrew ? "remove-btn" : "add-btn"}" onclick="event.stopPropagation();addToCrew(models[${item._id}])">${item.inCrew ? "−" : "+"}</button>`;
     }
+  } else if (showCollectionBtn && typeof currentUser !== 'undefined' && currentUser) {
+    const inColl = typeof isInCollection === 'function' && isInCollection(item);
+    cornerHTML = `<button class="collection-btn${inColl ? ' in-collection' : ''}" title="${inColl ? t('collection_remove_title') : t('collection_add_title')}" onclick="event.stopPropagation();toggleCollection(models[${item._id}])">${inColl ? '★' : '☆'}</button>`;
   }
 
   return `
-${showButtons ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
+${cornerHTML ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 <div class="mini-photo-wrap">
   <img src="${item.img}" width="74" height="94" alt="${escHtml(item.name)}" loading="lazy" decoding="async" onerror="this.src='img/no.webp'">
   ${item.inCrew && BMG_BOSS && BMG_BOSS.name === item.name ? '<span class="boss-crown">👑</span>' : ''}
@@ -2256,7 +2291,7 @@ const renderMiniCardsView = debounce(() => {
     const div = document.createElement("div");
     div.className = `mini-card`;
     div.dataset.name = model.name;
-    div.innerHTML = renderMiniCardHTML({ ...model, inCrew: false, count: 0 }, false);
+    div.innerHTML = renderMiniCardHTML({ ...model, inCrew: false, count: 0 }, false, false, true);
     div.onclick = () => showFullCard(model);
     fragment.appendChild(div);
   });
@@ -2290,6 +2325,14 @@ const renderMiniCardsBuilder = debounce(() => {
   // уже нанят / не хватает бюджета / заняты все ранги.
   let filteredModels = getFactionEligibleModels(currentFaction).filter(m => !hasInCrew(m));
   filteredModels = filteredModels.filter(m => matchesModelSearch(m, builderSearchQuery));
+
+  // Опциональный фильтр "только моя коллекция" — сужает список найма, отряд
+  // уже в crew (renderArray выше) фильтром не трогаем: модель, набранную ДО
+  // включения фильтра, отряд не должен внезапно "терять" из вида.
+  if (builderCollectionFilterOn && typeof currentUser !== 'undefined' && currentUser
+      && typeof isInCollection === 'function') {
+    filteredModels = filteredModels.filter(isInCollection);
+  }
 
   // Скрываем модели, которые нельзя нанять из-за нехватки Rep и/или Funding —
   // в списке остаются только реально нанимаемые по бюджету модели. Без счётчика
