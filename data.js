@@ -8617,39 +8617,6 @@ const models = [
     ]
   },
   {
-    "name": "Chuckcles",
-    "realname": "Unknown",
-    "base": "30mm",
-    "rep": 23,
-    "funding": 200,
-	  "rank": ["Henchman"],
-    "faction": ["Joker"],
-    "img": "img/Chuckcles.webp",
-    "stats": {
-      "Attack": 2,
-      "Defense": 3,
-      "Strength": "5+",
-      "Movement": 8,
-      "Willpower": 5,
-      "Endurance": 5
-    },
-    "traits": [
-      "Backpack",
-      "Bank Robber",
-      "Bipolar (Mental Disorder)",
-      "Expendable"
-    ],
-    "weapons": [
-      {
-        "name": "SMG",
-        "damage": "🩸🩸",
-        "rof": 4,
-        "ammo": 1,
-        "traits": "Firearm / S. Range"
-      }
-    ]
-  },
-  {
     "name": "Blunderbuss Clown",
     "realname": "Unknown",
     "base": "30mm",
@@ -9282,37 +9249,6 @@ const models = [
         "rof": "-",
         "ammo": "-",
         "traits": "Gas / Poison / Reach (3)"
-      }
-    ]
-  },
-  {
-    "name": "Rastaclow",
-    "realname": "Unknown",
-    "base": "30mm",
-    "rep": 21,
-    "funding": 600,
-	  "rank": ["Henchman"],
-    "faction": ["Joker"],
-    "img": "img/Rastaclow.webp",
-    "stats": {
-      "Attack": 3,
-      "Defense": 2,
-      "Strength": "5+",
-      "Movement": 8,
-      "Willpower": 4,
-      "Endurance": 4
-    },
-    "traits": [
-      "Bloodthirsty (Mental Disorder)",
-      "Handyman"
-    ],
-    "weapons": [
-      {
-        "name": "Custom Rifle",
-        "damage": "🩸🩸🩸",
-        "rof": 3,
-        "ammo": 2,
-        "traits": "Accurate / Firearm"
       }
     ]
   },
