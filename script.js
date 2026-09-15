@@ -2287,6 +2287,22 @@ function getFactionEligibleModels(faction) {
     return true;
   });
 
+  // Court of Owls Crew / Amazon Lineage — та же проверка, что при самом
+  // найме (bmgCanAddModel), но раньше жила только там: модель, которую
+  // Босс с одним из этих трейтов не вправе нанять, всё равно попадала в
+  // список и кликалась, отклоняясь только алертом после клика — обратный
+  // случай того же расхождения между списком и наймом, что у hire-исключений
+  // ниже (там модель нельзя было даже увидеть, тут — наоборот, видно
+  // заведомо ненанимаемое).
+  if (BMG_BOSS && BMG_BOSS.traits) {
+    if (BMG_BOSS.traits.includes("Court of Owls Crew")) {
+      filteredModels = filteredModels.filter(m => getFactions(m).includes("Court of Owls"));
+    }
+    if (BMG_BOSS.traits.includes("Amazon Lineage")) {
+      filteredModels = filteredModels.filter(m => m.traits && m.traits.includes("Amazon"));
+    }
+  }
+
   // Модели, доступные ТОЛЬКО через один из hire-исключений (Criminal Bonds,
   // Possessed, Corrupt, Absolute Power, Vocational, Batman Lives) — та же
   // проверка, что при самом найме (bmgHireException), иначе такую модель
