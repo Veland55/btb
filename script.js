@@ -2287,12 +2287,24 @@ function getFactionEligibleModels(faction) {
     return true;
   });
 
-  // Batman Lives: Boss с этим трейтом открывает William Cobb вне обычной аффилиации
-  if (BMG_BOSS && BMG_BOSS.traits && BMG_BOSS.traits.includes("Batman Lives")) {
-    const williamCobb = models.find(m => modelMatchesCharacter(m, "William Cobb"));
-    if (williamCobb && !filteredModels.some(m => sameModel(m, williamCobb))) {
-      filteredModels.push(williamCobb);
-    }
+  // Модели, доступные ТОЛЬКО через один из hire-исключений (Criminal Bonds,
+  // Possessed, Corrupt, Absolute Power, Vocational, Batman Lives) — та же
+  // проверка, что при самом найме (bmgHireException), иначе такую модель
+  // отсеивал обычный фильтр по аффилиации выше и её нечем было нанять: сама
+  // проверка при найме уже умела её принять, но кликнуть было не на что.
+  if (BMG_BOSS) {
+    const alreadyIncluded = new Set(filteredModels.map(m => m._id));
+    models.forEach(m => {
+      if (alreadyIncluded.has(m._id)) return;
+      if (m.eternal && !showEternal) return;
+      if (isUnrecruitable(m)) return;
+      if (!checkModelDependency(m)) return;
+      if (checkAversionHidden(m)) return;
+      // "Henchman": все текущие правила с ограничением по рангу требуют
+      // именно его, а Vocational/Batman Lives/Affinity ранг не проверяют —
+      // им это значение безразлично (см. bmgHireException).
+      if (bmgHireException(m, "Henchman")) filteredModels.push(m);
+    });
   }
 
   {
@@ -3061,6 +3073,69 @@ function hasFreeRankSlot(model) {
   return getHireableRanks(model).some(r => !(r in rankFull) || !rankFull[r]);
 }
 
+// Особые трейты, разрешающие найм модели вне обычной аффилиации Босса —
+// общая логика и для СПИСКА найма (getFactionEligibleModels), и для самого
+// найма (bmgCanAddModel). Раньше проверка была только при найме: модель,
+// доступная ИСКЛЮЧИТЕЛЬНО через одно из этих правил (Criminal Bonds — The
+// Penguin (Crime Lord Rising), Carmine Falcone, Warden Sharp; Possessed;
+// Corrupt; Absolute Power; Vocational), никогда не появлялась в списке —
+// нанять её было физически невозможно, хотя сама проверка при найме была
+// написана верно и сработала бы, если бы до неё вообще дошли.
+//
+// `rank` — ранг, за который нанимают: при найме это то, что выбрал игрок,
+// при построении списка (модель ещё не нанята) сюда передают "Henchman" —
+// все текущие правила с ограничением по рангу требуют именно его, а
+// Vocational/Batman Lives/Affinity ранг вообще не проверяют, так что для
+// них любое переданное значение равнозначно.
+function bmgHireException(model, rank) {
+  if (!BMG_BOSS) return null;
+  const bossTraits = BMG_BOSS.traits || [];
+  const modelFactions = getFactions(model);
+
+  if (rank === "Henchman" && bossTraits.includes("Possessed") &&
+      !model.traits.includes("Bot") && !model.traits.includes("Cybernetic") &&
+      crew.filter(m => m.hireException === "Possessed").length < 3) {
+    return "Possessed"; // до 3 Henchman любой аффилиации, если Босс — Possessed
+  }
+  if (rank === "Henchman" &&
+      crew.some(cm => cm.traits && cm.traits.includes("Corrupt")) &&
+      model.traits.includes("Cop") &&
+      crew.filter(m => m.hireException === "Corrupt").length < 3) {
+    // Corrupt: "If this model is included your crew..." — носитель может быть любым членом отряда
+    return "Corrupt"; // до 3 Henchman с трейтом Cop
+  }
+  if (rank === "Henchman" && bossTraits.includes("Absolute Power") &&
+      model.traits.includes("Cop")) {
+    // Absolute Power (Lex Luthor): "If this model is your crew's Boss, you can hire models
+    // with Rank Henchman with the Cop trait, regardless of their Affiliation" — без лимита
+    return "Absolute Power";
+  }
+  if (rank === "Henchman" &&
+      crew.some(cm => cm.traits && cm.traits.includes("Criminal Bonds")) &&
+      modelFactions.includes("Organized Crime") && model.traits.includes("Criminal") &&
+      crew.filter(m => m.hireException === "Criminal Bonds").length < 3) {
+    // Criminal Bonds: "If this model is included in your crew..." — носитель любой член отряда
+    return "Criminal Bonds"; // до 3 Henchman Organized Crime с трейтом Criminal
+  }
+  if (bossTraits.includes("Batman Lives") && modelMatchesCharacter(model, "William Cobb")) {
+    // Batman Lives: "Позволяет нанять William Cobb ... без учёта аффилиации".
+    return "Batman Lives";
+  }
+  if (model.traits.includes("Vocational") && crew.length &&
+      crew.every(m => m.traits.includes("Cop"))) {
+    // crew.length: Array.every на пустом отряде истинно, и правило срабатывало впустую
+    return "Vocational"; // допустимо, если у всех в отряде есть трейт Cop
+  }
+  // Affinity (X): "may be hired ... even if they would not ordinarily be
+  // permitted to join that crew".
+  const affinity = model.traits.filter(tr => /^Affinity \(.+\)$/.test(tr));
+  for (const tr of affinity) {
+    const target = tr.slice("Affinity (".length, -1).trim();
+    if (crew.some(cm => modelMatchesCharacter(cm, target))) return "Affinity";
+  }
+  return null;
+}
+
 function bmgCanAddModel(model) {
   // Рассчитываем общую Rep и Funding с учетом оборудования
   let totalRep = getCrewTotalRep() + (model.rep || 0);
@@ -3156,51 +3231,9 @@ function bmgCanAddModel(model) {
     }
 
     if (!passesAffiliation) {
-      // Специальные трейты, разрешающие найм вне аффилиации Босса (с лимитом по числу таких моделей)
-      let hireException = null;
-      if (rank === "Henchman" && bossTraits.includes("Possessed") &&
-          !model.traits.includes("Bot") && !model.traits.includes("Cybernetic") &&
-          crew.filter(m => m.hireException === "Possessed").length < 3) {
-        hireException = "Possessed"; // до 3 Henchman любой аффилиации, если Босс — Possessed
-      } else if (rank === "Henchman" &&
-          crew.some(cm => cm.traits && cm.traits.includes("Corrupt")) &&
-          model.traits.includes("Cop") &&
-          crew.filter(m => m.hireException === "Corrupt").length < 3) {
-        // Corrupt: "If this model is included your crew..." — носитель может быть любым членом отряда
-        hireException = "Corrupt"; // до 3 Henchman с трейтом Cop
-      } else if (rank === "Henchman" && bossTraits.includes("Absolute Power") &&
-          model.traits.includes("Cop")) {
-        // Absolute Power (Lex Luthor): "If this model is your crew's Boss, you can hire models
-        // with Rank Henchman with the Cop trait, regardless of their Affiliation" — без лимита
-        hireException = "Absolute Power";
-      } else if (rank === "Henchman" &&
-          crew.some(cm => cm.traits && cm.traits.includes("Criminal Bonds")) &&
-          modelFactions.includes("Organized Crime") && model.traits.includes("Criminal") &&
-          crew.filter(m => m.hireException === "Criminal Bonds").length < 3) {
-        // Criminal Bonds: "If this model is included in your crew..." — носитель любой член отряда
-        hireException = "Criminal Bonds"; // до 3 Henchman Organized Crime с трейтом Criminal
-      } else if (bossTraits.includes("Batman Lives") && modelMatchesCharacter(model, "William Cobb")) {
-        // Batman Lives: "Позволяет нанять William Cobb ... без учёта аффилиации".
-        // Билдер уже подмешивал William Cobb (The Talon) в список найма для
-        // такого Босса (см. выше в renderMiniCardsBuilder), но сам найм здесь
-        // всё равно отклонялся обычной проверкой аффилиации — из списка
-        // модель было видно, но нанять нельзя было ни при каком раскладе.
-        hireException = "Batman Lives";
-      } else if (model.traits.includes("Vocational") && crew.length &&
-          crew.every(m => m.traits.includes("Cop"))) {
-        // crew.length: Array.every на пустом отряде истинно, и правило срабатывало впустую
-        hireException = "Vocational"; // допустимо, если у всех в отряде есть трейт Cop
-      } else {
-        // Affinity (X): "may be hired ... even if they would not ordinarily be
-        // permitted to join that crew". Имя цели раньше вычислялось и
-        // выбрасывалось, поэтому 8 моделей с Affinity нельзя было нанять вовсе.
-        const affinity = model.traits.filter(tr => /^Affinity \(.+\)$/.test(tr));
-        for (const tr of affinity) {
-          const target = tr.slice("Affinity (".length, -1).trim();
-          if (crew.some(cm => modelMatchesCharacter(cm, target))) { hireException = "Affinity"; break; }
-        }
-      }
-
+      // Специальные трейты, разрешающие найм вне аффилиации Босса — общая
+      // логика со списком найма, см. bmgHireException.
+      const hireException = bmgHireException(model, rank);
       if (hireException) {
         model.hireException = hireException;
       } else {
