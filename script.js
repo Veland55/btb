@@ -288,6 +288,7 @@ const translations = {
     mercenary_requires_bane: "Эта модель может быть нанята в League of Shadows только если в отряде есть модель Bane",
     animal_no_equipment: "Модели с трейтом Animal не могут покупать оборудование!",
     fully_equipped_no_equipment: "Модель с трейтом Fully Equipped не может покупать оборудование!",
+    dots_suit_no_equipment: "Модель с трейтом Dots Suit не может покупать оборудование!",
     limited_equipment_max_reached: "Модель с трейтом Limited Equipment уже достигла лимита в 1 единицу оборудования!",
     export_empty_roster: "Отряд пуст! Добавьте модели перед экспортом.",
     popup_blocked: "Браузер заблокировал всплывающее окно — разрешите его для экспорта в PDF",
@@ -723,6 +724,7 @@ const translations = {
     mercenary_requires_bane: "This model can only be recruited in a League of Shadows crew if Bane is also included",
     animal_no_equipment: "Models with Animal trait cannot purchase equipment!",
     fully_equipped_no_equipment: "Model with Fully Equipped trait cannot purchase any equipment!",
+    dots_suit_no_equipment: "Model with Dots Suit trait cannot purchase any equipment!",
     limited_equipment_max_reached: "Model with Limited Equipment trait has already reached the limit of 1 equipment!",
     export_empty_roster: "Crew is empty! Add models before exporting.",
     popup_blocked: "The browser blocked the pop-up window — allow it to export to PDF",
@@ -1427,6 +1429,45 @@ function canHireInFaction(model, faction) {
 }
 
 // ======================== ПРОВЕРКА ЗАВИСИМОСТЕЙ МОДЕЛЕЙ ========================
+// Aversion(X) модели m — и текстом трейта ("Aversion (X)" в traits), и
+// таблицей modelAversionRules (заведена отдельно для моделей, где имя X в
+// тексте расходится с полем name/realname в data.js).
+function aversionTargetsOf(m) {
+  const fromText = (m.traits || [])
+    .map(tr => tr.match(/^Aversion \((.+)\)$/))
+    .filter(Boolean)
+    .map(mm => mm[1]);
+  const fromTable = window.modelAversionRules?.[m.name] || [];
+  return [...fromText, ...fromTable];
+}
+
+// Есть ли конфликт Aversion между кандидатом на найм `model` и уже нанятыми
+// — в обе стороны: либо сам `model` несёт Aversion(X) и X уже в отряде,
+// либо какая-то модель в отряде несёт Aversion(model). Возвращает имя
+// конфликтующей модели отряда или null.
+//
+// Раньше обратное направление (носитель Aversion уже в отряде, цель
+// нанимается следом) проверялось ТОЛЬКО по таблице modelAversionRules
+// (8 моделей) — для моделей, у которых Aversion(X) записан только в тексте
+// трейта (например, второй персонаж несёт Aversion(X) как часть описания,
+// а не отдельной записью в таблице), этот порядок найма не проверялся
+// вообще: можно было собрать отряд с двумя по правилам несовместимыми
+// персонажами, просто наняв их в другом порядке.
+function findAversionConflict(model) {
+  for (const target of aversionTargetsOf(model)) {
+    const hit = crew.find(m => modelMatchesCharacter(m, target) || getFactions(m).includes(target));
+    if (hit) return hit.name;
+  }
+  for (const crewModel of crew) {
+    for (const target of aversionTargetsOf(crewModel)) {
+      if (modelMatchesCharacter(model, target) || getFactions(model).includes(target)) {
+        return crewModel.name;
+      }
+    }
+  }
+  return null;
+}
+
 // Возвращает true, если зависимость модели выполнена (требуемая модель есть в отряде)
 // Также проверяет правила Aversion — если в отряде есть модель из списка Aversion, возвращает false
 function checkModelDependency(model) {
@@ -1449,14 +1490,9 @@ function checkModelDependency(model) {
     }
   }
 
-  // Проверяем правила Aversion
-  const aversionList = window.modelAversionRules?.[model.name];
-  if (aversionList && Array.isArray(aversionList)) {
-    // Если в отряде есть хотя бы одна модель из списка Aversion, эта модель не может быть добавлена.
-    // Сопоставляем через modelMatchesCharacter, чтобы "Harley Quinn" покрывала все версии персонажа
-    if (crew.some(m => aversionList.some(a => modelMatchesCharacter(m, a)))) {
-      return false;
-    }
+  // Проверяем правила Aversion — обе стороны (см. findAversionConflict)
+  if (findAversionConflict(model)) {
+    return false;
   }
 
   // Проверяем трейты модели, которые могут иметь зависимости
@@ -1516,15 +1552,7 @@ function getUnmetDependency(model) {
 // Проверяет, должна ли модель быть скрыта из-за правил Aversion
 // Возвращает true, если модель должна быть скрыта (в отряде есть модель, для которой эта модель в списке Aversion)
 function checkAversionHidden(model) {
-  // Проверяем каждую модель в отряде: есть ли текущая модель в её списке Aversion
-  // (через modelMatchesCharacter — "Harley Quinn" покрывает все версии персонажа)
-  for (const crewModel of crew) {
-    const aversionList = window.modelAversionRules?.[crewModel.name];
-    if (aversionList && Array.isArray(aversionList) && aversionList.some(a => modelMatchesCharacter(model, a))) {
-      return true; // Эта модель должна быть скрыта
-    }
-  }
-  return false;
+  return !!findAversionConflict(model);
 }
 
 // Трейты, помечающие модель как недоступную для прямого найма (только служебное появление
@@ -1800,6 +1828,21 @@ function addModelWithRank(model, chosenRank) {
     if (swarmModel) {
       crew.unshift({ ...swarmModel, rankUsed: "Henchman", uniqueId: Date.now() + Math.random(), equipment: [] });
     }
+  }
+
+  // Dollotrons: "When you recruit Professor Pyg, you must also recruit three
+  // Dollotron models, at no additional Reputation cost." Dollotron 1/2/3 не
+  // делят с Pyg общий трейт (в отличие от Three Jokers) — находим их по
+  // имени. В data.js у них уже rep:0/funding:0, отдельная проверка бюджета
+  // заранее (как у Three Jokers) не нужна.
+  if (cloned.traits.includes("Dollotrons")) {
+    ["Dollotron 1", "Dollotron 2", "Dollotron 3"].forEach(name => {
+      if (crew.some(c => c.name === name)) return;
+      const dollotron = models.find(m => m.name === name);
+      if (dollotron) {
+        crew.push({ ...dollotron, rankUsed: "Henchman", uniqueId: Date.now() + Math.random(), equipment: [] });
+      }
+    });
   }
 
   // Three Jokers: "When you recruit this model you must also recruit any other models that share this trait."
@@ -2300,6 +2343,45 @@ function getFactionEligibleModels(faction) {
     }
     if (BMG_BOSS.traits.includes("Amazon Lineage")) {
       filteredModels = filteredModels.filter(m => m.traits && m.traits.includes("Amazon"));
+    }
+  }
+
+  // Та же пара "список / момент найма" ещё для пяти правил, обнаруженных
+  // тем же аудитом: bmgCanAddModel их уже верно проверял, но список — нет,
+  // и заведомо ненанимаемая модель оставалась видна и кликабельна.
+  if (currentFaction === "Cults" && BMG_BOSS) {
+    const requiredCultistTrait = BMG_BOSS.name === "Deacon Blackfire" ? "Blackfire Cultist"
+      : BMG_BOSS.name === "Kobra" ? "Kobra Cultist" : null;
+    if (requiredCultistTrait) {
+      filteredModels = filteredModels.filter(m =>
+        m.name === BMG_BOSS.name || (m.traits && m.traits.includes(requiredCultistTrait)));
+    }
+  }
+  if (currentFaction === "League of Shadows") {
+    // Mercenary: "You can only recruit this model in a League of Assassins
+    // crew if a model with Name: Bane is also included in the crew."
+    const hasBane = crew.some(m => modelMatchesCharacter(m, "Bane"));
+    if (!hasBane) {
+      filteredModels = filteredModels.filter(m => !(m.traits && m.traits.includes("Mercenary")));
+    }
+  }
+  {
+    // My Idol!: "...only be recruited if a model with the Alias: Zur-En-Arrh
+    // Batman is part of the crew."
+    const hasZurEnArrh = crew.some(m => m.name.includes("Zur-En-Arrh") || (m.realname && m.realname.includes("Zur-En-Arrh")));
+    if (!hasZurEnArrh) {
+      filteredModels = filteredModels.filter(m => !(m.traits && m.traits.includes("My Idol!")));
+    }
+    // Meet Goliath!: "...only be recruited in a crew containing a model
+    // (Name: Damian Wayne)."
+    const hasDamianWayne = crew.some(m => modelMatchesCharacter(m, "Damian Wayne"));
+    if (!hasDamianWayne) {
+      filteredModels = filteredModels.filter(m => !(m.traits && m.traits.includes("Meet Goliath!")));
+    }
+    // The Sidekick: "...only be hired if Batman (Modern Age) is leading the crew."
+    const hasModernAgeBoss = BMG_BOSS && BMG_BOSS.rankUsed === "Leader" && BMG_BOSS.name === "Batman (Modern Age)";
+    if (!hasModernAgeBoss) {
+      filteredModels = filteredModels.filter(m => !(m.traits && m.traits.includes("The Sidekick")));
     }
   }
 
@@ -3287,9 +3369,16 @@ function bmgCanAddModel(model) {
     }
   }
 
-  // Проверка уникальности имени (realname)
+  // Проверка уникальности имени (realname) — Minion (X)/Horde специально
+  // разрешают несколько копий "regardless of its Name", поэтому их эта
+  // проверка не должна касаться вовсе. Раньше исключение было только для
+  // realname === "Unknown" — у большинства миньонов-мооков он и правда
+  // "Unknown", но у троицы Gas Puppet 1/2/3 realname "Unknown Puppet", и эта
+  // проверка блокировала 2-ю/3-ю копию раньше, чем срабатывал корректный
+  // счётчик Minion(3) — Minion(X) на них фактически не работал вовсе.
   const realname = model.realname || "—";
-  if (!factionRules.allowSameNameDifferentAlias && realname !== "Unknown" && realname !== "—") {
+  const isMinionOrHordeModel = model.traits.some(tr => tr.startsWith("Minion") || tr === "Horde");
+  if (!factionRules.allowSameNameDifferentAlias && !isMinionOrHordeModel && realname !== "Unknown" && realname !== "—") {
     const existingWithSameRealname = crew.find(m => (m.realname || "—") === realname);
     if (existingWithSameRealname) {
       alert(t("model_already_added", { name: realname }));
@@ -3393,6 +3482,20 @@ function bmgCanAddModel(model) {
   // глобальной функции перевода t(), и раньше это её затеняло, из-за чего каждый
   // alert(t("...")) внутри цикла падал с TypeError ("t is not a function")
   let exceeded = false;
+
+  // Aversion — одна проверка на весь найм (не на каждый трейт модели), в обе
+  // стороны сразу: findAversionConflict разбирает и текст трейта "Aversion
+  // (X)", и таблицу modelAversionRules, и для нанимаемой модели, и для уже
+  // нанятых. Раньше обратное направление (носитель Aversion уже в отряде)
+  // проверялось только по таблице — для моделей, где Aversion(X) есть
+  // только в тексте трейта, отряд с двумя несовместимыми по правилам
+  // персонажами собирался, если их нанять в этом порядке.
+  const aversionConflict = findAversionConflict(model);
+  if (aversionConflict) {
+    alert(t("avert_cannot_add", { averted: aversionConflict }));
+    exceeded = true;
+  }
+
   model.traits.forEach(modelTrait => {
     // Elite (X): Проверяем с учётом Elite Boss
     const eliteMatch = modelTrait.match(/^Elite \((.+)\)$/);
@@ -3418,36 +3521,8 @@ function bmgCanAddModel(model) {
       }
     }
 
-    // Aversion (X): Нельзя добавлять если X в отряде (X — фракция, имя или версия персонажа)
-    const aversionMatch = modelTrait.match(/^Aversion \((.+)\)$/);
-    if (aversionMatch) {
-      const averted = aversionMatch[1];
-      if (crew.some(m => modelMatchesCharacter(m, averted) || getFactions(m).includes(averted))) {
-        alert(t("avert_cannot_add", { averted }));
-        exceeded = true;
-      }
-    }
-
-    // Проверка правил modelAversionRules: если в отряде есть модель, для которой эта модель в списке Aversion
-    const aversionList = window.modelAversionRules?.[model.name];
-    if (aversionList && Array.isArray(aversionList)) {
-      const conflictingModel = crew.find(m => aversionList.some(a => modelMatchesCharacter(m, a)));
-      if (conflictingModel) {
-        const aversionNames = aversionList.join(", ");
-        alert(t("avert_cannot_add", { averted: aversionNames }));
-        exceeded = true;
-      }
-    }
-
-    // Обратная проверка: если эта модель в списке Aversion для какой-либо модели в отряде
-    for (const crewModel of crew) {
-      const crewAversionList = window.modelAversionRules?.[crewModel.name];
-      if (crewAversionList && Array.isArray(crewAversionList) && crewAversionList.some(a => modelMatchesCharacter(model, a))) {
-        alert(t("avert_cannot_add", { averted: crewModel.name }));
-        exceeded = true;
-        break;
-      }
-    }
+    // Aversion — проверяется один раз ниже, вне цикла по трейтам (findAversionConflict
+    // уже разбирает и текст трейта, и таблицу modelAversionRules, в обе стороны)
 
     // Required (X): Требует X в отряде (поддержка нескольких имён через "or").
     // Свободный текст трейта — единственный источник для моделей без записи в
@@ -3682,6 +3757,15 @@ function openEquipmentMenu(model, cardElement, uid) {
   // Модели с трейтом Fully Equipped не могут покупать оборудование
   if (crewModel.traits && crewModel.traits.some(t => t.includes("Fully Equipped"))) {
     alert(t("fully_equipped_no_equipment"));
+    return;
+  }
+
+  // Dots Suit (Polka-Dot Man): "This model cannot buy any equipment." — тот
+  // же запрет, что у Animal/Fully Equipped, просто под другим названием
+  // трейта; раньше сюда не попадал, и модель могла покупать снаряжение
+  // фракции как обычная.
+  if (crewModel.traits && crewModel.traits.some(t => t.includes("Dots Suit"))) {
+    alert(t("dots_suit_no_equipment"));
     return;
   }
 
