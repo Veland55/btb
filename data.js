@@ -9873,7 +9873,7 @@ const models = [
     "rep": 70,
     "funding": 0,
     "rank": ["Sidekick"],
-    "faction": ["Joker"],
+    "faction": ["Joker", "Suicide Squad"],
     "img": "img/HarleyQuinnBTG.webp",
     "stats": {
       "Attack": 4,
