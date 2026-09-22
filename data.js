@@ -203,7 +203,7 @@ const equipmentByFaction = {
     { name: "Inspiring Presence", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Tim Drake"], targetModels: ["Tim Drake"], effects: ["Model gains Leadership rule."] },
     { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Batgirl"], effects: ["Model gains Exhaustive Planner rule."] },
     { name: "Deadly Weapons", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Red Hood (Arkham Knight)"], targetModels: ["Red Hood Arkham Knight"], effects: ["Weapons gain the Silencer rule."] },
-    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["Enhances Air Support (details in desc)."], isUnaffectedByBroken: true },
+    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["When you use the Air Support rule, target an enemy model affected by the template, the target receives a Ranged attack with ROF 1, the Firearm weapon special rule and damage {BLOOD_ICON}{BLOOD_ICON} which ignores the Cover Rule."], isUnaffectedByBroken: true },
     { name: "Sergeant Training", fundingCost: 50, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true },
     { name: "Feline Stalk", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Selina Kyle"], targetModels: ["Selina Kyle"], effects: ["Model gains Tracking rule."], isUnaffectedByBroken: true },
     // Vampire Queen (Batgirl Vampire Queen — faction Bat Family/GCPD): "When recruiting this model,
@@ -253,7 +253,7 @@ const equipmentByFaction = {
     { name: "Inspiring Presence", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Tim Drake"], targetModels: ["Tim Drake"], effects: ["Model gains Leadership rule."] },
     { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Batgirl"], effects: ["Model gains Exhaustive Planner rule."] },
     { name: "Deadly Weapons", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Red Hood (Arkham Knight)"], targetModels: ["Red Hood Arkham Knight"], effects: ["Weapons gain the Silencer rule."] },
-    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["Enhances Air Support (details in desc)."], isUnaffectedByBroken: true },
+    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["When you use the Air Support rule, target an enemy model affected by the template, the target receives a Ranged attack with ROF 1, the Firearm weapon special rule and damage {BLOOD_ICON}{BLOOD_ICON} which ignores the Cover Rule."], isUnaffectedByBroken: true },
     { name: "Sergeant Training", fundingCost: 50, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true },
     { name: "Feline Stalk", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Selina Kyle"], targetModels: ["Selina Kyle"], effects: ["Model gains Tracking rule."], isUnaffectedByBroken: true },
     { name: "The Turning", fundingCost: 200, repCost: 10, maxPerCrew: 4, conditions: ["Vampire Queen in crew"], effects: ["Model gains the Vampire rule."] },
@@ -345,7 +345,7 @@ const equipmentByFaction = {
     { name: "Ancient Training", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Only Henchman/Free Agents"], effects: ["Model gains Master Fighter rule."] },
     { name: "Circus Grooming", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Only Henchman/Free Agents"], effects: ["Model gains Combat Flip rule."] },
     { name: "Lords of Gotham", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["The Court"], targetModels: ["The Court"], effects: ["Generates 1 extra Sewer marker."] },
-    { name: "Talon Serum Infusion", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Lincoln March"], targetModels: ["Lincoln March"], effects: ["Enhances Reanimated Owl models (details in desc)."] }
+    { name: "Talon Serum Infusion", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Lincoln March"], targetModels: ["Lincoln March"], effects: ["Once per game, at the start of the Raise the Plan phase, choose up to three friendly models with the Reanimated Owl trait. Those models gain 1 additional Strength die to their attacks until the end of the round, but then at the Recovering phase (when resolving effects) suffer 1 {BLOOD_ICON}."] }
   ],
   "The Riddler": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -485,7 +485,7 @@ const equipmentByFaction = {
     { name: "Magazine", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
     { name: "Back on Track", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Reset Task counter with Cranial Bomb."] },
     { name: "Right Motivation", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Free Manipulate action if no Task counter."] },
-    { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy", "Model has Control Pheromones trait"], effects: ["Enhances Control Pheromones (details in desc)."] },
+    { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy", "Model has Control Pheromones trait"], effects: ["When this model uses the Control Pheromones trait, the targeted model adds 1 additional dice and adds all the 3 results together while taking that Hypnotize Willpower roll. If the target Efforts to add an additional die to the Willpower roll, then they must roll 4D6 and then choose 3 of them."] },
     { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team)"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
     { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team)"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
    ]

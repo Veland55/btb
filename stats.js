@@ -68,15 +68,26 @@ async function renderStats() {
   box.innerHTML = statsHTML(data);
 }
 
+// Те же монохромные SVG-иконки, что и в главном меню (см. index.html) — раньше
+// плитки статистики рисовались платформенными emoji (🎲/🏆/…), которые на
+// разных ОС/в Telegram выглядят по-разному и выбивались из единого
+// красно-золотого визуального языка остальных разделов.
+const STATS_ICON_USERS = "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z";
+const STATS_ICON_SAVE = "M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z";
+const STATS_ICON_DICE = "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8.5 15.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-7a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3.5 3.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm3.5 3.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-7a1.5 1.5 0 110-3 1.5 1.5 0 010 3z";
+const STATS_ICON_TROPHY = "M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.95V18H8v2h8v-2h-3v-2.11c1.63-.32 2.98-1.45 3.61-2.95C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z";
+const STATS_ICON_CALENDAR = "M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z";
+const STATS_ICON_GROUP = "M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z";
+
 function statsHTML(d) {
   const tiles = `
     <div class="stats-tiles">
-      ${statTile('👤', d.users, 'stats_total_users')}
-      ${statTile('💾', d.rosters, 'stats_total_rosters')}
-      ${statTile('🎲', d.games, 'stats_total_games')}
-      ${statTile('🏆', d.resultsTotal || 0, 'stats_total_results')}
-      ${statTile('📅', d.tournamentsTotal || 0, 'stats_total_tournaments')}
-      ${statTile('👥', d.avgCrewSize || 0, 'stats_avg_crew')}
+      ${statTile(STATS_ICON_USERS, d.users, 'stats_total_users')}
+      ${statTile(STATS_ICON_SAVE, d.rosters, 'stats_total_rosters')}
+      ${statTile(STATS_ICON_DICE, d.games, 'stats_total_games')}
+      ${statTile(STATS_ICON_TROPHY, d.resultsTotal || 0, 'stats_total_results')}
+      ${statTile(STATS_ICON_CALENDAR, d.tournamentsTotal || 0, 'stats_total_tournaments')}
+      ${statTile(STATS_ICON_GROUP, d.avgCrewSize || 0, 'stats_avg_crew')}
     </div>`;
 
   if (!d.rosters && !d.countries.length) {
@@ -101,10 +112,10 @@ function statsHTML(d) {
     + rankPanelHTML(t('stats_geography'), t('stats_geo_note'), d.countries, countryRowLeftHTML, countryName);
 }
 
-function statTile(icon, value, labelKey) {
+function statTile(iconPath, value, labelKey) {
   return `
     <div class="stats-tile">
-      <div class="stats-tile-icon">${icon}</div>
+      <div class="stats-tile-icon"><svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg></div>
       <div class="stats-tile-value">${value}</div>
       <div class="stats-tile-label">${t(labelKey)}</div>
     </div>`;
