@@ -212,7 +212,7 @@ const traitDescriptions = {
     "Coin Flip {SPECIAL_ICON}": "Search your Objective deck for a Coin card and immediately play it. Shuffle your Objective deck.",
     "Cold": "When this rule hits, the target model increases the Slow Status value by (2), unless it doesn't have it, then it suffers the Slow (2) Status.",
     "Cold Acclimation": "Keyword.",
-    "Combat Bracers": "The model’s close combat weapons and unarmed attacks gain the Defensive weapon special rule.",
+    "Combat Braces": "The model’s close combat weapons and unarmed attacks gain the Defensive weapon special rule.",
     "Combat Flip {SPECIAL_ICON}": "This trait may be used when the model is in contact with an enemy or if a result of using it, this model ends in contact with an enemy model. Move this model 3”.",
     "Combat Bo": "Model gains the Electric Storm trait.",
     "Combo (Weapon)": "For every two successful hits in its attack roll while using the specified (weapon) or (trait) (before the enemy rolls to defend), this model gains an additional hit.",
@@ -619,7 +619,7 @@ const traitDescriptions = {
     "Investigator": "This model places an additional Counter when Revealing an enemy Suspect for the purpose of Objective cards.",
     "Invulnerability (X)": "When this model takes damage from an attack or special rule, reduce the total number of Damage markers it receives by (X). In addition, this model is immune to CRT and ignores all Statuses except any it has “Weakness to”.",
     "It's Mine": "Enemy models cannot Reveal your Suspect markers while the marker is within 2” of this model.",
-    "It's a Dud": "At the start of this model's activation you may remove 1 Riddle marker from the Gaming Area.",
+    "Its a Dud": "At the start of this model's activation you may remove 1 Riddle marker from the Gaming Area.",
     "Ivy's Snow Coat": "Model gains the Cold Acclimation trait.",
     
     //J
@@ -1111,7 +1111,7 @@ const traitDescriptions = {
     "Suspicious Plant": "This model may place Suspects ignoring the Plant trait restriction.",
     "Sustained Defense": "For every two successful defense rolls made by this model, cancel one extra enemy hit.",
     "Swarm": "This model cannot be recruited, but can only be brought into play by the Sewer Swarm X trait or another rule that specifically say it. This model gains +1 Defense skill vs enemy Ranged Attacks. This model cannot perform Manipulate Actions by any means. Swarms do not fulfill enemy Objective criteria for making models KO or removing them as Casualties. If this model is made KO, remove it as a Casualty. This model is ignored by the Suicide Squad Cranial Bomb rule and cannot be removed by the Cranial Bomb Activated card.",
-    "SWAT Special Training": "Model gains the Tracking and Precise Aim traits.",
+    "Swat Special Training": "Model gains the Tracking and Precise Aim traits.",
     "Swift": "This model can make 1 Effort to improve its basic move distance by +2” for the remainder of the round.",
     "Shock Armor {SPECIAL_ICON}": "All models within 2\" must take an Endurance test. If they fail they suffer {STUN_ICON}{STUN_ICON}.",
     "Sneak Attack Takedown": "When this model inflicts a KO on an enemy model affected by this model's Sneak Attack trait, it can immediately take a Free Manipulate action.",

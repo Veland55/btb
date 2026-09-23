@@ -2864,8 +2864,12 @@ function findRelatedRules(text, excludeName) {
   const found = [];
 
   for (const e of compendiumKeysByLength) {
-    if (found.length >= 5) break;
-    if (e.clean.toLowerCase() === exclude) continue;
+    const isSelf = e.clean.toLowerCase() === exclude;
+    // Самоисключённую запись (например, апгрейд "Climbing Claws" и трейт
+    // "Climbing Claws" с тем же именем) не добавляем в найденные, но её
+    // диапазон в тексте всё равно нужно "застолбить" — иначе более короткое
+    // вложенное имя (тут "Claws") находится вместо неё же самой.
+    if (!isSelf && found.length >= 5) break;
     // Поиск с учётом регистра: названия правил в текстах пишутся с заглавных букв
     let idx = plain.indexOf(e.clean);
     while (idx !== -1) {
@@ -2876,7 +2880,7 @@ function findRelatedRules(text, excludeName) {
       const overlaps = claimed.some(r => idx < r[1] && end > r[0]);
       if (isWholeWord && !overlaps) {
         claimed.push([idx, end]);
-        found.push(e.key);
+        if (!isSelf) found.push(e.key);
         break;
       }
       idx = plain.indexOf(e.clean, idx + 1);
