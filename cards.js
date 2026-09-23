@@ -143,17 +143,17 @@ function addObjectiveCard(id) {
   // карту Searching for Nora) прячут карту из каталога, но проверяем и здесь:
   // карту можно попытаться добавить и после найма запрещающей модели
   if (!objCardVisible(card)) {
-    alert(t('obj_card_forbidden', { name: card.name }));
+    showErrorToast(t('obj_card_forbidden', { name: card.name }));
     return;
   }
   if (!objCardRequirementMet(card)) {
-    alert(t('obj_req_missing') + ': ' + objCardRequirementText(card));
+    showErrorToast(t('obj_req_missing') + ': ' + objCardRequirementText(card));
     return;
   }
   const s = objDeckStats();
-  if (s.total + card.max > OBJECTIVE_DECK.size) { alert(t('obj_card_full_deck', { count: OBJECTIVE_DECK.size })); return; }
-  if (card.max === 1 && s.single + 1 > OBJECTIVE_DECK.maxSingle) { alert(t('obj_single_limit', { max: OBJECTIVE_DECK.maxSingle })); return; }
-  if (card.general && s.general + card.max > OBJECTIVE_DECK.maxGeneral) { alert(t('obj_general_limit', { max: OBJECTIVE_DECK.maxGeneral })); return; }
+  if (s.total + card.max > OBJECTIVE_DECK.size) { showErrorToast(t('obj_card_full_deck', { count: OBJECTIVE_DECK.size })); return; }
+  if (card.max === 1 && s.single + 1 > OBJECTIVE_DECK.maxSingle) { showErrorToast(t('obj_single_limit', { max: OBJECTIVE_DECK.maxSingle })); return; }
+  if (card.general && s.general + card.max > OBJECTIVE_DECK.maxGeneral) { showErrorToast(t('obj_general_limit', { max: OBJECTIVE_DECK.maxGeneral })); return; }
   crewCards[id] = card.max;
   renderObjectiveCardsPage();
   updateDeckBadge();

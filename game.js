@@ -976,7 +976,7 @@ async function gameRun(fn) {
 async function createGame() {
   const sel = $('gameCreateRoster');
   const roster = sel ? gameRosterByValue(sel.value) : null;
-  if (!roster) { alert(t('no_rosters')); return; }
+  if (!roster) { showErrorToast(t('no_rosters')); return; }
   let conditions = null;
   if (typeof GAME_EVENTS !== 'undefined' && typeof GAME_ENCOUNTERS !== 'undefined') {
     ensureGameConditions();
@@ -999,10 +999,10 @@ async function createGame() {
 
 async function joinGame() {
   const code = ($('gameJoinCode').value || '').trim().toUpperCase();
-  if (code.length !== 6) { alert(t('game_not_found')); return; }
+  if (code.length !== 6) { showErrorToast(t('game_not_found')); return; }
   const sel = $('gameJoinRoster');
   const roster = sel ? gameRosterByValue(sel.value) : null;
-  if (!roster) { alert(t('no_rosters')); return; }
+  if (!roster) { showErrorToast(t('no_rosters')); return; }
   await gameRun(async () => {
     try {
       activeGame = await api('/api/games/join', 'POST', { code, roster });

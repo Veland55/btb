@@ -195,7 +195,7 @@ async function setUserEmail() {
       await api('/api/profile', 'PUT', { email: email || null });
       currentUserEmail = email || null;
       renderAuthModal(); // иначе плашка "email не указан" остаётся висеть после успешного сохранения
-      alert(t('email_saved'));
+      showErrorToast(t('email_saved'));
     } catch (e) {
       showErrorToast(apiErrorText(e));
     }
@@ -223,14 +223,14 @@ async function authRun(fn) {
 
 async function requestPasswordReset() {
   const name = (document.getElementById('resetName').value || '').trim();
-  if (!name) { alert(t('auth_fill_fields')); return; }
+  if (!name) { showErrorToast(t('auth_fill_fields')); return; }
   await authRun(async () => {
     try {
       await api('/api/forgot-password', 'POST', { name });
       authResetName = name;
       authView = 'forgot-code';
       renderAuthModal();
-      alert(t('forgot_code_sent'));
+      showErrorToast(t('forgot_code_sent'));
     } catch (e) {
       showErrorToast(apiErrorText(e));
     }
@@ -240,11 +240,11 @@ async function requestPasswordReset() {
 async function submitPasswordReset() {
   const code = (document.getElementById('resetCode').value || '').trim();
   const newPass = document.getElementById('resetNewPass').value;
-  if (!code || !newPass) { alert(t('auth_fill_fields')); return; }
+  if (!code || !newPass) { showErrorToast(t('auth_fill_fields')); return; }
   await authRun(async () => {
     try {
       await api('/api/reset-password', 'POST', { name: authResetName, code, newPass });
-      alert(t('forgot_reset_done'));
+      showErrorToast(t('forgot_reset_done'));
       authView = 'login';
       renderAuthModal();
     } catch (e) {
@@ -258,12 +258,12 @@ async function submitChangePassword() {
   const oldPass = document.getElementById('cpOld').value;
   const newPass = document.getElementById('cpNew').value;
   const confirmPass = document.getElementById('cpConfirm').value;
-  if (!oldPass || !newPass) { alert(t('auth_fill_fields')); return; }
-  if (newPass !== confirmPass) { alert(t('password_mismatch')); return; }
+  if (!oldPass || !newPass) { showErrorToast(t('auth_fill_fields')); return; }
+  if (newPass !== confirmPass) { showErrorToast(t('password_mismatch')); return; }
   await authRun(async () => {
     try {
       await api('/api/change-password', 'POST', { oldPass, newPass });
-      alert(t('password_changed'));
+      showErrorToast(t('password_changed'));
       ['cpOld', 'cpNew', 'cpConfirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     } catch (e) {
       showErrorToast(apiErrorText(e));
@@ -468,11 +468,11 @@ let crewSaveBusy = false;
 async function saveCurrentCrew() {
   if (!currentUser) {
     pendingCrewSaveAfterAuth = true;
-    alert(t('save_login_required'));
+    showErrorToast(t('save_login_required'));
     openAuthModal();
     return;
   }
-  if (!crew.length) { alert(t('empty_crew_save')); return; }
+  if (!crew.length) { showErrorToast(t('empty_crew_save')); return; }
   if (crewSaveBusy) return;
   crewSaveBusy = true;
   const btn = document.getElementById('saveCrewBtn');
@@ -489,7 +489,7 @@ async function saveCurrentCrew() {
     if (existing !== -1) {
       mySaves[existing] = record; // то же имя — перезапись, слот не тратится
     } else if (mySaves.length >= MAX_SAVES) {
-      alert(t('saves_limit'));
+      showErrorToast(t('saves_limit'));
       openAuthModal();
       return;
     } else {
@@ -498,7 +498,7 @@ async function saveCurrentCrew() {
 
     try {
       await pushSaves();
-      alert(t('save_done'));
+      showErrorToast(t('save_done'));
     } catch (e) {
       mySaves = backup; // сервер отказал — откатываем кэш
       showErrorToast(apiErrorText(e));
@@ -603,7 +603,7 @@ function restoreCrewFromSave(s) {
   updateCrewBar();
   renderMiniCardsBuilder();
 
-  if (skipped) alert(t('models_skipped'));
+  if (skipped) showErrorToast(t('models_skipped'));
 }
 
 function loadSavedCrew(index) {
@@ -751,7 +751,7 @@ function renderAuthModal() {
 async function authSubmit(isRegister) {
   const name = document.getElementById('authName').value.trim();
   const pass = document.getElementById('authPass').value;
-  if (!name || !pass) { alert(t('auth_fill_fields')); return; }
+  if (!name || !pass) { showErrorToast(t('auth_fill_fields')); return; }
   await authRun(async () => {
     try {
       if (isRegister) {

@@ -257,14 +257,14 @@ async function createTournament() {
     info: ($('tnInfo').value || '').trim() || null
   };
   if (!body.address || !body.dateStart || !body.orgNick || !Number.isInteger(body.maxPlayers)) {
-    alert(t('tn_fill_fields'));
+    showErrorToast(t('tn_fill_fields'));
     return;
   }
   // tnRun — та же защита от двойного тапа, что и у остальных действий
   // раздела (раньше создание и удаление турнира её не использовали)
   await tnRun('create-tournament', async () => {
     await api('/api/tournaments', 'POST', body);
-    alert(t('tn_created'));
+    showErrorToast(t('tn_created'));
     renderTournaments();
   });
 }
@@ -413,10 +413,10 @@ function tnResolveDispute(id, round, a, b) {
   overlay.onclick = e => { if (e.target === overlay) close(); };
   overlay.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
   overlay.querySelector('.app-modal-ok').onclick = async () => {
-    if (!winner) { alert(t('tn_resolve_bad')); return; }
+    if (!winner) { showErrorToast(t('tn_resolve_bad')); return; }
     const vpWinner = parseInt(overlay.querySelector('#tnResolveVpWinner').value, 10);
     const vpLoser = parseInt(overlay.querySelector('#tnResolveVpLoser').value, 10);
-    if (!Number.isInteger(vpWinner) || !Number.isInteger(vpLoser)) { alert(t('tn_resolve_bad')); return; }
+    if (!Number.isInteger(vpWinner) || !Number.isInteger(vpLoser)) { showErrorToast(t('tn_resolve_bad')); return; }
     const loser = winner === a ? b : a;
     close();
     await tnRun('resolve-' + id, async () => {
@@ -533,7 +533,7 @@ async function reportTnResult(id, win) {
   await tnRun('report-' + id, async () => {
     const r = await api('/api/tournaments/report', 'POST', { id, win, vp });
     tnReportEditId = null;
-    if (r && r.disputed) alert(t('tn_dispute_note'));
+    if (r && r.disputed) showErrorToast(t('tn_dispute_note'));
     await renderTournaments();
   });
 }
@@ -708,9 +708,9 @@ function tnRostersFormHTML(tn, me) {
 
 async function submitTournamentRosters(id) {
   const s1 = tnSelectedSave(id, 1), s2 = tnSelectedSave(id, 2);
-  if (!s1 || !s2) { alert(t('tn_pick_both')); return; }
-  if (s1 === s2) { alert(t('tn_rule_two_lists')); return; }
-  if (s1.f !== s2.f) { alert(t('tn_rule_same_faction')); return; }
+  if (!s1 || !s2) { showErrorToast(t('tn_pick_both')); return; }
+  if (s1 === s2) { showErrorToast(t('tn_rule_two_lists')); return; }
+  if (s1.f !== s2.f) { showErrorToast(t('tn_rule_same_faction')); return; }
 
   // Мягкая проверка остальных правил: недоборы (например, неполная колода)
   // можно описать в заметках — организатор увидит их и чек-лист
@@ -724,7 +724,7 @@ async function submitTournamentRosters(id) {
   // раздела (раньше подача ростеров её не использовала)
   await tnRun('submit-rosters-' + id, async () => {
     await api('/api/tournaments/rosters', 'PUT', { id, roster1: s1, roster2: s2, notes });
-    alert(t('tn_submitted'));
+    showErrorToast(t('tn_submitted'));
     tnRostersOpenId = null;
     renderTournaments();
   });

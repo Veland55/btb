@@ -111,7 +111,7 @@ function gcShuffle(arr) {
 // Первичная раздача: тасуем колоду и берём руку. Мулиган остаётся доступен.
 async function gcStart(roster) {
   const ids = gcDeckFromRoster(roster);
-  if (!ids) { alert(t('gc_no_deck')); return; }
+  if (!ids) { showErrorToast(t('gc_no_deck')); return; }
   const legalSize = (typeof OBJECTIVE_DECK !== 'undefined' ? OBJECTIVE_DECK.size : 30);
   if (ids.length !== legalSize &&
       !(await appConfirm(t('gc_deck_size_warn', { count: ids.length, need: legalSize })))) return;

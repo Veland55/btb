@@ -1723,7 +1723,7 @@ const addToCrew = m => {
     let ranks = getHireableRanks(m);
 
     if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && !ranks.includes("Leader")) {
-      alert(t("leader_first"));
+      showErrorToast(t("leader_first"));
       return;
     }
 
@@ -1737,7 +1737,7 @@ const addToCrew = m => {
     } else if (ranks.length > 1) {
       showRankSelectionModal(m, ranks);
     } else {
-      alert(t("rank_not_found"));
+      showErrorToast(t("rank_not_found"));
     }
   }
 
@@ -1749,7 +1749,7 @@ const addToCrew = m => {
 function addModelWithRank(model, chosenRank) {
   // Treacherous: "This model cannot be the Boss of your crew."
   if (!BMG_BOSS && (chosenRank === "Leader" || chosenRank === "Sidekick") && model.traits.includes("Treacherous")) {
-    alert(t("treacherous_cannot_be_boss"));
+    showErrorToast(t("treacherous_cannot_be_boss"));
     return;
   }
 
@@ -1757,12 +1757,12 @@ function addModelWithRank(model, chosenRank) {
   // Специальное правило для Cults: первым (Leader) может быть только Deacon Blackfire или Kobra
   if (currentFaction === "Cults" && !BMG_BOSS && chosenRank === "Leader") {
     if (!["Deacon Blackfire", "Kobra"].includes(model.name)) {
-      alert(t("leader_cults"));
+      showErrorToast(t("leader_cults"));
       return;
     }
   }
   if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && chosenRank !== "Leader") {
-    alert(t("leader_first"));
+    showErrorToast(t("leader_first"));
     return;
   }
 
@@ -1770,7 +1770,7 @@ function addModelWithRank(model, chosenRank) {
   if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick") {
     const modelRanks = getRanks(model);
     if (modelRanks.includes("Leader") && modelRanks.includes("Sidekick") && chosenRank === "Leader") {
-      alert(t("boss_sidekick"));
+      showErrorToast(t("boss_sidekick"));
       return;
     }
   }
@@ -1783,7 +1783,7 @@ function addModelWithRank(model, chosenRank) {
     // Henry Ducard нельзя было нанять как Sidekick вообще ни при каком составе банды.
     const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul (Decoy)" && BMG_BOSS.rankUsed === "Leader";
     if (!hasRasGhulDecoyAsLeader) {
-      alert(t("henry_ducard_sidekick_requires_ras"));
+      showErrorToast(t("henry_ducard_sidekick_requires_ras"));
       return;
     }
   }
@@ -1803,11 +1803,11 @@ function addModelWithRank(model, chosenRank) {
     const extraRep = others.reduce((sum, m) => sum + (m.rep || 0), 0);
     const extraFunding = others.reduce((sum, m) => sum + getEffectiveModelFunding(m), 0);
     if (getCrewTotalRep() + cloned.rep + extraRep > BMG_REP_LIMIT) {
-      alert(t("rep_exceeded"));
+      showErrorToast(t("rep_exceeded"));
       return;
     }
     if (getCrewUsedFunding() + getEffectiveModelFunding(cloned) + extraFunding > bmgFundingLimit()) {
-      alert(t("funding_insufficient"));
+      showErrorToast(t("funding_insufficient"));
       return;
     }
   }
@@ -3092,12 +3092,12 @@ window.addEventListener("load", () => {
       if (isNaN(newLimit)) { this.value = BMG_REP_LIMIT; return; }
       const REP_LIMIT_MAX = 1000;
       if (newLimit < 100) {
-        alert(t("min_limit_100", { value: BMG_REP_LIMIT }));
+        showErrorToast(t("min_limit_100", { value: BMG_REP_LIMIT }));
         this.value = BMG_REP_LIMIT;
         return;
       }
       if (newLimit > REP_LIMIT_MAX) {
-        alert(t("max_limit", { max: REP_LIMIT_MAX, value: BMG_REP_LIMIT }));
+        showErrorToast(t("max_limit", { max: REP_LIMIT_MAX, value: BMG_REP_LIMIT }));
         this.value = BMG_REP_LIMIT;
         return;
       }
@@ -3114,7 +3114,7 @@ window.addEventListener("load", () => {
       // Опционально: предупреждение, если текущий отряд превышает новый лимит
       const currentRep = crew.reduce((a, m) => a + (m.rep || 0), 0);
       if (currentRep > BMG_REP_LIMIT) {
-        alert(t("rep_exceeds", { current: currentRep, new: BMG_REP_LIMIT }));
+        showErrorToast(t("rep_exceeds", { current: currentRep, new: BMG_REP_LIMIT }));
       }
     };
   }
@@ -3245,21 +3245,21 @@ function bmgCanAddModel(model) {
 
   const rank = model.rankUsed;
   if (!rank) {
-    alert(t("rank_not_selected"));
+    showErrorToast(t("rank_not_selected"));
     return false;
   }
 
   // Фракция-команда: в отряд входят только носители ключевого трейта
   const kwTrait = (factionCrewRules[currentFaction] || {}).onlyKeywordTrait;
   if (kwTrait && !matchesKeywordTrait(model, kwTrait)) {
-    alert(t("keyword_trait_required", { trait: kwTrait }));
+    showErrorToast(t("keyword_trait_required", { trait: kwTrait }));
     return false;
   }
 
   // Проверка зависимостей моделей (например, Robin Who Laughs требует The Batman Who Laughs)
   const unmetDependency = getUnmetDependency(model);
   if (unmetDependency) {
-    alert(t("model_requires_other", { model: model.name, required: unmetDependency }));
+    showErrorToast(t("model_requires_other", { model: model.name, required: unmetDependency }));
     return false;
   }
 
@@ -3269,11 +3269,11 @@ function bmgCanAddModel(model) {
 
   // Проверка лимитов Rep и Funding
   if (totalRep > BMG_REP_LIMIT) {
-    alert(t("rep_exceeded"));
+    showErrorToast(t("rep_exceeded"));
     return false;
   }
   if (usedFunding > bmgFundingLimit()) {
-    alert(t("funding_insufficient"));
+    showErrorToast(t("funding_insufficient"));
     return false;
   }
 
@@ -3284,7 +3284,7 @@ function bmgCanAddModel(model) {
     // Leader сверх базовых. Выбор ранга уже предлагал Leader через
     // getHireableRanks, а эта проверка тут же его отклоняла.
     if (!getHireableRanks(model).some(r => validBossRanks.includes(r))) {
-      alert(t("leader_required", { rank: factionRules.mustHaveLeaderAsBoss ? "Leader" : t("leader_or_sidekick") }));
+      showErrorToast(t("leader_required", { rank: factionRules.mustHaveLeaderAsBoss ? "Leader" : t("leader_or_sidekick") }));
       return false;
     }
   }
@@ -3297,13 +3297,13 @@ function bmgCanAddModel(model) {
 
     // Court of Owls Crew: "This crew can only hire models with the Affiliation: The Court of Owls."
     if (bossTraits.includes("Court of Owls Crew") && !modelFactions.includes("Court of Owls")) {
-      alert(t("model_not_affiliation"));
+      showErrorToast(t("model_not_affiliation"));
       return false;
     }
 
     // Amazon Lineage: "If this model is your crew's Boss, you can only recruit models with the Amazon trait."
     if (bossTraits.includes("Amazon Lineage") && !model.traits.includes("Amazon")) {
-      alert(t("amazon_lineage"));
+      showErrorToast(t("amazon_lineage"));
       return false;
     }
 
@@ -3339,7 +3339,7 @@ function bmgCanAddModel(model) {
       if (hireException) {
         model.hireException = hireException;
       } else {
-        alert(t(failMessageKey));
+        showErrorToast(t(failMessageKey));
         return false;
       }
     }
@@ -3353,7 +3353,7 @@ function bmgCanAddModel(model) {
     const crewHasRival = crew.some(m => getRivals(m).includes(rx));
     const crewHasAff = crew.some(m => getFactions(m).includes(rx));
     if ((modelHasRival && crewHasAff) || (modelHasAff && crewHasRival)) {
-      alert(t("rivals_exclusion_cannot_add", { faction: rx }));
+      showErrorToast(t("rivals_exclusion_cannot_add", { faction: rx }));
       return false;
     }
   }
@@ -3368,7 +3368,7 @@ function bmgCanAddModel(model) {
     }
 
     if (requiredTrait && !model.traits.includes(requiredTrait)) {
-      alert(t("leader_trait_required", { leader: BMG_BOSS.name, trait: requiredTrait }));
+      showErrorToast(t("leader_trait_required", { leader: BMG_BOSS.name, trait: requiredTrait }));
       return false;
     }
   }
@@ -3385,7 +3385,7 @@ function bmgCanAddModel(model) {
   if (!factionRules.allowSameNameDifferentAlias && !isMinionOrHordeModel && realname !== "Unknown" && realname !== "—") {
     const existingWithSameRealname = crew.find(m => (m.realname || "—") === realname);
     if (existingWithSameRealname) {
-      alert(t("model_already_added", { name: realname }));
+      showErrorToast(t("model_already_added", { name: realname }));
       return false;
     }
   }
@@ -3396,31 +3396,31 @@ function bmgCanAddModel(model) {
     if (rank === "Leader") {
       // Если уже есть Leader — нельзя добавить ещё одного
       if (bmgRankCount("Leader") >= 1) {
-        alert(t("only_one_leader"));
+        showErrorToast(t("only_one_leader"));
         return false;
       }
       // Если босс — Sidekick, и у текущей модели есть только Leader (без Sidekick) — нельзя добавить
       if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick" && !getRanks(model).includes("Sidekick")) {
-        alert(t("leader_already_added"));
+        showErrorToast(t("leader_already_added"));
         return false;
       }
     }
     if (rank === "Sidekick") {
       if (bmgRankCount("Leader") === 0 && bmgRankCount("Sidekick") >= 2) {
-        alert(t("max_2_sidekick"));
+        showErrorToast(t("max_2_sidekick"));
         return false;
       }
       if (bmgRankCount("Leader") >= 1 && bmgRankCount("Sidekick") >= 1) {
-        alert(t("max_1_sidekick_with_leader"));
+        showErrorToast(t("max_1_sidekick_with_leader"));
         return false;
       }
     }
     if (rank === "Free Agent" && bmgRankCount("Free Agent") >= 1 + extras + (modifiers.extraFreeAgents || 0)) {
-      alert(t("fa_limit_exceeded"));
+      showErrorToast(t("fa_limit_exceeded"));
       return false;
     }
     if (rank === "Vehicle" && bmgRankCount("Vehicle") >= 1 + extras + (modifiers.extraVehicles || 0)) {
-      alert(t("vehicle_limit_exceeded"));
+      showErrorToast(t("vehicle_limit_exceeded"));
       return false;
     }
     if (rank === "Henchman") {
@@ -3430,13 +3430,13 @@ function bmgCanAddModel(model) {
         // Horde: "This model can be recruited up to four times in a crew, regardless of its Name."
         const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
         if (sameNameCount >= 4) {
-          alert(t("horde_limit_exceeded"));
+          showErrorToast(t("horde_limit_exceeded"));
           return false;
         }
       } else if (!isMinion) {
         const sameNameCount = crew.filter(x => x.name === model.name && x.rankUsed === "Henchman").length;
         if (sameNameCount >= 1 + (modifiers.extraDuplicates || 0)) {
-          alert(t("henchman_limit_exceeded"));
+          showErrorToast(t("henchman_limit_exceeded"));
           return false;
         }
       }
@@ -3451,7 +3451,7 @@ function bmgCanAddModel(model) {
           const type = veteranMatch[1];
           const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Veteran \\(${type}\\)$`)))).length;
           if (count >= 1 + (modifiers.extraVeterans[type] || 0)) {
-            alert(t("veteran_limit_exceeded", { type }));
+            showErrorToast(t("veteran_limit_exceeded", { type }));
             veteranExceeded = true;
           }
         }
@@ -3472,7 +3472,7 @@ function bmgCanAddModel(model) {
           const limit = isNaN(parsedX) ? 1 + (modifiers.extraMinions[x] || 0) : parsedX;
           const count = crew.filter(m => m.name === model.name && m.rankUsed === "Henchman").length;
           if (count >= limit) {
-            alert(t("minion_limit_exceeded", { type: x }));
+            showErrorToast(t("minion_limit_exceeded", { type: x }));
             minionExceeded = true;
           }
         }
@@ -3496,7 +3496,7 @@ function bmgCanAddModel(model) {
   // персонажами собирался, если их нанять в этом порядке.
   const aversionConflict = findAversionConflict(model);
   if (aversionConflict) {
-    alert(t("avert_cannot_add", { averted: aversionConflict }));
+    showErrorToast(t("avert_cannot_add", { averted: aversionConflict }));
     exceeded = true;
   }
 
@@ -3510,7 +3510,7 @@ function bmgCanAddModel(model) {
       const hasEliteBoss = crew.some(m => m.traits.some(u => u === `Elite Boss (${type})`));
       const limit = hasEliteBoss ? 99 : 1 + (modifiers.extraElites[type] || 0);
       if (count >= limit) {
-        alert(t("elite_limit_exceeded", { type }));
+        showErrorToast(t("elite_limit_exceeded", { type }));
         exceeded = true;
       }
     }
@@ -3520,7 +3520,7 @@ function bmgCanAddModel(model) {
     if (hatesMatch) {
       const hated = hatesMatch[1];
       if (crew.some(m => modelMatchesCharacter(m, hated) || getFactions(m).includes(hated))) {
-        alert(t("hates_cannot_add", { hated }));
+        showErrorToast(t("hates_cannot_add", { hated }));
         exceeded = true;
       }
     }
@@ -3552,7 +3552,7 @@ function bmgCanAddModel(model) {
         );
       });
       if (!hasRequired) {
-        alert(t("required_cannot_add", { required }));
+        showErrorToast(t("required_cannot_add", { required }));
         exceeded = true;
       }
     }
@@ -3563,14 +3563,14 @@ function bmgCanAddModel(model) {
     // Rebirth / The Bat / Commander / Dark Knight Rises. Сравнение по name всегда
     // было ложным, из-за чего Mercenary 1/2 и Barsad нельзя было нанять вообще.
     if (modelTrait === "Mercenary" && currentFaction === "League of Shadows" && !crew.some(m => modelMatchesCharacter(m, "Bane"))) {
-      alert(t("mercenary_requires_bane"));
+      showErrorToast(t("mercenary_requires_bane"));
       exceeded = true;
     }
 
     // Freed / He Freed Me: "...only be recruited if the crew also includes The Batman Who Laughs model."
     if (modelTrait === "Freed" || modelTrait === "He Freed Me") {
       if (!crew.some(m => m.name === "The Batman Who Laughs")) {
-        alert(t("requires_batman_who_laughs"));
+        showErrorToast(t("requires_batman_who_laughs"));
         exceeded = true;
       }
     }
@@ -3578,7 +3578,7 @@ function bmgCanAddModel(model) {
     // My Idol!: "...only be recruited if a model with the Alias: Zur-En-Arrh Batman is part of the crew."
     if (modelTrait === "My Idol!") {
       if (!crew.some(m => m.name.includes("Zur-En-Arrh") || (m.realname && m.realname.includes("Zur-En-Arrh")))) {
-        alert(t("requires_idol"));
+        showErrorToast(t("requires_idol"));
         exceeded = true;
       }
     }
@@ -3587,12 +3587,12 @@ function bmgCanAddModel(model) {
     // However, this model can never be recruited to a Court of Owls crew."
     if (modelTrait === "Meet Goliath!") {
       if (currentFaction === "Court of Owls") {
-        alert(t("requires_goliath_not_owls"));
+        showErrorToast(t("requires_goliath_not_owls"));
         exceeded = true;
       // "Damian Wayne" — realname моделей Robin / Robin [Damian Wayne] /
       // Damian Who Laughs; модели с таким name нет, и Goliath был ненанимаем
       } else if (!crew.some(m => modelMatchesCharacter(m, "Damian Wayne"))) {
-        alert(t("requires_goliath"));
+        showErrorToast(t("requires_goliath"));
         exceeded = true;
       }
     }
@@ -3600,7 +3600,7 @@ function bmgCanAddModel(model) {
     // The Sidekick: "...only be hired if Batman (Modern Age) is leading the crew."
     if (modelTrait === "The Sidekick") {
       if (!BMG_BOSS || BMG_BOSS.rankUsed !== "Leader" || BMG_BOSS.name !== "Batman (Modern Age)") {
-        alert(t("leader_required_for_sidekick"));
+        showErrorToast(t("leader_required_for_sidekick"));
         exceeded = true;
       }
     }
@@ -3613,7 +3613,7 @@ function bmgCanAddModel(model) {
       const affinityTarget = affinityMatch[1];
       // Модель с Affinity может присоединиться только если в отряде есть целевая модель
       if (!crew.some(m => m.name === affinityTarget)) {
-        alert(t("affinity_requires_model", { model: model.name, target: affinityTarget }));
+        showErrorToast(t("affinity_requires_model", { model: model.name, target: affinityTarget }));
         exceeded = true;
       }
     }
@@ -3624,7 +3624,7 @@ function bmgCanAddModel(model) {
         trait.includes("Penguin Caller") || trait.includes("Hidden Penguins")
       ));
       if (!hasPenguinTrait) {
-        alert(t("expendable_penguin_requires_trait", { model: model.name }));
+        showErrorToast(t("expendable_penguin_requires_trait", { model: model.name }));
         exceeded = true;
       }
     }
@@ -3641,7 +3641,7 @@ function bmgCanAddModel(model) {
     if (hasWilliamCobb && rank === "Free Agent") {
       const modelFactions = getFactions(model);
       if (!modelFactions.includes("Bane") && !modelFactions.includes("Unknown")) {
-        alert(t("william_cobb_restrict_free_agents"));
+        showErrorToast(t("william_cobb_restrict_free_agents"));
         exceeded = true;
       }
     }
@@ -3754,13 +3754,13 @@ function openEquipmentMenu(model, cardElement, uid) {
 
   // Модели с трейтом Animal не могут покупать оборудование
   if (crewModel.traits && crewModel.traits.some(t => t.includes("Animal"))) {
-    alert(t("animal_no_equipment"));
+    showErrorToast(t("animal_no_equipment"));
     return;
   }
 
   // Модели с трейтом Fully Equipped не могут покупать оборудование
   if (crewModel.traits && crewModel.traits.some(t => t.includes("Fully Equipped"))) {
-    alert(t("fully_equipped_no_equipment"));
+    showErrorToast(t("fully_equipped_no_equipment"));
     return;
   }
 
@@ -3769,7 +3769,7 @@ function openEquipmentMenu(model, cardElement, uid) {
   // трейта; раньше сюда не попадал, и модель могла покупать снаряжение
   // фракции как обычная.
   if (crewModel.traits && crewModel.traits.some(t => t.includes("Dots Suit"))) {
-    alert(t("dots_suit_no_equipment"));
+    showErrorToast(t("dots_suit_no_equipment"));
     return;
   }
 
@@ -3780,7 +3780,7 @@ function openEquipmentMenu(model, cardElement, uid) {
   if (crewModel.traits && crewModel.traits.some(tr => oneEquipmentTraits.some(lim => tr.includes(lim)))) {
     const currentEquipmentCount = (crewModel.equipment || []).length;
     if (currentEquipmentCount >= 1) {
-      alert(t("limited_equipment_max_reached"));
+      showErrorToast(t("limited_equipment_max_reached"));
       return;
     }
   }
@@ -3791,7 +3791,7 @@ function openEquipmentMenu(model, cardElement, uid) {
   if (crewModel.rankUsed === "Leader") {
     const hasLeaderPermission = (equipmentByFaction[faction] || []).some(eq => isEquipmentRankEligible(eq, crewModel));
     if (!hasLeaderPermission) {
-      alert(t('leader_no_equipment'));
+      showErrorToast(t('leader_no_equipment'));
       return;
     }
   }
@@ -3979,14 +3979,14 @@ function openEquipmentMenu(model, cardElement, uid) {
       const usedFunding = getCrewUsedFunding();
       const availableFunding = bmgFundingLimit() - usedFunding;
       if (availableFunding < cost) {
-        alert(t("equipment_insufficient_funds"));
+        showErrorToast(t("equipment_insufficient_funds"));
         return;
       }
 
       // 21 предмет добавляет ещё и Rep (Ancient Plants +40, The Turning +10, ...).
       // Проверялся только бюджет, поэтому отряд молча уезжал за лимит репутации.
       if ((eq.repCost || 0) && getCrewTotalRep() + eq.repCost > BMG_REP_LIMIT) {
-        alert(t("equipment_exceeds_rep"));
+        showErrorToast(t("equipment_exceeds_rep"));
         return;
       }
 
@@ -4045,7 +4045,7 @@ function resetCrew() {
 // Отдельный экран поверх билдера: удобный список набранной банды с апгрейдами.
 // Сюда перенесены "Сохранить" и "Экспорт в PDF" — в самом билдере их больше нет.
 function openRosterPreview() {
-  if (!crew.length) { alert(t('crew_empty_preview')); return; }
+  if (!crew.length) { showErrorToast(t('crew_empty_preview')); return; }
   currentMode = 'rosterView';
   $('builderSection').style.display = 'none';
   $('rosterPreviewSection').style.display = 'block';
@@ -4238,7 +4238,7 @@ const PRINT_FIT_JS = `
 
 function exportRoster() {
   if (crew.length === 0) {
-    alert(t("export_empty_roster"));
+    showErrorToast(t("export_empty_roster"));
     return;
   }
 
@@ -4312,7 +4312,7 @@ function exportRoster() {
 
   const win = window.open('', '_blank');
   if (!win) {
-    alert(t('popup_blocked'));
+    showErrorToast(t('popup_blocked'));
     return;
   }
   win.document.open();
