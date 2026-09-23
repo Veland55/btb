@@ -490,7 +490,6 @@ const traitDescriptions = {
     "God's Work": "During the Raise the Plan phase, target an enemy model. Attacks this model performs against the targeted model gain +1 to the Attack dice roll. If this model removes a targeted model as a Casualty, it gains a free Manipulate action for the rest of the game.\r\nThis model can only perform an Attack using a weapon that causes {BLOOD_ICON} against models that have been targeted by this trait.",
     "Good Aim {SPECIAL_ICON}": "During this model's next Ranged attack this activation, before rolling, roll one of your attack dice, on a 2+ that die is a successful hit.\r\nIf it fails, remove it from the attack.",
     "Gotham City Siren": "One use only. Target another friendly model with this trait within 4” – the target gains +2 {+ATT_ICON} or {+DEF_ICON}.",
-    "Grapple Gun (Equipment Effect)": "Model gains the Grapple Gun trait.",
     "Grand Strategist": "While this model is in play and not KO, you gain +2 Resource points.",
     "Greed": "This model cannot contribute to or fulfill criteria for Objective cards that award VP for inflicting Damage, making models KO, or removing models as Casualties.",
     "Green Magic": "This model can use Green Spells. In addition, once per game this model can spend 1 MP to remove 2 Damage markers from its character card.",
