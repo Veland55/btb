@@ -2848,7 +2848,7 @@ function refreshBuilderCardPanel(modelName) {
 // показывает и сам апгрейд, и что такое X.
 let compendiumKeysByLength = null;
 
-function findRelatedRules(text, excludeName) {
+function findRelatedRules(text, excludeName, allowSelf = false) {
   if (!window.compendium || !text) return [];
   if (!compendiumKeysByLength) {
     compendiumKeysByLength = compendiumKeys
@@ -2866,10 +2866,14 @@ function findRelatedRules(text, excludeName) {
   for (const e of compendiumKeysByLength) {
     const isSelf = e.clean.toLowerCase() === exclude;
     // Самоисключённую запись (например, апгрейд "Climbing Claws" и трейт
-    // "Climbing Claws" с тем же именем) не добавляем в найденные, но её
+    // "Climbing Claws" с тем же именем) обычно не добавляем в найденные, но её
     // диапазон в тексте всё равно нужно "застолбить" — иначе более короткое
-    // вложенное имя (тут "Claws") находится вместо неё же самой.
-    if (!isSelf && found.length >= 5) break;
+    // вложенное имя (тут "Claws") находится вместо неё же самой. allowSelf
+    // включает её всё же показывать — нужно попапам снаряжения, где текст
+    // эффекта ("Model gains the X rule") не содержит самого определения
+    // правила X, и без этого оно нигде не показывалось бы.
+    const skip = isSelf && !allowSelf;
+    if (!skip && found.length >= 5) break;
     // Поиск с учётом регистра: названия правил в текстах пишутся с заглавных букв
     let idx = plain.indexOf(e.clean);
     while (idx !== -1) {
@@ -2880,7 +2884,7 @@ function findRelatedRules(text, excludeName) {
       const overlaps = claimed.some(r => idx < r[1] && end > r[0]);
       if (isWholeWord && !overlaps) {
         claimed.push([idx, end]);
-        if (!isSelf) found.push(e.key);
+        if (!skip) found.push(e.key);
         break;
       }
       idx = plain.indexOf(e.clean, idx + 1);
@@ -2889,8 +2893,8 @@ function findRelatedRules(text, excludeName) {
   return found;
 }
 
-function relatedRulesHTML(text, excludeName) {
-  const names = findRelatedRules(text, excludeName);
+function relatedRulesHTML(text, excludeName, allowSelf = false) {
+  const names = findRelatedRules(text, excludeName, allowSelf);
   const items = names.map(name => {
     const desc = window.compendium[name] || getTraitDescription(name);
     if (!desc) return '';
@@ -2948,7 +2952,7 @@ function showTraitDesc(traitName) {
 // Функция для показа попапа с описанием (для трейтов и equipment) - ИСПРАВЛЕННАЯ ВЕРСИЯ
 // showRelated=false отключает блок "Связанные правила" (например, для попапов
 // с картами Event/Encounter в разделе ИГРА — там он не к месту)
-function showTraitPopup(name, desc, showRelated = true) {
+function showTraitPopup(name, desc, showRelated = true, allowSelfRule = false) {
   // Обрабатываем и название, и описание с заменой иконок
   const processedName = replaceIcons(name || '');
   const processedDesc = replaceIcons(desc || '');
@@ -2964,7 +2968,7 @@ function showTraitPopup(name, desc, showRelated = true) {
       </div>
       <div class="trait-popup-body">
         ${processedDesc}
-        ${showRelated ? relatedRulesHTML(desc || '', name) : ''}
+        ${showRelated ? relatedRulesHTML(desc || '', name, allowSelfRule) : ''}
       </div>
     </div>
   `;
@@ -2984,7 +2988,7 @@ function showEquipmentInfo(modelName, eqName) {
   const eq = crewModel && (crewModel.equipment || []).find(e => e.name === eqName);
   if (!eq) return;
   const cost = `($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})`;
-  showTraitPopup(`${eq.name} ${cost}`, (eq.effects || []).join('<br>'));
+  showTraitPopup(`${eq.name} ${cost}`, (eq.effects || []).join('<br>'), true, true);
 }
 
 // Новая функция для показа effects equipment
