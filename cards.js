@@ -17,8 +17,29 @@
 let crewCards = {}; // выбранные карты колоды: id -> число копий
 
 // ======================== ДОСТУП К КАТАЛОГУ ========================
+// Индекс по id строится один раз: раньше каждый вызов линейно перебирал
+// ~400 карт, а вызывается это на каждую карту колоды при каждой перерисовке
+let _objCardIndex = null;
 function objCardById(id) {
-  return OBJECTIVE_CARDS.find(c => c.id === id) || null;
+  if (!_objCardIndex) _objCardIndex = new Map(OBJECTIVE_CARDS.map(c => [c.id, c]));
+  return _objCardIndex.get(id) || null;
+}
+
+// Модели по нормализованному имени и realname (см. normalizeModelName) —
+// раньше каждая персональная карта сверяла имя со всеми ~670 моделями через
+// регулярку, и фильтр каталога занимал ~180 мс на каждую перерисовку
+let _modelsByCardName = null;
+function modelsByCardName(reqName) {
+  if (!_modelsByCardName) {
+    _modelsByCardName = new Map();
+    models.forEach(m => {
+      new Set([m.name, m.realname].filter(Boolean).map(normalizeModelName)).forEach(n => {
+        if (!_modelsByCardName.has(n)) _modelsByCardName.set(n, []);
+        _modelsByCardName.get(n).push(m);
+      });
+    });
+  }
+  return _modelsByCardName.get(normalizeModelName(reqName)) || [];
 }
 
 // Персональные карты показываем только если требуемую модель (или носителя
@@ -26,8 +47,7 @@ function objCardById(id) {
 function objCardModelHireable(card) {
   const hireable = m => canHireInFaction(m, currentFaction) || crew.some(cm => cm.name === m.name);
   if (card.reqModel) {
-    return models.some(m =>
-      card.reqModel.some(rn => modelMatchesCardName(m, rn)) &&
+    return card.reqModel.flatMap(modelsByCardName).some(m =>
       (!card.reqRank || getRanks(m).some(r => card.reqRank.some(rr => r.toLowerCase().includes(rr.toLowerCase())))) &&
       hireable(m)
     );

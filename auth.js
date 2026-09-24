@@ -111,7 +111,9 @@ function apiErrorText(e) {
     reset_code_expired: 'reset_code_expired',
     reset_too_many_attempts: 'reset_too_many_attempts',
     reset_bad_code: 'reset_bad_code',
-    old_password_bad: 'old_password_bad'
+    old_password_bad: 'old_password_bad',
+    game_limit: 'game_limit_msg',
+    result_locked: 'result_locked_msg'
   };
   return t(map[e && e.error] || 'server_error');
 }
@@ -137,8 +139,7 @@ async function authLogin(name, pass) {
   authToken = data.token;
   applyAuthSession(data);
   localStorage.setItem(AUTH_TOKEN_KEY, authToken);
-  await refreshSaves();
-  await refreshCollection();
+  await Promise.all([refreshSaves(), refreshCollection()]);
 }
 
 // Вход через Telegram Mini App: initData подписан ботом на сервере, здесь
@@ -151,8 +152,7 @@ async function telegramAuth() {
     authToken = data.token;
     applyAuthSession(data);
     localStorage.setItem(AUTH_TOKEN_KEY, authToken);
-    await refreshSaves();
-    await refreshCollection();
+    await Promise.all([refreshSaves(), refreshCollection()]);
     return true;
   } catch (e) {
     return false;
@@ -172,6 +172,10 @@ function authLogout() {
   // он продолжал бы опрашивать сервер мёртвым токеном и показывать данные
   // вышедшего пользователя до ручного перехода
   if (typeof resetTournamentsState === 'function') resetTournamentsState();
+  // То же для раздела ИГРА: поллинг партии без токена только копил 401
+  if (typeof stopGamePolling === 'function') stopGamePolling();
+  if (typeof currentMode !== 'undefined' && currentMode === 'game'
+      && typeof renderGame === 'function') renderGame();
   if (typeof currentMode !== 'undefined' && currentMode === 'tournaments'
       && typeof renderTournaments === 'function') renderTournaments();
   // Кнопка коллекции на карточках скрыта для гостя — без перерисовки она
@@ -413,14 +417,54 @@ function renderCollectionModal() {
 // модели плюс Rep купленного снаряжения (equipment иногда тоже стоит Rep,
 // не только Funding — формат [имя, funding, repCost]).
 function crewRepTotal(s) {
-  return (s.m || []).reduce((total, entry) => {
-    const byId = (typeof entry[3] === 'number' && models[entry[3]] && models[entry[3]].name === entry[0])
-      ? models[entry[3]] : null;
-    const base = byId || (typeof findModelByStoredName === 'function' ? findModelByStoredName(entry[0]) : null);
-    if (!base) return total; // модель могла исчезнуть из базы — как и при загрузке, тихо пропускаем
-    const eqRep = (entry[2] || []).reduce((sum, en) => sum + (Array.isArray(en) ? (en[2] || 0) : 0), 0);
-    return total + (base.rep || 0) + eqRep;
-  }, 0);
+  return rosterTotals(s).rep;
+}
+
+// ======================== РАЗБОР СОХРАНЁННОГО РОСТЕРА ========================
+// Единая точка для всех, кто читает компактный ростер (профиль, ИГРА, турниры,
+// колода целей). Раньше каждый раздел делал это по-своему: часть искала модель
+// только по имени (18 имён в data.js встречаются у разных вариантов — например
+// «The Riddler» Suicide Squad 60R показывался как 80R-лидер), часть не понимала
+// снаряжение в формате [имя, $, rep] и считала его бесплатным.
+
+// Модель записи [имя, кодРанга, [снаряжение]?, _id?]: сначала по _id (если
+// имя совпадает — база могла сдвинуться), иначе по имени с учётом переименований
+function resolveSavedEntry(entry) {
+  if (!entry || typeof models === 'undefined') return null;
+  const byId = (typeof entry[3] === 'number' && models[entry[3]] && models[entry[3]].name === entry[0])
+    ? models[entry[3]] : null;
+  return byId || (typeof findModelByStoredName === 'function' ? findModelByStoredName(entry[0]) : null);
+}
+
+// Снаряжение записи: { name, funding, rep }. Массив — уплаченная цена
+// (со скидками), строка — старый формат, цена из каталога фракции
+function savedEquipment(entry, faction) {
+  const pool = (typeof equipmentByFaction !== 'undefined' && equipmentByFaction[faction]) || [];
+  return (entry[2] || []).map(en => {
+    if (Array.isArray(en)) return { name: String(en[0] || ''), funding: en[1] || 0, rep: en[2] || 0 };
+    const eq = pool.find(e => e.name === en);
+    return { name: String(en), funding: eq ? eq.fundingCost || 0 : 0, rep: eq ? eq.repCost || 0 : 0 };
+  });
+}
+
+// Итоги ростера: Rep и Funding (с Lieutenant и снаряжением) и размер колоды целей
+function rosterTotals(s) {
+  const entries = (s && s.m) || [];
+  const resolved = entries.map(entry => ({ entry, model: resolveSavedEntry(entry) }));
+  let rep = 0, funding = 0;
+  resolved.forEach(({ entry, model }, i) => {
+    if (model) {
+      rep += model.rep || 0;
+      // Lieutenant (X): модель бесплатна, если в отряде есть X
+      const lt = (model.traits || []).find(tr => /^Lieutenant \(.+\)$/.test(tr));
+      const freeByLieutenant = lt && typeof modelMatchesCharacter === 'function'
+        && resolved.some((o, j) => j !== i && o.model && modelMatchesCharacter(o.model, lt.slice(12, -1)));
+      if (!freeByLieutenant) funding += model.funding || 0;
+    }
+    savedEquipment(entry, s.f).forEach(eq => { rep += eq.rep; funding += eq.funding; });
+  });
+  const cards = (s && Array.isArray(s.o) ? s.o : []).reduce((a, pair) => a + ((pair && pair[1]) || 0), 0);
+  return { rep, funding, cards };
 }
 
 // ======================== СОХРАНЕНИЯ ========================
@@ -543,11 +587,8 @@ function restoreCrewFromSave(s) {
   let skipped = 0;
   const eqPool = equipmentByFaction[s.f] || [];
   s.m.forEach((entry, i) => {
-    // entry[3] — _id модели; при его отсутствии (старые сохранения) ищем по имени
-    const byId = (typeof entry[3] === 'number' && models[entry[3]] && models[entry[3]].name === entry[0])
-      ? models[entry[3]] : null;
-    // findModelByStoredName: ростер мог быть сохранён до переименования моделей
-    const base = byId || findModelByStoredName(entry[0]);
+    // по _id, а для старых сохранений — по имени с учётом переименований
+    const base = resolveSavedEntry(entry);
     if (!base) { skipped++; return; } // модель могла исчезнуть из базы
     const cloned = {
       ...base,
@@ -606,9 +647,11 @@ function restoreCrewFromSave(s) {
   if (skipped) showErrorToast(t('models_skipped'));
 }
 
-function loadSavedCrew(index) {
+async function loadSavedCrew(index) {
   const s = mySaves[index];
   if (!s) return;
+  // Загрузка заменяет набранный отряд — раньше он пропадал без вопроса
+  if (typeof confirmDiscardCrew === 'function' && !(await confirmDiscardCrew())) return;
   closeAuthModal();
   restoreCrewFromSave(s);
 }
@@ -787,8 +830,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const me = await api('/api/me');
       applyAuthSession(me);
-      await refreshSaves();
-      await refreshCollection();
+      await Promise.all([refreshSaves(), refreshCollection()]);
       // Раздел "Карточки" мог отрисоваться до того, как коллекция подгрузилась
       // с сервера (async) — без этого звёздочки на карточках молча не
       // появлялись до следующего действия, менявшего сетку

@@ -47,19 +47,103 @@ function setSyncIndicator(state) {
   }
 }
 
+// ---- Что синхронизируется, а что нет ----
+// Колода целей (deck: колода, ТАЙНАЯ рука, забитые) и выбранная вкладка
+// (meta.tab) — личное состояние устройства. Раньше они уходили на сервер вместе
+// со всем gameTrack: ключ deck у обоих игроков один, поэтому колода одного
+// перезаписывала колоду другого, а руку было видно через API.
+function sharedTrackOf(track) {
+  const out = {};
+  for (const [k, v] of Object.entries(track || {})) {
+    if (k === 'deck') continue;
+    if (k === 'meta' && v && typeof v === 'object') {
+      const { tab, ...rest } = v;
+      out.meta = rest;
+    } else {
+      out[k] = v;
+    }
+  }
+  return out;
+}
+
+// Снимок общей части состояния (ключ -> JSON), которое сервер уже знает.
+// Разница с ним — "грязные" ключи: только они уходят патчем и только они
+// сохраняются поверх серверной версии, пришедшей в это время от соперника
+// (раньше опрос, пришедший в окно дебаунса, молча затирал свежий клик).
+let gameSyncedSnapshot = {};
+
+function snapshotOf(shared) {
+  const snap = {};
+  for (const [k, v] of Object.entries(shared)) snap[k] = JSON.stringify(v);
+  return snap;
+}
+
+function dirtyTrackKeys() {
+  const shared = sharedTrackOf(gameTrack);
+  const keys = new Set();
+  for (const [k, v] of Object.entries(shared)) {
+    if (gameSyncedSnapshot[k] !== JSON.stringify(v)) keys.add(k);
+  }
+  for (const k of Object.keys(gameSyncedSnapshot)) if (!(k in shared)) keys.add(k);
+  return keys;
+}
+
+// Применить серверную версию: общие ключи — с сервера, кроме своих ещё не
+// отправленных правок; локальные (колода, вкладка) — свои
+function applyServerTrack(serverTrack, updated) {
+  const server = sharedTrackOf(serverTrack || {});
+  const dirty = dirtyTrackKeys();
+  const localShared = sharedTrackOf(gameTrack);
+  const merged = { ...server };
+  dirty.forEach(k => { if (k in localShared) merged[k] = localShared[k]; else delete merged[k]; });
+  if (gameTrack.deck) merged.deck = gameTrack.deck;
+  const tab = gameTrack.meta && gameTrack.meta.tab;
+  if (tab) merged.meta = { ...(merged.meta || {}), tab };
+  gameTrack = merged;
+  gameSyncedSnapshot = snapshotOf(server);
+  if (updated) lastAppliedTrackUpdated = updated;
+  return dirty.size > 0;
+}
+
+let gameTrackPushing = false;
+
 function pushGameTrackToServer() {
   if (!activeGame) return;
   clearTimeout(gameTrackPushTimer);
+  if (!dirtyTrackKeys().size) return; // менялось только личное (колода/вкладка)
   setSyncIndicator('pending');
   // Дебаунс: серия быстрых кликов (+/- по несколько раз подряд) шлёт один
   // запрос по затишью, а не запрос на каждый клик
   gameTrackPushTimer = setTimeout(async () => {
+    gameTrackPushTimer = null;
+    if (!activeGame) return;
+    const shared = sharedTrackOf(gameTrack);
+    const patch = {};
+    dirtyTrackKeys().forEach(k => { patch[k] = k in shared ? shared[k] : null; });
+    if (!Object.keys(patch).length) { setSyncIndicator('synced'); return; }
+    const code = activeGame.code;
+    gameTrackPushing = true;
     try {
-      const { trackUpdated } = await api('/api/games/' + activeGame.code + '/track', 'POST', { track: gameTrack });
-      lastAppliedTrackUpdated = trackUpdated;
+      const r = await api('/api/games/' + code + '/track', 'POST', { patch });
+      if (!activeGame || activeGame.code !== code) return;
+      // отправленное сервер знает — фиксируем снимок, затем берём слитую
+      // версию (в ней могут быть правки соперника, пришедшие только что)
+      Object.entries(patch).forEach(([k, v]) => {
+        if (v === null) delete gameSyncedSnapshot[k]; else gameSyncedSnapshot[k] = JSON.stringify(v);
+      });
+      if (r.track) {
+        const before = JSON.stringify(sharedTrackOf(gameTrack));
+        applyServerTrack(r.track, r.trackUpdated);
+        saveGameTrack(false);
+        if (JSON.stringify(sharedTrackOf(gameTrack)) !== before) { skipNextTrackPush = true; renderGamePlay(); }
+      } else {
+        lastAppliedTrackUpdated = r.trackUpdated;
+      }
       setSyncIndicator('synced');
     } catch (e) {
       setSyncIndicator(null); // партия истекла или сеть подвела — локально всё равно сохранено
+    } finally {
+      gameTrackPushing = false;
     }
   }, 600);
 }
@@ -413,8 +497,11 @@ function loadGameTrack() {
   // typично на новом устройстве (см. восстановление игры по /api/games/mine)
   // или если оппонент правил счёт, пока это устройство было офлайн/закрыто.
   if (activeGame && activeGame.trackUpdated > lastAppliedTrackUpdated) {
-    gameTrack = activeGame.track || {};
-    lastAppliedTrackUpdated = activeGame.trackUpdated;
+    // Серверная версия новее: общие счётчики — с сервера, колода и вкладка
+    // остаются свои (на сервере их нет). Копия из localStorage — не "правка",
+    // поэтому снимок приравниваем к ней, чтобы она не перебила сервер
+    gameSyncedSnapshot = snapshotOf(sharedTrackOf(gameTrack));
+    applyServerTrack(activeGame.track, activeGame.trackUpdated);
   }
 }
 
@@ -695,19 +782,16 @@ function trackExtrasHTML(side, index, model, st, eqNames) {
 
 // ======================== ЭКРАН ИГРЫ ========================
 // Разворачивает компактный ростер в список с данными моделей из data.js
+// Модель — по _id записи (resolveSavedEntry, auth.js), а не только по имени;
+// снаряжение в обоих форматах (строка / [имя, $, rep]) — см. savedEquipment
 function resolveRoster(roster) {
-  const eqPool = equipmentByFaction[roster.f] || [];
   let totalRep = 0;
   const rows = (roster.m || []).map(entry => {
-    const model = findModelByStoredName(entry[0]);
-    const eqNames = entry[2] || [];
-    let rep = model ? (model.rep || 0) : 0;
-    eqNames.forEach(en => {
-      const eq = eqPool.find(e => e.name === en);
-      if (eq && eq.repCost) rep += eq.repCost;
-    });
+    const model = resolveSavedEntry(entry);
+    const eq = savedEquipment(entry, roster.f);
+    const rep = (model ? (model.rep || 0) : 0) + eq.reduce((sum, e) => sum + e.rep, 0);
     totalRep += rep;
-    return { name: entry[0], rank: CODE_TO_RANK[entry[1]] || entry[1], model, eqNames, rep };
+    return { name: entry[0], rank: CODE_TO_RANK[entry[1]] || entry[1], model, eqNames: eq.map(e => e.name), rep };
   });
   return { rows, totalRep };
 }
@@ -772,7 +856,7 @@ function gameResultBannerHTML() {
       <div class="game-panel-title">${t('game_result')}</div>
       <div class="game-result-winner">🏆 ${names[r.winner]}</div>
       <div class="game-result-score">${names.host} <b>${r.hostVp}</b> : <b>${r.guestVp}</b> ${names.guest}</div>
-      <button class="save-btn" onclick="editGameResult()">${t('change_result')}</button>
+      ${!r.by || r.by === currentUser ? `<button class="save-btn" onclick="editGameResult()">${t('change_result')}</button>` : ''}
     </div>`;
 }
 
@@ -897,6 +981,8 @@ function renderGamePlay() {
   const pane = (id, content) => `
     <div class="game-pane${gamePlayTab === id ? ' on' : ''}" id="game-pane-${id}">${content}</div>`;
 
+  // Перерисовка по опросу не должна прыгать по странице
+  const scrollY = window.scrollY;
   box.innerHTML = `
     <div class="game-play-bar">
       <span class="game-play-code">${t('game_code')}: <b>${activeGame.code}</b><span id="gameSyncDot" class="game-sync-dot" title="${t('game_sync_hint')}"></span><span id="gameSyncLabel" class="game-sync-label" aria-live="polite"></span></span>
@@ -918,6 +1004,7 @@ function renderGamePlay() {
       ${pane('me', rosterColumnHTML(me, 'your_roster', meIsHost ? 'host' : 'guest'))}
       ${pane('opp', rosterColumnHTML(opp, 'opponent_roster', meIsHost ? 'guest' : 'host'))}
     </div>`;
+  if (scrollY) window.scrollTo(0, scrollY);
   saveGameTrack(!skipNextTrackPush); // фиксируем инициализированные значения
   skipNextTrackPush = false;
 
@@ -942,10 +1029,10 @@ function scheduleGamePlayPoll() {
       if (resultChanged) {
         renderGamePlay();
         return; // renderGamePlay уже перепланирует поллинг
-      } else if (trackChanged) {
-        gameTrack = g.track || {};
-        lastAppliedTrackUpdated = g.trackUpdated;
-        saveGameTrack(false); // уже с сервера — сохранить локально, но не пушить обратно
+      } else if (trackChanged && !gameTrackPushing) {
+        // Во время своего пуша не применяем: ответ пуша сам вернёт слитую версию
+        const hasLocalEdits = applyServerTrack(g.track, g.trackUpdated);
+        saveGameTrack(hasLocalEdits); // свои неотправленные правки — дослать, остальное эхом не пушим
         skipNextTrackPush = true; // и вызванный ниже рендер тоже пусть не пушит эхом
         renderGamePlay();
         return;
@@ -1020,6 +1107,10 @@ function leaveGame() {
   localStorage.removeItem(GAME_CODE_KEY);
   activeGame = null;
   gameTrack = {};
+  gameSyncedSnapshot = {};
+  lastAppliedTrackUpdated = 0;
+  clearTimeout(gameTrackPushTimer);
+  gameTrackPushTimer = null;
   gameConditions = null; // при следующей настройке условия перебросятся заново
   gameResultEditing = false;
   gameFinishing = false;

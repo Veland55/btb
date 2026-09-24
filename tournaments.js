@@ -130,7 +130,7 @@ async function renderTournaments() {
 
   box.innerHTML = `<p class="stats-loading">${t('stats_loading')}</p>`;
   try {
-    tournamentList = (await api('/api/tournaments')).tournaments || [];
+    tournamentList = await fetchTournamentList();
   } catch (e) {
     stopTnPolling();
     box.innerHTML = `<div class="game-panel game-center"><p class="game-note">${apiErrorText(e)}</p></div>`;
@@ -179,17 +179,52 @@ function scheduleTnPoll() {
     if (currentMode !== 'tournaments' || !tournamentRole || !currentUser) { stopTnPolling(); return; }
     if (document.hidden) { scheduleTnPoll(); return; }   // вкладка в фоне — не тратим запрос
     try {
-      const fresh = (await api('/api/tournaments')).tournaments || [];
+      const fresh = await fetchTournamentList();
       tnPollBackoff = 0;
       if (tnListSignature(fresh) !== tnListSignature(tournamentList)) {
         tournamentList = fresh;
-        renderTournamentsView();
+        renderTournamentsViewKeepingForms();
       }
     } catch (e) {
       tnPollBackoff = Math.min(tnPollBackoff + 1, 4);    // сервер мог мигнуть — экран не трогаем
     }
     if (currentMode === 'tournaments' && tournamentRole) scheduleTnPoll();
   }, delay);
+}
+
+// Лента турниров: общая страница (последние 50 по всей системе) плюс "мои"
+// (организатор/участник). Раньше бралась только общая страница, и свои
+// турниры старше 50 последних пропадали и из вида организатора, и из списка
+// регистраций. Сервер отдаёт их по scope=mine.
+async function fetchTournamentList() {
+  const [all, mine] = await Promise.all([
+    api('/api/tournaments'),
+    api('/api/tournaments?scope=mine&limit=100')
+  ]);
+  const byId = new Map();
+  [...(mine.tournaments || []), ...(all.tournaments || [])].forEach(tn => byId.set(tn.id, tn));
+  return [...byId.values()].sort((a, b) => (b.created || 0) - (a.created || 0));
+}
+
+// Перерисовка по опросу, не теряя введённого: раньше смена списка (кто-то
+// записался, пришёл результат) стирала форму создания турнира или заметки,
+// пока организатор их заполнял. Значения полей с id и фокус переносим.
+function renderTournamentsViewKeepingForms() {
+  const box = $('tournamentsContent');
+  if (!box) return;
+  const values = {};
+  box.querySelectorAll('input[id], textarea[id], select[id]').forEach(el => {
+    values[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+  const focusedId = document.activeElement && box.contains(document.activeElement) ? document.activeElement.id : null;
+  renderTournamentsView();
+  Object.entries(values).forEach(([id, v]) => {
+    const el = document.getElementById(id);
+    if (!el || !box.contains(el)) return;
+    if (el.type === 'checkbox') el.checked = v; else el.value = v;
+  });
+  if (focusedId) { const el = document.getElementById(focusedId); if (el) el.focus(); }
+  if (tnRostersOpenId) updateTnChecklist(tnRostersOpenId);
 }
 
 // Перерисовка из кэша tournamentList (без запроса к серверу)
@@ -254,6 +289,9 @@ async function createTournament() {
     reserve: parseInt($('tnReserve').value, 10) || 0,
     rosterLockDays: parseInt($('tnLockDays').value, 10) || 0,
     orgNick: ($('tnOrgNick').value || '').trim(),
+    // Смещение пояса организатора на дату начала: без него сервер считал
+    // дедлайн блокировки ростеров в своём поясе
+    tzOffset: $('tnDateStart').value ? new Date($('tnDateStart').value).getTimezoneOffset() : null,
     info: ($('tnInfo').value || '').trim() || null
   };
   if (!body.address || !body.dateStart || !body.orgNick || !Number.isInteger(body.maxPlayers)) {
@@ -287,7 +325,7 @@ async function showTournamentPlayerRosters(tnId, playerName) {
   const rosterBlock = (s, num) => {
     if (!s) return `<p>${t('tn_list')} ${num}: ${t('tn_rosters_missing')}</p>`;
     const st = tournamentRosterStats(s);
-    const rows = s.m.map(e => `• ${tnEsc(e[0])} (${tnEsc(e[1])})${e[2] && e[2].length ? ' — ' + tnEsc(e[2].join(', ')) : ''}`).join('<br>');
+    const rows = s.m.map(e => `• ${tnEsc(e[0])} (${tnEsc(e[1])})${e[2] && e[2].length ? ' — ' + tnEsc(savedEquipment(e, s.f).map(x => x.name).join(', ')) : ''}`).join('<br>');
     return `<p><b>${t('tn_list')} ${num}: ${tnEsc(s.n)}</b><br>
       ${tnEsc(s.f)} • ${st.rep} Rep • $${st.funding} • ${st.cards} ${t('tn_cards_word')}<br>${rows}</p>`;
   };
@@ -627,19 +665,11 @@ async function toggleTnRosters(id) {
 
 // ======================== ПОДАЧА ТУРНИРНЫХ РОСТЕРОВ ========================
 // Фактические Rep / Funding / размер колоды сохранённого ростера — по data.js
+// Общая реализация с профилем и ИГРОЙ (rosterTotals в auth.js): модель по _id,
+// снаряжение в обоих форматах. Здесь раньше снаряжение формата [имя, $, rep]
+// не находилось вовсе и считалось бесплатным — чек-лист пропускал перебор лимита
 function tournamentRosterStats(save) {
-  const eqPool = (typeof equipmentByFaction !== 'undefined' && equipmentByFaction[save.f]) || [];
-  let rep = 0, funding = 0;
-  (save.m || []).forEach(entry => {
-    const model = findModelByStoredName(entry[0]);
-    if (model) { rep += model.rep || 0; funding += model.funding || 0; }
-    (entry[2] || []).forEach(en => {
-      const eq = eqPool.find(e => e.name === en);
-      if (eq) { rep += eq.repCost || 0; funding += eq.fundingCost || 0; }
-    });
-  });
-  const cards = (save.o || []).reduce((a, pair) => a + (pair[1] || 0), 0);
-  return { rep, funding, cards };
+  return rosterTotals(save);
 }
 
 // Чек-лист соответствия правилам турнира для выбранной пары сохранений

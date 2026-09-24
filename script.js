@@ -667,7 +667,9 @@ const translations = {
     gc_no_rp: "Resource Points закончились. Стоимость печатается на карте — продолжить всё равно?",
     gc_suspect_limit: "⚠ Больше 8 Suspect-маркеров одного игрока на столе быть не может.",
     gc_traits: "ТРЕЙТЫ ОТРЯДА ПО КАРТАМ ЦЕЛЕЙ",
-    gc_traits_hint: "Эти трейты ваших моделей влияют на колоду, руку или фишки. Тап — полный текст правила."
+    gc_traits_hint: "Эти трейты ваших моделей влияют на колоду, руку или фишки. Тап — полный текст правила.",
+    game_limit_msg: "Слишком много созданных игр за сутки — завершите или покиньте старые.",
+    result_locked_msg: "Итог записал соперник — исправить его может только он."
   },
   en: {
     cards: "CARDS",
@@ -1103,15 +1105,19 @@ const translations = {
     gc_no_rp: "You are out of Resource Points. The cost is printed on the card — continue anyway?",
     gc_suspect_limit: "⚠ A player cannot have more than 8 Suspect markers in the gaming area.",
     gc_traits: "CREW TRAITS THAT TOUCH OBJECTIVE CARDS",
-    gc_traits_hint: "These traits of your models affect the deck, the hand or the tokens. Tap for the full rule."
+    gc_traits_hint: "These traits of your models affect the deck, the hand or the tokens. Tap for the full rule.",
+    game_limit_msg: "Too many games created in the last day — finish or leave the old ones.",
+    result_locked_msg: "The result was recorded by your opponent — only they can change it."
   }
 };
 
+// split/join вместо String.replace: строка-замена в replace понимает шаблоны
+// "$&", "$'" и т.п. — название сохранения "My $& crew" превращалось в "My {name} crew"
 function t(key, params = {}) {
   const lang = translations[currentLang] || translations.ru;
   let text = lang[key] || translations.ru[key] || key;
   for (const [param, value] of Object.entries(params)) {
-    text = text.replace(new RegExp(`\\{${param}\\}`, 'g'), value);
+    text = text.split(`{${param}}`).join(String(value));
   }
   return text;
 }
@@ -1720,31 +1726,46 @@ const addToCrew = m => {
   if (!isMinionOrHorde && hasInCrew(m)) {
     removeFromCrew(m);
   } else {
-    let ranks = getHireableRanks(m);
-
-    if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && !ranks.includes("Leader")) {
+    if (!BMG_BOSS && factionRules.mustHaveLeaderAsBoss && !getHireableRanks(m).includes("Leader")) {
       showErrorToast(t("leader_first"));
       return;
     }
 
-    // Если босс — Sidekick, и модель имеет оба ранга (Leader и Sidekick), автоматически выбираем Sidekick
-    if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick" && ranks.includes("Leader") && ranks.includes("Sidekick")) {
-      ranks = ["Sidekick"];
-    }
-
+    const ranks = availableRanksFor(m);
     if (ranks.length === 1) {
       addModelWithRank(m, ranks[0]);
     } else if (ranks.length > 1) {
       showRankSelectionModal(m, ranks);
+    } else if (m.name === "Henry Ducard" && getHireableRanks(m).includes("Sidekick")) {
+      showErrorToast(t("henry_ducard_sidekick_requires_ras"));
     } else {
       showErrorToast(t("rank_not_found"));
     }
   }
-
-  modifiers = calculateModifiers();
-  updateCrewBar();
-  renderMiniCardsBuilder();
+  // Пересчёт и перерисовку делают сами removeFromCrew/addModelWithRank —
+  // раньше здесь они повторялись ещё раз на каждый клик
 };
+
+// Ранги, за которые модель можно нанять прямо сейчас. Раньше эти правила были
+// скопированы в addToCrew, addModelWithRank и showRankSelectionModal:
+//   • босс — Sidekick: модель с рангами Leader и Sidekick идёт только Sidekick;
+//   • Henry Ducard — Sidekick только при лидере Ra's al Ghul (Decoy).
+function availableRanksFor(model) {
+  let ranks = getHireableRanks(model);
+  if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick") {
+    const own = getRanks(model);
+    if (own.includes("Leader") && own.includes("Sidekick")) ranks = ranks.filter(r => r !== "Leader");
+  }
+  if (model.name === "Henry Ducard" && ranks.includes("Sidekick") && !henryDucardSidekickAllowed()) {
+    ranks = ranks.filter(r => r !== "Sidekick");
+  }
+  return ranks;
+}
+
+// Реальная модель в data.js называется "Ra's al Ghul (Decoy)" — со скобками
+function henryDucardSidekickAllowed() {
+  return !!(BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul (Decoy)" && BMG_BOSS.rankUsed === "Leader");
+}
 
 function addModelWithRank(model, chosenRank) {
   // Treacherous: "This model cannot be the Boss of your crew."
@@ -1766,26 +1787,11 @@ function addModelWithRank(model, chosenRank) {
     return;
   }
 
-  // Если босс — Sidekick, и модель имеет оба ранга (Leader и Sidekick), то можно добавить только как Sidekick
-  if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick") {
-    const modelRanks = getRanks(model);
-    if (modelRanks.includes("Leader") && modelRanks.includes("Sidekick") && chosenRank === "Leader") {
-      showErrorToast(t("boss_sidekick"));
-      return;
-    }
-  }
-
-  // Специальное правило для Henry Ducard: может быть Sidekick только если лидером нанят Ra's al Ghul Decoy
-  if (model.name === "Henry Ducard" && chosenRank === "Sidekick") {
-    // ИСПРАВЛЕНО: реальная модель в data.js называется "Ra's al Ghul (Decoy)"
-    // (со скобками, как и другие варианты персонажей) — старое сравнение с
-    // "Ra's al Ghul Decoy" (без скобок) не совпадало никогда, из-за чего
-    // Henry Ducard нельзя было нанять как Sidekick вообще ни при каком составе банды.
-    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul (Decoy)" && BMG_BOSS.rankUsed === "Leader";
-    if (!hasRasGhulDecoyAsLeader) {
-      showErrorToast(t("henry_ducard_sidekick_requires_ras"));
-      return;
-    }
+  // Ранг, который правила сейчас не дают (см. availableRanksFor)
+  if (!availableRanksFor(model).includes(chosenRank)) {
+    showErrorToast(t(model.name === "Henry Ducard" && chosenRank === "Sidekick"
+      ? "henry_ducard_sidekick_requires_ras" : "boss_sidekick"));
+    return;
   }
 
   const cloned = { ...model, rankUsed: chosenRank, uniqueId: Date.now() + Math.random(), equipment: [] };
@@ -1823,7 +1829,9 @@ function addModelWithRank(model, chosenRank) {
   }
 
   // Kobra Swarm: "is added automatically to the crew when you hire a model with the Void Priest trait"
-  if (cloned.traits.includes("Void Priest")) {
+  // Один Swarm на отряд: раньше каждый следующий Void Priest добавлял ещё
+  // одну копию, а после удаления жрецов Swarm оставался (см. removeFromCrew)
+  if (cloned.traits.includes("Void Priest") && !crew.some(m => m.traits && m.traits.includes("Kobra Swarm"))) {
     const swarmModel = models.find(m => m.traits && m.traits.includes("Kobra Swarm"));
     if (swarmModel) {
       crew.unshift({ ...swarmModel, rankUsed: "Henchman", uniqueId: Date.now() + Math.random(), equipment: [] });
@@ -1864,27 +1872,7 @@ function addModelWithRank(model, chosenRank) {
 
 // Модальное окно выбора ранга
 function showRankSelectionModal(model, ranks) {
-  // Если босс — Sidekick, и модель имеет оба ранга (Leader и Sidekick), показываем только Sidekick
-  let availableRanks = ranks;
-  if (BMG_BOSS && BMG_BOSS.rankUsed === "Sidekick") {
-    const modelRanks = getRanks(model);
-    if (modelRanks.includes("Leader") && modelRanks.includes("Sidekick")) {
-      availableRanks = ["Sidekick"];
-    }
-  }
-
-  // Специальное правило для Henry Ducard: может быть Sidekick только если лидером нанят Ra's al Ghul Decoy
-  if (model.name === "Henry Ducard" && availableRanks.includes("Sidekick")) {
-    // ИСПРАВЛЕНО: реальная модель в data.js называется "Ra's al Ghul (Decoy)"
-    // (со скобками, как и другие варианты персонажей) — старое сравнение с
-    // "Ra's al Ghul Decoy" (без скобок) не совпадало никогда, из-за чего
-    // Henry Ducard нельзя было нанять как Sidekick вообще ни при каком составе банды.
-    const hasRasGhulDecoyAsLeader = BMG_BOSS && BMG_BOSS.name === "Ra's al Ghul (Decoy)" && BMG_BOSS.rankUsed === "Leader";
-    if (!hasRasGhulDecoyAsLeader) {
-      // Если Ra's al Ghul Decoy не лидер, убираем Sidekick из доступных рангов
-      availableRanks = availableRanks.filter(r => r !== "Sidekick");
-    }
-  }
+  const availableRanks = ranks; // уже отфильтрованы availableRanksFor
 
   // Создаём overlay. role/aria-label/focus trap/Escape — как у appPrompt/
   // appConfirm (см. ниже): это самая частая модалка в приложении (открывается
@@ -1919,11 +1907,8 @@ function showRankSelectionModal(model, ranks) {
   overlay.querySelectorAll(".rank-select-btn").forEach(btn => {
     btn.onclick = () => {
       const chosenRank = btn.dataset.rank;
-      addModelWithRank(model, chosenRank);
-      modifiers = calculateModifiers();
-      updateCrewBar();
-      renderMiniCardsBuilder();
       finish();
+      addModelWithRank(model, chosenRank); // сам пересчитывает и перерисовывает
     };
   });
   overlay.querySelector(".rank-select-close").onclick = finish;
@@ -2045,6 +2030,10 @@ const removeFromCrew = m => {
     // оставались в отряде, и его можно было сохранить/экспортировать нелегальным:
     // ревалидации состава не было вовсе, кроме двух частных случаев выше.
     // Цикл — на случай цепочки зависимостей (A требует B, B требует C).
+    // Kobra Swarm существует только вместе с Void Priest, который его привёл
+    if (!crew.some(x => x.traits && x.traits.includes("Void Priest"))) {
+      crew = crew.filter(x => !(x.traits && x.traits.includes("Kobra Swarm")));
+    }
     let removedDependent = true;
     while (removedDependent && crew.length) {
       removedDependent = false;
@@ -2264,7 +2253,7 @@ function renderUpgradeFlapHTML(item, equipment) {
   const chips = equipment.map(eq => {
     const safeEq = eq.name.replace(/'/g, "\\'");
     return `
-    <span class="flap-chip" onclick="event.stopPropagation(); showEquipmentInfo('${safeName}', '${safeEq}')">
+    <span class="flap-chip" onclick="event.stopPropagation(); showEquipmentInfo('${safeName}', '${safeEq}', '${uid}')">
       <span class="flap-chip-name">${eq.name}</span>
       ${eq.fundingCost ? `<b>$${eq.fundingCost}</b>` : ''}${eq.repCost ? `<b>+${eq.repCost}R</b>` : ''}
       <span class="flap-chip-remove" onclick="event.stopPropagation(); removeEquipmentFromModel('${safeName}', '${safeEq}', '${uid}')">×</span>
@@ -2283,6 +2272,16 @@ function crewInstance(modelName, uid) {
     if (byUid) return byUid;
   }
   return crew.find(m => m.name === modelName && m.rankUsed) || crew.find(m => m.name === modelName);
+}
+
+// Экземпляр отряда для карточки: сама копия (из отряда/просмотра), её
+// instance, иначе — копия той же модели по _id. Поиск по имени путал 18 имён,
+// которые в data.js встречаются у разных вариантов, и копии Horde/Minion
+function crewInstanceOf(model) {
+  if (!model) return null;
+  if (model.instance) return model.instance;
+  if (model.uniqueId != null) return crew.find(m => m.uniqueId === model.uniqueId) || null;
+  return crew.find(m => sameModel(m, model)) || null;
 }
 
 // Обёртка «карточка + панель апгрейдов снизу» — общая для билдера и просмотра ростера
@@ -2323,7 +2322,8 @@ function getFactionEligibleModels(faction) {
     const affinityTraits = m.traits.filter(t => t.startsWith("Affinity (") && t.endsWith(")"));
     for (const trait of affinityTraits) {
       const targetModelName = trait.replace("Affinity (", "").replace(")", "");
-      if (!crew.some(crewMember => crewMember.name === targetModelName)) {
+      // Как в bmgHireException: цель Affinity — персонаж (имя/realname/версия)
+      if (!crew.some(crewMember => modelMatchesCharacter(crewMember, targetModelName))) {
         return false;
       }
     }
@@ -2697,7 +2697,8 @@ const buildFullCardHTML = model => {
     : "";
 
   // Новый блок: equipment (только если есть в crewModel)
-  const crewModel = crew.find(m => m.name === model.name); // Находим экземпляр в crew
+  const crewModel = crewInstanceOf(model);
+  const uid = crewModel && crewModel.uniqueId != null ? String(crewModel.uniqueId) : '';
   let equipmentHTML = '';
   if (crewModel && crewModel.equipment && crewModel.equipment.length > 0) {
     equipmentHTML = `
@@ -2711,9 +2712,9 @@ const buildFullCardHTML = model => {
             const safeModel = model.name.replace(/'/g, "\\'");
             const safeEq = eq.name.replace(/'/g, "\\'");
             return `
-            <div class="official-trait-item equipment-item" onclick="showEquipmentInfo('${safeModel}', '${safeEq}')">
+            <div class="official-trait-item equipment-item" onclick="showEquipmentInfo('${safeModel}', '${safeEq}', '${uid}')">
               ${eq.name} <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>.
-              <span class="remove-eq" onclick="event.stopPropagation(); removeEquipmentFromModel('${safeModel}', '${safeEq}')">×</span>
+              <span class="remove-eq" onclick="event.stopPropagation(); removeEquipmentFromModel('${safeModel}', '${safeEq}', '${uid}')">×</span>
             </div>`;
           }).join("")}
         </div>
@@ -2911,43 +2912,21 @@ function relatedRulesHTML(text, excludeName, allowSelf = false) {
 
 // ======================== ТРЕЙТЫ ========================
 function showTraitDesc(traitName) {
-  // 1. Твоя родная логика поиска 1 в 1
   const entry = findCompendiumEntry(traitName);
-  
-  // 2. Извлекаем текст (проверяем, объект это или строка)
-  let rawText = "";
-  if (entry) {
-    rawText = (typeof entry === 'object' && entry.description) ? entry.description : entry;
-  } else {
-    rawText = "Description not found in Compendium.";
-  }
-
-  // 3. Создаем элементы
-  const overlay = document.createElement("div");
-  overlay.className = "trait-popup";
-
-  // Обрабатываем иконки в заголовке и в самом тексте
-  const formattedTitle = replaceIcons(traitName);
-  const formattedBody = replaceIcons(rawText).replace(/\n/g, "<br>");
-
-  overlay.innerHTML = `
-    <div class="trait-popup-content">
-      <div class="trait-popup-header">
-        <strong>${formattedTitle}</strong>
-        <button type="button" class="trait-popup-close" onclick="this.closest('.trait-popup').remove()" aria-label="${t('close_modal')}">×</button>
-      </div>
-      <div class="trait-popup-body">
-        ${formattedBody}
-        ${relatedRulesHTML(rawText, traitName)}
-      </div>
-    </div>
-  `;
-
-  // Закрытие по клику на фон
-  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
-
-  document.body.appendChild(overlay);
+  const rawText = entry
+    ? ((typeof entry === 'object' && entry.description) ? entry.description : entry)
+    : "Description not found in Compendium.";
+  // Та же разметка попапа, что у showTraitPopup (раньше была отдельной копией)
+  showTraitPopup(traitName, String(rawText).replace(/\n/g, "<br>"));
 }
+
+// Escape закрывает верхний попап трейта/снаряжения — у rank/prompt/confirm
+// это уже было, а у самых частых окон (трейты, снаряжение) — нет
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const popups = document.querySelectorAll('.trait-popup, .equipment-modal');
+  if (popups.length) popups[popups.length - 1].remove();
+});
 
 // Функция для показа попапа с описанием (для трейтов и equipment) - ИСПРАВЛЕННАЯ ВЕРСИЯ
 // showRelated=false отключает блок "Связанные правила" (например, для попапов
@@ -2983,8 +2962,8 @@ function showTraitPopup(name, desc, showRelated = true, allowSelfRule = false) {
 
 // Инфо о купленном апгрейде по клику на чип в списке билдера:
 // показывает эффекты и (через relatedRulesHTML) расшифровку упомянутых в них правил
-function showEquipmentInfo(modelName, eqName) {
-  const crewModel = crew.find(m => m.name === modelName);
+function showEquipmentInfo(modelName, eqName, uid) {
+  const crewModel = crewInstance(modelName, uid);
   const eq = crewModel && (crewModel.equipment || []).find(e => e.name === eqName);
   if (!eq) return;
   const cost = `($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})`;
@@ -3006,7 +2985,7 @@ function removeEquipmentFromModel(modelName, eqName, uid) {
       // Перерендерим полную карточку, только если она сейчас открыта
       // (иначе удаление equipment из списка билдера непреднамеренно открывало модалку)
       if ($("fullCard").classList.contains("active")) {
-        showFullCard(models.find(m => m.name === modelName));
+        showFullCard(crewModel);
       }
       // Обновляем боковую панель билдера, если в ней открыта эта модель
       refreshBuilderCardPanel(modelName);
@@ -3059,7 +3038,10 @@ window.addEventListener("beforeunload", (e) => {
 });
 
 // ======================== ИНИЦИАЛИЗАЦИЯ ========================
-window.addEventListener("load", () => {
+// DOMContentLoaded, а не load: скрипты подключены с defer и к этому моменту уже
+// выполнены, а load ждал ещё шрифты, картинки и скрипт Telegram — до него
+// вкладки фракций были пусты, а у моделей не было _id
+document.addEventListener("DOMContentLoaded", () => {
   // Генерируем карточки фракций (одинаковы для cardsSection и builderSection)
   renderFactionCards();
 
@@ -3116,7 +3098,8 @@ window.addEventListener("load", () => {
       }
 
       // Опционально: предупреждение, если текущий отряд превышает новый лимит
-      const currentRep = crew.reduce((a, m) => a + (m.rep || 0), 0);
+      // С учётом Rep снаряжения — как и все остальные проверки лимита
+      const currentRep = getCrewTotalRep();
       if (currentRep > BMG_REP_LIMIT) {
         showErrorToast(t("rep_exceeds", { current: currentRep, new: BMG_REP_LIMIT }));
       }
@@ -3453,7 +3436,7 @@ function bmgCanAddModel(model) {
         const veteranMatch = modelTrait.match(/^Veteran \((.+)\)$/);
         if (veteranMatch) {
           const type = veteranMatch[1];
-          const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Veteran \\(${type}\\)$`)))).length;
+          const count = crew.filter(m => m.traits.includes(`Veteran (${type})`)).length;
           if (count >= 1 + (modifiers.extraVeterans[type] || 0)) {
             showErrorToast(t("veteran_limit_exceeded", { type }));
             veteranExceeded = true;
@@ -3509,7 +3492,8 @@ function bmgCanAddModel(model) {
     const eliteMatch = modelTrait.match(/^Elite \((.+)\)$/);
     if (eliteMatch) {
       const type = eliteMatch[1];
-      const count = crew.filter(m => m.traits.some(u => u.match(new RegExp(`^Elite \\(${type}\\)$`)))).length;
+      // Точное сравнение строк: тип раньше вставлялся в RegExp без экранирования
+      const count = crew.filter(m => m.traits.includes(`Elite (${type})`)).length;
       // Проверяем, есть ли в отряде Elite Boss этого типа
       const hasEliteBoss = crew.some(m => m.traits.some(u => u === `Elite Boss (${type})`));
       const limit = hasEliteBoss ? 99 : 1 + (modifiers.extraElites[type] || 0);
@@ -3616,7 +3600,7 @@ function bmgCanAddModel(model) {
     if (affinityMatch && !getFactions(model).includes(currentFaction)) {
       const affinityTarget = affinityMatch[1];
       // Модель с Affinity может присоединиться только если в отряде есть целевая модель
-      if (!crew.some(m => m.name === affinityTarget)) {
+      if (!crew.some(m => modelMatchesCharacter(m, affinityTarget))) {
         showErrorToast(t("affinity_requires_model", { model: model.name, target: affinityTarget }));
         exceeded = true;
       }
@@ -3802,7 +3786,7 @@ function openEquipmentMenu(model, cardElement, uid) {
 
   const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
     // Проверка maxPerCrew (ограничение на количество предметов в отряде)
-    const currentCount = crew.flatMap(m => m.equipment || []).filter(e => e.name === eq.name).length;
+    const currentCount = crewEquipmentCounts[eq.name] || 0;
     if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
 
     // Модель не может иметь одно и то же оборудование дважды
@@ -4106,8 +4090,9 @@ function renderRosterPreview() {
   const sorted = sortModelsByRank(crew.slice());
   const fragment = document.createDocumentFragment();
   sorted.forEach(m => {
-    const originalModel = models.find(model => model.name === m.name) || m;
-    const item = { ...originalModel, inCrew: true, count: countInCrew(originalModel), instance: m };
+    // Данные берём из самого экземпляра: поиск в models по имени подменял
+    // вариант модели (18 имён в data.js дублируются с разной стоимостью/рангом)
+    const item = { ...m, inCrew: true, count: countInCrew(m), instance: m };
     const div = document.createElement('div');
     div.className = 'mini-card';
     div.dataset.name = item.name;
@@ -4128,7 +4113,7 @@ function renderRosterPreview() {
 
 // Секция снаряжения для правой колонки печати
 function buildEquipmentGlossaryHTML(model) {
-  const crewModel = crew.find(m => m.name === model.name);
+  const crewModel = crewInstanceOf(model);
   if (!crewModel || !(crewModel.equipment || []).length) return '';
   const items = crewModel.equipment.map(eq => `
     <div class="sidebar-entry">
@@ -4260,12 +4245,13 @@ function exportRoster() {
     </tr>`).join('');
 
   // Страница на каждую модель: карточка + расшифровка правил
+  // Сам экземпляр отряда, а не поиск в models по имени: иначе печатался
+  // другой вариант модели с тем же именем и снаряжение первой копии Horde
   const pages = crew.map(m => {
-    const base = models.find(x => x.name === m.name) || m;
-    const rulesHTML = buildGlossaryHTML(base) + buildEquipmentGlossaryHTML(base);
+    const rulesHTML = buildGlossaryHTML(m) + buildEquipmentGlossaryHTML(m);
     return `
     <section class="print-page">
-      <div class="print-card">${buildFullCardHTML(base)}</div>
+      <div class="print-card">${buildFullCardHTML(m)}</div>
       <div class="print-rules">${rulesHTML}</div>
     </section>`;
   }).join('');

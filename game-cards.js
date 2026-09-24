@@ -338,7 +338,7 @@ function gcRosterTraits(roster) {
   if (typeof models === 'undefined' || typeof getTraitDescription !== 'function') return [];
   const found = new Map();
   (roster.m || []).forEach(entry => {
-    const model = findModelByStoredName(entry[0]);
+    const model = resolveSavedEntry(entry); // по _id — имена моделей в базе дублируются
     if (!model) return;
     (model.traits || []).forEach(tr => {
       const desc = getTraitDescription(tr);
