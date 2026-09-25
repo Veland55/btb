@@ -84,6 +84,8 @@ async function toggleEternal(on) {
     }
     crew = crew.filter(m => !m.eternal);
     if (BMG_BOSS && BMG_BOSS.eternal) { crew = []; BMG_BOSS = null; BMG_AFFILIATIONS = null; }
+    // Eternal-модель могла быть носителем правила найма или целью Affinity
+    notifyCrewRevalidation(revalidateCrew());
     updateCrewEquipmentCounts();
     modifiers = calculateModifiers();
     updateCrewBar();
@@ -263,6 +265,8 @@ const translations = {
     model_not_affiliation: "Модель не входит в аффилиацию Босса",
     model_not_match_affiliation: "Модель не совпадает по Affiliation с Боссом или не имеет аффилиации Unknown",
     model_not_match: "Модель не совпадает по Affiliation с Боссом",
+    vocational_requires_cop: "В отряде модель с Vocational — все члены отряда должны иметь трейт Cop",
+    crew_revalidated_removed: "Убраны из отряда — условие их найма больше не выполняется: {names}",
     leader_trait_required: "Для лидера {leader} разрешены только модели с трейтом \"{trait}\"",
     model_already_added: "Вы уже добавили модель с именем («{name}»)",
     only_one_leader: "Только один Leader",
@@ -701,6 +705,8 @@ const translations = {
     model_not_affiliation: "Model is not in Boss's affiliation",
     model_not_match_affiliation: "Model doesn't match Boss's Affiliation or doesn't have Unknown affiliation",
     model_not_match: "Model doesn't match Boss's Affiliation",
+    vocational_requires_cop: "A Vocational model is in the crew — all crew members must have the Cop trait",
+    crew_revalidated_removed: "Removed from the crew — their hiring condition no longer holds: {names}",
     leader_trait_required: "For leader {leader}, only models with trait \"{trait}\" are allowed",
     model_already_added: "You've already added a model named \"{name}\"",
     only_one_leader: "Only one Leader",
@@ -2006,6 +2012,55 @@ function appConfirm(message, confirmLabel) {
   });
 }
 
+// Перепроверка состава после любого изменения, кроме обычного найма
+// (удаление модели, загрузка сохранения, выключение формата Eternal).
+// Раньше пересчёта не было: модели, нанятые через Corrupt/Criminal Bonds/
+// Affinity и т.п., оставались после удаления носителя правила, а после
+// загрузки сохранения метка hireException терялась (её нет в формате
+// сохранения), счётчики "до 3" обнулялись и можно было добрать ещё трёх.
+// Метки считаются заново в порядке найма (crew — новые в начале, отсюда
+// reverse): первые по порядку занимают лимит, лишние и потерявшие основание
+// убираются. Цикл — до устойчивого состояния, т.к. убранная модель сама могла
+// быть носителем правила или требуемой моделью (цепочки зависимостей).
+// Vocational отдельно не проверяется: bmgHireException смотрит "все в отряде
+// с Cop" по текущему (полному) составу.
+// Возвращает список убранных моделей.
+function revalidateCrew() {
+  const removed = [];
+  const drop = m => { crew = crew.filter(x => x !== m); removed.push(m); };
+  let changed = true;
+  while (changed && crew.length) {
+    changed = false;
+    // Kobra Swarm существует только вместе с Void Priest, который его привёл
+    if (!crew.some(x => x.traits && x.traits.includes("Void Priest"))) {
+      const swarm = crew.find(x => x.traits && x.traits.includes("Kobra Swarm"));
+      if (swarm) { drop(swarm); changed = true; continue; }
+    }
+    const dep = crew.find(x => getUnmetDependency(x));
+    if (dep) { drop(dep); changed = true; continue; }
+    if (!BMG_BOSS) continue;
+    crew.forEach(m => { delete m.hireException; });
+    for (const m of crew.slice().reverse()) {
+      if (m === BMG_BOSS || !bmgAffiliationFailKey(m)) continue;
+      const hireException = bmgHireException(m, m.rankUsed);
+      if (hireException) {
+        m.hireException = hireException;
+      } else {
+        drop(m);
+        changed = true;
+        break;
+      }
+    }
+  }
+  return removed;
+}
+
+function notifyCrewRevalidation(removed) {
+  if (removed.length) {
+    showErrorToast(t("crew_revalidated_removed", { names: removed.map(m => m.name).join(", ") }));
+  }
+}
+
 const removeFromCrew = m => {
   // Если передан конкретный экземпляр отряда — убираем именно его: иначе при
   // нескольких копиях (Horde/Minion) удалялась последняя, а снаряжение
@@ -2025,26 +2080,9 @@ const removeFromCrew = m => {
       BMG_AFFILIATIONS = null;
       crew = [];  // Полностью очищаем отряд при удалении босса
     }
-    // Требуемая модель (modelDependencyRules) могла уйти вместе с удалённой —
-    // раньше зависимые модели (например Gray Son после удаления Lincoln March)
-    // оставались в отряде, и его можно было сохранить/экспортировать нелегальным:
-    // ревалидации состава не было вовсе, кроме двух частных случаев выше.
-    // Цикл — на случай цепочки зависимостей (A требует B, B требует C).
-    // Kobra Swarm существует только вместе с Void Priest, который его привёл
-    if (!crew.some(x => x.traits && x.traits.includes("Void Priest"))) {
-      crew = crew.filter(x => !(x.traits && x.traits.includes("Kobra Swarm")));
-    }
-    let removedDependent = true;
-    while (removedDependent && crew.length) {
-      removedDependent = false;
-      for (const dep of crew) {
-        if (getUnmetDependency(dep)) {
-          crew = crew.filter(x => x !== dep);
-          removedDependent = true;
-          break;
-        }
-      }
-    }
+    // Требуемая модель (modelDependencyRules), носитель Corrupt/Criminal Bonds,
+    // цель Affinity и т.п. могли уйти вместе с удалённой — см. revalidateCrew
+    notifyCrewRevalidation(revalidateCrew());
     updateCrewEquipmentCounts();
     modifiers = calculateModifiers();
     updateCrewBar();
@@ -2398,18 +2436,21 @@ function getFactionEligibleModels(faction) {
       if (isUnrecruitable(m)) return;
       if (!checkModelDependency(m)) return;
       if (checkAversionHidden(m)) return;
-      // "Henchman": все текущие правила с ограничением по рангу требуют
-      // именно его, а Vocational/Batman Lives/Affinity ранг не проверяют —
-      // им это значение безразлично (см. bmgHireException).
-      if (bmgHireException(m, "Henchman")) filteredModels.push(m);
+      if (bmgListHireException(m)) filteredModels.push(m);
     });
   }
 
   {
     const factionRules = factionCrewRules[faction] || {};
-    // Закрытые фракции (Court of Owls, Suicide Squad и т.п.) — только свои
+    // Закрытые фракции (Court of Owls, Suicide Squad и т.п.) — только свои,
+    // кроме нанимаемых по hire-исключению: bmgCanAddModel их в закрытой фракции
+    // пропускает, а список раньше выкидывал — Poison Ivy как Босс Suicide Squad
+    // не могла взять хенчменов по Possessed ("with any Affiliation ... Their
+    // Affiliation is assumed to be the same as this model"), хотя в Birds of
+    // Prey могла.
     if (factionRules.onlyAffiliationMembers) {
-      filteredModels = filteredModels.filter(m => getFactions(m).includes(faction));
+      filteredModels = filteredModels.filter(m => getFactions(m).includes(faction) ||
+        (BMG_BOSS && bmgListHireException(m)));
     }
     // Взаимоисключение Rivals/Affiliation (Birds of Prey ↔ GCPD)
     if (factionRules.rivalsExclusion) {
@@ -3172,24 +3213,25 @@ function hasFreeRankSlot(model) {
 // написана верно и сработала бы, если бы до неё вообще дошли.
 //
 // `rank` — ранг, за который нанимают: при найме это то, что выбрал игрок,
-// при построении списка (модель ещё не нанята) сюда передают "Henchman" —
-// все текущие правила с ограничением по рангу требуют именно его, а
-// Vocational/Batman Lives/Affinity ранг вообще не проверяют, так что для
-// них любое переданное значение равнозначно.
+// при перепроверке — rankUsed, при построении списка — см. bmgListHireException.
+// Носитель правила (Corrupt, Criminal Bonds, цель Affinity) — всегда ДРУГАЯ
+// модель отряда (cm !== model): при перепроверке (revalidateCrew) модель уже
+// в отряде и не должна оправдывать собственный найм — Detective Flass сам
+// Cop и Corrupt, и без этого остался бы после удаления Warden Sharp.
 function bmgHireException(model, rank) {
   if (!BMG_BOSS) return null;
   const bossTraits = BMG_BOSS.traits || [];
   const modelFactions = getFactions(model);
+  const otherHasTrait = trait => crew.some(cm => cm !== model && cm.traits && cm.traits.includes(trait));
+  const underLimit = rule => crew.filter(m => m.hireException === rule).length < 3;
 
   if (rank === "Henchman" && bossTraits.includes("Possessed") &&
       !model.traits.includes("Bot") && !model.traits.includes("Cybernetic") &&
-      crew.filter(m => m.hireException === "Possessed").length < 3) {
+      underLimit("Possessed")) {
     return "Possessed"; // до 3 Henchman любой аффилиации, если Босс — Possessed
   }
   if (rank === "Henchman" &&
-      crew.some(cm => cm.traits && cm.traits.includes("Corrupt")) &&
-      model.traits.includes("Cop") &&
-      crew.filter(m => m.hireException === "Corrupt").length < 3) {
+      otherHasTrait("Corrupt") && model.traits.includes("Cop") && underLimit("Corrupt")) {
     // Corrupt: "If this model is included your crew..." — носитель может быть любым членом отряда
     return "Corrupt"; // до 3 Henchman с трейтом Cop
   }
@@ -3200,9 +3242,8 @@ function bmgHireException(model, rank) {
     return "Absolute Power";
   }
   if (rank === "Henchman" &&
-      crew.some(cm => cm.traits && cm.traits.includes("Criminal Bonds")) &&
-      modelFactions.includes("Organized Crime") && model.traits.includes("Criminal") &&
-      crew.filter(m => m.hireException === "Criminal Bonds").length < 3) {
+      otherHasTrait("Criminal Bonds") && modelFactions.includes("Organized Crime") &&
+      model.traits.includes("Criminal") && underLimit("Criminal Bonds")) {
     // Criminal Bonds: "If this model is included in your crew..." — носитель любой член отряда
     return "Criminal Bonds"; // до 3 Henchman Organized Crime с трейтом Criminal
   }
@@ -3220,9 +3261,53 @@ function bmgHireException(model, rank) {
   const affinity = model.traits.filter(tr => /^Affinity \(.+\)$/.test(tr));
   for (const tr of affinity) {
     const target = tr.slice("Affinity (".length, -1).trim();
-    if (crew.some(cm => modelMatchesCharacter(cm, target))) return "Affinity";
+    if (crew.some(cm => cm !== model && modelMatchesCharacter(cm, target))) return "Affinity";
   }
   return null;
+}
+
+// Проходит ли модель обычную проверку аффилиации Босса (без hire-исключений
+// вроде Corrupt/Possessed). null — проходит, иначе ключ сообщения об ошибке.
+// Общая для найма (bmgCanAddModel) и перепроверки состава (revalidateCrew).
+function bmgAffiliationFailKey(model) {
+  if (!BMG_BOSS) return null;
+  const factionRules = factionCrewRules[currentFaction] || {};
+  const modelFactions = getFactions(model);
+  const bossFactions = BMG_AFFILIATIONS || [];
+  const hasRealAffiliationMatch = modelFactions.some(a => bossFactions.includes(a));
+  const hasUnknownBypass = modelFactions.includes("Unknown");
+
+  let passesAffiliation;
+  let failMessageKey;
+  if (factionRules.onlyAffiliationMembers) {
+    // Для Batman Who Laughs: только члены аффилиации
+    passesAffiliation = hasRealAffiliationMatch;
+    failMessageKey = "model_not_affiliation";
+  } else if (factionRules.onlyBossAffiliationOrNoAffiliation) {
+    // Для Bat Family и Cults: только аффилиация Босса или без аффилиации
+    passesAffiliation = hasRealAffiliationMatch || hasUnknownBypass;
+    failMessageKey = "model_not_match_affiliation";
+  } else {
+    // Стандартная проверка
+    passesAffiliation = hasRealAffiliationMatch || hasUnknownBypass;
+    failMessageKey = "model_not_match";
+  }
+
+  // Incorruptible: "This model can only be included into a Crew with a Boss that have its
+  // same affiliation" — для этой модели поблажка через Unknown-аффилиацию не действует
+  if (passesAffiliation && !hasRealAffiliationMatch && model.traits.includes("Incorruptible")) {
+    passesAffiliation = false;
+  }
+  return passesAffiliation ? null : failMessageKey;
+}
+
+// bmgHireException для списка найма, где ранг ещё не выбран. Раньше сюда
+// всегда передавался "Henchman" — и модель без этого ранга (Free Agent вроде
+// Damien Darhk) попадала в список по Possessed/Corrupt, но при найме за свой
+// реальный ранг отклонялась.
+function bmgListHireException(model) {
+  const ranks = getHireableRanks(model);
+  return bmgHireException(model, ranks.includes("Henchman") ? "Henchman" : ranks[0]);
 }
 
 function bmgCanAddModel(model) {
@@ -3279,7 +3364,6 @@ function bmgCanAddModel(model) {
   // Проверка аффилиации
   if (BMG_BOSS) {
     const modelFactions = getFactions(model);
-    const bossFactions = BMG_AFFILIATIONS || [];
     const bossTraits = BMG_BOSS.traits || [];
 
     // Court of Owls Crew: "This crew can only hire models with the Affiliation: The Court of Owls."
@@ -3294,32 +3378,9 @@ function bmgCanAddModel(model) {
       return false;
     }
 
-    const hasRealAffiliationMatch = modelFactions.some(a => bossFactions.includes(a));
-    const hasUnknownBypass = modelFactions.includes("Unknown");
+    const failMessageKey = bmgAffiliationFailKey(model);
 
-    let passesAffiliation;
-    let failMessageKey;
-    if (factionRules.onlyAffiliationMembers) {
-      // Для Batman Who Laughs: только члены аффилиации
-      passesAffiliation = hasRealAffiliationMatch;
-      failMessageKey = "model_not_affiliation";
-    } else if (factionRules.onlyBossAffiliationOrNoAffiliation) {
-      // Для Bat Family и Cults: только аффилиация Босса или без аффилиации
-      passesAffiliation = hasRealAffiliationMatch || hasUnknownBypass;
-      failMessageKey = "model_not_match_affiliation";
-    } else {
-      // Стандартная проверка
-      passesAffiliation = hasRealAffiliationMatch || hasUnknownBypass;
-      failMessageKey = "model_not_match";
-    }
-
-    // Incorruptible: "This model can only be included into a Crew with a Boss that have its
-    // same affiliation" — для этой модели поблажка через Unknown-аффилиацию не действует
-    if (passesAffiliation && !hasRealAffiliationMatch && model.traits.includes("Incorruptible")) {
-      passesAffiliation = false;
-    }
-
-    if (!passesAffiliation) {
+    if (failMessageKey) {
       // Специальные трейты, разрешающие найм вне аффилиации Босса — общая
       // логика со списком найма, см. bmgHireException.
       const hireException = bmgHireException(model, rank);
@@ -3331,6 +3392,13 @@ function bmgCanAddModel(model) {
       }
     }
   }
+  // Vocational: модель в отряде, "as long as all members of the crew have the
+  // Cop trait" — пока она нанята по этому правилу, модели без Cop не добавить
+  if (!model.traits.includes("Cop") && crew.some(m => m.hireException === "Vocational")) {
+    showErrorToast(t("vocational_requires_cop"));
+    return false;
+  }
+
   // Взаимоисключение Rivals/Affiliation (Birds of Prey: модели с Rivals: GCPD
   // и модели с аффилиацией GCPD не могут быть в одном отряде — в обе стороны)
   if (factionRules.rivalsExclusion) {

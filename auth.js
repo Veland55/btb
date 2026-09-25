@@ -627,6 +627,11 @@ function restoreCrewFromSave(s) {
       : getFactions(BMG_BOSS);
   }
 
+  // Метки найма по Corrupt/Possessed/Criminal Bonds и т.п. в сохранении не
+  // хранятся — без пересчёта счётчики "до 3" после загрузки обнулялись.
+  // Заодно отсеиваются модели, чьё основание для найма уже не выполняется.
+  if (typeof revalidateCrew === 'function') notifyCrewRevalidation(revalidateCrew());
+
   // Колода карт целей (карты, исчезнувшие из каталога, тихо пропускаются)
   if (typeof crewCards !== 'undefined') {
     crewCards = {};
