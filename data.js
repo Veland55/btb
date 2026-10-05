@@ -91,8 +91,10 @@ const modelDependencyRules = {
   // Ключ не должен называться просто "Two-Face" — иначе правило блокировало бы и лидера фракции Two-Face
   "Two-Face (Batman Forever)": { requiredModel: "The Riddler (Jim Carrey)" },
   
-  // Batman Michael Keaton
-  "Catwoman (Michelle Pfeiffer)": { requiredModel: "Batman (Michael Keaton)" },
+  // Batman Returns: по актуальной карте Кошка Пфайфер требует Китона ИЛИ Пингвина
+  // Девито. С одним Китоном (фракция только GCPD) её нельзя было нанять в банду
+  // Пингвина, хотя Penguin есть в её фракциях.
+  "Catwoman (Michelle Pfeiffer)": { requiredModels: ["Batman (Michael Keaton)", "The Penguin (Danny DeVito)"] },
   
   // Suicide Squad. Трейт Required (Ratcatcher 2) висит на Себастьяне-крысе,
   // а не на самом Ratcatcher: с прежним ключом Ratcatcher (фракция Unknown)
@@ -11235,7 +11237,7 @@ const models = [
     "traits": [
       "Acrobat",
       "Fast (2)",
-      "Required (Batman Michael Keaton)",
+      "Required (Batman (Michael Keaton) or The Penguin (Danny DeVito))",
       "Survivor",
       "Vengeance",
       "Combo (Whip)",
