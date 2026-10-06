@@ -441,9 +441,13 @@ function resolveSavedEntry(entry) {
 function savedEquipment(entry, faction) {
   const pool = typeof equipmentPoolFor === 'function' ? equipmentPoolFor(faction) : [];
   return (entry[2] || []).map(en => {
-    if (Array.isArray(en)) return { name: String(en[0] || ''), funding: en[1] || 0, rep: en[2] || 0 };
+    // weapon/effects — из каталога: оружие апгрейда показывается на карточке в ИГРЕ
+    if (Array.isArray(en)) {
+      const eq = pool.find(e => e.name === en[0]);
+      return { name: String(en[0] || ''), funding: en[1] || 0, rep: en[2] || 0, weapon: eq && eq.weapon, effects: eq && eq.effects };
+    }
     const eq = pool.find(e => e.name === en);
-    return { name: String(en), funding: eq ? eq.fundingCost || 0 : 0, rep: eq ? eq.repCost || 0 : 0 };
+    return { name: String(en), funding: eq ? eq.fundingCost || 0 : 0, rep: eq ? eq.repCost || 0 : 0, weapon: eq && eq.weapon, effects: eq && eq.effects };
   });
 }
 

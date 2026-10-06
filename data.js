@@ -321,7 +321,7 @@ const equipmentByFaction = {
     { name: "Venom Laboratory", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bane"], targetModels: ["Leader", "Sidekick"], effects: ["All models can use >1 Titan Dose; Venom Dose cost $50; model removed from play."], isUnaffectedByBroken: true },
     { name: "Venom Applicator", fundingCost: 0, repCost: 2, maxPerCrew: 2, conditions: ["Bane"], effects: ["Can use Titan/Venom on friendly model in contact."] },
     { name: "Military Progress", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Bird"], effects: ["Model gains Veteran rule."] },
-    { name: "Dual Handguns", fundingCost: 300, repCost: 7, maxPerCrew: 1, conditions: ["Thomas Wayne"], targetModels: ["Thomas Wayne"], effects: ["Gains Rapid Fire and Dual Handguns weapon."], isUnaffectedByBroken: true },
+    { name: "Dual Handguns", fundingCost: 300, repCost: 7, maxPerCrew: 1, conditions: ["Thomas Wayne"], targetModels: ["Thomas Wayne"], weapon: { name: "Dual Handguns", damage: "🩸 ★", rof: 4, ammo: 3, traits: "S. Range / Firearm / Light / Assault" }, effects: ["Gains Rapid Fire and Dual Handguns weapon."], isUnaffectedByBroken: true },
     { name: "Surgeon Training", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Thomas Wayne"], effects: ["Model gains the Medic trait."] },
     { name: "Fear Gas Dispenser", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight)"], effects: ["Model gains the Inspire Fear rule."] },
     { name: "Secret Laboratory", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight)"], targetModels: ["Scarecrow"], effects: ["Enhances Inspire Fear for 2 henchmen."], isUnaffectedByBroken: true },
@@ -329,7 +329,7 @@ const equipmentByFaction = {
     { name: "Hidden Magazines", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], targetModels: ["Jason Todd"], effects: ["+1 Magazines to one weapon."] },
     { name: "Cybernetic Arms", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], targetModels: ["Jason Todd"], effects: ["Gains Reinforced Gloves rule."] },
     { name: "Arkham Knight Secret Armoury", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], effects: ["One ranged weapon gains Acid rule."] },
-    { name: "Hook Pistol", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd", "Jason Todd is Boss"], targetModels: ["Jason Todd"], effects: ["Gains Grapple Gun and Electric Hook weapon."] },
+    { name: "Hook Pistol", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd", "Jason Todd is Boss"], targetModels: ["Jason Todd"], weapon: { name: "Electric Hook", damage: "★ ★", rof: 1, ammo: 2, traits: "S. Range / Mechanical / Electric / Devastating" }, effects: ["Gains Grapple Gun and Electric Hook weapon."] },
     { name: "Martial Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson"], effects: ["Model gains Martial Artist and Master Fighter rules."] },
     { name: "Contract", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson"], targetModels: ["Slade Wilson"], effects: ["Gains rank Sidekick with Affiliation Bane."], isUnaffectedByBroken: true }
   ],
@@ -406,8 +406,8 @@ const equipmentByFaction = {
     { name: "Military Progress", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Bane"], effects: ["Model gains the Veteran trait."] },
     { name: "Bow training", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Nyssa al Ghul"], effects: ["Model gains the Shooter rule."] },
     { name: "Traditional Way", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["This Crew can't recruit models with weapons with firearm or beam rules; instead, Henchmen/Free Agents can buy the Bow and Katana equipment."] },
-    { name: "Bow", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Model gains the following weapon: Bow — RoF 1, Ammo 2, Mechanical/Aim."] },
-    { name: "Katana", fundingCost: 100, repCost: 5, maxPerCrew: 2, conditions: [], effects: ["Model gains the following weapon: Katana — Handy/Sharp."] }
+    { name: "Bow", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], weapon: { name: "Bow", damage: "🩸 🩸", rof: 1, ammo: 2, traits: "Mechanical / Aim" }, effects: ["Model gains the following weapon: Bow — RoF 1, Ammo 2, Mechanical/Aim."] },
+    { name: "Katana", fundingCost: 100, repCost: 5, maxPerCrew: 2, conditions: [], weapon: { name: "Katana", damage: "🩸 🩸", rof: "-", ammo: "-", traits: "Handy / Sharp" }, effects: ["Model gains the following weapon: Katana — Handy/Sharp."] }
   ],
   "Birds of Prey": [
     { name: "Spray Can", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["Model gains 1 Spray Can."] },
@@ -501,7 +501,16 @@ const equipmentByFaction = {
     { name: "Modified Pheromone", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Poison Ivy", "Model has Control Pheromones trait"], effects: ["When this model uses the Control Pheromones trait, the targeted model adds 1 additional dice and adds all the 3 results together while taking that Hypnotize Willpower roll. If the target Efforts to add an additional die to the Willpower roll, then they must roll 4D6 and then choose 3 of them."] },
     { name: "Father Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Deathstroke (Vanguard Team)"], targetModels: ["Deathstroke (Vanguard Team)"], effects: ["Teamwork (1) (Ravager (Vanguard Team))."] },
     { name: "Daughter Teamwork", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Ravager (Vanguard Team)"], targetModels: ["Ravager (Vanguard Team)"], effects: ["Teamwork (1) (Deathstroke (Vanguard Team))."] }
-   ]
+   ],
+  // Официальная база Knight Models (equipment 245–249): предметы доступны модели
+  // любого ранга — в команде только Leader и Sidekick
+  "Doom Patrol": [
+    { name: "Only the Result Matters", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: ["The Chief"], targetModels: ["Leader", "Sidekick", "Free Agent", "Henchman"], effects: ["Model gains the Expendable trait."] },
+    { name: "Handcuffs", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Leader", "Sidekick", "Free Agent", "Henchman"], effects: ["Model gains the Arrest trait."] },
+    { name: "Experimental Treatment", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Leader", "Sidekick", "Free Agent", "Henchman"], effects: ["Model gains the Ferocious and Dodge traits."] },
+    { name: "Backpack", fundingCost: 300, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Leader", "Sidekick", "Free Agent", "Henchman"], effects: ["Model gains the Backpack rule."] },
+    { name: "Weapons System Upgrade", fundingCost: 500, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Robotman"], weapon: { name: "Hidden Cannons", damage: "🩸 ★", rof: 3, ammo: 3, traits: "S. Range / Firearm / Assault" }, effects: ["Gains the following ranged weapon: Hidden Cannons."] }
+  ]
 
 };
 
@@ -511,11 +520,11 @@ const equipmentByFaction = {
 const personalEquipment = [
   // Arsenal: "After deployment, this model may equip up to one Hands equipment card,
   // and one Back equipment card. These cards cannot be equipped in any other way" (269–273)
-  { name: "Bastard Sword", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", effects: ["Hands — Model gains the Devastating Blow trait.", "Bastard Sword: {BLOOD_ICON}{BLOOD_ICON} — Sharp / Devastating."] },
-  { name: "Hunting Knives", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", effects: ["Hands — Model gains the Combo (Hunting Knives) trait.", "Hunting Knives: {BLOOD_ICON}{STUN_ICON} — Sharp / Overwhelming."] },
-  { name: "Automatic Guns", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", effects: ["Hands — Model gains the Instinctive Shooting trait.", "Automatic Guns: {BLOOD_ICON}{STUN_ICON} ROF 4, Ammo 3 — S. Range / Firearm / Light."] },
-  { name: "Modified Assault Gun", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Back", effects: ["Back — Model gains the Good Aim trait.", "Modified Assault Gun: {BLOOD_ICON}{BLOOD_ICON} ROF 3, Ammo 3 — M. Range / Firearm / Assault / Red Dot."] },
-  { name: "Combat Bo", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Back", effects: ["Back — Model gains the Electric Storm trait.", "Combat Bo: {STUN_ICON}{STUN_ICON} — Handy / Reach (2)."] },
+  { name: "Bastard Sword", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", weapon: { name: "Bastard Sword", damage: "🩸 🩸", rof: "-", ammo: "-", traits: "Sharp / Devastating" }, effects: ["Hands — Model gains the Devastating Blow trait.", "Bastard Sword: {BLOOD_ICON}{BLOOD_ICON} — Sharp / Devastating."] },
+  { name: "Hunting Knives", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", weapon: { name: "Hunting Knives", damage: "🩸 ★", rof: "-", ammo: "-", traits: "Sharp / Overwhelming" }, effects: ["Hands — Model gains the Combo (Hunting Knives) trait.", "Hunting Knives: {BLOOD_ICON}{STUN_ICON} — Sharp / Overwhelming."] },
+  { name: "Automatic Guns", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", weapon: { name: "Automatic Guns", damage: "🩸 ★", rof: 4, ammo: 3, traits: "S. Range / Firearm / Light" }, effects: ["Hands — Model gains the Instinctive Shooting trait.", "Automatic Guns: {BLOOD_ICON}{STUN_ICON} ROF 4, Ammo 3 — S. Range / Firearm / Light."] },
+  { name: "Modified Assault Gun", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Back", weapon: { name: "Modified Assault Gun", damage: "🩸 🩸", rof: 3, ammo: 3, traits: "M. Range / Firearm / Assault / Red Dot" }, effects: ["Back — Model gains the Good Aim trait.", "Modified Assault Gun: {BLOOD_ICON}{BLOOD_ICON} ROF 3, Ammo 3 — M. Range / Firearm / Assault / Red Dot."] },
+  { name: "Combat Bo", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Back", weapon: { name: "Combat Bo", damage: "★ ★", rof: "-", ammo: "-", traits: "Handy / Reach (2)" }, effects: ["Back — Model gains the Electric Storm trait.", "Combat Bo: {STUN_ICON}{STUN_ICON} — Handy / Reach (2)."] },
 
   // Watchmen: у каждого персонажа пара карт на выбор (250–261). Grapple Gun —
   // одна карта на Rorschach и Nite Owl: в отряде может быть только у одного из них

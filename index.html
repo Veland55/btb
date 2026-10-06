@@ -32,12 +32,12 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.20">
+  <link rel="stylesheet" href="style.css?v=3.21">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
-  <script src="data.js?v=3.18" defer></script>
+  <script src="data.js?v=3.19" defer></script>
   <script src="data-traits.js?v=2.6" defer></script>
-  <script src="script.js?v=1.50" defer></script>
-  <script src="auth.js?v=2.14" defer></script>
+  <script src="script.js?v=1.51" defer></script>
+  <script src="auth.js?v=2.15" defer></script>
   <script src="data-cards.js?v=1.8" defer></script>
   <script src="cards.js?v=1.11" defer></script>
   <script src="stats.js?v=1.12" defer></script>
@@ -46,7 +46,7 @@
        ни от чего не зависят снаружи, поэтому их можно отложить безопасно. -->
   <script>
     const BMG_LAZY = {
-      game: ['data-game.js?v=1.6', 'game.js?v=2.11', 'game-cards.js?v=1.10'],
+      game: ['data-game.js?v=1.6', 'game.js?v=2.12', 'game-cards.js?v=1.10'],
       tournaments: ['tournaments.js?v=1.14']
     };
     const _bmgLoading = {};

@@ -727,11 +727,12 @@ function gmRenderFxRow(side, index) {
   if (row) row.innerHTML = gmFxRowInnerHTML(side, index);
 }
 
-// Счётчики магазинов — по каждому оружию модели с числовым Ammo
-function ammoControlsHTML(side, index, model, st) {
-  if (!model || !model.weapons) return '';
+// Счётчики магазинов — по каждому оружию модели с числовым Ammo, включая оружие
+// апгрейдов (идёт после оружия модели — индексы её собственного оружия не сдвигаются)
+function ammoControlsHTML(side, index, model, st, equipment) {
+  if (!model) return '';
   st.amx = st.amx || {};
-  return model.weapons.map((w, wi) => {
+  return [...(model.weapons || []), ...upgradeWeapons(equipment)].map((w, wi) => {
     const max = parseInt(w.ammo, 10);
     if (!max) return '';
     st.amx[wi] = max;
@@ -765,7 +766,7 @@ function trackCountersHTML(side, index, st) {
 // Элемент снаряжения в ростере — строка (имя) либо [имя, funding, rep] (см. serializeCrew в auth.js)
 const eqDisplayName = en => typeof en === 'string' ? en : (Array.isArray(en) ? (en[0] || '') : '');
 
-function trackExtrasHTML(side, index, model, st, eqNames) {
+function trackExtrasHTML(side, index, model, st, eqNames, equipment) {
   const status = (field, label, title) => `
     <button class="gm-status${st[field] ? ' on' : ''}" id="gm-${side}-${index}-${field}"
             title="${title}" onclick="gmToggle('${side}',${index},'${field}')">${label}</button>`;
@@ -774,7 +775,7 @@ function trackExtrasHTML(side, index, model, st, eqNames) {
       ${status('kd', 'KD', t('game_kd_title'))}
       ${status('ko', 'KO', t('game_ko_title'))}
       ${status('aud', 'AUD', t('game_aud_title'))}
-      ${ammoControlsHTML(side, index, model, st)}
+      ${ammoControlsHTML(side, index, model, st, equipment)}
       <span class="gm-fx-row" id="gm-fx-${side}-${index}">${gmFxRowInnerHTML(side, index)}</span>
       ${eqNames && eqNames.length ? `<span class="game-model-eq">${eqNames.map(eqDisplayName).map(escHtml).join(', ')}</span>` : ''}
     </div>`;
@@ -791,13 +792,24 @@ function resolveRoster(roster) {
     const eq = savedEquipment(entry, roster.f);
     const rep = (model ? (model.rep || 0) : 0) + eq.reduce((sum, e) => sum + e.rep, 0);
     totalRep += rep;
-    return { name: entry[0], rank: CODE_TO_RANK[entry[1]] || entry[1], model, eqNames: eq.map(e => e.name), rep };
+    return { name: entry[0], rank: CODE_TO_RANK[entry[1]] || entry[1], model, eq, eqNames: eq.map(e => e.name), rep };
   });
   return { rows, totalRep };
 }
 
+// Карточка модели из ростера ИГРЫ — со снаряжением и оружием апгрейдов этого
+// ростера (instance), а не из отряда в билдере, где может быть та же модель
+const gameCardRows = {};
+function gmShowCard(side, index) {
+  const r = gameCardRows[side] && gameCardRows[side].rows[index];
+  if (!r || !r.model) return;
+  const equipment = r.eq.map(e => ({ name: e.name, fundingCost: e.funding, repCost: e.rep, weapon: e.weapon, effects: e.effects }));
+  showFullCard({ ...r.model, instance: { equipment, readOnly: true, faction: gameCardRows[side].faction } });
+}
+
 function rosterColumnHTML(player, titleKey, side) {
   const { rows, totalRep } = resolveRoster(player.roster);
+  gameCardRows[side] = { rows, faction: player.roster.f };
   return `
     <div class="game-roster">
       <div class="game-roster-head">
@@ -809,7 +821,7 @@ function rosterColumnHTML(player, titleKey, side) {
         return `
         <div class="game-model-row${r.model ? '' : ' game-model-missing'}${st.ko ? ' game-model-ko' : ''}"
              id="gm-row-${side}-${i}"
-             ${r.model ? `onclick="showFullCard(models[${r.model._id}])"` : ''}>
+             ${r.model ? `onclick="gmShowCard('${side}',${i})"` : ''}>
           <img src="${r.model ? r.model.img : 'img/no.webp'}" alt="${escHtml(r.name)}" loading="lazy" decoding="async"
                onerror="this.src='img/no.webp'">
           <div class="game-model-info">
@@ -818,7 +830,7 @@ function rosterColumnHTML(player, titleKey, side) {
               <span class="game-model-meta">${r.rank} • ${r.rep} Rep</span>
               ${trackCountersHTML(side, i, st)}
             </div>
-            ${trackExtrasHTML(side, i, r.model, st, r.eqNames)}
+            ${trackExtrasHTML(side, i, r.model, st, r.eqNames, r.eq)}
           </div>
         </div>`;
       }).join('')}

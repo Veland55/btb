@@ -2670,11 +2670,23 @@ function renderGlossarySection(title, names) {
   return items ? `<div class="sidebar-section"><div class="sidebar-title">${title}</div>${items}</div>` : '';
 }
 
+// Оружие модели вместе с оружием, которое дают купленные апгрейды (поле weapon у
+// предмета снаряжения в data.js). Оружие апгрейда помечено upgradeFrom — именем
+// предмета: карточка рисует его другим цветом, а при снятии предмета оно исчезает
+// само, потому что список собирается заново из текущего снаряжения.
+function upgradeWeapons(equipment) {
+  return (equipment || []).filter(eq => eq && eq.weapon).map(eq => ({ ...eq.weapon, upgradeFrom: eq.name }));
+}
+function weaponsWithUpgrades(model) {
+  const crewModel = crewInstanceOf(model);
+  return [...(model.weapons || []), ...upgradeWeapons(crewModel && crewModel.equipment)];
+}
+
 // HTML глоссария (расшифровка трейтов модели и правил её оружия)
 function buildGlossaryHTML(model) {
   const traitNames = model.traits || [];
   const weaponTraitNames = [...new Set(
-    (model.weapons || [])
+    weaponsWithUpgrades(model)
       .filter(w => w && w.traits)
       .flatMap(w => w.traits.split('/').map(t => t.trim()).filter(Boolean))
   )];
@@ -2717,13 +2729,15 @@ const buildFullCardHTML = model => {
   const rivalsIconsHTML   = renderIcons(rivalFactions);
 
   // --- Оружие и трейты ---
-  const weaponsHTML = model.weapons?.length ? model.weapons.map(w => {
+  // Вместе с оружием от купленных апгрейдов — оно выделено цветом (upgrade-weapon)
+  const allWeapons = weaponsWithUpgrades(model);
+  const weaponsHTML = allWeapons.length ? allWeapons.map(w => {
     if (!w || Object.keys(w).length === 0) return "";
     const traits = w.traits ? w.traits.split("/").map(t => t.trim()).filter(Boolean) : [];
     return `
-      <div class="official-weapon">
+      <div class="official-weapon${w.upgradeFrom ? " upgrade-weapon" : ""}"${w.upgradeFrom ? ` title="${escHtml(w.upgradeFrom)}"` : ""}>
         <div class="official-weapon-first-line">
-          <span class="official-weapon-name">${(w.name || "Unnamed").toUpperCase()}</span>
+          <span class="official-weapon-name">${(w.name || "Unnamed").toUpperCase()}${w.upgradeFrom ? `<span class="upgrade-weapon-tag">UPGRADE</span>` : ""}</span>
           <span class="official-weapon-stats">
             ${w.damage ? `<span class="official-weapon-damage">${w.damage}</span>` : ""}
             ${w.rof && w.rof !== "-" ? `<span class="official-weapon-rof">${w.rof}<img src="img/rof.webp" class="stat-icon" alt="RoF"></span>` : ""}
@@ -2754,6 +2768,14 @@ const buildFullCardHTML = model => {
             // предмет по имени — как в жёлтой панели апгрейдов (renderUpgradeFlapHTML)
             const safeModel = model.name.replace(/'/g, "\\'");
             const safeEq = eq.name.replace(/'/g, "\\'");
+            // Ростер из ИГРЫ (readOnly): снаряжение только для просмотра
+            if (crewModel.readOnly) {
+              const safeFaction = String(crewModel.faction || '').replace(/'/g, "\\'");
+              return `
+            <div class="official-trait-item equipment-item" onclick="showCatalogEquipmentInfo('${safeFaction}', '${safeEq}')">
+              ${eq.name} <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>.
+            </div>`;
+            }
             return `
             <div class="official-trait-item equipment-item" onclick="showEquipmentInfo('${safeModel}', '${safeEq}', '${uid}')">
               ${eq.name} <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>.
@@ -2805,7 +2827,7 @@ const buildFullCardHTML = model => {
         </div>
       </div>
 
-      ${model.weapons?.length ? `<div class="official-section no-title">${weaponsHTML}</div>` : ""}
+      ${weaponsHTML ? `<div class="official-section no-title">${weaponsHTML}</div>` : ""}
       ${traitsHTML}
       ${equipmentHTML}
     </div>`;
@@ -3011,6 +3033,13 @@ function showEquipmentInfo(modelName, eqName, uid) {
   if (!eq) return;
   const cost = `($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})`;
   showTraitPopup(`${eq.name} ${cost}`, (eq.effects || []).join('<br>'), true, true);
+}
+
+// Описание предмета по каталогу фракции — для ростеров вне билдера (ИГРА)
+function showCatalogEquipmentInfo(faction, eqName) {
+  const eq = equipmentPoolFor(faction).find(e => e.name === eqName);
+  if (!eq) return;
+  showTraitPopup(eq.name, (eq.effects || []).join('<br>'), true, true);
 }
 
 // Новая функция для показа effects equipment

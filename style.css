@@ -420,6 +420,11 @@ body.left-handed .close-full { right:auto; left:12px; }
 .official-weapon-rof, .official-weapon-ammo { color:#fff; display:flex; align-items:center; gap:4px; font-size:14px; }
 .official-weapon-traits-line { margin-top:8px; padding-top:8px; border-top:1px dashed #444; text-align:center; font-size:12px; letter-spacing:.5px; }
 .weapon-trait-text { color:var(--gold); cursor:pointer; }
+/* Оружие от купленного апгрейда (снаряжения): холодный оттенок и метка UPGRADE */
+.official-weapon.upgrade-weapon { background:#1b2731; box-shadow:inset 3px 0 0 #4fb3e8, 0 4px 6px rgba(0,0,0,.5); }
+.upgrade-weapon .official-weapon-name { color:#8fd3ff; }
+.upgrade-weapon .official-weapon-traits-line { border-top-color:#2f4656; }
+.upgrade-weapon-tag { margin-left:8px; padding:1px 6px; border-radius:6px; background:#4fb3e8; color:#0d1a22; font-size:10px; letter-spacing:.8px; vertical-align:middle; }
 .weapon-trait-text:hover { text-decoration:underline; }
 
 .official-section.yellow { background:var(--gold); margin:0; padding:0 0 12px; }
