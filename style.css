@@ -1283,13 +1283,16 @@ select.game-select option { background:#1e1e1e; color:#fff; }
     margin: 0;
     padding: 10px 0;
   }
+  /* Левая колонка: поиск над списком моделей, карточка справа поднимается к шапке */
+  .builder-list-col { flex: 1; min-width: 0; }
+  .builder-list-col .model-search-wrapper { padding: 10px 0 0; max-width: none; margin: 0; }
   .builder-card-panel.active {
     display: block;
     width: clamp(340px, 40vw, 480px);
     flex-shrink: 0;
     position: sticky;
-    top: 125px;                       /* высота липкого топ-бара билдера */
-    max-height: calc(100vh - 140px);
+    top: 80px;                        /* под липким топ-баром (на ПК он в одну строку, ~66px) */
+    max-height: calc(100vh - 95px);
     overflow-y: auto;
     margin-top: 10px;
     border-radius: 18px;

@@ -32,7 +32,7 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.22">
+  <link rel="stylesheet" href="style.css?v=3.23">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
   <script src="data.js?v=3.19" defer></script>
   <script src="data-traits.js?v=2.6" defer></script>
@@ -184,20 +184,22 @@
         <div class="faction-cards"></div>
       </div>
 
-      <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно.
-           Скрыт, пока фракция не выбрана: до этого модели не отрисованы и искать
-           нечего (см. renderMiniCardsView — при currentFaction=null список не строится),
-           поле просто ничего не делало и путало на первом экране раздела. -->
-      <div class="model-search-wrapper" id="cardsSearchWrapper" style="display:none;">
-        <input type="text" id="cardsSearchInput" class="model-search-input" autocomplete="off"
-               data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
-               data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
-               oninput="cardsSearchQuery=this.value; renderMiniCardsView();">
-      </div>
-
-      <!-- Список моделей + боковая панель просмотра карточки (как в билдере, видна на ПК/планшетах) -->
+      <!-- Список моделей + боковая панель просмотра карточки (как в билдере, видна на ПК/планшетах).
+           Поиск — в колонке списка: на ПК он стоит над списком, а не над карточкой -->
       <div class="builder-layout">
-        <div id="modelsGridCards" class="models-list"></div>
+        <div class="builder-list-col">
+          <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно.
+               Скрыт, пока фракция не выбрана: до этого модели не отрисованы и искать
+               нечего (см. renderMiniCardsView — при currentFaction=null список не строится),
+               поле просто ничего не делало и путало на первом экране раздела. -->
+          <div class="model-search-wrapper" id="cardsSearchWrapper" style="display:none;">
+            <input type="text" id="cardsSearchInput" class="model-search-input" autocomplete="off"
+                   data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
+                   data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
+                   oninput="cardsSearchQuery=this.value; renderMiniCardsView();">
+          </div>
+          <div id="modelsGridCards" class="models-list"></div>
+        </div>
         <aside id="cardsCardPanel" class="builder-card-panel"></aside>
       </div>
     </div>
@@ -267,23 +269,25 @@
         </div>
       </div>
 
-      <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно -->
-      <div class="model-search-wrapper">
-        <input type="text" id="builderSearchInput" class="model-search-input" autocomplete="off"
-               data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
-               data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
-               oninput="builderSearchQuery=this.value; renderMiniCardsBuilder();">
-        <!-- Только для авторизованных — гостю нечего фильтровать (см. updateBuilderCollectionFilterVisibility) -->
-        <label class="collection-filter-label" id="builderCollectionFilterWrap" style="display:none;">
-          <input type="checkbox" id="builderCollectionFilterInput"
-                 onchange="builderCollectionFilterOn=this.checked; renderMiniCardsBuilder();">
-          <span data-i18n="collection_filter_label">Только модели из моей коллекции</span>
-        </label>
-      </div>
-
-      <!-- Список моделей + боковая панель просмотра карточки (панель видна только на ПК/планшетах) -->
+      <!-- Список моделей + боковая панель просмотра карточки (панель видна только на ПК/планшетах).
+           Поиск — в колонке списка: на ПК он стоит над списком, а не над карточкой -->
       <div class="builder-layout">
-        <div id="modelsGridBuilder" class="models-list"></div>
+        <div class="builder-list-col">
+          <!-- Поиск модели по имени — среди ~668 моделей вкладок фракций одних недостаточно -->
+          <div class="model-search-wrapper">
+            <input type="text" id="builderSearchInput" class="model-search-input" autocomplete="off"
+                   data-i18n-placeholder="model_search_placeholder" placeholder="Поиск модели по имени…"
+                   data-i18n-aria-label="model_search_placeholder" aria-label="Поиск модели по имени"
+                   oninput="builderSearchQuery=this.value; renderMiniCardsBuilder();">
+            <!-- Только для авторизованных — гостю нечего фильтровать (см. updateBuilderCollectionFilterVisibility) -->
+            <label class="collection-filter-label" id="builderCollectionFilterWrap" style="display:none;">
+              <input type="checkbox" id="builderCollectionFilterInput"
+                     onchange="builderCollectionFilterOn=this.checked; renderMiniCardsBuilder();">
+              <span data-i18n="collection_filter_label">Только модели из моей коллекции</span>
+            </label>
+          </div>
+          <div id="modelsGridBuilder" class="models-list"></div>
+        </div>
         <aside id="builderCardPanel" class="builder-card-panel"></aside>
       </div>
     </div>
