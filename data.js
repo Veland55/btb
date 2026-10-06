@@ -205,9 +205,9 @@ const equipmentByFaction = {
     { name: "Inspiring Presence", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Tim Drake"], targetModels: ["Tim Drake"], effects: ["Model gains Leadership rule."] },
     { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Batgirl"], effects: ["Model gains Exhaustive Planner rule."] },
     { name: "Deadly Weapons", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Red Hood (Arkham Knight)"], targetModels: ["Red Hood Arkham Knight"], effects: ["Weapons gain the Silencer rule."] },
-    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["When you use the Air Support rule, target an enemy model affected by the template, the target receives a Ranged attack with ROF 1, the Firearm weapon special rule and damage {BLOOD_ICON}{BLOOD_ICON} which ignores the Cover Rule."], isUnaffectedByBroken: true },
-    { name: "Sergeant Training", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true },
-    { name: "Feline Stalk", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Selina Kyle"], targetModels: ["Selina Kyle"], effects: ["Model gains Tracking rule."], isUnaffectedByBroken: true },
+    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["When you use the Air Support rule, target an enemy model affected by the template, the target receives a Ranged attack with ROF 1, the Firearm weapon special rule and damage {BLOOD_ICON}{BLOOD_ICON} which ignores the Cover Rule."] },
+    { name: "Sergeant Training", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."] },
+    { name: "Feline Stalk", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Selina Kyle"], targetModels: ["Selina Kyle"], effects: ["Model gains Tracking rule."] },
     // Vampire Queen (Batgirl Vampire Queen — faction Bat Family/GCPD): "When recruiting this model,
     // you can purchase The Turning equipment piece to other models in this crew."
     { name: "The Turning", fundingCost: 200, repCost: 10, maxPerCrew: 4, conditions: ["Vampire Queen in crew"], effects: ["Model gains the Vampire rule."] },
@@ -255,9 +255,9 @@ const equipmentByFaction = {
     { name: "Inspiring Presence", fundingCost: 250, repCost: 0, maxPerCrew: 1, conditions: ["Tim Drake"], targetModels: ["Tim Drake"], effects: ["Model gains Leadership rule."] },
     { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Batgirl"], effects: ["Model gains Exhaustive Planner rule."] },
     { name: "Deadly Weapons", fundingCost: 150, repCost: 2, maxPerCrew: 1, conditions: ["Red Hood (Arkham Knight)"], targetModels: ["Red Hood Arkham Knight"], effects: ["Weapons gain the Silencer rule."] },
-    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["When you use the Air Support rule, target an enemy model affected by the template, the target receives a Ranged attack with ROF 1, the Firearm weapon special rule and damage {BLOOD_ICON}{BLOOD_ICON} which ignores the Cover Rule."], isUnaffectedByBroken: true },
-    { name: "Sergeant Training", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."], isUnaffectedByBroken: true },
-    { name: "Feline Stalk", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Selina Kyle"], targetModels: ["Selina Kyle"], effects: ["Model gains Tracking rule."], isUnaffectedByBroken: true },
+    { name: "Heliport", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["James Gordon"], targetModels: ["James Gordon"], effects: ["When you use the Air Support rule, target an enemy model affected by the template, the target receives a Ranged attack with ROF 1, the Firearm weapon special rule and damage {BLOOD_ICON}{BLOOD_ICON} which ignores the Cover Rule."] },
+    { name: "Sergeant Training", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["James Gordon"], effects: ["Model gains the Order rule."] },
+    { name: "Feline Stalk", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Selina Kyle"], targetModels: ["Selina Kyle"], effects: ["Model gains Tracking rule."] },
     { name: "The Turning", fundingCost: 200, repCost: 10, maxPerCrew: 4, conditions: ["Vampire Queen in crew"], effects: ["Model gains the Vampire rule."] },
     { name: "Improved Batclaw", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox"], group: "Lucius's Inventions", effects: ["Only purchasable by models with the Batclaw/Grapple Gun trait. Batclaw/Grapple Gun range increases from 6\" to 8\"."] },
     { name: "Improved Batlings", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Lucius Fox"], group: "Lucius's Inventions", effects: ["Only purchasable by models with a weapon with the Throwing trait. Ranged Attacks with that weapon gain +1 to Hit and always hit the Strength die on a 3+, ignoring the wielder's Strength."] },
@@ -318,20 +318,20 @@ const equipmentByFaction = {
     { name: "Gas Mask", fundingCost: 50, repCost: 0, maxPerCrew: 3, conditions: [], effects: ["Model gains the Gas Mask rule."] },
     { name: "War Hardened", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: [], effects: ["Model gains the Cruel trait."] },
     { name: "Handcuffs", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bane"], effects: ["Model gains the Arrest rule."] },
-    { name: "Venom Laboratory", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bane"], targetModels: ["Leader", "Sidekick"], effects: ["All models can use >1 Titan Dose; Venom Dose cost $50; model removed from play."], isUnaffectedByBroken: true },
+    { name: "Venom Laboratory", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Bane"], targetModels: ["Leader", "Sidekick"], effects: ["All models can use >1 Titan Dose; Venom Dose cost $50; model removed from play."] },
     { name: "Venom Applicator", fundingCost: 0, repCost: 2, maxPerCrew: 2, conditions: ["Bane"], effects: ["Can use Titan/Venom on friendly model in contact."] },
     { name: "Military Progress", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Bird"], effects: ["Model gains Veteran rule."] },
-    { name: "Dual Handguns", fundingCost: 300, repCost: 7, maxPerCrew: 1, conditions: ["Thomas Wayne"], targetModels: ["Thomas Wayne"], weapon: { name: "Dual Handguns", damage: "🩸 ★", rof: 4, ammo: 3, traits: "S. Range / Firearm / Light / Assault" }, effects: ["Gains Rapid Fire and Dual Handguns weapon."], isUnaffectedByBroken: true },
+    { name: "Dual Handguns", fundingCost: 300, repCost: 7, maxPerCrew: 1, conditions: ["Thomas Wayne"], targetModels: ["Thomas Wayne"], weapon: { name: "Dual Handguns", damage: "🩸 ★", rof: 4, ammo: 3, traits: "S. Range / Firearm / Light / Assault" }, effects: ["Gains Rapid Fire and Dual Handguns weapon."] },
     { name: "Surgeon Training", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Thomas Wayne"], effects: ["Model gains the Medic trait."] },
     { name: "Fear Gas Dispenser", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight)"], effects: ["Model gains the Inspire Fear rule."] },
-    { name: "Secret Laboratory", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight)"], targetModels: ["Scarecrow"], effects: ["Enhances Inspire Fear for 2 henchmen."], isUnaffectedByBroken: true },
+    { name: "Secret Laboratory", fundingCost: 100, repCost: 2, maxPerCrew: 1, conditions: ["Scarecrow (Arkham Knight)"], targetModels: ["Scarecrow"], effects: ["Enhances Inspire Fear for 2 henchmen."] },
     { name: "Radio", fundingCost: 150, repCost: 0, maxPerCrew: 2, conditions: ["Jason Todd"], effects: ["Always within Inspire range."] },
     { name: "Hidden Magazines", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], targetModels: ["Jason Todd"], effects: ["+1 Magazines to one weapon."] },
     { name: "Cybernetic Arms", fundingCost: 50, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], targetModels: ["Jason Todd"], effects: ["Gains Reinforced Gloves rule."] },
     { name: "Arkham Knight Secret Armoury", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd"], effects: ["One ranged weapon gains Acid rule."] },
     { name: "Hook Pistol", fundingCost: 400, repCost: 0, maxPerCrew: 1, conditions: ["Jason Todd", "Jason Todd is Boss"], targetModels: ["Jason Todd"], weapon: { name: "Electric Hook", damage: "★ ★", rof: 1, ammo: 2, traits: "S. Range / Mechanical / Electric / Devastating" }, effects: ["Gains Grapple Gun and Electric Hook weapon."] },
     { name: "Martial Training", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson"], effects: ["Model gains Martial Artist and Master Fighter rules."] },
-    { name: "Contract", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson"], targetModels: ["Slade Wilson"], effects: ["Gains rank Sidekick with Affiliation Bane."], isUnaffectedByBroken: true }
+    { name: "Contract", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Slade Wilson"], targetModels: ["Slade Wilson"], effects: ["Gains rank Sidekick with Affiliation Bane."] }
   ],
   "Court of Owls": [
     { name: "Spare Blade", fundingCost: 100, repCost: 0, maxPerCrew: 2, conditions: ["Only Henchman/Free Agents"], effects: ["+1 to Ammunition for one weapon."] },
@@ -372,8 +372,8 @@ const equipmentByFaction = {
     // ведущего "The ") не совпадали через modelMatchesCharacter ни с одной
     // реальной моделью, и Мех не мог ни сам купить эти предметы, ни считаться
     // выполняющим "or"-условие присутствия в банде.
-    { name: "Improved Armor", fundingCost: 250, repCost: 2, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech"], targetModels: ["The Riddler (Arkham Knight)", "The Riddler's Mech"], effects: ["Bots gain Light Armor Trait."], isUnaffectedByBroken: true },
-    { name: "Enhanced Servo-engines", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech"], targetModels: ["The Riddler (Arkham Knight)", "The Riddler's Mech"], effects: ["+1 Movement and Combo: Mechanic Claw."], isUnaffectedByBroken: true }
+    { name: "Improved Armor", fundingCost: 250, repCost: 2, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech"], targetModels: ["The Riddler (Arkham Knight)", "The Riddler's Mech"], effects: ["Bots gain Light Armor Trait."] },
+    { name: "Enhanced Servo-engines", fundingCost: 150, repCost: 0, maxPerCrew: 1, conditions: ["The Riddler (Arkham Knight) or The Riddler's Mech"], targetModels: ["The Riddler (Arkham Knight)", "The Riddler's Mech"], effects: ["+1 Movement and Combo: Mechanic Claw."] }
   ],
   "Mr. Freeze": [
     { name: "Magazine", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: [], effects: ["+1 to Ammunition for one weapon."] },
@@ -424,7 +424,7 @@ const equipmentByFaction = {
     { name: "Corrosive Blood", fundingCost: 50, repCost: 0, maxPerCrew: 3, conditions: ["Dr. Pamela Lillian Isley"], effects: ["On casualty, contact models take 🩸 if fail Endurance."] },
     { name: "Mutation Serum", fundingCost: 200, repCost: 3, maxPerCrew: 1, conditions: ["Dr. Pamela Lillian Isley", "Model has Plant trait cannot purchase"], effects: ["Model gains Tough Skin and Desensitized traits."] },
     { name: "Modified Pheromones", fundingCost: 150, repCost: 5, maxPerCrew: 1, conditions: ["Dr. Pamela Lillian Isley", "Model has Plant trait cannot purchase"], targetModels: ["Leader", "Sidekick", "Free Agent"], effects: ["Control Pheromones targets 2 enemies."] },
-    { name: "Ancient Plants", fundingCost: 200, repCost: 40, maxPerCrew: 1, conditions: ["Dr. Pamela Lillian Isley", "Only Plants"], effects: ["Invulnerability (1), Tough Skin, +1 skills (except Endurance), +3 Endurance, 6\" action radius."], isUnaffectedByBroken: true },
+    { name: "Ancient Plants", fundingCost: 200, repCost: 40, maxPerCrew: 1, conditions: ["Dr. Pamela Lillian Isley", "Only Plants"], effects: ["Invulnerability (1), Tough Skin, +1 skills (except Endurance), +3 Endurance, 6\" action radius."] },
     { name: "Watch Tower", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], targetModels: ["Barbara Gordon"], effects: ["Model gains Exhaustive Planner rule."] },
     { name: "Radio", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Barbara Gordon"], effects: ["Always within Boss's Inspire range."] },
     { name: "Pitch Perfect Vocals", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Dinah Lance"], targetModels: ["Dinah Lance"], effects: ["Model gains the Mixed Combat Style trait."] },
@@ -7178,9 +7178,7 @@ const models = [
       "Teen Titans",
       "Vigilante's Work"
     ],
-    "weapons": [
-    {}
-  ]
+    "weapons": []
   },
   {
     "name": "The Chief",
@@ -7242,9 +7240,7 @@ const models = [
       "True Love (Beast Boy)",
       "Undercover"
     ],
-    "weapons": [
-    {}
-    ]
+    "weapons": []
   },
   {
     "name": "Crazy Jane",

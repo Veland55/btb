@@ -11,7 +11,26 @@
   <script>document.documentElement.classList.toggle('left-handed', localStorage.getItem('bmg_left_handed') === '1');</script>
   <!-- Telegram Mini App: см. index.html — тот же приём, страница отдельная,
        поэтому инициализация продублирована -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    // Telegram Mini App SDK грузим ТОЛЬКО внутри Telegram. Раньше он стоял
+    // синхронным <script> для всех: каждый посетитель ждал telegram.org (~0.2-0.8 с),
+    // а если telegram.org недоступен (блокировка, сбой) — белый экран 20+ с.
+    // Признаки запуска из Telegram: параметры tgWebApp* в адресе, мост
+    // TelegramWebviewProxy (мобильные клиенты), веб-клиент во фрейме, либо
+    // сохранённый ранее признак этой вкладки (переходы между страницами сайта).
+    (function () {
+      var inTg = false;
+      try {
+        inTg = /tgWebApp/.test(location.hash) || /tgWebApp/.test(location.search)
+          || !!window.TelegramWebviewProxy
+          || sessionStorage.getItem('bmg_tg') === '1'
+          || !!sessionStorage.getItem('__telegram__initParams')
+          || (window.parent !== window && /telegram/i.test(document.referrer));
+        if (inTg) sessionStorage.setItem('bmg_tg', '1');
+      } catch (e) {}
+      if (inTg) document.write('<script src="https://telegram.org/js/telegram-web-app.js"><\/script>');
+    })();
+  </script>
   <script>
     (function () {
       var tg = window.Telegram && window.Telegram.WebApp;
@@ -126,6 +145,8 @@
     .toc a.active { color:#fff; border-left-color:#e94560; background:#141414; }
     .toc a.nav-hidden { display:none; }
     details.toc-mobile { display:none; }
+    /* Переход по оглавлению: заголовок раздела не прячется под липкой строкой поиска */
+    [id] { scroll-margin-top:calc(72px + var(--safe-top)); }
 
     main { padding:10px 0 100px; min-width:0; }
 
@@ -245,7 +266,7 @@
         <button class="clear-search" id="clearSearch">×</button>
       </div>
       <!-- Кнопка «назад» идёт последней — справа, как во всех остальных разделах -->
-      <a href="index.html" class="back-btn" title="BACK" aria-label="Back">
+      <a href="index.html" class="back-btn" title="BACK" aria-label="Back" onclick="if (history.length > 1 && document.referrer.indexOf(location.origin) === 0) { history.back(); return false; }">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </a>
     </div>
@@ -1190,6 +1211,13 @@
     chapters.forEach(function(c){ if (linkById[c.id]) io.observe(c); });
   }
 })();
+</script>
+<script>
+  // Мобильное оглавление сворачивается после выбора пункта — раньше оставалось
+  // раскрытым и закрывало пол-экрана над разделом, к которому перешли
+  document.querySelectorAll('details.toc-mobile').forEach(function (d) {
+    d.addEventListener('click', function (e) { if (e.target.closest('a')) d.removeAttribute('open'); });
+  });
 </script>
 </body>
 </html>

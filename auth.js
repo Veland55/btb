@@ -85,7 +85,12 @@ function apiErrorText(e) {
     exists: 'auth_user_exists',
     badcred: 'auth_bad_credentials',
     rate: 'auth_rate_limited',
-    input: 'auth_fill_fields',
+    input: 'input_invalid',
+    bad_chars: 'input_bad_chars',
+    tn_bad_dates: 'tn_bad_dates_msg',
+    tn_bad_players: 'tn_bad_players_msg',
+    tn_past_date: 'tn_past_date_msg',
+    tn_same_faction: 'tn_same_faction_msg',
     name_format: 'auth_bad_name_format',
     pass_format: 'auth_bad_pass_format',
     email_format: 'auth_bad_email_format',
@@ -293,9 +298,6 @@ async function refreshSaves() {
   mySaves = (await api('/api/saves')).saves || [];
 }
 
-async function pushSaves() {
-  await api('/api/saves', 'PUT', { saves: mySaves });
-}
 
 // ======================== КОЛЛЕКЦИЯ МОДЕЛЕЙ ========================
 // Личная отметка "эта модель у меня есть" (раздел "Карточки" → звёздочка на
@@ -531,25 +533,22 @@ async function saveCurrentCrew() {
     if (input === null) return;
     const name = (input.trim() || def).slice(0, 40);
 
-    const record = serializeCrew(name);
-    const existing = mySaves.findIndex(s => s.n === name);
-    const backup = mySaves.slice();
-    if (existing !== -1) {
-      mySaves[existing] = record; // то же имя — перезапись, слот не тратится
-    } else if (mySaves.length >= MAX_SAVES) {
-      showErrorToast(t('saves_limit'));
-      openAuthModal();
-      return;
-    } else {
-      mySaves.push(record);
-    }
-
+    // Одно сохранение — точечной операцией: сервер сам применяет его к актуальному
+    // списку (то же имя — перезапись, иначе — новый слот в пределах лимита) и
+    // возвращает итог. Раньше уходил весь локальный кэш целиком, и сохранение
+    // с ПК молча стирало отряды, сохранённые с телефона, и наоборот.
     try {
-      await pushSaves();
+      const r = await api('/api/saves/item', 'PUT', { save: serializeCrew(name) });
+      mySaves = r.saves || mySaves;
       showErrorToast(t('save_done'));
     } catch (e) {
-      mySaves = backup; // сервер отказал — откатываем кэш
-      showErrorToast(apiErrorText(e));
+      if (e.error === 'limit') {
+        await refreshSaves().catch(() => {});
+        showErrorToast(t('saves_limit'));
+        openAuthModal();
+      } else {
+        showErrorToast(apiErrorText(e));
+      }
     }
   } finally {
     crewSaveBusy = false;
@@ -563,12 +562,11 @@ async function deleteSavedCrew(index) {
   // authRun — та же защита от двойного тапа, что и у остальных действий
   // модалки профиля (раньше эта функция её не использовала)
   await authRun(async () => {
-    const backup = mySaves.slice();
-    mySaves.splice(index, 1);
     try {
-      await pushSaves();
+      // По имени и на сервере — см. /api/saves/item
+      const r = await api('/api/saves/item', 'DELETE', { name: s.n });
+      mySaves = r.saves || mySaves.filter(x => x.n !== s.n);
     } catch (e) {
-      mySaves = backup;
       showErrorToast(apiErrorText(e));
     }
     renderAuthModal();
@@ -635,6 +633,7 @@ function restoreCrewFromSave(s) {
   // хранятся — без пересчёта счётчики "до 3" после загрузки обнулялись.
   // Заодно отсеиваются модели, чьё основание для найма уже не выполняется.
   if (typeof revalidateCrew === 'function') notifyCrewRevalidation(revalidateCrew());
+  if (typeof revalidateCrewEquipment === 'function') revalidateCrewEquipment();
 
   // Колода карт целей (карты, исчезнувшие из каталога, тихо пропускаются)
   if (typeof crewCards !== 'undefined') {
@@ -669,6 +668,13 @@ async function loadSavedCrew(index) {
 function openAuthModal() {
   renderAuthModal();
   document.getElementById('authModal').classList.add('active');
+  // Список сохранений мог измениться с другого устройства — подтягиваем свежий
+  // и перерисовываем, если модалка ещё открыта
+  if (currentUser) {
+    refreshSaves().then(() => {
+      if (document.getElementById('authModal').classList.contains('active')) renderAuthModal();
+    }).catch(() => {});
+  }
 }
 function closeAuthModal() {
   document.getElementById('authModal').classList.remove('active');
@@ -754,7 +760,7 @@ function renderAuthModal() {
     <div class="save-row">
       <div class="save-info">
         <div class="save-name">${s.n}</div>
-        <div class="save-meta">${s.f} • ${s.m.length} ${modelsWord(s.m.length)} • ${crewRepTotal(s)} / ${s.r} Rep • ${new Date((s.d || 0) * 86400000).toLocaleDateString()}</div>
+        <div class="save-meta">${authEsc(s.f)} • ${s.m.length} ${modelsWord(s.m.length)} • ${crewRepTotal(s)} / ${Number(s.r) || 0} Rep • ${new Date((Number(s.d) || 0) * 86400000).toLocaleDateString()}</div>
       </div>
       <div class="save-actions">
         <button class="save-btn" onclick="loadSavedCrew(${i})">${t('load')}</button>

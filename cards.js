@@ -209,7 +209,14 @@ function closeBuilderCards() {
 // Счётчик набранной колоды на кнопке 🃏 в топ-баре билдера
 function updateDeckBadge() {
   const badge = $('builderDeckBadge');
-  if (badge) badge.textContent = objDeckStats().total;
+  if (!badge) return;
+  const s = objDeckStats();
+  badge.textContent = s.total;
+  // Карте в колоде больше не хватает нужной модели (её убрали из отряда) —
+  // раньше об этом говорила только страница колоды, а в билдере ничего не было видно
+  const issue = s.reqIssues.length > 0;
+  badge.classList.toggle('has-issue', issue);
+  badge.title = issue ? t('obj_need_req') + ': ' + s.reqIssues.join(', ') : '';
 }
 
 // Свайпы: вправо — со страницы отряда на карты, влево — обратно.

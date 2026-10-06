@@ -52,7 +52,9 @@ function resetTournamentsState() {
 // Сигнатура «хода» турниров: перерисовываем список только при реальных изменениях
 // (статус, тур, состав, результаты и споры) — не сбрасывая формы зря
 function tnListSignature(list) {
+  // hasRosters — иначе организатор не видел через поллинг, что участник подал листы
   return JSON.stringify(list.map(tn => [tn.id, tn.status, tn.round, tn.players.length,
+    tn.players.map(pl => (pl.hasRosters ? 1 : 0)).join(''),
     (tn.rounds || []).map(r => [Object.keys(r.results || {}).length,
                                 Object.keys(r.claims || {}).length,
                                 Object.keys(r.disputes || {}).length])]));
@@ -86,6 +88,13 @@ async function tnLoadDetails(id) {
 
 // Экранирование пользовательского текста (адрес, инфо, заметки — свободный ввод)
 const tnEsc = escHtml;
+
+// Текущий момент в формате datetime-local (локальное время) — нижняя граница
+// дат турнира: начать турнир в прошлом нельзя (сервер проверяет то же самое)
+function tnLocalNowMin() {
+  const d = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
+  return d.toISOString().slice(0, 16);
+}
 
 // "2026-08-01T12:00" (datetime-local) → "2026-08-01 12:00"
 function tnDate(s) {
@@ -254,11 +263,11 @@ function organizerViewHTML() {
       <input type="text" id="tnAddress" class="game-select" maxlength="120" placeholder="${t('tn_address_ph')}">
       <div class="tn-form-row">
         <label class="tn-form-label">${t('tn_date_start')}</label>
-        <input type="datetime-local" id="tnDateStart" class="game-select">
+        <input type="datetime-local" id="tnDateStart" class="game-select" min="${tnLocalNowMin()}">
       </div>
       <div class="tn-form-row">
         <label class="tn-form-label">${t('tn_date_end')}</label>
-        <input type="datetime-local" id="tnDateEnd" class="game-select">
+        <input type="datetime-local" id="tnDateEnd" class="game-select" min="${tnLocalNowMin()}">
       </div>
       <div class="tn-form-row">
         <label class="tn-form-label">${t('tn_max_players')}</label>

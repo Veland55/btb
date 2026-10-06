@@ -47,6 +47,35 @@ const MAX_TRACK_JSON = 20000;                   // лимит общего со�
 
 let statsCache = { at: 0, body: null };
 
+// Каталог из data.js — для публичной статистики: имена моделей и фракций в
+// сохранениях присылает клиент, и без сверки с каталогом в «Самые популярные
+// банды/модели» попадала любая строка (реклама, мусор). Читаем файл один раз
+// при старте; старые имена моделей (MODEL_RENAMES) приводятся к новым.
+const CATALOG = (() => {
+  try {
+    // data.js — обычный скрипт браузера: исполняем его в изолированном контексте
+    // vm (только данные, без доступа к процессу) и забираем готовые массивы
+    const src = fs.readFileSync(path.join(ROOT, 'data.js'), 'utf8');
+    const ctx = { window: {} };
+    require('vm').runInNewContext(src + '\n;this.__catalog = { models, MODEL_RENAMES };', ctx, { timeout: 5000 });
+    const { models: list, MODEL_RENAMES: ren } = ctx.__catalog;
+    const models = new Set(list.map(m => m.name));
+    const factions = new Set(['Unknown']);
+    for (const m of list) for (const f of [].concat(m.faction || [])) factions.add(f);
+    return { models, factions, renames: new Map(Object.entries(ren || {})) };
+  } catch (e) {
+    console.error('Каталог data.js не прочитан — статистика без фильтра:', e.message);
+    return null;
+  }
+})();
+const catalogModel = n => {
+  if (typeof n !== 'string') return null;
+  if (!CATALOG) return n;
+  const name = CATALOG.renames.get(n) || n;
+  return CATALOG.models.has(name) ? name : null;
+};
+const catalogFaction = f => (typeof f === 'string' && (!CATALOG || CATALOG.factions.has(f))) ? f : null;
+
 // ======================== БАЗА ДАННЫХ ========================
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 const db = new DatabaseSync(path.join(DATA_DIR, 'bmg.db'));
@@ -198,7 +227,10 @@ const MIGRATIONS = [
   // Смещение часового пояса организатора (минуты, как Date#getTimezoneOffset)
   // для date_start: datetime-local приходит без зоны, и без смещения сервер
   // считал дедлайн блокировки ростеров в СВОЁМ поясе, а не в поясе турнира
-  'ALTER TABLE tournaments ADD COLUMN tz_offset INTEGER'
+  'ALTER TABLE tournaments ADD COLUMN tz_offset INTEGER',
+  // «Покинуть игру»: участник больше не получает эту комнату из /api/games/mine
+  'ALTER TABLE games ADD COLUMN host_left INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE games ADD COLUMN guest_left INTEGER NOT NULL DEFAULT 0'
 ];
 for (const stmt of MIGRATIONS) {
   // Глушим только ожидаемую ошибку ("колонка уже есть" — миграция уже применена
@@ -428,8 +460,11 @@ const authIp = req => {
   if (TRUST_PROXY) {
     const real = req.headers['x-real-ip'];
     if (typeof real === 'string' && real) return real;
+    // ПОСЛЕДНИЙ адрес, а не первый: nginx ($proxy_add_x_forwarded_for) дописывает
+    // настоящий адрес клиента в конец, а всё, что левее, клиент может прислать сам —
+    // по первому адресу лимит неудачных входов обходился подменой заголовка
     const fwd = req.headers['x-forwarded-for'];
-    if (typeof fwd === 'string' && fwd) return fwd.split(',')[0].trim();
+    if (typeof fwd === 'string' && fwd) return fwd.split(',').pop().trim();
   }
   return req.socket.remoteAddress || '?';
 };
@@ -446,6 +481,23 @@ function authFailed(req) {
   e.n++;
 }
 function authSucceeded(req) { authHits.delete(authIp(req)); }
+
+// Успешные регистрации — свой счётчик, отдельный от неудачных входов: раньше они
+// шли в authFailed, и 20 новых аккаунтов за минуту в клубе на общем Wi-Fi
+// блокировали вход с верным паролем всем остальным с этого адреса
+const REG_MAX_PER_HOUR = 30;
+const regHits = new Map();
+function regThrottled(req) {
+  const e = regHits.get(authIp(req));
+  return !!(e && Date.now() <= e.reset && e.n >= REG_MAX_PER_HOUR);
+}
+function regCounted(req) {
+  const ip = authIp(req), now = Date.now();
+  if (regHits.size > 10000) regHits.clear();
+  let e = regHits.get(ip);
+  if (!e || now > e.reset) { e = { n: 0, reset: now + 3600000 }; regHits.set(ip, e); }
+  e.n++;
+}
 
 // JSON-ответ. Крупные ответы (списки турниров, статистика) сжимаем: это
 // экономит десятки процентов трафика при поллинге. res.req — сам запрос,
@@ -611,6 +663,10 @@ const RESERVED_NAMES = new Set(['__proto__', 'constructor', 'prototype']);
 const validName = n => typeof n === 'string' && /^[\w\-. А-Яа-яЁё]{3,20}$/.test(n)
   && !RESERVED_NAMES.has(n.toLowerCase());
 const validPass = p => typeof p === 'string' && p.length >= 4 && p.length <= 64;
+// Требования к НОВОМУ паролю (регистрация, смена, сброс) строже, чем к вводу при
+// входе: старые аккаунты с паролем из 4 символов должны по-прежнему входить.
+// Отсекаем заведомо пустые: только пробелы и один повторённый символ ("1111").
+const validNewPass = p => validPass(p) && p.length >= 6 && p.trim() !== '' && !/^(.)\1*$/.test(p);
 
 // Имя как его ввёл пользователь → каноничный вид для проверок:
 // без пробелов по краям (визуально неотличимы) — храним и показываем как есть
@@ -651,7 +707,14 @@ function validSave(s) {
       && typeof e[0] === 'string' && e[0].length <= 80 && !/[<>]/.test(e[0])
       && typeof e[1] === 'string' && e[1].length <= 20 && !/[<>]/.test(e[1])
       && (e[2] == null || (Array.isArray(e[2]) && e[2].length <= 20 && e[2].every(validEquipItem)))
-      && (e[3] == null || typeof e[3] === 'number'));
+      && (e[3] == null || typeof e[3] === 'number'))
+    // Числовые поля и колода целей: раньше не проверялись, и строка в r уходила
+    // в разметку списка сохранений (self-XSS)
+    && (s.r == null || (Number.isInteger(s.r) && s.r >= 0 && s.r <= 100000))
+    && (s.b == null || Number.isInteger(s.b))
+    && (s.d == null || Number.isInteger(s.d))
+    && (s.o == null || (Array.isArray(s.o) && s.o.length <= 200 && s.o.every(pr => Array.isArray(pr)
+      && typeof pr[0] === 'string' && pr[0].length <= 80 && !/[<>"']/.test(pr[0]) && Number.isInteger(pr[1]))));
 }
 function validSavesArray(arr) {
   return Array.isArray(arr) && arr.length <= MAX_SAVES
@@ -742,6 +805,23 @@ function validTournament(tn) {
     && reqStr(tn.orgNick, 30)
     && optStr(tn.info, 600)
     && (tn.tzOffset == null || (Number.isInteger(tn.tzOffset) && Math.abs(tn.tzOffset) <= 840));
+}
+
+// Конкретная причина отказа для формы турнира — раньше любой отказ уходил общим
+// error:'input', а клиент показывал на него «Введите имя пользователя и пароль»
+function tournamentInputError(tn) {
+  if (!tn || typeof tn !== 'object') return 'input';
+  const texts = [tn.address, tn.orgNick, tn.name].filter(v => typeof v === 'string');
+  if (texts.some(v => /[<>]/.test(v))) return 'bad_chars';
+  if (typeof tn.dateStart !== 'string' || !validDate(tn.dateStart)) return 'tn_bad_dates';
+  if (tn.dateEnd && (!validDate(tn.dateEnd) || Date.parse(tn.dateEnd) < Date.parse(tn.dateStart))) return 'tn_bad_dates';
+  if (!Number.isInteger(tn.maxPlayers) || tn.maxPlayers < 2 || tn.maxPlayers > 128) return 'tn_bad_players';
+  return validTournament(tn) ? null : 'input';
+}
+// Дата начала в прошлом (с запасом в сутки на часовые пояса) — только при создании
+function tournamentStartsInPast(tn) {
+  const start = tournamentStartMs({ date_start: tn.dateStart, tz_offset: tn.tzOffset });
+  return !isNaN(start) && start < Date.now() - 86400000;
 }
 
 // Блокировка ростеров: за roster_lock_days дней до начала турнира изменение
@@ -976,7 +1056,7 @@ async function handleApi(req, res, url) {
 
   // --- Аутентификация ---
   if (p === '/api/register' && req.method === 'POST') {
-    if (authThrottled(req)) return send(res, 429, { error: 'rate' });
+    if (authThrottled(req) || regThrottled(req)) return send(res, 429, { error: 'rate' });
     const body = await readBody(req);
     const name = normName(body.name), pass = body.pass;
     // Отдельные коды на имя и пароль — раньше оба несоответствия (в т.ч. при
@@ -984,7 +1064,7 @@ async function handleApi(req, res, url) {
     // в общий error:'input', а клиент показывал "Введите имя и пароль", что
     // было прямо неверно и не объясняло, какое именно требование не выполнено.
     if (!validName(name)) return send(res, 400, { error: 'name_format' });
-    if (!validPass(pass)) return send(res, 400, { error: 'pass_format' });
+    if (!validNewPass(pass)) return send(res, 400, { error: 'pass_format' });
     // Email при регистрации необязателен (можно указать позже в профиле) —
     // но если прислан, должен быть валидного формата
     const email = body.email ? String(body.email).trim() : null;
@@ -1002,12 +1082,10 @@ async function handleApi(req, res, url) {
       if (isUniqueViolation(e)) { authFailed(req); return send(res, 409, { error: 'exists' }); }
       throw e;
     }
-    // Раньше authFailed() вызывался только при отказе (занятое имя) — успешные
-    // регистрации в счётчик не попадали вовсе, и скрипт со свежими именами на
-    // каждый запрос мог штамповать аккаунты без единого отказа. Общий с
-    // логином IP-лимит (те же 20/мин, уже рассчитанные на "целый клуб за NAT")
-    // закрывает и этот путь.
-    authFailed(req);
+    // Успешная регистрация считается отдельно (regCounted, 30/час с адреса):
+    // скрипт со свежими именами не штампует аккаунты без остановки, а живым
+    // игрокам клуба за одним NAT это не мешает входить
+    regCounted(req);
     return send(res, 200, { token: createSession(name), name, country: null, email });
   }
 
@@ -1126,7 +1204,7 @@ async function handleApi(req, res, url) {
     if (!validName(inputName) || typeof code !== 'string') {
       return send(res, 400, { error: 'input' });
     }
-    if (!validPass(newPass)) return send(res, 400, { error: 'pass_format' });
+    if (!validNewPass(newPass)) return send(res, 400, { error: 'pass_format' });
     const account = db.prepare('SELECT name FROM users WHERE name_lc = ?').get(inputName.toLowerCase());
     const name = account ? account.name : inputName;
     const row = db.prepare('SELECT * FROM password_resets WHERE user = ?').get(name);
@@ -1178,27 +1256,32 @@ async function handleApi(req, res, url) {
         if (!s || !Array.isArray(s.m)) continue;
         rosters++;
         modelsTotal += s.m.length;
-        if (s.f) factions.set(s.f, (factions.get(s.f) || 0) + 1);
+        const f = catalogFaction(s.f);
+        if (f) factions.set(f, (factions.get(f) || 0) + 1);
         // Модель считается один раз на ростер: иначе хенчмены, которых можно
         // брать по несколько копий, всегда обгоняли бы одиночные модели
         const seen = new Set();
         for (const entry of s.m) {
-          const n = entry && entry[0];
+          const n = catalogModel(entry && entry[0]);
           if (n && !seen.has(n)) {
             seen.add(n);
             modelNames.set(n, (modelNames.get(n) || 0) + 1);
           }
         }
         const boss = s.m[s.b];
-        if (boss && boss[0]) bosses.set(boss[0], (bosses.get(boss[0]) || 0) + 1);
+        const bossName = catalogModel(boss && boss[0]);
+        if (bossName) bosses.set(bossName, (bosses.get(bossName) || 0) + 1);
       }
     }
     const top = (map, n) => [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, n);
 
     // Рейтинг побед: лидеры (боссы) по числу выигранных партий (см. /api/games/:code/result)
-    const winners = db.prepare(
-      'SELECT winner_boss AS b, COUNT(*) AS c FROM results WHERE winner_boss IS NOT NULL GROUP BY winner_boss ORDER BY c DESC, b LIMIT 10'
-    ).all().map(r => [r.b, r.c]);
+    const winnerMap = new Map();
+    for (const r of db.prepare('SELECT winner_boss AS b, COUNT(*) AS c FROM results WHERE winner_boss IS NOT NULL GROUP BY winner_boss').all()) {
+      const n = catalogModel(r.b);
+      if (n) winnerMap.set(n, (winnerMap.get(n) || 0) + r.c);
+    }
+    const winners = top(winnerMap, 10);
     const resultsTotal = db.prepare('SELECT COUNT(*) AS c FROM results').get().c;
 
     // География турниров: где чаще всего проходят мероприятия
@@ -1263,8 +1346,10 @@ async function handleApi(req, res, url) {
   // --- Смена пароля из профиля (пользователь знает текущий пароль) ---
   if (p === '/api/change-password' && req.method === 'POST') {
     const { oldPass, newPass } = await readBody(req);
-    if (!validPass(oldPass)) return send(res, 400, { error: 'input' });
-    if (!validPass(newPass)) return send(res, 400, { error: 'pass_format' });
+    // Заведомо неверный текущий пароль — тот же ответ, что и при несовпадении
+    // (раньше 'input' давал «Введите имя пользователя и пароль»)
+    if (!validPass(oldPass)) return send(res, 401, { error: 'old_password_bad' });
+    if (!validNewPass(newPass)) return send(res, 400, { error: 'pass_format' });
     const row = db.prepare('SELECT salt, hash FROM users WHERE name = ?').get(user);
     const given = Buffer.from(await hashPassword(row.salt, oldPass), 'hex');
     const stored = Buffer.from(row.hash, 'hex');
@@ -1298,6 +1383,31 @@ async function handleApi(req, res, url) {
     db.prepare('INSERT INTO saves (user, data) VALUES (?, ?) ON CONFLICT(user) DO UPDATE SET data = excluded.data')
       .run(user, JSON.stringify(saves));
     return send(res, 200, { ok: true });
+  }
+
+  // Точечные операции над ОДНИМ сохранением. PUT выше заменяет весь массив тем,
+  // что прислал клиент, — с двух устройств это молча стирало сохранения, сделанные
+  // на другом (у каждого свой устаревший кэш). Здесь изменение применяется к
+  // актуальному массиву из БД, а в ответ уходит итоговый список.
+  if (p === '/api/saves/item' && (req.method === 'PUT' || req.method === 'DELETE')) {
+    const body = await readBody(req);
+    const row = db.prepare('SELECT data FROM saves WHERE user = ?').get(user);
+    let saves = row ? JSON.parse(row.data) : [];
+    if (req.method === 'PUT') {
+      const save = body.save;
+      if (!validSave(save)) return send(res, 400, { error: 'input' });
+      const i = saves.findIndex(s => s && s.n === save.n);
+      if (i !== -1) saves[i] = save;
+      else if (saves.length >= MAX_SAVES) return send(res, 400, { error: 'limit', saves });
+      else saves.push(save);
+      if (!validSavesArray(saves)) return send(res, 400, { error: 'input' });
+    } else {
+      if (typeof body.name !== 'string') return send(res, 400, { error: 'input' });
+      saves = saves.filter(s => !s || s.n !== body.name);
+    }
+    db.prepare('INSERT INTO saves (user, data) VALUES (?, ?) ON CONFLICT(user) DO UPDATE SET data = excluded.data')
+      .run(user, JSON.stringify(saves));
+    return send(res, 200, { ok: true, saves });
   }
 
   // --- Личная коллекция моделей (раздел "Карточки") ---
@@ -1347,6 +1457,13 @@ async function handleApi(req, res, url) {
     if (!g || g.created < Date.now() - GAME_TTL_MS) return send(res, 404, { error: 'notfound' });
     if (g.host_user === user) return send(res, 409, { error: 'own_game' });
     if (g.guest_user && g.guest_user !== user) return send(res, 409, { error: 'full' });
+    if (g.guest_user === user) {
+      // Повторный вход того же гостя (другое устройство) — в ту же партию, но
+      // ростер уже зафиксирован: раньше он перезаписывался, и после записи
+      // результата итог переписывался на модель, которой никто не играл
+      db.prepare('UPDATE games SET guest_left = 0 WHERE code = ?').run(g.code);
+      return send(res, 200, gameToJSON(db.prepare('SELECT * FROM games WHERE code = ?').get(g.code)));
+    }
     db.prepare('UPDATE games SET guest_user = ?, guest_roster = ? WHERE code = ?')
       .run(user, JSON.stringify(roster), g.code);
     return send(res, 200, gameToJSON(db.prepare('SELECT * FROM games WHERE code = ?').get(g.code)));
@@ -1361,11 +1478,24 @@ async function handleApi(req, res, url) {
   // (не должно бывать), берём последнюю начатую.
   if (p === '/api/games/mine' && req.method === 'GET') {
     const g = db.prepare(`SELECT code FROM games
-                            WHERE (host_user = ? OR guest_user = ?)
+                            WHERE ((host_user = ? AND host_left = 0) OR (guest_user = ? AND guest_left = 0))
                               AND result IS NULL AND created >= ?
                             ORDER BY created DESC LIMIT 1`)
       .get(user, user, Date.now() - GAME_TTL_MS);
     return send(res, 200, { code: g ? g.code : null });
+  }
+
+  // «Покинуть игру»: отмечаем, что участник вышел, — комната больше не
+  // восстанавливается ему через /api/games/mine (сама партия у соперника остаётся)
+  const leaveMatch = /^\/api\/games\/([A-Z0-9]{6})\/leave$/i.exec(p);
+  if (leaveMatch && req.method === 'POST') {
+    const code = leaveMatch[1].toUpperCase();
+    const g = db.prepare('SELECT host_user, guest_user FROM games WHERE code = ?').get(code);
+    if (!g) return send(res, 404, { error: 'notfound' });
+    if (g.host_user === user) db.prepare('UPDATE games SET host_left = 1 WHERE code = ?').run(code);
+    else if (g.guest_user === user) db.prepare('UPDATE games SET guest_left = 1 WHERE code = ?').run(code);
+    else return send(res, 403, { error: 'auth' });
+    return send(res, 200, { ok: true });
   }
 
   const gameMatch = /^\/api\/games\/([A-Z0-9]{6})$/i.exec(p);
@@ -1442,14 +1572,10 @@ async function handleApi(req, res, url) {
     if (!g || g.created < Date.now() - GAME_TTL_MS) return send(res, 404, { error: 'notfound' });
     if (g.host_user !== user && g.guest_user !== user) return send(res, 403, { error: 'auth' });
     if (!g.guest_user) return send(res, 400, { error: 'input' }); // оппонент ещё не присоединился
-    // Исправить записанный итог может только тот, кто его записал: иначе
-    // проигравший молча переписывал победу соперника на свою, и она уходила
-    // в публичный рейтинг
-    if (g.result) {
-      let prev = null;
-      try { prev = JSON.parse(g.result); } catch (e) { prev = null; }
-      if (prev && prev.by && prev.by !== user) return send(res, 409, { error: 'result_locked' });
-    }
+    // Исправить итог может любой из двух участников: раньше — только записавший,
+    // и соперник не мог оспорить ошибочно (или нечестно) записанный результат.
+    // Кто записал последним, видно обоим (result.by), ростеры после входа гостя
+    // зафиксированы (см. /api/games/join), так что подменить модели нельзя.
 
     const { winner, hostVp, guestVp } = await readBody(req);
     if (!['host', 'guest'].includes(winner) || !validVp(hostVp) || !validVp(guestVp)) {
@@ -1516,7 +1642,9 @@ async function handleApi(req, res, url) {
 
   if (p === '/api/tournaments' && req.method === 'POST') {
     const tn = await readBody(req);
-    if (!validTournament(tn)) return send(res, 400, { error: 'input' });
+    const inputError = tournamentInputError(tn);
+    if (inputError) return send(res, 400, { error: inputError });
+    if (tournamentStartsInPast(tn)) return send(res, 400, { error: 'tn_past_date' });
     // лимит на НЕзавершённые: иначе организатор клуба навсегда упирается в потолок
     const mine = db.prepare("SELECT COUNT(*) AS c FROM tournaments WHERE organizer = ? AND status != 'finished'").get(user).c;
     if (mine >= MAX_TOURNAMENTS_PER_ORG) return send(res, 400, { error: 'tn_limit' });
@@ -1573,10 +1701,11 @@ async function handleApi(req, res, url) {
     // который есть у всех остальных (адрес турнира, ник организатора и т.д.,
     // см. optStr-проверки ниже по файлу) — defense-in-depth на случай, если
     // это поле однажды попадёт в вывод без экранирования (другой клиент, экспорт)
-    if (!validSave(roster1) || !validSave(roster2) || !optStr(notes, 400) || (notes && /[<>]/.test(notes))) {
+    if (notes && typeof notes === 'string' && /[<>]/.test(notes)) return send(res, 400, { error: 'bad_chars' });
+    if (!validSave(roster1) || !validSave(roster2) || !optStr(notes, 400)) {
       return send(res, 400, { error: 'input' });
     }
-    if (roster1.f !== roster2.f) return send(res, 400, { error: 'input' }); // одна банда для обоих листов
+    if (roster1.f !== roster2.f) return send(res, 400, { error: 'tn_same_faction' }); // одна банда для обоих листов
     db.prepare('UPDATE tournament_players SET roster1 = ?, roster2 = ?, notes = ? WHERE tid = ? AND user = ?')
       .run(JSON.stringify(roster1), JSON.stringify(roster2), notes ? notes.trim() : null, tn.id, user);
     return send(res, 200, { ok: true });
@@ -1929,7 +2058,11 @@ function serveStatic(req, res, url) {
 // ======================== СЕРВЕР ========================
 const server = http.createServer(async (req, res) => {
   try {
-    const url = new URL(req.url, 'http://localhost');
+    // Кривой адрес от сканеров ("//", битый хост и т.п.) — 400 без стека в журнале,
+    // а не 500 с TypeError: Invalid URL на каждый такой запрос
+    let url;
+    try { url = new URL(req.url, 'http://localhost'); }
+    catch (e) { return staticErr(res, 400, 'Bad request'); }
     if (url.pathname.startsWith('/api/')) {
       await handleApi(req, res, url);
     } else if (req.method === 'GET' || req.method === 'HEAD') {

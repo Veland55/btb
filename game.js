@@ -106,6 +106,16 @@ function applyServerTrack(serverTrack, updated) {
 }
 
 let gameTrackPushing = false;
+// Повтор отправки счётчиков после сбоя сети: правки без связи раньше просто
+// оставались локально, индикатор гас, и соперник их так и не получал
+let gameTrackRetryTimer = null;
+let gameTrackRetryDelay = 3000;
+function scheduleTrackRetry() {
+  clearTimeout(gameTrackRetryTimer);
+  gameTrackRetryTimer = setTimeout(() => { if (activeGame) pushGameTrackToServer(); }, gameTrackRetryDelay);
+  gameTrackRetryDelay = Math.min(gameTrackRetryDelay * 2, 60000);
+}
+window.addEventListener('online', () => { if (activeGame) pushGameTrackToServer(); });
 
 function pushGameTrackToServer() {
   if (!activeGame) return;
@@ -140,8 +150,15 @@ function pushGameTrackToServer() {
         lastAppliedTrackUpdated = r.trackUpdated;
       }
       setSyncIndicator('synced');
+      gameTrackRetryDelay = 3000;
     } catch (e) {
-      setSyncIndicator(null); // партия истекла или сеть подвела — локально всё равно сохранено
+      if (e.error === 'network' || !e.status || e.status >= 500) {
+        // Сеть/сервер подвели — правки остаются «грязными» и уйдут повтором
+        setSyncIndicator('pending');
+        scheduleTrackRetry();
+      } else {
+        setSyncIndicator(null); // партия истекла или закрыта результатом — слать нечего
+      }
     } finally {
       gameTrackPushing = false;
     }
@@ -353,7 +370,18 @@ async function renderGame() {
     try {
       loaded = await api('/api/games/' + savedCode);
     } catch (e) {
-      localStorage.removeItem(GAME_CODE_KEY); // игра истекла или недоступна
+      // Сеть подвела — партия на месте: ничего не стираем (раньше любой сбой
+      // удалял код и локальное состояние, вместе с колодой и тайной рукой),
+      // показываем повтор
+      if (e.error === 'network' || !e.status || e.status >= 500) {
+        box.innerHTML = `
+          <div class="game-panel game-center">
+            <p class="game-note">${t('server_unreachable')}</p>
+            <button class="rank-select-btn" onclick="renderGame()">${t('game_retry')}</button>
+          </div>`;
+        return;
+      }
+      localStorage.removeItem(GAME_CODE_KEY); // игра истекла (404) или чужая (403)
       localStorage.removeItem(GAME_STATE_PREFIX + savedCode); // и её счётчики с колодой
       activeGame = null;
     }
@@ -447,7 +475,7 @@ function renderGameWait() {
       <div class="game-code-display">${activeGame.code}</div>
       ${conditionsBarHTML(activeGame.conditions)}
       <p class="game-note game-waiting">⏳ ${t('waiting_opponent')}</p>
-      <button class="save-btn save-btn-del" onclick="leaveGame()">${t('leave_game')}</button>
+      <button class="save-btn save-btn-del" onclick="userLeaveGame()">${t('leave_game')}</button>
     </div>`;
 
   // Поллинг: ждём присоединения оппонента.
@@ -868,7 +896,8 @@ function gameResultBannerHTML() {
       <div class="game-panel-title">${t('game_result')}</div>
       <div class="game-result-winner">🏆 ${names[r.winner]}</div>
       <div class="game-result-score">${names.host} <b>${r.hostVp}</b> : <b>${r.guestVp}</b> ${names.guest}</div>
-      ${!r.by || r.by === currentUser ? `<button class="save-btn" onclick="editGameResult()">${t('change_result')}</button>` : ''}
+      ${r.by ? `<div class="game-note">${t('game_result_by', { name: escHtml(r.by) })}</div>` : ''}
+      <button class="save-btn" onclick="editGameResult()">${t('change_result')}</button>
     </div>`;
 }
 
@@ -944,7 +973,10 @@ function renderScorePanel() {
 
 async function recordGameResult(winner) {
   const names = { host: activeGame.host.name, guest: activeGame.guest.name };
-  if (!await appConfirm(t('confirm_winner', { name: names[winner] }))) return;
+  // Победитель с меньшим числом VP — почти всегда промах по кнопке: переспрашиваем
+  const loser = winner === 'host' ? 'guest' : 'host';
+  const fewerVp = vpValue(winner) < vpValue(loser);
+  if (!await appConfirm(fewerVp ? t('game_winner_fewer_vp') : t('confirm_winner', { name: names[winner] }))) return;
   await gameRun(async () => {
     try {
       const data = await api('/api/games/' + activeGame.code + '/result', 'POST', {
@@ -999,7 +1031,7 @@ function renderGamePlay() {
     <div class="game-play-bar">
       <span class="game-play-code">${t('game_code')}: <b>${activeGame.code}</b><span id="gameSyncDot" class="game-sync-dot" title="${t('game_sync_hint')}"></span><span id="gameSyncLabel" class="game-sync-label" aria-live="polite"></span></span>
       ${conditionsChipsHTML(activeGame.conditions)}
-      <button class="save-btn save-btn-del game-leave-btn" onclick="leaveGame()">${t('leave_game')}</button>
+      <button class="save-btn save-btn-del game-leave-btn" onclick="userLeaveGame()">${t('leave_game')}</button>
     </div>
     ${gameResultBannerHTML()}
     ${gameRoundPanelHTML()}
@@ -1113,8 +1145,19 @@ async function joinGame() {
   });
 }
 
+// Выход по кнопке: с подтверждением (партия и её счётчики пропадают с этого
+// устройства) и с отметкой на сервере — иначе /api/games/mine при следующем
+// входе в раздел возвращал ту же комнату, и «покинуть» ничего не меняло
+async function userLeaveGame() {
+  if (!(await appConfirm(t('game_confirm_leave')))) return;
+  const code = activeGame && activeGame.code;
+  if (code) api('/api/games/' + code + '/leave', 'POST', {}).catch(() => {});
+  leaveGame();
+}
+
 function leaveGame() {
   stopGamePolling();
+  clearTimeout(gameTrackRetryTimer);
   if (activeGame) localStorage.removeItem(GAME_STATE_PREFIX + activeGame.code); // счётчики этой игры
   localStorage.removeItem(GAME_CODE_KEY);
   activeGame = null;

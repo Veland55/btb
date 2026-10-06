@@ -86,6 +86,7 @@ async function toggleEternal(on) {
     if (BMG_BOSS && BMG_BOSS.eternal) { crew = []; BMG_BOSS = null; BMG_AFFILIATIONS = null; }
     // Eternal-модель могла быть носителем правила найма или целью Affinity
     notifyCrewRevalidation(revalidateCrew());
+    revalidateCrewEquipment();
     updateCrewEquipmentCounts();
     modifiers = calculateModifiers();
     updateCrewBar();
@@ -104,7 +105,7 @@ async function toggleEternal(on) {
 function eternalToggleHTML() {
   return `
     <label class="pill-toggle" title="${t('eternal_hint')}">
-      <input type="checkbox" ${showEternal ? 'checked' : ''} onchange="toggleEternal(this.checked)">
+      <input type="checkbox" ${showEternal ? 'checked' : ''} onchange="toggleEternal(this.checked)" aria-description="${escHtml(t('eternal_hint'))}">
       <span class="pill-toggle-track"><span class="pill-toggle-knob"></span></span>
       <span class="pill-toggle-label">${t('eternal_title')}</span>
     </label>`;
@@ -128,7 +129,7 @@ function setLeftHanded(on) {
 function handToggleHTML() {
   return `
     <label class="pill-toggle" title="${t('left_handed_hint')}">
-      <input type="checkbox" ${leftHanded ? 'checked' : ''} onchange="setLeftHanded(this.checked)">
+      <input type="checkbox" ${leftHanded ? 'checked' : ''} onchange="setLeftHanded(this.checked)" aria-description="${escHtml(t('left_handed_hint'))}">
       <span class="pill-toggle-track"><span class="pill-toggle-knob"></span></span>
       <span class="pill-toggle-label">${t('left_handed_title')}</span>
     </label>`;
@@ -143,8 +144,9 @@ function buildFactionCardsHTML() {
     .map(([faction, iconFile]) => {
       const bgFile = iconFile.replace(/\.webp$/, "-bg.webp");
       return `
-        <div class="faction-card" data-faction="${faction}" style="background-image: url('${base}${bgFile}');">
-          <img class="faction-icon" src="${base}${iconFile}" alt="${faction}" loading="lazy" decoding="async">
+        <div class="faction-card" data-faction="${faction}" tabindex="0" role="button" aria-label="${escHtml(faction)}" style="background-image: url('${base}${bgFile}');">
+          <img class="faction-icon" src="${base}${iconFile}" alt="${escHtml(faction)}" loading="lazy" decoding="async">
+          <span class="faction-card-name">${escHtml(faction)}</span>
         </div>`;
     }).join("");
 }
@@ -258,6 +260,7 @@ const translations = {
     min_limit_100: "Минимальный лимит — 100 Rep. Возвращён прежний лимит: {value}.",
     max_limit: "Максимальный лимит — {max} Rep. Возвращён прежний лимит: {value}.",
     rep_exceeds: "Внимание! Текущий отряд ({current} Rep) превышает новый лимит ({new} Rep).",
+    rank_slots_exceeded: "При этом лимите Rep слотов Free Agent/Vehicle меньше, чем нанято (Free Agent: {fa} из {faMax}). Уберите лишние модели.",
     rank_not_selected: "Ранг модели не выбран!",
     rep_exceeded: "Превышен лимит Reputation (учтено снаряжение)",
     funding_insufficient: "Недостаточно Funding (учтено снаряжение)",
@@ -268,7 +271,7 @@ const translations = {
     vocational_requires_cop: "В отряде модель с Vocational — все члены отряда должны иметь трейт Cop",
     crew_revalidated_removed: "Убраны из отряда — условие их найма больше не выполняется: {names}",
     leader_trait_required: "Для лидера {leader} разрешены только модели с трейтом \"{trait}\"",
-    model_already_added: "Вы уже добавили модель с именем («{name}»)",
+    model_already_added: "Этот персонаж уже в отряде: {name}",
     only_one_leader: "Только один Leader",
     leader_already_added: "Нельзя добавить Leader, если Sidekick уже является лидером отряда",
     max_2_sidekick: "Максимум 2 Sidekick без Leader",
@@ -348,16 +351,19 @@ const translations = {
     equipment_exceeds_rep: "Этот апгрейд добавляет Rep и выводит отряд за лимит репутации!",
     auth_rate_limited: "Слишком много неудачных попыток входа. Подождите минуту и попробуйте снова.",
     auth_bad_name_format: "Имя пользователя — от 3 до 20 символов: буквы, цифры, пробел, - _ .",
-    auth_bad_pass_format: "Пароль — от 4 до 64 символов.",
+    auth_bad_pass_format: "Пароль — от 6 до 64 символов, не из одних пробелов и не из одного повторённого символа.",
     auth_bad_email_format: "Некорректный формат email.",
     eternal_title: "ETERNAL",
     eternal_hint: "Показывать модели формата Eternal — снятые с продажи профили. В обычной игре не используются.",
     eternal_crew_warning: "В отряде есть модели формата Eternal. Если выключить формат, они будут убраны из отряда. Продолжить?",
     confirm_reset_crew: "Очистить весь набранный отряд и колоду карт целей? Это нельзя отменить.",
+    confirm_remove_boss: "{name} — босс отряда. Если убрать босса, весь отряд будет очищен. Продолжить?",
+    crew_equipment_removed: "Снято снаряжение, условия которого больше не выполняются: {items}",
     eternal_badge: "ETERNAL",
     left_handed_title: "ЛЕВША",
     left_handed_hint: "Плавающие кнопки управления на телефоне — у левого края экрана вместо правого. Удобно, если держите телефон в левой руке.",
-    equipment_for: "Equipment для",
+    equipment_for: "Снаряжение для",
+    equipment_add_title: "Добавить снаряжение",
     equipment_available: "Доступно",
     equipment_of_total: "из",
     equipment_insufficient_short: "⚠ Недостаточно средств",
@@ -401,15 +407,24 @@ const translations = {
     model_search_placeholder: "Поиск модели по имени…",
     cancel: "Отмена",
     close_modal: "Закрыть",
+    back_title: "Назад",
+    reset_crew_title: "Сбросить отряд",
+    faction_rules_title: "Правила набора фракции",
     ok: "ОК",
     confirm_delete_save: "Удалить сохранение «{name}»?",
     models_skipped: "Часть моделей не найдена в базе и пропущена",
     auth_user_exists: "Пользователь с таким именем уже существует",
     auth_bad_credentials: "Неверное имя пользователя или пароль",
     auth_fill_fields: "Введите имя пользователя и пароль",
+    input_invalid: "Проверьте введённые данные",
+    input_bad_chars: "Символы < и > использовать нельзя",
+    tn_bad_dates_msg: "Проверьте даты: окончание не может быть раньше начала",
+    tn_bad_players_msg: "Число мест — от 2 до 128",
+    tn_past_date_msg: "Дата начала турнира уже прошла",
+    tn_same_faction_msg: "Оба ростера должны быть за одну банду",
     auth_server_note: "Аккаунт хранится на сервере приложения: сохранения доступны с любого устройства после входа.",
     login_required: "Требуется вход в профиль",
-    server_unreachable: "Сервер недоступен. Приложение должно быть открыто через свой сервер (node server.js).",
+    server_unreachable: "Нет связи с сервером. Проверьте интернет и попробуйте ещё раз.",
     server_error: "Ошибка сервера, попробуйте ещё раз",
     section_load_failed: "Не удалось загрузить раздел. Проверьте связь и попробуйте ещё раз.",
     game: "ИГРА",
@@ -429,6 +444,10 @@ const translations = {
     share_code_hint: "Передайте этот код оппоненту — он вводит его в разделе ИГРА на своём устройстве.",
     waiting_opponent: "Ожидание оппонента...",
     leave_game: "ПОКИНУТЬ ИГРУ",
+    game_confirm_leave: "Покинуть игру? Счётчики этой партии на этом устройстве будут удалены.",
+    game_retry: "ПОВТОРИТЬ",
+    game_result_by: "Записал: {name}",
+    game_winner_fewer_vp: "У выбранного победителя меньше очков побед. Всё верно?",
     your_roster: "ВАШ РОСТЕР",
     opponent_roster: "РОСТЕР ОППОНЕНТА",
     game_not_found: "Игра не найдена или срок её действия истёк",
@@ -598,7 +617,7 @@ const translations = {
     forgot_reset_done: "Пароль изменён! Теперь можно войти с новым паролем.",
     email_placeholder: "Email (для восстановления пароля)",
     email_placeholder_optional: "Email (необязательно)",
-    register_format_hint: "При регистрации: имя — 3-20 символов, пароль — от 4 символов.",
+    register_format_hint: "При регистрации: имя — 3-20 символов, пароль — от 6 символов.",
     register_email_hint: "Укажите email — без него при забытом пароле доступ к аккаунту и сохранённым отрядам будет утерян навсегда, восстановить будет нечем.",
     email_save_btn: "Сохранить",
     email_hint: "Нужен только для восстановления забытого пароля. Не публикуется и не виден другим игрокам.",
@@ -699,6 +718,7 @@ const translations = {
     min_limit_100: "Minimum limit is 100 Rep. Restored the previous limit: {value}.",
     max_limit: "Maximum limit is {max} Rep. Restored the previous limit: {value}.",
     rep_exceeds: "Warning! Current crew ({current} Rep) exceeds new limit ({new} Rep).",
+    rank_slots_exceeded: "With this Rep limit there are fewer Free Agent/Vehicle slots than hired (Free Agent: {fa} of {faMax}). Remove the extra models.",
     rank_not_selected: "Model rank not selected!",
     rep_exceeded: "Reputation limit exceeded (equipment counted)",
     funding_insufficient: "Insufficient Funding (equipment counted)",
@@ -709,7 +729,7 @@ const translations = {
     vocational_requires_cop: "A Vocational model is in the crew — all crew members must have the Cop trait",
     crew_revalidated_removed: "Removed from the crew — their hiring condition no longer holds: {names}",
     leader_trait_required: "For leader {leader}, only models with trait \"{trait}\" are allowed",
-    model_already_added: "You've already added a model named \"{name}\"",
+    model_already_added: "This character is already in the crew: {name}",
     only_one_leader: "Only one Leader",
     leader_already_added: "Cannot add Leader if Sidekick is already crew leader",
     max_2_sidekick: "Maximum 2 Sidekick without Leader",
@@ -789,16 +809,19 @@ const translations = {
     equipment_exceeds_rep: "This upgrade adds Rep and would push the crew over the reputation limit!",
     auth_rate_limited: "Too many failed sign-in attempts. Wait a minute and try again.",
     auth_bad_name_format: "Username must be 3-20 characters: letters, digits, space, - _ .",
-    auth_bad_pass_format: "Password must be 4-64 characters.",
+    auth_bad_pass_format: "Password must be 6-64 characters, not just spaces or one repeated character.",
     auth_bad_email_format: "Invalid email format.",
     eternal_title: "ETERNAL",
     eternal_hint: "Show Eternal-format models — retired profiles. Not used in the standard game.",
     eternal_crew_warning: "Your crew contains Eternal-format models. Turning the format off will remove them from the crew. Continue?",
     confirm_reset_crew: "Clear the whole crew and the objective deck? This cannot be undone.",
+    confirm_remove_boss: "{name} is the crew boss. Removing the boss clears the whole crew. Continue?",
+    crew_equipment_removed: "Removed equipment whose requirements are no longer met: {items}",
     eternal_badge: "ETERNAL",
     left_handed_title: "LEFT-HANDED",
     left_handed_hint: "Floating action buttons on the phone sit at the left edge instead of the right. Handy if you hold the phone in your left hand.",
     equipment_for: "Equipment for",
+    equipment_add_title: "Add equipment",
     equipment_available: "Available",
     equipment_of_total: "of",
     equipment_insufficient_short: "⚠ Insufficient funds",
@@ -842,15 +865,24 @@ const translations = {
     model_search_placeholder: "Search model by name…",
     cancel: "Cancel",
     close_modal: "Close",
+    back_title: "Back",
+    reset_crew_title: "Reset crew",
+    faction_rules_title: "Faction crew rules",
     ok: "OK",
     confirm_delete_save: "Delete save \"{name}\"?",
     models_skipped: "Some models were not found in the database and were skipped",
     auth_user_exists: "A user with this name already exists",
     auth_bad_credentials: "Wrong username or password",
     auth_fill_fields: "Enter username and password",
+    input_invalid: "Please check the entered data",
+    input_bad_chars: "The characters < and > are not allowed",
+    tn_bad_dates_msg: "Check the dates: the end cannot be before the start",
+    tn_bad_players_msg: "Number of slots must be 2-128",
+    tn_past_date_msg: "The tournament start date has already passed",
+    tn_same_faction_msg: "Both rosters must be for the same crew",
     auth_server_note: "Your account is stored on the app server: saves are available from any device after logging in.",
     login_required: "Login required",
-    server_unreachable: "Server unreachable. The app must be opened through its own server (node server.js).",
+    server_unreachable: "No connection to the server. Check your internet and try again.",
     server_error: "Server error, please try again",
     section_load_failed: "Failed to load this section. Check your connection and try again.",
     game: "GAME",
@@ -870,6 +902,10 @@ const translations = {
     share_code_hint: "Share this code with your opponent — they enter it in the GAME section on their device.",
     waiting_opponent: "Waiting for opponent...",
     leave_game: "LEAVE GAME",
+    game_confirm_leave: "Leave the game? This game's counters on this device will be removed.",
+    game_retry: "RETRY",
+    game_result_by: "Recorded by: {name}",
+    game_winner_fewer_vp: "The selected winner has fewer victory points. Is that right?",
     your_roster: "YOUR ROSTER",
     opponent_roster: "OPPONENT'S ROSTER",
     game_not_found: "Game not found or expired",
@@ -1039,7 +1075,7 @@ const translations = {
     forgot_reset_done: "Password changed! You can now log in with the new password.",
     email_placeholder: "Email (for password recovery)",
     email_placeholder_optional: "Email (optional)",
-    register_format_hint: "For registration: username 3-20 characters, password 4+ characters.",
+    register_format_hint: "For registration: username 3-20 characters, password 6+ characters.",
     register_email_hint: "Add an email — without it, a forgotten password means permanently losing your account and saved crews, with no way to recover them.",
     email_save_btn: "Save",
     email_hint: "Only used to recover a forgotten password. Not published or visible to other players.",
@@ -1146,6 +1182,7 @@ function modelsWord(n) {
 function setLanguage(lang) {
   if (!translations[lang]) return;
   currentLang = lang;
+  document.documentElement.lang = lang; // для скринридеров и переносов слов
 
   // Обновляем кнопки переключения
   document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1739,7 +1776,12 @@ const addToCrew = m => {
       return;
     }
 
-    const ranks = availableRanksFor(m);
+    // Занятые ранги в выбор не попадают (раньше предлагался, например, Leader при
+    // уже нанятом лидере, а отказ приходил только после нажатия). Если свободных
+    // нет вовсе — оставляем как было: bmgCanAddModel объяснит причину отказа.
+    const allowed = availableRanksFor(m);
+    const free = allowed.filter(rankHasFreeSlot);
+    const ranks = free.length ? free : allowed;
     if (ranks.length === 1) {
       addModelWithRank(m, ranks[0]);
     } else if (ranks.length > 1) {
@@ -1974,7 +2016,10 @@ function appPrompt(message, defaultValue = '') {
     overlay.querySelector('.rank-select-close').onclick = () => finish(null);
     overlay.querySelector('.app-modal-cancel').onclick = () => finish(null);
     overlay.querySelector('.app-modal-ok').onclick = () => finish(input.value);
-    overlay.onclick = e => { if (e.target === overlay) finish(null); };
+    // Клик по фону сразу после открытия — это обычно второй тап двойного нажатия
+    // по кнопке, открывшей диалог: он закрывал диалог как «Отмена»
+    const openedAt = Date.now();
+    overlay.onclick = e => { if (e.target === overlay && Date.now() - openedAt > 500) finish(null); };
     overlay.addEventListener('keydown', e => { if (e.key === 'Escape') finish(null); });
     input.onkeydown = e => {
       if (e.key === 'Enter') finish(input.value);
@@ -2009,7 +2054,10 @@ function appConfirm(message, confirmLabel) {
     overlay.querySelector('.rank-select-close').onclick = () => finish(false);
     overlay.querySelector('.app-modal-cancel').onclick = () => finish(false);
     overlay.querySelector('.app-modal-ok').onclick = () => finish(true);
-    overlay.onclick = e => { if (e.target === overlay) finish(false); };
+    // Клик по фону сразу после открытия — это обычно второй тап двойного нажатия
+    // по кнопке, открывшей диалог: он закрывал диалог как «Отмена»
+    const openedAt = Date.now();
+    overlay.onclick = e => { if (e.target === overlay && Date.now() - openedAt > 500) finish(false); };
     overlay.addEventListener('keydown', e => { if (e.key === 'Escape') finish(false); });
   });
 }
@@ -2057,19 +2105,43 @@ function revalidateCrew() {
   return removed;
 }
 
+// Снаряжение, условия которого перестали выполняться (ушёл персонаж, открывавший
+// предмет, — например маска без Mad Hatter): раньше оставалось вместе с уже
+// списанными $, и ростер становился нелегальным без единого предупреждения.
+// Снимаем такие предметы и сообщаем, какие именно.
+function revalidateCrewEquipment() {
+  const dropped = [];
+  crew.forEach(m => {
+    const keep = (m.equipment || []).filter(eq => equipmentConditionsMet(eq, m));
+    if (keep.length !== (m.equipment || []).length) {
+      m.equipment.filter(eq => !keep.includes(eq)).forEach(eq => dropped.push(`${eq.name} (${m.name})`));
+      m.equipment = keep;
+    }
+  });
+  if (dropped.length) showErrorToast(t('crew_equipment_removed', { items: dropped.join(', ') }));
+  return dropped;
+}
+
 function notifyCrewRevalidation(removed) {
   if (removed.length) {
     showErrorToast(t("crew_revalidated_removed", { names: removed.map(m => m.name).join(", ") }));
   }
 }
 
-const removeFromCrew = m => {
+const removeFromCrew = async m => {
   // Если передан конкретный экземпляр отряда — убираем именно его: иначе при
   // нескольких копиях (Horde/Minion) удалялась последняя, а снаряжение
   // оставалось на первой
-  const index = (m.uniqueId != null && crew.some(x => x.uniqueId === m.uniqueId))
+  let index = (m.uniqueId != null && crew.some(x => x.uniqueId === m.uniqueId))
     ? crew.findIndex(x => x.uniqueId === m.uniqueId)
     : crew.findLastIndex(x => sameModel(x, m));
+  // Удаление босса расформировывает весь отряд — раньше молча, одним тапом по «−»
+  // (кнопка сброса в шапке при этом спрашивала подтверждение)
+  if (index !== -1 && crew[index] === BMG_BOSS && crew.length > 1) {
+    if (!(await appConfirm(t('confirm_remove_boss', { name: BMG_BOSS.name })))) return;
+    index = crew.indexOf(BMG_BOSS);
+    if (index === -1) return;
+  }
   if (index !== -1) {
     crew.splice(index, 1);
     // Three Jokers: нанимаются только все вместе — при удалении одного удаляем остальных
@@ -2085,6 +2157,7 @@ const removeFromCrew = m => {
     // Требуемая модель (modelDependencyRules), носитель Corrupt/Criminal Bonds,
     // цель Affinity и т.п. могли уйти вместе с удалённой — см. revalidateCrew
     notifyCrewRevalidation(revalidateCrew());
+    revalidateCrewEquipment();
     updateCrewEquipmentCounts();
     modifiers = calculateModifiers();
     updateCrewBar();
@@ -2108,6 +2181,11 @@ const updateCrewBar = () => {
   let usedFunding = getCrewUsedFunding();
   $("totalRep").textContent = totalRep;
   $("totalFunding").textContent = `${usedFunding} / ${bmgFundingLimit()}`;
+  // Превышение лимитов (например, лимит Rep уменьшили после набора) — постоянная
+  // подсветка в шапке, а не только разовый тост при смене лимита
+  $("totalRep").classList.toggle('over-limit', totalRep > BMG_REP_LIMIT);
+  $("totalFunding").classList.toggle('over-limit', usedFunding > bmgFundingLimit());
+  if (typeof updateDeckBadge === 'function') updateDeckBadge();
   
   // Обновляем индикатор Charismatic — пересчитываем динамически по текущему составу отряда,
   // а не по флагу "уже потрачен" (иначе после удаления модели слот не освобождался — баг)
@@ -2285,6 +2363,12 @@ ${cornerHTML ? `<div class="mini-card-corner">${cornerHTML}</div>` : ''}
 // Жёлтая панель апгрейдов, «выглядывающая» из-под карточки модели: все
 // купленные апгрейды и управление ими (просмотр, удаление, докупка).
 // Панель есть у КАЖДОЙ модели отряда — и в билдере, и в просмотре ростера.
+// Модели, которым снаряжение недоступно по трейту (Animal, Fully Equipped, Dots
+// Suit): кнопку «+» им не показываем — раньше она была, а по нажатию приходил отказ
+function noEquipmentAllowed(m) {
+  return !!(m.traits && m.traits.some(tr => tr.includes('Animal') || tr.includes('Fully Equipped') || tr.includes('Dots Suit')));
+}
+
 function renderUpgradeFlapHTML(item, equipment) {
   const safeName = item.name.replace(/'/g, "\\'");
   // uid конкретной копии модели: Horde/Minion позволяют взять одну модель до
@@ -2302,7 +2386,7 @@ function renderUpgradeFlapHTML(item, equipment) {
   return `
     <span class="flap-title">${t('upgrades_flap')}</span>
     ${chips}
-    <button class="flap-add" title="Equipment" onclick="event.stopPropagation(); openEquipmentMenu(models[${item._id}], this.closest('.mini-card-wrap'), '${uid}')">+</button>`;
+    ${noEquipmentAllowed(item) ? '' : `<button class="flap-add" title="${t('equipment_add_title')}" aria-label="${t('equipment_add_title')}" onclick="event.stopPropagation(); openEquipmentMenu(models[${item._id}], this.closest('.mini-card-wrap'), '${uid}')">+</button>`}`;
 }
 
 // Экземпляр в отряде по uid; без uid — первый подходящий по имени (старый путь)
@@ -2470,6 +2554,26 @@ function getFactionEligibleModels(faction) {
   return filteredModels;
 }
 
+// Элемент-«кнопка» на div (карточки моделей, фракций): доступен с клавиатуры —
+// фокус по Tab, открытие по Enter/пробелу (раньше только мышью или тапом)
+function makeActivatable(el, fn) {
+  el.tabIndex = 0;
+  el.setAttribute('role', 'button');
+  el.onclick = fn;
+  el.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target === el) { e.preventDefault(); fn(e); }
+  });
+}
+
+// Пустой результат поиска по имени — явная надпись вместо пустого экрана
+function appendNothingFound(grid, query) {
+  if (!String(query || '').trim()) return;
+  const note = document.createElement('div');
+  note.className = 'budget-hidden-notice';
+  note.textContent = t('nothing_found');
+  grid.appendChild(note);
+}
+
 const renderMiniCardsView = debounce(() => {
   if (!currentFaction) {
     // Если фракция не выбрана, не рендерим ничего
@@ -2489,12 +2593,13 @@ const renderMiniCardsView = debounce(() => {
     div.className = `mini-card`;
     div.dataset.name = model.name;
     div.innerHTML = renderMiniCardHTML({ ...model, inCrew: false, count: 0 }, false, false, true);
-    div.onclick = () => showFullCard(model);
+    makeActivatable(div, () => showFullCard(model));
     fragment.appendChild(div);
   });
 
   grid.innerHTML = "";
   grid.appendChild(fragment);
+  if (!filteredModels.length) appendNothingFound(grid, cardsSearchQuery);
 }, 100);
 
 // Версия для билдера (с +/-)
@@ -2520,7 +2625,8 @@ const renderMiniCardsBuilder = debounce(() => {
   // Та же логика "кому вообще место в этой фракции", что и в режиме "Карты"
   // (getFactionEligibleModels) — дальше только механика текущего отряда:
   // уже нанят / не хватает бюджета / заняты все ранги.
-  let filteredModels = getFactionEligibleModels(currentFaction).filter(m => !hasInCrew(m));
+  let filteredModels = getFactionEligibleModels(currentFaction)
+    .filter(m => !hasInCrew(m) && !sameCharacterInCrew(m) && !excludedByEquipment(m));
   filteredModels = filteredModels.filter(m => matchesModelSearch(m, builderSearchQuery));
 
   // Опциональный фильтр "только моя коллекция" — сужает список найма, отряд
@@ -2571,13 +2677,14 @@ const renderMiniCardsBuilder = debounce(() => {
     div.className = `mini-card ${item.inCrew ? "in-crew" : ""}`;
     div.dataset.name = item.name;
     div.innerHTML = renderMiniCardHTML(item, true);
-    div.onclick = () => showFullCard(item);
+    makeActivatable(div, () => showFullCard(item));
     // У каждой модели отряда — жёлтая панель апгрейдов под карточкой
     fragment.appendChild(item.inCrew ? wrapCardWithUpgrades(div, item) : div);
   });
 
   grid.innerHTML = "";
   grid.appendChild(fragment);
+  if (!filteredModels.length) appendNothingFound(grid, builderSearchQuery);
   if (hiddenByBudgetCount > 0) {
     const notice = document.createElement("div");
     notice.className = "budget-hidden-notice";
@@ -2993,7 +3100,16 @@ function showTraitDesc(traitName) {
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   const popups = document.querySelectorAll('.trait-popup, .equipment-modal');
-  if (popups.length) popups[popups.length - 1].remove();
+  if (popups.length) { popups[popups.length - 1].remove(); return; }
+  // Диалоги (ранг, prompt, confirm) закрываются своими обработчиками
+  if (document.querySelector('.rank-select-modal')) return;
+  // Иначе — полноэкранная карточка или боковая панель карточки
+  if ($('fullCard') && $('fullCard').classList.contains('active')) { closeFullCard(); return; }
+  if (getActiveSidePanel() && sidePanelModel) closeBuilderCardPanel();
+});
+// Клик по тёмному фону вокруг полноэкранной карточки (на широком экране) — закрыть
+document.addEventListener('click', e => {
+  if (e.target && e.target.id === 'fullCard') closeFullCard();
 });
 
 // Функция для показа попапа с описанием (для трейтов и equipment) - ИСПРАВЛЕННАЯ ВЕРСИЯ
@@ -3076,6 +3192,13 @@ let tabsInitialized = false;
 function initTabs() {
   if (tabsInitialized) return;
   tabsInitialized = true;
+  // Карточки фракций — div: Enter/пробел с клавиатуры работают как клик
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('faction-card')) {
+      e.preventDefault();
+      e.target.click();
+    }
+  });
   document.addEventListener('click', e => {
     const card = e.target.closest('.faction-card');
     if (!card) return;
@@ -3178,6 +3301,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentRep > BMG_REP_LIMIT) {
         showErrorToast(t("rep_exceeds", { current: currentRep, new: BMG_REP_LIMIT }));
       }
+      // Слоты Free Agent/Vehicle зависят от лимита Rep: при его снижении их могло
+      // стать меньше, чем уже нанято, — раньше это никак не проверялось
+      const factionRules = factionCrewRules[currentFaction] || {};
+      if (!factionRules.ignoreStandardRankRequirements) {
+        const faSlots = 1 + bmgExtraSlots() + (modifiers.extraFreeAgents || 0);
+        const vehSlots = 1 + bmgExtraSlots() + (modifiers.extraVehicles || 0);
+        if (bmgRankCount("Free Agent") > faSlots || bmgRankCount("Vehicle") > vehSlots) {
+          showErrorToast(t("rank_slots_exceeded", { fa: bmgRankCount("Free Agent"), faMax: faSlots }));
+        }
+      }
     };
   }
 
@@ -3222,7 +3355,8 @@ function bmgRankCount(rank) {
 // Henchman не ограничен общим слотом (его лимиты — по именам), поэтому модель
 // с рангом Henchman видна всегда. Фракции с ignoreStandardRankRequirements
 // (Batman Who Laughs) лимитов рангов не имеют — там всё видно.
-function hasFreeRankSlot(model) {
+// Свободен ли ещё слот ранга в отряде (стандартные лимиты рангов)
+function rankHasFreeSlot(rank) {
   const factionRules = factionCrewRules[currentFaction] || {};
   if (factionRules.ignoreStandardRankRequirements) return true;
   const extras = bmgExtraSlots();
@@ -3234,7 +3368,11 @@ function hasFreeRankSlot(model) {
     "Free Agent": bmgRankCount("Free Agent") >= 1 + extras + (modifiers.extraFreeAgents || 0),
     "Vehicle": bmgRankCount("Vehicle") >= 1 + extras + (modifiers.extraVehicles || 0)
   };
-  return getHireableRanks(model).some(r => !(r in rankFull) || !rankFull[r]);
+  return !(rank in rankFull) || !rankFull[rank];
+}
+
+function hasFreeRankSlot(model) {
+  return getHireableRanks(model).some(rankHasFreeSlot);
 }
 
 // Особые трейты, разрешающие найм модели вне обычной аффилиации Босса —
@@ -3344,6 +3482,22 @@ function bmgListHireException(model) {
   return bmgHireException(model, ranks.includes("Henchman") ? "Henchman" : ranks[0]);
 }
 
+// Модель отряда с тем же персонажем (realname), что и model, — второй вариант
+// того же персонажа нанимать нельзя. Общая для проверки найма и для списка
+// (раньше такая модель оставалась в списке, а отказ приходил только по клику)
+function sameCharacterInCrew(model) {
+  const factionRules = factionCrewRules[currentFaction] || {};
+  const realname = model.realname || "—";
+  const isMinionOrHordeModel = model.traits.some(tr => tr.startsWith("Minion") || tr === "Horde");
+  if (factionRules.allowSameNameDifferentAlias || isMinionOrHordeModel || realname === "Unknown" || realname === "—") return null;
+  return crew.find(m => (m.realname || "—") === realname) || null;
+}
+
+// Модель запрещена выбранной картой снаряжения (excludesModel, например Bubastis)
+function excludedByEquipment(model) {
+  return crew.flatMap(m => m.equipment || []).find(eq => eq.excludesModel === model.name) || null;
+}
+
 function bmgCanAddModel(model) {
   // Рассчитываем общую Rep и Funding с учетом оборудования
   let totalRep = getCrewTotalRep() + (model.rep || 0);
@@ -3363,7 +3517,7 @@ function bmgCanAddModel(model) {
   }
 
   // И обратно: модель запрещена взятой картой снаряжения (см. excludesModel в data.js)
-  const excludingEq = crew.flatMap(m => m.equipment || []).find(eq => eq.excludesModel === model.name);
+  const excludingEq = excludedByEquipment(model);
   if (excludingEq) {
     showErrorToast(t("model_excluded_by_equipment", { model: model.name, equipment: excludingEq.name }));
     return false;
@@ -3476,14 +3630,10 @@ function bmgCanAddModel(model) {
   // "Unknown", но у троицы Gas Puppet 1/2/3 realname "Unknown Puppet", и эта
   // проверка блокировала 2-ю/3-ю копию раньше, чем срабатывал корректный
   // счётчик Minion(3) — Minion(X) на них фактически не работал вовсе.
-  const realname = model.realname || "—";
-  const isMinionOrHordeModel = model.traits.some(tr => tr.startsWith("Minion") || tr === "Horde");
-  if (!factionRules.allowSameNameDifferentAlias && !isMinionOrHordeModel && realname !== "Unknown" && realname !== "—") {
-    const existingWithSameRealname = crew.find(m => (m.realname || "—") === realname);
-    if (existingWithSameRealname) {
-      showErrorToast(t("model_already_added", { name: realname }));
-      return false;
-    }
+  const existingWithSameRealname = sameCharacterInCrew(model);
+  if (existingWithSameRealname) {
+    showErrorToast(t("model_already_added", { name: existingWithSameRealname.name }));
+    return false;
   }
 
   // Проверка лимитов рангов
@@ -3841,6 +3991,91 @@ function getEquipmentCost(eq) {
   return base;
 }
 
+// Выполнены ли условия предмета снаряжения для этой модели в текущем отряде
+// (наличие персонажа/трейта в банде, трейты самой модели и т.п.). Общая для
+// меню покупки и для перепроверки уже купленного (revalidateCrewEquipment)
+function equipmentConditionsMet(eq, crewModel) {
+  return (eq.conditions || []).every(cond => {
+    const trimmed = cond.trim();
+
+    // "X in crew" (без Alias:) — трейт в банде, например "Vampire Queen in crew"
+    if (trimmed.endsWith(' in crew') && !trimmed.startsWith('Alias:')) {
+      const traitName = trimmed.replace(' in crew', '').trim();
+      return crew.some(m => m.traits && m.traits.some(tr => tr.includes(traitName)));
+    }
+
+    // "Alias: X" / "Alias: X in crew" — персонаж в банде
+    if (trimmed.startsWith('Alias:')) {
+      const charName = trimmed.replace('Alias:', '').replace(' in crew', '').trim();
+      return crewHasCharacter(charName);
+    }
+
+    // "X is Boss" — персонаж X должен быть боссом отряда
+    const isBossMatch = trimmed.match(/^(.+?)\s+is Boss$/i);
+    if (isBossMatch) {
+      return !!BMG_BOSS && modelMatchesCharacter(BMG_BOSS, isBossMatch[1]);
+    }
+
+    // "Model has X trait cannot purchase" — запрещающий трейт у покупателя
+    const cannotHaveMatch = trimmed.match(/^Model has (.+?) trait cannot purchase$/i);
+    if (cannotHaveMatch) {
+      const forbiddenTrait = cannotHaveMatch[1];
+      return !(crewModel.traits && crewModel.traits.some(tr => tr === forbiddenTrait));
+    }
+
+    // "Model has X trait" — требуемый трейт у покупателя
+    const hasTraitMatch = trimmed.match(/^Model has (.+?) trait$/i);
+    if (hasTraitMatch) {
+      const requiredTrait = hasTraitMatch[1];
+      return crewModel.traits && crewModel.traits.some(tr => tr === requiredTrait);
+    }
+
+    // "Nightmares cannot buy" / "Plants cannot purchase" и т.п.
+    if (/cannot (buy|purchase)/i.test(trimmed)) {
+      const forbiddenGroupMatch = trimmed.match(/(Nightmares|Plants|Animals|Bots)/i);
+      if (forbiddenGroupMatch) {
+        const map = { Nightmares: 'Nightmare', Plants: 'Plant', Animals: 'Animal', Bots: 'Bot' };
+        const forbiddenTrait = map[forbiddenGroupMatch[1]] || forbiddenGroupMatch[1];
+        return !(crewModel.traits && crewModel.traits.some(tr => tr.includes(forbiddenTrait)));
+      }
+      return true;
+    }
+
+    // "Only Arkham Asylum Dr." — трейт с точкой в названии
+    if (trimmed.startsWith('Only Arkham Asylum Dr')) {
+      return crewModel.traits && crewModel.traits.some(tr => tr.startsWith('Arkham Asylum Dr'));
+    }
+
+    // "Only Henchman/Free Agents" — ранг уже проверен в isEquipmentRankEligible выше
+    if (trimmed.startsWith('Only Henchman') || trimmed.startsWith('Only Free Agent')) {
+      return true;
+    }
+
+    // "Only Plants", "Only Animals", "Only Nightmares" — требуется трейт покупателя
+    if (trimmed.startsWith('Only ')) {
+      const requiredTrait = trimmed.replace('Only ', '').trim();
+      const traitsList = requiredTrait.split('/').map(tr => tr.trim());
+      const normalizedTraits = traitsList.map(tr => {
+        if (tr === 'Nightmares') return 'Nightmare';
+        if (tr === 'Plants') return 'Plant';
+        if (tr === 'Animals') return 'Animal';
+        if (tr === 'Bots') return 'Bot';
+        return tr;
+      });
+      return crewModel.traits && normalizedTraits.some(tr => crewModel.traits.some(trait => trait.includes(tr) || trait.startsWith(tr)));
+    }
+
+    // Составное условие "X or Y" — достаточно одного из персонажей в отряде
+    // (например, "The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight)")
+    if (/\s+or\s+/.test(trimmed)) {
+      return trimmed.split(/\s+or\s+/).map(s => s.trim()).some(opt => crewHasCharacter(opt));
+    }
+
+    // Простое имя персонажа — модель с таким именем/настоящим именем должна быть в банде
+    return crewHasCharacter(trimmed);
+  });
+}
+
 function openEquipmentMenu(model, cardElement, uid) {
   event.stopPropagation();
 
@@ -3919,86 +4154,7 @@ function openEquipmentMenu(model, cardElement, uid) {
     if (!isEquipmentRankEligible(eq, crewModel)) return false;
 
     // Остальные условия (наличие персонажа/трейта в банде, трейты самой модели и т.п.)
-    const allConditionsMet = (eq.conditions || []).every(cond => {
-      const trimmed = cond.trim();
-
-      // "X in crew" (без Alias:) — трейт в банде, например "Vampire Queen in crew"
-      if (trimmed.endsWith(' in crew') && !trimmed.startsWith('Alias:')) {
-        const traitName = trimmed.replace(' in crew', '').trim();
-        return crew.some(m => m.traits && m.traits.some(tr => tr.includes(traitName)));
-      }
-
-      // "Alias: X" / "Alias: X in crew" — персонаж в банде
-      if (trimmed.startsWith('Alias:')) {
-        const charName = trimmed.replace('Alias:', '').replace(' in crew', '').trim();
-        return crewHasCharacter(charName);
-      }
-
-      // "X is Boss" — персонаж X должен быть боссом отряда
-      const isBossMatch = trimmed.match(/^(.+?)\s+is Boss$/i);
-      if (isBossMatch) {
-        return !!BMG_BOSS && modelMatchesCharacter(BMG_BOSS, isBossMatch[1]);
-      }
-
-      // "Model has X trait cannot purchase" — запрещающий трейт у покупателя
-      const cannotHaveMatch = trimmed.match(/^Model has (.+?) trait cannot purchase$/i);
-      if (cannotHaveMatch) {
-        const forbiddenTrait = cannotHaveMatch[1];
-        return !(crewModel.traits && crewModel.traits.some(tr => tr === forbiddenTrait));
-      }
-
-      // "Model has X trait" — требуемый трейт у покупателя
-      const hasTraitMatch = trimmed.match(/^Model has (.+?) trait$/i);
-      if (hasTraitMatch) {
-        const requiredTrait = hasTraitMatch[1];
-        return crewModel.traits && crewModel.traits.some(tr => tr === requiredTrait);
-      }
-
-      // "Nightmares cannot buy" / "Plants cannot purchase" и т.п.
-      if (/cannot (buy|purchase)/i.test(trimmed)) {
-        const forbiddenGroupMatch = trimmed.match(/(Nightmares|Plants|Animals|Bots)/i);
-        if (forbiddenGroupMatch) {
-          const map = { Nightmares: 'Nightmare', Plants: 'Plant', Animals: 'Animal', Bots: 'Bot' };
-          const forbiddenTrait = map[forbiddenGroupMatch[1]] || forbiddenGroupMatch[1];
-          return !(crewModel.traits && crewModel.traits.some(tr => tr.includes(forbiddenTrait)));
-        }
-        return true;
-      }
-
-      // "Only Arkham Asylum Dr." — трейт с точкой в названии
-      if (trimmed.startsWith('Only Arkham Asylum Dr')) {
-        return crewModel.traits && crewModel.traits.some(tr => tr.startsWith('Arkham Asylum Dr'));
-      }
-
-      // "Only Henchman/Free Agents" — ранг уже проверен в isEquipmentRankEligible выше
-      if (trimmed.startsWith('Only Henchman') || trimmed.startsWith('Only Free Agent')) {
-        return true;
-      }
-
-      // "Only Plants", "Only Animals", "Only Nightmares" — требуется трейт покупателя
-      if (trimmed.startsWith('Only ')) {
-        const requiredTrait = trimmed.replace('Only ', '').trim();
-        const traitsList = requiredTrait.split('/').map(tr => tr.trim());
-        const normalizedTraits = traitsList.map(tr => {
-          if (tr === 'Nightmares') return 'Nightmare';
-          if (tr === 'Plants') return 'Plant';
-          if (tr === 'Animals') return 'Animal';
-          if (tr === 'Bots') return 'Bot';
-          return tr;
-        });
-        return crewModel.traits && normalizedTraits.some(tr => crewModel.traits.some(trait => trait.includes(tr) || trait.startsWith(tr)));
-      }
-
-      // Составное условие "X or Y" — достаточно одного из персонажей в отряде
-      // (например, "The Riddler (Arkham Knight) or The Riddler's Mech (Arkham Knight)")
-      if (/\s+or\s+/.test(trimmed)) {
-        return trimmed.split(/\s+or\s+/).map(s => s.trim()).some(opt => crewHasCharacter(opt));
-      }
-
-      // Простое имя персонажа — модель с таким именем/настоящим именем должна быть в банде
-      return crewHasCharacter(trimmed);
-    });
-
+    const allConditionsMet = equipmentConditionsMet(eq, crewModel);
     if (!allConditionsMet) return false;
 
     // Проверка на дублирование трейтов от equipment (нельзя купить то, что уже даёт имеющийся трейт).
@@ -4211,7 +4367,7 @@ function renderRosterPreview() {
     div.className = 'mini-card';
     div.dataset.name = item.name;
     div.innerHTML = renderMiniCardHTML(item, false, true); // без +/- (просмотр, не найм), с характеристиками
-    div.onclick = () => showFullCard(item);
+    makeActivatable(div, () => showFullCard(item));
     // Та же панель апгрейдов под карточкой, что и в билдере
     fragment.appendChild(wrapCardWithUpgrades(div, item));
   });
@@ -4240,6 +4396,8 @@ function buildEquipmentGlossaryHTML(model) {
 // Встроенные стили печатной версии (поверх style.css, который подключается там же)
 const PRINT_CSS = `
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* Кнопки снятия снаряжения на печатной карточке не нужны */
+  .remove-eq, .close-full, .builder-panel-close { display: none !important; }
   html, body { background: #fff !important; color: #111; margin: 0; }
   @page { size: A4 landscape; margin: 8mm; }
 
@@ -4423,3 +4581,73 @@ function exportRoster() {
   win.document.write(doc);
   win.document.close();
 }
+// ======================== СИСТЕМНАЯ КНОПКА «НАЗАД» ========================
+// Приложение одностраничное, и раньше «назад» браузера / жест Android / кнопка
+// Telegram уводили с сайта с любого экрана — вместе с открытой карточкой и
+// выбранной фракцией. Теперь, пока пользователь не на главном меню, в истории
+// лежит одна запись-«ловушка»: «назад» снимает её, а мы делаем то же, что
+// кнопка «назад» в самом приложении (закрыть окно → карточку → экран).
+function isShown(id) {
+  const el = $(id);
+  return !!(el && el.offsetParent !== null);
+}
+
+function appAtMainMenu() {
+  return currentMode === 'menu'
+    && !document.querySelector('.trait-popup, .equipment-modal, .rank-select-modal')
+    && !($('fullCard') && $('fullCard').classList.contains('active'))
+    && !($('authModal') && $('authModal').classList.contains('active'));
+}
+
+async function handleAppBack() {
+  const popups = document.querySelectorAll('.trait-popup, .equipment-modal');
+  if (popups.length) { popups[popups.length - 1].remove(); return; }
+  const dialogs = document.querySelectorAll('.rank-select-modal');
+  if (dialogs.length) {
+    const top = dialogs[dialogs.length - 1];
+    const close = top.querySelector('.rank-select-close');
+    if (close) close.click(); else top.remove(); // закрытие через кнопку — промис диалога разрешится как «Отмена»
+    return;
+  }
+  if ($('authModal') && $('authModal').classList.contains('active')) { closeAuthModal(); return; }
+  if ($('fullCard') && $('fullCard').classList.contains('active')) { closeFullCard(); return; }
+  if (currentMode === 'rosterView') { closeRosterPreview(); return; }
+  if (currentMode === 'builder') {
+    if (isShown('builderCardsPage') && typeof closeBuilderCards === 'function') { closeBuilderCards(); return; }
+    if (isShown('builderMain')) { await backToFactionSelect(); return; }
+    await backToMenu();
+    return;
+  }
+  if (currentMode === 'cards') {
+    if (isShown('cardsMissionsPage') && typeof closeCardsMissions === 'function') { closeCardsMissions(); return; }
+    if (currentFaction) { backToCardsFactionSelect(); return; }
+  }
+  if (currentMode !== 'menu') await backToMenu();
+}
+
+function syncBackNavigation() {
+  const atMenu = appAtMainMenu();
+  if (!atMenu && !(history.state && history.state.bmgBack)) {
+    try { history.pushState({ bmgBack: true }, ''); } catch (e) { /* песочница без History API */ }
+  }
+  const tgBack = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData
+    && window.Telegram.WebApp.BackButton;
+  if (tgBack) { try { atMenu ? tgBack.hide() : tgBack.show(); } catch (e) {} }
+}
+
+window.addEventListener('popstate', async () => {
+  if (appAtMainMenu()) return; // на главном меню «назад» уходит со страницы, как обычно
+  await handleAppBack();
+  syncBackNavigation();
+});
+// Любая навигация в приложении начинается с клика/тапа — после него сверяем
+// историю (захват: срабатывает и для элементов, которые удаляются по клику)
+document.addEventListener('click', () => setTimeout(syncBackNavigation, 0), true);
+document.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === 'Escape') setTimeout(syncBackNavigation, 0); }, true);
+(function initTelegramBackButton() {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg || !tg.initData || !tg.BackButton) return;
+  try {
+    tg.BackButton.onClick(async () => { await handleAppBack(); syncBackNavigation(); });
+  } catch (e) { /* старый клиент Telegram без BackButton */ }
+})();

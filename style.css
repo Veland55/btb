@@ -141,6 +141,9 @@ html.tg-app {
   .top-bar-content h1 { flex-shrink:0; }
 }
 .funds span { color:#e94560; margin:0 10px; }
+.funds .over-limit { color:#fff; background:#c62828; border-radius:6px; padding:0 5px; }
+.builder-deck-badge.has-issue { background:#ff9800 !important; color:#000 !important; }
+.builder-deck-badge.has-issue::after { content:'!'; margin-left:1px; }
 #repLimit { width:50px; background:#222; color:#fff; border:1px solid #e94560; }
 #charismaticIndicator { margin-left:15px; color:var(--gold); font-weight:bold; display:none; }
 
@@ -155,6 +158,15 @@ html.tg-app {
 }
 .faction-card:hover { transform:translateY(-4px); box-shadow:0 0 18px rgba(233,69,96,.7); }
 .faction-card.active { border:4px solid #e94560; box-shadow:0 0 18px rgba(233,69,96,.7); }
+.faction-card:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+/* Название фракции на карточке: одной иконки мало, чтобы узнать банду */
+.faction-card-name {
+  position:absolute; left:8px; bottom:8px; max-width:calc(100% - 16px);
+  padding:2px 8px; border-radius:8px; background:rgba(0,0,0,.72); color:#fff;
+  font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:.5px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; pointer-events:none;
+}
+.mini-card:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
 .faction-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); height:80px; width:auto; filter:drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
 
 /* СПИСОК МОДЕЛЕЙ */
@@ -242,6 +254,13 @@ html.tg-app {
   box-shadow:0 2px 6px rgba(0,0,0,.4); transition:background .15s;
 }
 .flap-add:hover { background:#333; }
+/* Сенсорные экраны: крестик снятия апгрейда (15px) и «+» (26px) были мельче
+   пальца — увеличиваем зону нажатия, на ПК с мышью размеры прежние */
+@media (pointer: coarse) {
+  .flap-chip-remove { width:22px; height:22px; font-size:13px; }
+  .flap-add { width:34px; height:34px; font-size:19px; }
+  .official-trait-item.equipment-item .remove-eq { width:26px; height:26px; font-size:15px; }
+}
 
 .rank-icon { height:24px !important; width:auto !important; max-width:60px; object-fit:contain; background:#ffffff; padding:2px; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; }
 
@@ -340,13 +359,15 @@ html.tg-app {
      .full-card и НЕ учитывает его собственный padding-top:var(--safe-top)
      (чёлка/шапка Telegram), поэтому кнопка вылезала под неё. Считаем сами,
      как и остальные плавающие элементы (.header-buttons и т.п.) */
-  position:absolute; top:calc(12px + var(--safe-top)); right:12px; width:30px; height:30px;
+  position:absolute; top:calc(12px + var(--safe-top)); right:12px; width:40px; height:40px;
   display:flex; align-items:center; justify-content:center;
   font: inherit; font-size:18px; font-weight:bold; color:#fff; background:rgba(0,0,0,.55);
   border:none; border-radius:50%; cursor:pointer; z-index:10; line-height:1; padding:0; margin:0;
 }
 /* Левша — тот же приём, что у .header-buttons: зеркалим к левому краю */
 body.left-handed .close-full { right:auto; left:12px; }
+/* …и имя модели в шапке карточки отодвигаем, чтобы кнопка не закрывала его начало */
+body.left-handed .full-card .official-header { padding-left:60px; }
 
 /* Панель-глоссарий с расшифровкой трейтов и правил оружия — только на планшетах/ПК */
 .full-card-sidebar { display:none; }
@@ -540,6 +561,9 @@ body.left-handed .close-full { right:auto; left:12px; }
 }
 .trait-popup-body { padding:18px 20px; color:#bbb; line-height:1.6; font-size:13.5px; max-height:70vh; overflow-y:auto; }
 .trait-popup-body .inline-icon { background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
+/* Меню снаряжения: тот же белый кружок под иконками урона — чёрные значки на тёмном
+   фоне кнопки предмета были почти не видны (например, профили карт Arsenal) */
+.equipment-item-effects .inline-icon { background:#fff; border-radius:50%; padding:1px; box-sizing:content-box; }
 .trait-popup-close {
   position:absolute; top:14px; right:16px; font: inherit; font-size:26px; line-height:1; cursor:pointer;
   color:#fff; transition:color .2s; background:none; border:none; padding:0; margin:0;
@@ -1241,9 +1265,9 @@ select.game-select option { background:#1e1e1e; color:#fff; }
 .menu-btn-loading .btn-icon svg { animation: menuBtnSpin .8s linear infinite; }
 
 .main-menu-footer { margin-top: 14px; text-align: center; }
-.version { color: #555; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
-.footer-note { color: #555; font-size: 10.5px; margin-top: 6px; letter-spacing: .3px; line-height: 1.6; }
-.footer-note a { color: #777; text-decoration: none; border-bottom: 1px dotted #555; }
+.version { color: #8a8a8a; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+.footer-note { color: #8a8a8a; font-size: 11px; margin-top: 6px; letter-spacing: .3px; line-height: 1.6; }
+.footer-note a { color: #b0b0b0; text-decoration: none; border-bottom: 1px dotted #555; }
 .footer-note a:hover { color: #e94560; border-bottom-color: #e94560; }
 
 @keyframes fadeIn {
@@ -1461,3 +1485,15 @@ select.game-select option { background:#1e1e1e; color:#fff; }
   border: 1px solid rgba(255, 199, 44, .45); border-radius: 4px;
   padding: 1px 5px; margin-left: 6px; white-space: nowrap;
 }
+
+/* ======================== ЗАГРУЗКА ПРИЛОЖЕНИЯ ======================== */
+/* См. inline-скрипт в <head> index.html: до выполнения скриптов кнопки меню
+   неактивны и это видно, подписи чужого языка скрыты до перевода */
+.app-loading-note { display:none; }
+.app-loading .app-loading-note {
+  display:block; text-align:center; color:var(--gold); font-size:13px; letter-spacing:1px;
+  margin:4px 0 8px; animation:appLoadingPulse 1.2s ease-in-out infinite;
+}
+@keyframes appLoadingPulse { 50% { opacity:.4; } }
+.app-loading .menu-btn, .app-loading .lang-btn { pointer-events:none; opacity:.5; }
+.lang-pending [data-i18n] { visibility:hidden; }
