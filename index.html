@@ -32,7 +32,7 @@
   <!-- ?v=... — метка версии против кэша браузера. Сервер отдаёт версионированные
        файлы с Cache-Control: immutable, поэтому версию ОБЯЗАТЕЛЬНО менять при
        каждом изменении файла — иначе браузер год не увидит обновление. -->
-  <link rel="stylesheet" href="style.css?v=3.21">
+  <link rel="stylesheet" href="style.css?v=3.22">
   <!-- defer: скрипты качаются параллельно с разметкой и выполняются после её разбора -->
   <script src="data.js?v=3.19" defer></script>
   <script src="data-traits.js?v=2.6" defer></script>
@@ -207,13 +207,13 @@
       <div class="top-bar">
         <div class="top-bar-content">
           <h1 data-i18n="obj_cards_title">КАРТЫ ЦЕЛЕЙ</h1>
+          <div class="funds" id="cardsMissionsSummary"></div>
           <div class="header-buttons">
             <button class="compendium-small-btn" onclick="closeCardsMissions()">
               <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
           </div>
         </div>
-        <div class="funds" id="cardsMissionsSummary"></div>
       </div>
       <div id="cardsMissionsContent" class="obj-cards-page"></div>
     </div>
@@ -245,6 +245,10 @@
       <div class="top-bar">
         <div class="top-bar-content">
           <h1>BMG</h1>
+          <div class="funds">
+            <span data-i18n="crew">ОТРЯД</span>: <span id="crewCount">0</span> | <span data-i18n="rep">REP</span>: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350"> | $<span id="totalFunding">0 / 1500</span>
+            <span id="charismaticIndicator">✨ CHARISMATIC: <span id="charismaticStatus">AVAILABLE</span></span>
+          </div>
           <div class="header-buttons">
             <button class="compendium-small-btn" id="factionRulesBtn" style="display:none;" onclick="showFactionRules()">
               <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <!-- Иконка "i" — правила набора фракции -->
@@ -260,10 +264,6 @@
               <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
           </div>
-        </div>
-        <div class="funds">
-          <span data-i18n="crew">ОТРЯД</span>: <span id="crewCount">0</span> | <span data-i18n="rep">REP</span>: <span id="totalRep">0</span> / <input id="repLimit" type="number" value="350"> | $<span id="totalFunding">0 / 1500</span>
-          <span id="charismaticIndicator">✨ CHARISMATIC: <span id="charismaticStatus">AVAILABLE</span></span>
         </div>
       </div>
 
@@ -295,13 +295,13 @@
       <div class="top-bar">
         <div class="top-bar-content">
           <h1 data-i18n="obj_cards_title">КАРТЫ ЦЕЛЕЙ</h1>
+          <div class="funds" id="builderCardsSummary"></div>
           <div class="header-buttons">
             <button class="compendium-small-btn" onclick="closeBuilderCards()">
               <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
           </div>
         </div>
-        <div class="funds" id="builderCardsSummary"></div>
       </div>
       <div id="builderCardsContent" class="obj-cards-page"></div>
     </div>
@@ -313,6 +313,7 @@
     <div class="top-bar">
       <div class="top-bar-content">
         <h1 data-i18n="roster_preview">ПРОСМОТР ОТРЯДА</h1>
+        <div class="funds" id="rosterPreviewSummary"></div>
         <div class="header-buttons">
           <button id="saveCrewBtn" class="compendium-small-btn" onclick="saveCurrentCrew()" data-i18n-title="save_crew" title="Сохранить отряд">
             <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
@@ -325,7 +326,6 @@
           </button>
         </div>
       </div>
-      <div class="funds" id="rosterPreviewSummary"></div>
     </div>
 
     <!-- Набранная колода карт целей — списком названий (см. renderRosterPreviewCards) -->

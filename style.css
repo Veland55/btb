@@ -77,7 +77,9 @@ html.tg-app {
   .header-buttons {
     position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:150;
   }
-  .top-bar-content { justify-content:center; }
+  .top-bar-content { justify-content:center; flex-wrap:wrap; }
+  .top-bar-content .funds { flex-basis:100%; margin-top:8px; }
+  .top-bar-content .funds:empty { display:none; }
   .beta-badge { margin-right:0; }
   /* Левша (переключатель в профиле, body.left-handed — см. script.js) —
      тот же блок кнопок зеркалится к левому краю экрана */
@@ -117,6 +119,15 @@ html.tg-app {
   box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 .funds { font-size:14px; font-weight:bold; margin-top:8px; }
+/* Строка отряда (.funds) стоит внутри .top-bar-content между заголовком и кнопками:
+   на ПК/планшете шапка — одна строка (заголовок · отряд · кнопки), на телефоне
+   (кнопки там плавающие, см. @media max-width 699px) — переносится под заголовок */
+.top-bar-content .funds { flex:1 1 auto; min-width:0; margin-top:0; }
+.top-bar-content .funds:empty { visibility:hidden; }
+/* На ПК/планшете заголовок не уступает место строке отряда (та переносится сама) */
+@media (min-width: 700px) {
+  .top-bar-content h1 { flex-shrink:0; }
+}
 .funds span { color:#e94560; margin:0 10px; }
 #repLimit { width:50px; background:#222; color:#fff; border:1px solid #e94560; }
 #charismaticIndicator { margin-left:15px; color:var(--gold); font-weight:bold; display:none; }
@@ -268,6 +279,11 @@ html.tg-app {
 .obj-deck-counters b { color:inherit; }
 .obj-deck-msg { color:#ffb84d; font-size:12px; font-weight:normal; letter-spacing:.3px; }
 .obj-deck-msg.is-ok { color:#7ddf7d; }
+/* ПК/планшет: шапка в одну строку — счётчики и подсказки колоды тоже в строку, по центру */
+@media (min-width: 700px) {
+  .top-bar-content .obj-deck-summary { flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:center; gap:4px 16px; }
+  .top-bar-content .obj-deck-counters { justify-content:center; }
+}
 
 /* Колода в просмотре ростера — компактный список названий */
 .roster-cards-panel {
