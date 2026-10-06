@@ -340,6 +340,7 @@ const translations = {
     model_requires_other: "Модель {model} требует, чтобы в отряде была модель {required}",
     affinity_requires_model: "Модель {model} требует, чтобы в отряде была модель {target} (Affinity)",
     expendable_penguin_requires_trait: "Модель {model} может быть нанята только если в отряде есть модель с трейтом Penguin Caller или Hidden Penguins",
+    model_excluded_by_equipment: "{model} нельзя взять в отряд: выбрана карта {equipment}",
     william_cobb_restrict_free_agents: "Если William Cobb в отряде, Free Agent модели должны быть с аффилиацией Bane или Unknown",
     rank_label: "Ранг",
     leader_or_sidekick: "Leader или Sidekick",
@@ -780,6 +781,7 @@ const translations = {
     model_requires_other: "Model {model} requires {required} model in the crew",
     affinity_requires_model: "Model {model} requires {target} model in the crew (Affinity)",
     expendable_penguin_requires_trait: "Model {model} can only be recruited if the crew includes a model with Penguin Caller or Hidden Penguins trait",
+    model_excluded_by_equipment: "{model} cannot be included in the crew: the {equipment} card is chosen",
     william_cobb_restrict_free_agents: "If William Cobb is in the crew, Free Agent models must have Bane or Unknown affiliation",
     rank_label: "Rank",
     leader_or_sidekick: "Leader or Sidekick",
@@ -3328,6 +3330,13 @@ function bmgCanAddModel(model) {
     return false;
   }
 
+  // И обратно: модель запрещена взятой картой снаряжения (см. excludesModel в data.js)
+  const excludingEq = crew.flatMap(m => m.equipment || []).find(eq => eq.excludesModel === model.name);
+  if (excludingEq) {
+    showErrorToast(t("model_excluded_by_equipment", { model: model.name, equipment: excludingEq.name }));
+    return false;
+  }
+
   // Проверка зависимостей моделей (например, Robin Who Laughs требует The Batman Who Laughs)
   const unmetDependency = getUnmetDependency(model);
   if (unmetDependency) {
@@ -3842,17 +3851,18 @@ function openEquipmentMenu(model, cardElement, uid) {
   }
 
   const faction = currentFaction;
+  const equipmentPool = equipmentPoolFor(faction); // каталог фракции + карты Arsenal
 
   // Leader не может покупать equipment, если во фракции нет ни одного подходящего предмета
   if (crewModel.rankUsed === "Leader") {
-    const hasLeaderPermission = (equipmentByFaction[faction] || []).some(eq => isEquipmentRankEligible(eq, crewModel));
+    const hasLeaderPermission = equipmentPool.some(eq => isEquipmentRankEligible(eq, crewModel));
     if (!hasLeaderPermission) {
       showErrorToast(t('leader_no_equipment'));
       return;
     }
   }
 
-  const availableEq = (equipmentByFaction[faction] || []).filter(eq => {
+  const availableEq = equipmentPool.filter(eq => {
     // Проверка maxPerCrew (ограничение на количество предметов в отряде)
     const currentCount = crewEquipmentCounts[eq.name] || 0;
     if (currentCount >= (eq.maxPerCrew || Infinity)) return false;
@@ -3864,10 +3874,14 @@ function openEquipmentMenu(model, cardElement, uid) {
 
     // Взаимоисключающие группы оборудования (например, "Iceberg Lounge": можно выбрать только 1 из группы)
     if (eq.group) {
-      const groupItems = (equipmentByFaction[faction] || []).filter(other => other.group === eq.group).map(other => other.name);
+      const groupItems = equipmentPool.filter(other => other.group === eq.group).map(other => other.name);
       const groupAlreadyTaken = crew.some(m => (m.equipment || []).some(e => groupItems.includes(e.name)));
       if (groupAlreadyTaken) return false;
     }
+
+    // Карта, запрещающая модель в отряде (Bubastis: "You cannot include the Bubastis
+    // model in your crew") — не предлагаем, если эта модель уже нанята
+    if (eq.excludesModel && crew.some(m => m.name === eq.excludesModel)) return false;
 
     // Ранг/личность покупателя
     if (!isEquipmentRankEligible(eq, crewModel)) return false;

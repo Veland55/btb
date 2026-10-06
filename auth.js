@@ -439,7 +439,7 @@ function resolveSavedEntry(entry) {
 // Снаряжение записи: { name, funding, rep }. Массив — уплаченная цена
 // (со скидками), строка — старый формат, цена из каталога фракции
 function savedEquipment(entry, faction) {
-  const pool = (typeof equipmentByFaction !== 'undefined' && equipmentByFaction[faction]) || [];
+  const pool = typeof equipmentPoolFor === 'function' ? equipmentPoolFor(faction) : [];
   return (entry[2] || []).map(en => {
     if (Array.isArray(en)) return { name: String(en[0] || ''), funding: en[1] || 0, rep: en[2] || 0 };
     const eq = pool.find(e => e.name === en);
@@ -585,7 +585,7 @@ function restoreCrewFromSave(s) {
   BMG_AFFILIATIONS = null;
 
   let skipped = 0;
-  const eqPool = equipmentByFaction[s.f] || [];
+  const eqPool = equipmentPoolFor(s.f);
   s.m.forEach((entry, i) => {
     // по _id, а для старых сохранений — по имени с учётом переименований
     const base = resolveSavedEntry(entry);

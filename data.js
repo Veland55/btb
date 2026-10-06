@@ -455,7 +455,12 @@ const equipmentByFaction = {
     { name: "Weird Device", fundingCost: 200, repCost: 0, maxPerCrew: 2, conditions: ["Jervis Tetch"], effects: ["Model gains the Goad trait."] },
     { name: "Trained Mind", fundingCost: 100, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], effects: ["Model gains Desensitized rule."] },
     { name: "Rhyme with Me", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], effects: ["Model gains Disarray rule."] },
-    { name: "Masks of Wonderland", fundingCost: 200, repCost: 0, maxPerCrew: 3, conditions: ["Jervis Tetch"], effects: ["Choose one mask: Queen of Hearts (Assassin 1, Order), White Rabbit (Fast, Tireless), Cheshire Cat (Stealth, Climbing Claws)."] },
+    // Masks of Wonderland берёт сам Mad Hatter (бесплатно); сами маски — отдельные карты
+    // для Henchman, взаимоисключающие: в отряде не больше одной (официальная база, 140, 323–325)
+    { name: "Masks of Wonderland", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], targetModels: ["Jervis Tetch"], effects: ["When choosing this equipment, friendly Henchman may purchase the Masks of Wonderland."] },
+    { name: "Queen of Hearts Mask", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], targetModels: ["Henchman"], group: "Masks of Wonderland", effects: ["Model gains Assassin (1) and Order rules."] },
+    { name: "White Rabbit Mask", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], targetModels: ["Henchman"], group: "Masks of Wonderland", effects: ["Model gains Fast (2) and Tireless rules."] },
+    { name: "Cheshire Cat Mask", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Jervis Tetch"], targetModels: ["Henchman"], group: "Masks of Wonderland", effects: ["Model gains Stealth and Climbing Claws rules."] },
     { name: "Advanced Weaponry", fundingCost: 200, repCost: 0, maxPerCrew: 1, conditions: ["Alexander Joseph Luthor"], effects: ["One ranged weapon gains Accurate trait."] }
   ],
   "Scarecrow": [
@@ -499,6 +504,44 @@ const equipmentByFaction = {
    ]
 
 };
+
+// Личные карты конкретных моделей, а не снаряжение фракции: доступны в любом
+// отряде, где модель нанята. Все бесплатны; из одной группы (group) в отряде —
+// не больше одной карты. Состав — по официальной базе Knight Models.
+const personalEquipment = [
+  // Arsenal: "After deployment, this model may equip up to one Hands equipment card,
+  // and one Back equipment card. These cards cannot be equipped in any other way" (269–273)
+  { name: "Bastard Sword", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", effects: ["Hands — Model gains the Devastating Blow trait.", "Bastard Sword: {BLOOD_ICON}{BLOOD_ICON} — Sharp / Devastating."] },
+  { name: "Hunting Knives", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", effects: ["Hands — Model gains the Combo (Hunting Knives) trait.", "Hunting Knives: {BLOOD_ICON}{STUN_ICON} — Sharp / Overwhelming."] },
+  { name: "Automatic Guns", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Hands", effects: ["Hands — Model gains the Instinctive Shooting trait.", "Automatic Guns: {BLOOD_ICON}{STUN_ICON} ROF 4, Ammo 3 — S. Range / Firearm / Light."] },
+  { name: "Modified Assault Gun", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Back", effects: ["Back — Model gains the Good Aim trait.", "Modified Assault Gun: {BLOOD_ICON}{BLOOD_ICON} ROF 3, Ammo 3 — M. Range / Firearm / Assault / Red Dot."] },
+  { name: "Combat Bo", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Deathstroke (The Terminator)"], group: "Arsenal: Back", effects: ["Back — Model gains the Electric Storm trait.", "Combat Bo: {STUN_ICON}{STUN_ICON} — Handy / Reach (2)."] },
+
+  // Watchmen: у каждого персонажа пара карт на выбор (250–261). Grapple Gun —
+  // одна карта на Rorschach и Nite Owl: в отряде может быть только у одного из них
+  { name: "Soldier Training", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["The Comedian"], group: "The Comedian", effects: ["Model gains the Instinctive Shooting trait."] },
+  { name: "Maniac", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["The Comedian"], group: "The Comedian", effects: ["When this model declares an attack, enemy models within 8\" suffers the Scared effect."] },
+  { name: "Bubastis", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Ozymandias"], group: "Ozymandias", excludesModel: "Bubastis", effects: ["You cannot include the Bubastis model in your crew.", "Instead, this model can reroll failed Block rolls, add 1 {BLOOD_ICON} to each hit and enemy models within 2\" suffer -1 Attack and -1 Defense during when targeting or targeted by this model."] },
+  { name: "Lightning Reflexes", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Ozymandias"], group: "Ozymandias", effects: ["This model may perform Effort to reroll attack dice at cost of 1 Effort per die rerolled (ignoring the Effort limit). In addition, target enemies with a lower Movement value than this model must pass a Willpower roll or cannot make Efforts against this model's Attacks until the end of the round."] },
+  { name: "You're locked in here with ME!", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Rorschach"], group: "Rorschach", effects: ["Model gains the Takedown and Intimidate traits."] },
+  { name: "Rorschach's Journal", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Rorschach"], group: "Rorschach", effects: ["Model gains the Investigator trait."] },
+  { name: "Archie Support", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Nite Owl"], group: "Nite Owl", effects: ["This model loses the Archie trait.", "This model by spending a Special Action can call for Archie support: place an Explosive template within 8\" and line of sight of this model. All models affected suffer Damage {BLOOD_ICON}{STUN_ICON} and the Fire (1) Status with a Strength die of 3+."] },
+  { name: "Cooperative Fighting", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Nite Owl"], group: "Nite Owl", effects: ["Other friendly models that make a Close Combat attack against an enemy in contact with this model gain +1 to hit."] },
+  { name: "Grapple Gun (Watchmen)", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Rorschach", "Nite Owl"], group: "Watchmen: Grapple Gun", effects: ["Model gains the Grapple Gun trait."] },
+  { name: "Reckless", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Silk Spectre II"], group: "Silk Spectre II", effects: ["Model gains the Reinforced Gloves trait."] },
+  { name: "Daughter of Jupiter", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Silk Spectre II"], group: "Silk Spectre II", effects: ["Model gains the It's Mine trait."] },
+
+  // Batman (Multiverse): одна из двух карт (326–327)
+  { name: "The Leader", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Batman (Multiverse)"], group: "Batman (Multiverse)", effects: ["Model gains I'm a Symbol, Investigator, Stay in Formation and Protect the Shadows rules."] },
+  { name: "The Shadows", fundingCost: 0, repCost: 0, maxPerCrew: 1, conditions: [], targetModels: ["Batman (Multiverse)"], group: "Batman (Multiverse)", effects: ["Model gains Bat Beacon, Master of Stealth, Shadowed Nightmare and Shadows Agent rules."] }
+];
+
+// Всё снаряжение, которое может встретиться в отряде фракции: каталог фракции
+// плюс личные карты моделей. Через эту функцию идут и меню покупки, и загрузка
+// сохранений — иначе личные карты терялись бы при восстановлении ростера.
+function equipmentPoolFor(faction) {
+  return [...(equipmentByFaction[faction] || []), ...personalEquipment];
+}
 
 const models = [
   {
