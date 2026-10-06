@@ -2768,12 +2768,15 @@ const buildFullCardHTML = model => {
             // предмет по имени — как в жёлтой панели апгрейдов (renderUpgradeFlapHTML)
             const safeModel = model.name.replace(/'/g, "\\'");
             const safeEq = eq.name.replace(/'/g, "\\'");
-            // Ростер из ИГРЫ (readOnly): снаряжение только для просмотра
+            // Ростер из ИГРЫ (readOnly): снаряжение только для просмотра. Имена
+            // предмета и фракции пришли из ростера соперника (сервер режет только
+            // < и >), поэтому — через экранированные data-атрибуты, а не внутрь
+            // кода onclick: кавычка в имени иначе дописывала бы свой обработчик
             if (crewModel.readOnly) {
-              const safeFaction = String(crewModel.faction || '').replace(/'/g, "\\'");
               return `
-            <div class="official-trait-item equipment-item" onclick="showCatalogEquipmentInfo('${safeFaction}', '${safeEq}')">
-              ${eq.name} <small>($${eq.fundingCost || 0}${eq.repCost ? ` +${eq.repCost} Rep` : ''})</small>.
+            <div class="official-trait-item equipment-item" data-faction="${escHtml(crewModel.faction || '')}" data-eq="${escHtml(eq.name)}"
+                 onclick="showCatalogEquipmentInfo(this.dataset.faction, this.dataset.eq)">
+              ${escHtml(eq.name)} <small>($${Number(eq.fundingCost) || 0}${eq.repCost ? ` +${Number(eq.repCost) || 0} Rep` : ''})</small>.
             </div>`;
             }
             return `
